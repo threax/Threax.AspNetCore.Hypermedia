@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EBBC3E56-D59A-447E-8021-DA2D17B6AD50}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C7333F03-3D9B-434C-84DE-B27FDD3A3743}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNetCore.Swashbuckle.Convention", "src\AspNetCore.Swashbuckle.Convention\AspNetCore.Swashbuckle.Convention.xproj", "{30BF16AA-6074-4AE2-9D08-367DF40F2CDF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{30BF16AA-6074-4AE2-9D08-367DF40F2CDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30BF16AA-6074-4AE2-9D08-367DF40F2CDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30BF16AA-6074-4AE2-9D08-367DF40F2CDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30BF16AA-6074-4AE2-9D08-367DF40F2CDF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{30BF16AA-6074-4AE2-9D08-367DF40F2CDF} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
+	EndGlobalSection
+EndGlobal
