@@ -14,7 +14,7 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Threax.AspNetCore.Swashbuck
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TestApi", "src\TestApi\TestApi.xproj", "{30B7D125-BC93-451D-9065-F2029E61D53D}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "threax.AspNetCore.ExceptionToJson", "src\threax.AspNetCore.ExceptionToJson\threax.AspNetCore.ExceptionToJson.xproj", "{2805FA45-C874-439E-8941-049D7C22986F}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Threax.AspNetCore.ExceptionToJson", "src\threax.AspNetCore.ExceptionToJson\Threax.AspNetCore.ExceptionToJson.xproj", "{2805FA45-C874-439E-8941-049D7C22986F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
