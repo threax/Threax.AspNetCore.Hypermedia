@@ -42,7 +42,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
             var enumerableValue = model as IEnumerable;
             if (enumerableValue != null)
             {
-                var itemType = GetModelType(model);
+                var itemType = Utils.GetEnumerableModelType(enumerableValue);
                 var response = new HALResponse(new Object());
                 response.AddEmbeddedCollection("values", GetEmbeddedResponses(enumerableValue));
                 return response;
@@ -50,29 +50,6 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
             //If we got here we probably have a plain object, convert and return it.
             return ConvertInstance(model);
-        }
-
-        private static Type GetModelType(object model)
-        {
-            var modelType = model.GetType();
-            //The LinkFinders can be built somewhere else not per request, they are intended to be reusable.
-            var newModelType = modelType.GetElementType();
-            if (newModelType == null)
-            {
-                if (modelType.GenericTypeArguments.Length > 1 && typeof(IDictionary).IsAssignableFrom(modelType))
-                {
-                    newModelType = modelType.GenericTypeArguments[1];
-                }
-                else if (modelType.GenericTypeArguments.Length > 0)
-                {
-                    newModelType = modelType.GenericTypeArguments[0];
-                }
-            }
-            if (newModelType != null)
-            {
-                modelType = newModelType;
-            }
-            return modelType;
         }
 
         private static HALResponse ConvertInstance(object model)

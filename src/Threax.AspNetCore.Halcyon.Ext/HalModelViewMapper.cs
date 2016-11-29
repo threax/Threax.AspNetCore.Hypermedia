@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -37,18 +38,30 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
         public Object Convert(Object src)
         {
-            //Search current type and all base types for a converter, this does not search interfaces.
-            var srcType = src.GetType();
             Func<Object, Object> converter = null;
-            while(srcType != null && !converters.TryGetValue(srcType, out converter))
+
+            var enumerable = src as IEnumerable;
+            if (enumerable != null)
             {
-                srcType = srcType.GetTypeInfo().BaseType;
+                //Figure out what the enumerable generic type is and look that type up for our converter.
+                var elementType = Utils.GetEnumerableModelType(enumerable);
+                Type srcType = typeof(IEnumerable<>).MakeGenericType(elementType);
+                converters.TryGetValue(srcType, out converter);
+            }
+            else
+            {
+                //Search current type and all base types for a converter, this does not search interfaces.
+                Type srcType = src.GetType();
+
+                while (srcType != null && !converters.TryGetValue(srcType, out converter))
+                {
+                    srcType = srcType.GetTypeInfo().BaseType;
+                }
             }
 
-            if(converter == null)
+            if (converter == null)
             {
-                srcType = src.GetType();
-                throw new InvalidOperationException($"Cannot find converter for type {srcType.FullName}. Base classes were searched as well.");
+                throw new InvalidOperationException($"Cannot find converter for type {src.GetType().FullName}. Base classes were searched as well.");
             }
 
             return converter(src);

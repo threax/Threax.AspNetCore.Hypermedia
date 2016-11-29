@@ -50,7 +50,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 throw new InvalidOperationException($"Cannot build a route template for Action Method {actionMethod} in controller {controllerType}. Did you forget to add a HttpMethodAttribute (HttpGet, HttpPost etc) to the Action Method or a RouteAttribute to the controller class.");
             }
 
-            return template.Replace("[controller]", ControllerUtils.GetControllerName(controllerType)).Replace("[action]", actionMethod);
+            return template.Replace("[controller]", Utils.GetControllerName(controllerType)).Replace("[action]", actionMethod);
         }
 
         public static String GetFunctionName<T, DelegateType>(Expression<Func<T, DelegateType>> expr)
