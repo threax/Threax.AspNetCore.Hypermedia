@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Threax.AspNetCore.Halcyon.Ext
@@ -57,6 +59,33 @@ namespace Threax.AspNetCore.Halcyon.Ext
             }
 
             return elementType;
+        }
+
+        public static bool CheckRoles(ClaimsPrincipal user, IEnumerable<AuthorizeAttribute> authorizeAttrs)
+        {
+            bool allowAccess = true;
+            bool authenticated = user.Identity.IsAuthenticated;
+            foreach (var auth in authorizeAttrs)
+            {
+                allowAccess = allowAccess && authenticated;
+                if (auth.Roles != null)
+                {
+                    foreach (var role in auth.Roles.Split(',').Select(i => i.Trim()))
+                    {
+                        allowAccess = allowAccess && user.IsInRole(role);
+                        if (!allowAccess)
+                        {
+                            break;
+                        }
+                    }
+                }
+                if (!allowAccess)
+                {
+                    break;
+                }
+            }
+
+            return allowAccess;
         }
     }
 }

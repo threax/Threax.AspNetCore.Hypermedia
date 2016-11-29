@@ -13,6 +13,8 @@ using Threax.AspNetCore.Halcyon.Ext;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Halcyon.HAL;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -35,6 +37,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IHALConverter, CustomHalAttributeConverter>();
             services.AddScoped<HalModelResultFilterAttribute, HalModelResultFilterAttribute>();
             services.AddScoped<IHalModelViewMapper, NoViewMapper>();
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             return services;
         }

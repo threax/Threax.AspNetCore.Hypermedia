@@ -1,4 +1,5 @@
 ﻿using Halcyon.HAL.Attributes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using System;
@@ -6,15 +7,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
     public class HalActionLinkAttribute : HalLinkAttribute
     {
+        private Type controllerType;
+        private String actionMethod;
+
         public HalActionLinkAttribute(string rel, Type controllerType, String actionMethod, string title = null, string method = null)
             : base(rel, CreateHref(controllerType, actionMethod, ref method), title, method)
         {
+            this.controllerType = controllerType;
+            this.actionMethod = actionMethod;
+        }
+
+        public bool CanUserAccess(ClaimsPrincipal claims)
+        {
+            bool canVisit = true;
+            var methodInfo = controllerType.GetTypeInfo().GetMethod(actionMethod);
+            if (methodInfo != null)
+            {
+                canVisit = Utils.CheckRoles(claims, methodInfo.GetCustomAttributes<AuthorizeAttribute>(true));
+            }
+            return canVisit;
         }
 
         private static String CreateHref(Type controllerType, String actionMethod, ref String method)
