@@ -34,6 +34,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<IUrlHelperFactory, UrlHelperFactory>();
             services.AddScoped<IHALConverter, CustomHalAttributeConverter>();
             services.AddScoped<HalModelResultFilterAttribute, HalModelResultFilterAttribute>();
+            services.AddScoped<IHalModelViewMapper, NoViewMapper>();
 
             return services;
         }
@@ -43,8 +44,13 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="mvcOptions">The MVC options to extend.</param>
         /// <returns></returns>
-        public static MvcOptions UseConventionalHalcyon(this MvcOptions mvcOptions, HalcyonConventionMvcOptions options)
+        public static MvcOptions UseConventionalHalcyon(this MvcOptions mvcOptions, HalcyonConventionMvcOptions options = null)
         {
+            if(options == null)
+            {
+                options = new HalcyonConventionMvcOptions();
+            }
+
             mvcOptions.Filters.AddService(typeof(HalModelResultFilterAttribute));
 
             JsonHalOutputFormatter outputFormatter;

@@ -24,12 +24,14 @@ namespace Threax.AspNetCore.Halcyon.Ext
         private IUrlHelperFactory urlHelperFactory;
         private IActionContextAccessor actionContextAccessor;
         private IHALConverter halConverter;
+        private IHalModelViewMapper modelViewMapper;
 
-        public HalModelResultFilterAttribute(IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor, IHALConverter halConverter)
+        public HalModelResultFilterAttribute(IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor, IHalModelViewMapper modelViewMapper, IHALConverter halConverter)
         {
             this.urlHelperFactory = urlHelperFactory;
             this.actionContextAccessor = actionContextAccessor;
             this.halConverter = halConverter;
+            this.modelViewMapper = modelViewMapper;
         }
 
         public override void OnResultExecuting(ResultExecutingContext context)
@@ -40,7 +42,8 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 var objResult = context.Result as ObjectResult;
                 if (objResult != null)
                 {
-                    var halResponse = halConverter.Convert(objResult.Value);
+                    var convertedObject = modelViewMapper.Convert(objResult.Value);
+                    var halResponse = halConverter.Convert(convertedObject);
                     if (halResponse != null)
                     {
                         context.Result = halResponse.ToActionResult(context.Controller as ControllerBase);
