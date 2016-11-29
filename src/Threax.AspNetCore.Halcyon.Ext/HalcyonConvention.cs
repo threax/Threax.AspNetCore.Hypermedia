@@ -54,7 +54,7 @@ namespace Microsoft.Extensions.DependencyInjection
             mvcOptions.Filters.AddService(typeof(HalModelResultFilterAttribute));
 
             JsonHalOutputFormatter outputFormatter;
-            var mediaTypes = new string[] { "application/hal+json", "application/json" };
+            var mediaTypes = new string[] { "application/json" };
             if (options.JsonSerializerSettings == null)
             {
                 outputFormatter = new JsonHalOutputFormatter(mediaTypes);
@@ -64,6 +64,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 outputFormatter = new JsonHalOutputFormatter(options.JsonSerializerSettings, mediaTypes);
             }
             mvcOptions.OutputFormatters.Add(outputFormatter);
+            mvcOptions.Filters.Add(new ProducesAttribute("application/json"));
 
             return mvcOptions;
         }
