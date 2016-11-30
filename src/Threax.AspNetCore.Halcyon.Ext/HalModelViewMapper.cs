@@ -61,7 +61,8 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
             if (converter == null)
             {
-                throw new InvalidOperationException($"Cannot find converter for type {src.GetType().FullName}. Base classes were searched as well. Did you forget to define it?");
+                //No converter, return original object
+                return src;
             }
 
             return converter(src);
