@@ -42,8 +42,12 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 var objResult = context.Result as ObjectResult;
                 if (objResult != null)
                 {
-                    var convertedObject = modelViewMapper.Convert(objResult.Value);
-                    var halResponse = halConverter.Convert(convertedObject);
+                    HALResponse halResponse = objResult.Value as HALResponse;
+                    if(halResponse == null)
+                    {
+                        var convertedObject = modelViewMapper.Convert(objResult.Value);
+                        halResponse = halConverter.Convert(convertedObject);
+                    }
                     if (halResponse != null)
                     {
                         context.Result = halResponse.ToActionResult(context.Controller as ControllerBase);
