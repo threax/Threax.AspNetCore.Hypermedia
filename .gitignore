@@ -252,3 +252,4 @@ paket-files/
 *.sln.iml
 /nuget
 /TemplateGenerator/FetchClientTemplate.cs
+/src/HalcyonApiBrowser/wwwroot/lib
