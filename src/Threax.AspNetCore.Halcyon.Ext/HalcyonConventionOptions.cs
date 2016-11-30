@@ -1,15 +1,21 @@
-﻿using Newtonsoft.Json;
+﻿using Halcyon.HAL;
+using Newtonsoft.Json;
+using System;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Options for the Halcyon convention.
     /// </summary>
-    public class HalcyonConventionMvcOptions
+    public class HalcyonConventionOptions
     {
+        public const String AuthorityVariable = "{{authority}}";
+
         /// <summary>
-        /// Settings for the json serializer.
+        /// Set the base url to use when creating links. You can add the variable {{authority}} to the string
+        /// to replace that path with the current Request.GetDisplayUrl().Authority value. Otherwise you can
+        /// set the url to whatever you want.
         /// </summary>
-        public JsonSerializerSettings JsonSerializerSettings { get; set; }
+        public string BaseUrl { get; set; }
     }
 }

@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Halcyon.HAL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Newtonsoft.Json;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -30,10 +31,16 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services">The service collection to modify.</param>
         /// <returns></returns>
-        public static IServiceCollection AddConventionalHalcyon(this IServiceCollection services)
+        public static IServiceCollection AddConventionalHalcyon(this IServiceCollection services, HalcyonConventionOptions options = null)
         {
+            if(options == null)
+            {
+                options = new HalcyonConventionOptions();
+            }
+
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddSingleton<IUrlHelperFactory, UrlHelperFactory>();
+            services.AddSingleton<HalcyonConventionOptions>(options);
             services.AddScoped<IHALConverter, CustomHalAttributeConverter>();
             services.AddScoped<HalModelResultFilterAttribute, HalModelResultFilterAttribute>();
             services.AddScoped<IHalModelViewMapper, NoViewMapper>();
@@ -47,24 +54,19 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="mvcOptions">The MVC options to extend.</param>
         /// <returns></returns>
-        public static MvcOptions UseConventionalHalcyon(this MvcOptions mvcOptions, HalcyonConventionMvcOptions options = null)
+        public static MvcOptions UseConventionalHalcyon(this MvcOptions mvcOptions, JsonSerializerSettings serializerSettings = null)
         {
-            if(options == null)
-            {
-                options = new HalcyonConventionMvcOptions();
-            }
-
             mvcOptions.Filters.AddService(typeof(HalModelResultFilterAttribute));
 
             JsonHalOutputFormatter outputFormatter;
             var mediaTypes = new string[] { "application/json" };
-            if (options.JsonSerializerSettings == null)
+            if (serializerSettings == null)
             {
                 outputFormatter = new JsonHalOutputFormatter(mediaTypes);
             }
             else
             {
-                outputFormatter = new JsonHalOutputFormatter(options.JsonSerializerSettings, mediaTypes);
+                outputFormatter = new JsonHalOutputFormatter(serializerSettings, mediaTypes);
             }
             mvcOptions.OutputFormatters.Add(outputFormatter);
             mvcOptions.Filters.Add(new ProducesAttribute("application/json"));

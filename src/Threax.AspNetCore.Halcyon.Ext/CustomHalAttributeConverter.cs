@@ -1,6 +1,8 @@
 ﻿using Halcyon.HAL;
 using Halcyon.HAL.Attributes;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,11 +15,13 @@ namespace Threax.AspNetCore.Halcyon.Ext
 {
     public class CustomHalAttributeConverter : IHALConverter
     {
-        private ClaimsPrincipal user;
+        private HttpContext httpContext;
+        private HalcyonConventionOptions options;
 
-        public CustomHalAttributeConverter(IHttpContextAccessor httpContextAccessor)
+        public CustomHalAttributeConverter(IHttpContextAccessor httpContextAccessor, HalcyonConventionOptions options)
         {
-            this.user = httpContextAccessor.HttpContext.User;
+            this.httpContext = httpContextAccessor.HttpContext;
+            this.options = options;
         }
 
         public bool CanConvert(Type type)
@@ -42,8 +46,8 @@ namespace Threax.AspNetCore.Halcyon.Ext
             if(dataCollection != null)
             {
                 var itemType = dataCollection.CollectionType;
-                var response = ConvertInstance(model, user);
-                response.AddEmbeddedCollection(dataCollection.CollectionName, GetEmbeddedResponses(dataCollection.AsObjects, user));
+                var response = ConvertInstance(model, httpContext, options);
+                response.AddEmbeddedCollection(dataCollection.CollectionName, GetEmbeddedResponses(dataCollection.AsObjects, httpContext, options));
                 return response;
             }
 
@@ -53,35 +57,50 @@ namespace Threax.AspNetCore.Halcyon.Ext
             {
                 var itemType = Utils.GetEnumerableModelType(enumerableValue);
                 var response = new HALResponse(new Object());
-                response.AddEmbeddedCollection("values", GetEmbeddedResponses(enumerableValue, user));
+                response.AddEmbeddedCollection("values", GetEmbeddedResponses(enumerableValue, httpContext, options));
                 return response;
             }
 
             //If we got here we probably have a plain object, convert and return it.
-            return ConvertInstance(model, user);
+            return ConvertInstance(model, httpContext, options);
         }
 
-        private static HALResponse ConvertInstance(object model, ClaimsPrincipal user)
+        private static HALResponse ConvertInstance(object model, HttpContext context, HalcyonConventionOptions options)
         {
             //If this is called for a collection it will scan all the links for each item, but
             //each one needs to be customized to work anyway.
 
             var resolver = new CustomHALAttributeResolver();
 
-            var halConfig = resolver.GetConfig(model);
+            //If the options provide a model, use that, otherwise get it from the resolver.
+            IHALModelConfig halConfig;
+            if(options.BaseUrl != null)
+            {
+                var currentUri = new Uri(context.Request.GetDisplayUrl());
+                var authority = $"{currentUri.Scheme}://{currentUri.Authority}";
+                halConfig = new HALModelConfig()
+                {
+                    LinkBase = options.BaseUrl.Replace(HalcyonConventionOptions.AuthorityVariable, authority),
+                    ForceHAL = false
+                };
+            }
+            else
+            {
+                halConfig = resolver.GetConfig(model);
+            }
 
             var response = new HALResponse(model, halConfig);
-            response.AddLinks(resolver.GetUserLinks(model, user));
+            response.AddLinks(resolver.GetUserLinks(model, context.User));
             response.AddEmbeddedCollections(resolver.GetEmbeddedCollections(model, halConfig));
 
             return response;
         }
 
-        private static IEnumerable<HALResponse> GetEmbeddedResponses(IEnumerable enumerableValue, ClaimsPrincipal user)
+        private static IEnumerable<HALResponse> GetEmbeddedResponses(IEnumerable enumerableValue, HttpContext context, HalcyonConventionOptions options)
         {
             foreach (var item in enumerableValue)
             {
-                yield return ConvertInstance(item, user);
+                yield return ConvertInstance(item, context, options);
             }
         }
     }
