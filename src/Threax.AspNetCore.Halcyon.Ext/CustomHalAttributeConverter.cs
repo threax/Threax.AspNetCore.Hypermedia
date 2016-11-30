@@ -63,7 +63,9 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
         private static HALResponse ConvertInstance(object model, ClaimsPrincipal user)
         {
-            //This is scanning all links for each item in a collection, prevent that
+            //If this is called for a collection it will scan all the links for each item, but
+            //each one needs to be customized to work anyway.
+
             var resolver = new CustomHALAttributeResolver();
 
             var halConfig = resolver.GetConfig(model);
