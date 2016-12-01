@@ -43,7 +43,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 if (objResult != null)
                 {
                     HALResponse halResponse = objResult.Value as HALResponse;
-                    if(halResponse == null)
+                    if(halResponse == null && !(objResult.Value is String))
                     {
                         var convertedObject = modelViewMapper.Convert(objResult.Value);
                         halResponse = halConverter.Convert(convertedObject);
