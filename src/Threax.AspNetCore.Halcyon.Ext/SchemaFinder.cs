@@ -10,6 +10,11 @@ namespace Threax.AspNetCore.Halcyon.Ext
 {
     public class SchemaFinder : ISchemaFinder
     {
+        public JsonSchema4 Find(Type type)
+        {
+            return Find(type.AssemblyQualifiedName);
+        }
+
         public JsonSchema4 Find(String schema)
         {
             //Restrict to only the View Model namespace.
