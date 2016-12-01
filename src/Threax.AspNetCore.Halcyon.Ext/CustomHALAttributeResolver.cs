@@ -17,7 +17,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public IEnumerable<Link> GetUserLinks(object model, HttpContext context)
+        public IEnumerable<Link> GetUserLinks(object model, HttpContext context, IHalDocEndpointInfo endpointInfo)
         {
             var type = model.GetType();
             var classAttributes = type.GetTypeInfo().GetCustomAttributes();
@@ -31,6 +31,15 @@ namespace Threax.AspNetCore.Halcyon.Ext
                     if (actionLinkAttribute.CanUserAccess(context.User))
                     {
                         yield return new Link(actionLinkAttribute.Rel, actionLinkAttribute.Href, actionLinkAttribute.Title, actionLinkAttribute.Method);
+
+                        if (endpointInfo != null)
+                        {
+                            var docLink = actionLinkAttribute.GetDocLink(endpointInfo);
+                            if (docLink != null)
+                            {
+                                yield return new Link(docLink.Rel, docLink.Href, docLink.Title, docLink.Method, false); //Don't replace parameters for these, already done
+                            }
+                        }
                     }
                 }
                 else

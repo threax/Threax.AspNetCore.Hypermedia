@@ -1,6 +1,7 @@
 ﻿using Halcyon.HAL;
 using Newtonsoft.Json;
 using System;
+using Threax.AspNetCore.Halcyon.Ext;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -17,5 +18,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// set the url to whatever you want.
         /// </summary>
         public string BaseUrl { get; set; }
+
+        /// <summary>
+        /// Provides info about the controller endpoint that exposes documentation. Can be null to not support documentation.
+        /// </summary>
+        public IHalDocEndpointInfo HalDocEndpointInfo { get; set; } = null;
     }
 }

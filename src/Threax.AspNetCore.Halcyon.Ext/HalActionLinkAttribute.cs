@@ -16,12 +16,24 @@ namespace Threax.AspNetCore.Halcyon.Ext
     {
         private Type controllerType;
         private String actionMethod;
+        private String relativePath;
 
-        public HalActionLinkAttribute(string rel, Type controllerType, String actionMethod, String[] routeArgs = null, string title = null, string method = null)
-            : base(rel, CreateHref(controllerType, actionMethod, routeArgs, ref method), title, method)
+        /// <summary>
+        /// Create a new link based on a controller and a function.
+        /// </summary>
+        /// <param name="rel"></param>
+        /// <param name="controllerType"></param>
+        /// <param name="actionMethod"></param>
+        /// <param name="routeArgs"></param>
+        /// <param name="title"></param>
+        /// <param name="method"></param>
+        /// <param name="templateDontProvide">This is used to hold some data during construction, no need to provide this param as it is always overwritten.</param>
+        public HalActionLinkAttribute(string rel, Type controllerType, String actionMethod, String[] routeArgs = null, string title = null, string method = null, string templateDontProvide = null)
+            : base(rel, CreateHref(controllerType, actionMethod, routeArgs, ref method, ref templateDontProvide), title, method)
         {
             this.controllerType = controllerType;
             this.actionMethod = actionMethod;
+            this.relativePath = templateDontProvide;
         }
 
         public bool CanUserAccess(ClaimsPrincipal claims)
@@ -35,9 +47,27 @@ namespace Threax.AspNetCore.Halcyon.Ext
             return canVisit;
         }
 
-        private static String CreateHref(Type controllerType, String actionMethod, String[] routeArgs, ref String method)
+        public HalLinkAttribute GetDocLink(IHalDocEndpointInfo docEndpointInfo)
         {
-            var template = "";
+            var methodInfo = controllerType.GetTypeInfo().GetMethod(actionMethod);
+            if (methodInfo == null)
+            {
+                return null;
+            }
+
+            //Create a link to the endpoint info for this controller and action method.
+            String method = null, template = null;
+            return new HalLinkAttribute($"{this.Rel}.Docs", CreateHref(docEndpointInfo.ControllerType, docEndpointInfo.ActionMethod,
+                new String[] {
+                    $"{docEndpointInfo.GroupArg}={Utils.GetControllerName(controllerType)}",
+                    $"{docEndpointInfo.MethodArg}={Method}",
+                    $"{docEndpointInfo.RelativePathArg}={relativePath}"
+                }, ref method, ref template), null, method);
+        }
+
+        private static String CreateHref(Type controllerType, String actionMethod, String[] routeArgs, ref String method, ref String template)
+        {
+            template = "";
             var controllerTypeInfo = controllerType.GetTypeInfo();
             //Look at the controller
             var routeAttr = controllerTypeInfo.GetCustomAttribute<RouteAttribute>();
@@ -68,6 +98,9 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 throw new InvalidOperationException($"Cannot build a route template for Action Method {actionMethod} in controller {controllerType}. Did you forget to add a HttpMethodAttribute (HttpGet, HttpPost etc) to the Action Method or a RouteAttribute to the controller class.");
             }
 
+            //Remove the * from any route variables that include one
+            template = template.Replace("{*", "{").Replace("[controller]", Utils.GetControllerName(controllerType)).Replace("[action]", actionMethod); ;
+
             if(routeArgs != null)
             {
                 foreach(var arg in routeArgs)
@@ -86,7 +119,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 }
             }
 
-            return template.Replace("[controller]", Utils.GetControllerName(controllerType)).Replace("[action]", actionMethod);
+            return template;
         }
 
         public static String GetFunctionName<T, DelegateType>(Expression<Func<T, DelegateType>> expr)
