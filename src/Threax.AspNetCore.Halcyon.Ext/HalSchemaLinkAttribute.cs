@@ -8,7 +8,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
     public class HalSchemaLinkAttribute : HalActionLinkAttribute
     {
         public HalSchemaLinkAttribute(string rel, Type controllerType, String actionMethod, Type schemaType, string title = null, string method = null)
-            :base(rel, controllerType, actionMethod, new String[] { $"schema={schemaType.FullName}" }, title, method)
+            :base(rel, controllerType, actionMethod, new String[] { $"schema={schemaType.AssemblyQualifiedName}" }, title, method)
         {
 
         }

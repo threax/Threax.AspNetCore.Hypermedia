@@ -105,11 +105,11 @@ namespace Threax.AspNetCore.Halcyon.Ext
             {
                 foreach(var arg in routeArgs)
                 {
-                    var keyValue = arg.Split('=');
-                    if(keyValue.Length == 2)
+                    int firstEquals = arg.IndexOf('=');
+                    if(firstEquals != -1)
                     {
-                        var key = $"{{{keyValue[0].Trim()}}}";
-                        var value = keyValue[1].Trim();
+                        var key = $"{{{arg.Substring(0, firstEquals)}}}";
+                        var value = arg.Substring(firstEquals + 1).Trim();
                         template = template.Replace(key, value);
                     }
                     else

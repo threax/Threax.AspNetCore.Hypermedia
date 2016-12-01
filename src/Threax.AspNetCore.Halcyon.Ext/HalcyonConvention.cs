@@ -38,13 +38,14 @@ namespace Microsoft.Extensions.DependencyInjection
                 options = new HalcyonConventionOptions();
             }
 
-            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-            services.AddSingleton<IUrlHelperFactory, UrlHelperFactory>();
-            services.AddSingleton<HalcyonConventionOptions>(options);
-            services.AddScoped<IHALConverter, CustomHalAttributeConverter>();
-            services.AddScoped<HalModelResultFilterAttribute, HalModelResultFilterAttribute>();
-            services.AddScoped<IHalModelViewMapper, NoViewMapper>();
+            services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.TryAddSingleton<IUrlHelperFactory, UrlHelperFactory>();
+            services.TryAddSingleton<HalcyonConventionOptions>(options);
+            services.TryAddScoped<IHALConverter, CustomHalAttributeConverter>();
+            services.TryAddScoped<HalModelResultFilterAttribute, HalModelResultFilterAttribute>();
+            services.TryAddScoped<IHalModelViewMapper, NoViewMapper>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.TryAddScoped<ISchemaFinder, SchemaFinder>();
 
             return services;
         }
