@@ -17,8 +17,8 @@ namespace Threax.AspNetCore.Halcyon.Ext
         private Type controllerType;
         private String actionMethod;
 
-        public HalActionLinkAttribute(string rel, Type controllerType, String actionMethod, string title = null, string method = null)
-            : base(rel, CreateHref(controllerType, actionMethod, ref method), title, method)
+        public HalActionLinkAttribute(string rel, Type controllerType, String actionMethod, String[] routeArgs = null, string title = null, string method = null)
+            : base(rel, CreateHref(controllerType, actionMethod, routeArgs, ref method), title, method)
         {
             this.controllerType = controllerType;
             this.actionMethod = actionMethod;
@@ -35,7 +35,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
             return canVisit;
         }
 
-        private static String CreateHref(Type controllerType, String actionMethod, ref String method)
+        private static String CreateHref(Type controllerType, String actionMethod, String[] routeArgs, ref String method)
         {
             var template = "";
             var controllerTypeInfo = controllerType.GetTypeInfo();
@@ -66,6 +66,24 @@ namespace Threax.AspNetCore.Halcyon.Ext
             if(template.Length == 0)
             {
                 throw new InvalidOperationException($"Cannot build a route template for Action Method {actionMethod} in controller {controllerType}. Did you forget to add a HttpMethodAttribute (HttpGet, HttpPost etc) to the Action Method or a RouteAttribute to the controller class.");
+            }
+
+            if(routeArgs != null)
+            {
+                foreach(var arg in routeArgs)
+                {
+                    var keyValue = arg.Split('=');
+                    if(keyValue.Length == 2)
+                    {
+                        var key = $"{{{keyValue[0].Trim()}}}";
+                        var value = keyValue[1].Trim();
+                        template = template.Replace(key, value);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException($"The route argument {arg} for Action Method {actionMethod} in controller {controllerType} is not valid. It must be in the format key=value.");
+                    }
+                }
             }
 
             return template.Replace("[controller]", Utils.GetControllerName(controllerType)).Replace("[action]", actionMethod);

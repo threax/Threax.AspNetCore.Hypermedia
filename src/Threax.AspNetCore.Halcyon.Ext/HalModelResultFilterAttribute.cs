@@ -21,15 +21,11 @@ namespace Threax.AspNetCore.Halcyon.Ext
 {
     public class HalModelResultFilterAttribute : ResultFilterAttribute
     {
-        private IUrlHelperFactory urlHelperFactory;
-        private IActionContextAccessor actionContextAccessor;
         private IHALConverter halConverter;
         private IHalModelViewMapper modelViewMapper;
 
-        public HalModelResultFilterAttribute(IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor, IHalModelViewMapper modelViewMapper, IHALConverter halConverter)
+        public HalModelResultFilterAttribute(IHalModelViewMapper modelViewMapper, IHALConverter halConverter)
         {
-            this.urlHelperFactory = urlHelperFactory;
-            this.actionContextAccessor = actionContextAccessor;
             this.halConverter = halConverter;
             this.modelViewMapper = modelViewMapper;
         }
