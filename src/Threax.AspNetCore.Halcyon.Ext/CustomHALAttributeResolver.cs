@@ -1,5 +1,6 @@
 ﻿using Halcyon.HAL;
 using Halcyon.HAL.Attributes;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public IEnumerable<Link> GetUserLinks(object model, ClaimsPrincipal claims)
+        public IEnumerable<Link> GetUserLinks(object model, HttpContext context)
         {
             var type = model.GetType();
             var classAttributes = type.GetTypeInfo().GetCustomAttributes();
@@ -27,7 +28,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 var actionLinkAttribute = attribute as HalActionLinkAttribute;
                 if (actionLinkAttribute != null)
                 {
-                    if (actionLinkAttribute.CanUserAccess(claims))
+                    if (actionLinkAttribute.CanUserAccess(context.User))
                     {
                         yield return new Link(actionLinkAttribute.Rel, actionLinkAttribute.Href, actionLinkAttribute.Title, actionLinkAttribute.Method);
                     }
@@ -39,6 +40,16 @@ namespace Threax.AspNetCore.Halcyon.Ext
                     {
                         yield return new Link(linkAttribute.Rel, linkAttribute.Href, linkAttribute.Title, linkAttribute.Method);
                     }
+                }
+            }
+
+            var linkProvider = model as IHalLinkProvider;
+            if (linkProvider != null)
+            {
+                var providerContext = new LinkProviderContext(context);
+                foreach(var linkAttribute in linkProvider.CreateHalLinks(providerContext))
+                {
+                    yield return new Link(linkAttribute.Rel, linkAttribute.Href, linkAttribute.Title, linkAttribute.Method);
                 }
             }
         }

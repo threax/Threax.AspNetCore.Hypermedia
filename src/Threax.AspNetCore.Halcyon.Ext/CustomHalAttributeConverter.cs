@@ -90,7 +90,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
             }
 
             var response = new HALResponse(model, halConfig);
-            response.AddLinks(resolver.GetUserLinks(model, context.User));
+            response.AddLinks(resolver.GetUserLinks(model, context));
             response.AddEmbeddedCollections(resolver.GetEmbeddedCollections(model, halConfig));
 
             return response;

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
-    public class HalSchemaLink : HalActionLinkAttribute
+    public class HalSchemaLinkAttribute : HalActionLinkAttribute
     {
-        public HalSchemaLink(string rel, Type controllerType, String actionMethod, Type schemaType, string title = null, string method = null)
+        public HalSchemaLinkAttribute(string rel, Type controllerType, String actionMethod, Type schemaType, string title = null, string method = null)
             :base(rel, controllerType, actionMethod, new String[] { $"schema={schemaType.FullName}" }, title, method)
         {
 
