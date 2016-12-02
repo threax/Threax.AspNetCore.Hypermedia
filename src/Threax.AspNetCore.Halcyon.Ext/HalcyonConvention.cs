@@ -45,7 +45,6 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddScoped<HalModelResultFilterAttribute, HalModelResultFilterAttribute>();
             services.TryAddScoped<IHalModelViewMapper, NoViewMapper>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.TryAddScoped<ISchemaFinder, SchemaFinder>();
 
             return services;
         }
