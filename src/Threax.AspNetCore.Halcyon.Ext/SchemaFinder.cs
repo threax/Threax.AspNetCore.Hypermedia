@@ -1,4 +1,5 @@
 ﻿using Halcyon.HAL.Attributes;
+using Newtonsoft.Json.Linq;
 using NJsonSchema;
 using System;
 using System.Collections.Generic;
@@ -10,12 +11,12 @@ namespace Threax.AspNetCore.Halcyon.Ext
 {
     public class SchemaFinder : ISchemaFinder
     {
-        public JsonSchema4 Find(Type type)
+        public String Find(Type type)
         {
             return Find(type.AssemblyQualifiedName);
         }
 
-        public JsonSchema4 Find(String schema)
+        public String Find(String schema)
         {
             //Restrict to only the View Model namespace.
             var type = Type.GetType(schema);
@@ -32,7 +33,11 @@ namespace Threax.AspNetCore.Halcyon.Ext
             }
 
             //Finally return the schema
-            return JsonSchema4.FromType(type);
+            return JsonSchema4.FromType(type, new NJsonSchema.Generation.JsonSchemaGeneratorSettings()
+            {
+                DefaultEnumHandling = EnumHandling.String,
+                DefaultPropertyNameHandling = PropertyNameHandling.CamelCase
+            }).ToJson();
         }
     }
 }

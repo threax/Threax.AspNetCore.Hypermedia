@@ -7,14 +7,15 @@ using Threax.AspNetCore.Halcyon.Ext;
 using Halcyon.HAL;
 using Newtonsoft.Json;
 using NJsonSchema;
+using Newtonsoft.Json.Linq;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
     [HalModel]
     public class EndpointDescription
     {
-        public JsonSchema4 RequestSchema { get; set; }
+        public JObject RequestSchema { get; set; }
 
-        public JsonSchema4 ResponseSchema { get; set; }
+        public JObject ResponseSchema { get; set; }
     }
 }

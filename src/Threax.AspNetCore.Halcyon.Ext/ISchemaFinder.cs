@@ -1,12 +1,13 @@
-﻿using NJsonSchema;
+﻿using Newtonsoft.Json.Linq;
+using NJsonSchema;
 using System;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
     public interface ISchemaFinder
     {
-        JsonSchema4 Find(Type schema);
+        String Find(Type schema);
 
-        JsonSchema4 Find(string schema);
+        String Find(string schema);
     }
 }

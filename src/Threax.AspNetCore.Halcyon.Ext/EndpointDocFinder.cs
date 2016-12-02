@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Controllers;
+using Newtonsoft.Json.Linq;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
@@ -33,7 +34,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
             {
                 if (param.Source.IsFromRequest && param.Source.Id == "Body")
                 {
-                    description.RequestSchema = schemaFinder.Find(param.Type);
+                    description.RequestSchema = JObject.Parse(schemaFinder.Find(param.Type));
                 }
             }
 
@@ -43,7 +44,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 var methodInfo = controllerActionDesc.MethodInfo;
                 if (methodInfo.ReturnType != typeof(void))
                 {
-                    description.ResponseSchema = schemaFinder.Find(methodInfo.ReturnType);
+                    description.ResponseSchema = JObject.Parse(schemaFinder.Find(methodInfo.ReturnType));
                 }
             }
 
