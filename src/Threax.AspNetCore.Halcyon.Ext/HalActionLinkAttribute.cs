@@ -29,7 +29,16 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// <param name="method"></param>
         /// <param name="templateDontProvide">This is used to hold some data during construction, no need to provide this param as it is always overwritten.</param>
         public HalActionLinkAttribute(string rel, Type controllerType, String[] routeArgs = null, string title = null, string method = null, string templateDontProvide = null, string actionMethodDontProvide = null)
-            : base(rel, CreateHref(rel, controllerType, routeArgs, out method, out templateDontProvide, out actionMethodDontProvide), title, method)
+            : this(rel, rel, controllerType, routeArgs, title, method, templateDontProvide, actionMethodDontProvide)
+        {
+            //Everything done in other constructor
+        }
+
+        /// <summary>
+        /// This constructor allows us to differentiate the real rel we pass to the base class from the one we lookup, useful for self links.
+        /// </summary>
+        protected HalActionLinkAttribute(string realRel, string lookupRel, Type controllerType, String[] routeArgs = null, string title = null, string method = null, string templateDontProvide = null, string actionMethodDontProvide = null)
+            : base(realRel, CreateHref(lookupRel, controllerType, routeArgs, out method, out templateDontProvide, out actionMethodDontProvide), title, method)
         {
             this.controllerType = controllerType;
             this.relativePath = templateDontProvide;
@@ -65,7 +74,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 }, out method, out template, out actionMethod), null, method);
         }
 
-        private static String CreateHref(String rel, Type controllerType, String[] routeArgs, out String method, out String template, out string actionMethod)
+        protected static String CreateHref(String rel, Type controllerType, String[] routeArgs, out String method, out String template, out string actionMethod)
         {
             method = "GET"; //Get by default
             template = "";
@@ -89,7 +98,6 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 }
             }
 
-            //var methodInfo = controllerTypeInfo.GetMethod(actionMethod);
             if (methodInfo == null)
             {
                 throw new InvalidOperationException($"Cannot find an action method with the rel {rel} on {controllerType.Name}. Do you need to define a HalRel attribute on your target method?");
