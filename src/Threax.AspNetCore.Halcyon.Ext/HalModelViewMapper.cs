@@ -38,6 +38,11 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
         public Object Convert(Object src)
         {
+            if(src == null)
+            {
+                return src;
+            }
+
             Func<Object, Object> converter = null;
 
             var enumerable = src as IEnumerable;
