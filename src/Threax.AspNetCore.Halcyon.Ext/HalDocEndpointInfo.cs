@@ -7,6 +7,11 @@ namespace Threax.AspNetCore.Halcyon.Ext
 {
     public class HalDocEndpointInfo : IHalDocEndpointInfo
     {
+        public static class DefaultRels
+        {
+            public const String Get = "get";
+        }
+
         public HalDocEndpointInfo(Type controllerType)
         {
             this.ControllerType = controllerType;
@@ -14,7 +19,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
         public Type ControllerType { get; set; }
 
-        public String ActionMethod { get; set; } = "Get";
+        public String Rel { get; set; } = DefaultRels.Get;
 
         public String GroupArg { get; set; } = "groupName";
 

@@ -28,12 +28,12 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// <param name="title"></param>
         /// <param name="method"></param>
         /// <param name="templateDontProvide">This is used to hold some data during construction, no need to provide this param as it is always overwritten.</param>
-        public HalActionLinkAttribute(string rel, Type controllerType, String actionMethod, String[] routeArgs = null, string title = null, string method = null, string templateDontProvide = null)
-            : base(rel, CreateHref(controllerType, actionMethod, routeArgs, ref method, ref templateDontProvide), title, method)
+        public HalActionLinkAttribute(string rel, Type controllerType, String[] routeArgs = null, string title = null, string method = null, string templateDontProvide = null, string actionMethodDontProvide = null)
+            : base(rel, CreateHref(rel, controllerType, routeArgs, out method, out templateDontProvide, out actionMethodDontProvide), title, method)
         {
             this.controllerType = controllerType;
-            this.actionMethod = actionMethod;
             this.relativePath = templateDontProvide;
+            this.actionMethod = actionMethodDontProvide;
         }
 
         public bool CanUserAccess(ClaimsPrincipal claims)
@@ -49,24 +49,25 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
         public HalLinkAttribute GetDocLink(IHalDocEndpointInfo docEndpointInfo)
         {
-            var methodInfo = controllerType.GetTypeInfo().GetMethod(actionMethod);
+            var methodInfo = controllerType.GetTypeInfo().GetMethod(this.actionMethod);
             if (methodInfo == null)
             {
                 return null;
             }
 
             //Create a link to the endpoint info for this controller and action method.
-            String method = null, template = null;
-            return new HalLinkAttribute($"{this.Rel}.Docs", CreateHref(docEndpointInfo.ControllerType, docEndpointInfo.ActionMethod,
+            String method, template, actionMethod;
+            return new HalLinkAttribute($"{this.Rel}.Docs", CreateHref(docEndpointInfo.Rel, docEndpointInfo.ControllerType,
                 new String[] {
                     $"{docEndpointInfo.GroupArg}={Utils.GetControllerName(controllerType)}",
                     $"{docEndpointInfo.MethodArg}={Method}",
                     $"{docEndpointInfo.RelativePathArg}={relativePath}"
-                }, ref method, ref template), null, method);
+                }, out method, out template, out actionMethod), null, method);
         }
 
-        private static String CreateHref(Type controllerType, String actionMethod, String[] routeArgs, ref String method, ref String template)
+        private static String CreateHref(String rel, Type controllerType, String[] routeArgs, out String method, out String template, out string actionMethod)
         {
+            method = "GET"; //Get by default
             template = "";
             var controllerTypeInfo = controllerType.GetTypeInfo();
             //Look at the controller
@@ -76,30 +77,46 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 template += routeAttr.Template;
             }
 
-            var methodInfo = controllerTypeInfo.GetMethod(actionMethod);
-            if (methodInfo != null)
+            MethodInfo methodInfo = null;
+            foreach(var item in controllerTypeInfo.DeclaredMethods.Concat(controllerTypeInfo.GetMethods(BindingFlags.Public)))
             {
-                var methodAttribute = methodInfo.GetCustomAttribute<HttpMethodAttribute>();
-                if (methodAttribute != null)
+                //This loop will search the DeclaredMethods first since we are most likely to find the method there, then all of them
+                var relAttr = item.GetCustomAttribute<HalRelAttribute>();
+                if (relAttr != null && relAttr.Rel == rel)
                 {
-                    var trailingChar = template[template.Length - 1];
-                    if (template.Length > 0 && trailingChar != '/' && trailingChar != '\\')
-                    {
-                        template += '/';
-                    }
-
-                    template += methodAttribute.Template;
-                    method = methodAttribute.HttpMethods.FirstOrDefault();
+                    methodInfo = item;
+                    break;
                 }
+            }
+
+            //var methodInfo = controllerTypeInfo.GetMethod(actionMethod);
+            if (methodInfo == null)
+            {
+                throw new InvalidOperationException($"Cannot find an action method with the rel {rel} on {controllerType.Name}. Do you need to define a HalRel attribute on your target method?");
+            }
+
+            actionMethod = methodInfo.Name;
+
+            var methodAttribute = methodInfo.GetCustomAttribute<HttpMethodAttribute>();
+            if (methodAttribute != null)
+            {
+                var trailingChar = template[template.Length - 1];
+                if (template.Length > 0 && trailingChar != '/' && trailingChar != '\\')
+                {
+                    template += '/';
+                }
+
+                template += methodAttribute.Template;
+                method = methodAttribute.HttpMethods.FirstOrDefault();
             }
 
             if(template.Length == 0)
             {
-                throw new InvalidOperationException($"Cannot build a route template for Action Method {actionMethod} in controller {controllerType}. Did you forget to add a HttpMethodAttribute (HttpGet, HttpPost etc) to the Action Method or a RouteAttribute to the controller class.");
+                throw new InvalidOperationException($"Cannot build a route template for rel {rel} in controller {controllerType}. Did you forget to add a HttpMethod (HttpGet, HttpPost etc) attribute to the Action Method or a RouteAttribute to the controller class.");
             }
 
             //Remove the * from any route variables that include one
-            template = template.Replace("{*", "{").Replace("[controller]", Utils.GetControllerName(controllerType)).Replace("[action]", actionMethod); ;
+            template = template.Replace("{*", "{").Replace("[controller]", Utils.GetControllerName(controllerType)).Replace("[action]", actionMethod);
 
             if(routeArgs != null)
             {
