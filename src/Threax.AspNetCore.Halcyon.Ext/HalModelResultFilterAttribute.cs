@@ -22,12 +22,10 @@ namespace Threax.AspNetCore.Halcyon.Ext
     public class HalModelResultFilterAttribute : ResultFilterAttribute
     {
         private IHALConverter halConverter;
-        private IHalModelViewMapper modelViewMapper;
 
-        public HalModelResultFilterAttribute(IHalModelViewMapper modelViewMapper, IHALConverter halConverter)
+        public HalModelResultFilterAttribute(IHALConverter halConverter)
         {
             this.halConverter = halConverter;
-            this.modelViewMapper = modelViewMapper;
         }
 
         public override void OnResultExecuting(ResultExecutingContext context)
@@ -41,8 +39,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                     HALResponse halResponse = objResult.Value as HALResponse;
                     if(halResponse == null && !(objResult.Value is String))
                     {
-                        var convertedObject = modelViewMapper.Convert(objResult.Value);
-                        halResponse = halConverter.Convert(convertedObject);
+                        halResponse = halConverter.Convert(objResult.Value);
                     }
                     if (halResponse != null)
                     {

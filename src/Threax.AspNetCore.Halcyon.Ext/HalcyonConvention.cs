@@ -43,7 +43,6 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddSingleton<HalcyonConventionOptions>(options);
             services.TryAddScoped<IHALConverter, CustomHalAttributeConverter>();
             services.TryAddScoped<HalModelResultFilterAttribute, HalModelResultFilterAttribute>();
-            services.TryAddScoped<IHalModelViewMapper, NoViewMapper>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             return services;
