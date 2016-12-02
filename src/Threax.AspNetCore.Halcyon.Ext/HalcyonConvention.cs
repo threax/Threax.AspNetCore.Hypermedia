@@ -46,6 +46,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddScoped<IHalModelViewMapper, NoViewMapper>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.TryAddScoped<ISchemaFinder, SchemaFinder>();
+            services.TryAddScoped<IEndpointDocFinder, EndpointDocFinder>();
 
             return services;
         }
