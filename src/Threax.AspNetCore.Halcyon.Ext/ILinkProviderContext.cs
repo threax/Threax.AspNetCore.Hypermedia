@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Halcyon.HAL.Attributes;
+using Microsoft.AspNetCore.Http;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
     public interface ILinkProviderContext
     {
-        HttpContext HttpContext { get; set; }
+        HttpContext HttpContext { get; }
     }
 }

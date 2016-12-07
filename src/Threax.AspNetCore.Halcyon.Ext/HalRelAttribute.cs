@@ -14,5 +14,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         }
 
         public String Rel { get; private set; }
+
+        public bool IsPaged { get; set; } = false;
     }
 }

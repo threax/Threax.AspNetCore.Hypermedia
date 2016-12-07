@@ -11,9 +11,9 @@ namespace Threax.AspNetCore.Halcyon.Ext
     /// <summary>
     /// This class is used by HalActionLinkAttribute to lookup info about the action link provided.
     /// </summary>
-    public class HalRefInfo
+    public class HalRelInfo
     {
-        public HalRefInfo(String rel, Type controllerType, String[] routeArgs)
+        public HalRelInfo(String rel, Type controllerType, String[] routeArgs)
         {
             var controllerTypeInfo = controllerType.GetTypeInfo();
             //Look at the controller
@@ -30,6 +30,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 if (relAttr != null && relAttr.Rel == rel)
                 {
                     this.ActionMethodInfo = item;
+                    this.HalRelAttr = relAttr;
                     break;
                 }
             }
@@ -44,8 +45,13 @@ namespace Threax.AspNetCore.Halcyon.Ext
             var methodAttribute = this.ActionMethodInfo.GetCustomAttribute<HttpMethodAttribute>();
             if (methodAttribute != null)
             {
+                if(this.UrlTemplate.Length == 0 || (this.UrlTemplate[0] != '\\' && this.UrlTemplate[0] != '/'))
+                {
+                    this.UrlTemplate = '/' + this.UrlTemplate;
+                }
+
                 var trailingChar = this.UrlTemplate[this.UrlTemplate.Length - 1];
-                if (this.UrlTemplate.Length > 0 && trailingChar != '/' && trailingChar != '\\')
+                if (trailingChar != '/' && trailingChar != '\\')
                 {
                     this.UrlTemplate += '/';
                 }
@@ -89,5 +95,10 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// The discovered method info, prevents a second lookup later in the request.
         /// </summary>
         public MethodInfo ActionMethodInfo { get; set; }
+
+        /// <summary>
+        /// The HalRelAttribute from the endpoint.
+        /// </summary>
+        public HalRelAttribute HalRelAttr { get; private set; }
     }
 }

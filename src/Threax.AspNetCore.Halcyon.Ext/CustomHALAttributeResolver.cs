@@ -56,7 +56,8 @@ namespace Threax.AspNetCore.Halcyon.Ext
             if (linkProvider != null)
             {
                 var providerContext = new LinkProviderContext(context);
-                foreach(var linkAttribute in linkProvider.CreateHalLinks(providerContext))
+                var links = linkProvider.CreateHalLinks(providerContext);
+                foreach (var linkAttribute in links)
                 {
                     yield return new Link(linkAttribute.Rel, linkAttribute.Href, linkAttribute.Title, linkAttribute.Method);
                 }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Halcyon.HAL.Attributes;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
@@ -13,6 +14,6 @@ namespace Threax.AspNetCore.Halcyon.Ext
             this.HttpContext = httpContext;
         }
 
-        public HttpContext HttpContext { get; set; }
+        public HttpContext HttpContext { get; private set; }
     }
 }

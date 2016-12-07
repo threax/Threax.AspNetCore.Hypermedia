@@ -15,7 +15,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
     public class HalActionLinkAttribute : HalLinkAttribute
     {
         private Type controllerType;
-        private HalRefInfo halRefInfo;
+        private HalRelInfo halRefInfo;
 
         /// <summary>
         /// Create a new link based on a controller and a function.
@@ -35,10 +35,10 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// This constructor allows us to differentiate the real rel we pass to the base class from the one we lookup, useful for self links.
         /// </summary>
         protected HalActionLinkAttribute(string realRel, string lookupRel, Type controllerType, String[] routeArgs = null, string title = null, Object refInfoDontProvide = null)
-            : base(realRel, CreateHref(lookupRel, controllerType, routeArgs, out refInfoDontProvide), title, ((HalRefInfo)refInfoDontProvide).HttpMethod)
+            : base(realRel, CreateHref(lookupRel, controllerType, routeArgs, out refInfoDontProvide), title, ((HalRelInfo)refInfoDontProvide).HttpMethod)
         {
             this.controllerType = controllerType;
-            halRefInfo = ((HalRefInfo)refInfoDontProvide);
+            halRefInfo = ((HalRelInfo)refInfoDontProvide);
         }
 
         public bool CanUserAccess(ClaimsPrincipal claims)
@@ -57,16 +57,27 @@ namespace Threax.AspNetCore.Halcyon.Ext
                     $"{docEndpointInfo.RelativePathArg}={halRefInfo.UrlTemplate}"
                 }, out halRefObj);
 
-            var docHalRefInfo = ((HalRefInfo)halRefObj);
+            var docHalRefInfo = ((HalRelInfo)halRefObj);
 
             return new HalLinkAttribute($"{this.Rel}.Docs", href, null, docHalRefInfo.HttpMethod);
         }
 
         protected static String CreateHref(String rel, Type controllerType, String[] routeArgs, out Object refInfoObj)
         {
-            var refInfo = new HalRefInfo(rel, controllerType, routeArgs);
+            var refInfo = new HalRelInfo(rel, controllerType, routeArgs);
             refInfoObj = refInfo;
             return refInfo.UrlTemplate;
+        }
+
+        /// <summary>
+        /// The HalRelAttribute from the endpoint this link points to.
+        /// </summary>
+        public HalRelAttribute HalRelAttr
+        {
+            get
+            {
+                return halRefInfo.HalRelAttr;
+            }
         }
     }
 }
