@@ -23,32 +23,4 @@ namespace Threax.AspNetCore.Halcyon.Ext
         [JsonIgnore]
         IEnumerable<T> Items { get; }
     }
-
-    public class CollectionView<T> : ICollectionView<T>
-    {
-        public CollectionView(String name = "values")
-        {
-            this.CollectionName = name;
-        }
-
-        public string CollectionName { get; private set; }
-
-        public Type CollectionType
-        {
-            get
-            {
-                return typeof(T);
-            }
-        }
-
-        public IEnumerable<T> Items { get; set; }
-
-        public IEnumerable<object> AsObjects
-        {
-            get
-            {
-                return Items.Select(i => (Object)i);
-            }
-        }
-    }
 }
