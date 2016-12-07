@@ -24,8 +24,8 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// <param name="title"></param>
         /// <param name="method"></param>
         /// <param name="templateDontProvide">This is used to hold some data during construction, no need to provide this param as it is always overwritten.</param>
-        public HalSelfActionLinkAttribute(string rel, Type controllerType, String[] routeArgs = null, string title = null, string method = null, string templateDontProvide = null, string actionMethodDontProvide = null)
-            :base("self", rel, controllerType, routeArgs, title, method, templateDontProvide, actionMethodDontProvide)
+        public HalSelfActionLinkAttribute(string rel, Type controllerType, String[] routeArgs = null, string title = null)
+            :base("self", rel, controllerType, routeArgs, title)
         {
             
         }
