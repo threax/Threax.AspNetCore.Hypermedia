@@ -15,6 +15,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
     {
         public HalRelInfo(String rel, Type controllerType, String[] routeArgs)
         {
+            this.ControllerType = controllerType;
             var controllerTypeInfo = controllerType.GetTypeInfo();
             //Look at the controller
             var routeAttr = controllerTypeInfo.GetCustomAttribute<RouteAttribute>();
@@ -100,5 +101,10 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// The HalRelAttribute from the endpoint.
         /// </summary>
         public HalRelAttribute HalRelAttr { get; private set; }
+
+        /// <summary>
+        /// The type of the controller.
+        /// </summary>
+        public Type ControllerType { get; set; }
     }
 }
