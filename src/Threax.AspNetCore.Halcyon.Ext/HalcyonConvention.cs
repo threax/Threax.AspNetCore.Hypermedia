@@ -44,6 +44,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddScoped<IHALConverter, CustomHalAttributeConverter>();
             services.TryAddScoped<HalModelResultFilterAttribute, HalModelResultFilterAttribute>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.TryAddScoped<IEndpointDocBuilder, EndpointDocBuilder>();
 
             return services;
         }

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Halcyon.HAL.Attributes;
 using System.Reflection;
-using System.Text.Encodings.Web;
 using System.Text;
 using Newtonsoft.Json;
 

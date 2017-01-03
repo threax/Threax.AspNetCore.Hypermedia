@@ -3,8 +3,9 @@
 
   "dependencies": {
     "Halcyon": "2.3.1",
-    "Halcyon.Mvc": "2.3.1",
-    "NETStandard.Library": "1.6.0"
+    "NETStandard.Library": "1.6.1",
+    "Microsoft.AspNetCore.Mvc": "1.0.0",
+    "NJsonSchema": "7.2.6206.27034"
   },
 
   "frameworks": {
