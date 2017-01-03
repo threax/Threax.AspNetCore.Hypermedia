@@ -6,6 +6,7 @@ using Halcyon.HAL.Attributes;
 using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
@@ -27,10 +28,13 @@ namespace Threax.AspNetCore.Halcyon.Ext
             }
         }
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int? Offset { get; set; }
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int? Limit { get; set; }
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int? Total { get; set; }
 
         public IEnumerable<T> Items { get; set; }
