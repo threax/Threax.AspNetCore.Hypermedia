@@ -40,22 +40,19 @@ namespace Threax.AspNetCore.Halcyon.Ext
             {
                 throw new InvalidOperationException($"Cannot find an action method with the rel {rel} on {controllerType.Name}. Do you need to define a HalRel attribute on your target method?");
             }
+            routeAttr = this.ActionMethodInfo.GetCustomAttribute<RouteAttribute>();
+            if(routeAttr != null)
+            {
+                EnsureTrailingUrlTemplateSlash();
+                this.UrlTemplate += routeAttr.Template;
+            }
 
             var actionMethodName = this.ActionMethodInfo.Name;
 
             var methodAttribute = this.ActionMethodInfo.GetCustomAttribute<HttpMethodAttribute>();
             if (methodAttribute != null)
             {
-                if(this.UrlTemplate.Length == 0 || (this.UrlTemplate[0] != '\\' && this.UrlTemplate[0] != '/'))
-                {
-                    this.UrlTemplate = '/' + this.UrlTemplate;
-                }
-
-                var trailingChar = this.UrlTemplate[this.UrlTemplate.Length - 1];
-                if (trailingChar != '/' && trailingChar != '\\')
-                {
-                    this.UrlTemplate += '/';
-                }
+                EnsureTrailingUrlTemplateSlash();
 
                 this.UrlTemplate += methodAttribute.Template;
                 this.HttpMethod = methodAttribute.HttpMethods.FirstOrDefault();
@@ -63,7 +60,13 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
             if (this.UrlTemplate.Length == 0)
             {
-                throw new InvalidOperationException($"Cannot build a route template for rel {rel} in controller {controllerType}. Did you forget to add a HttpMethod (HttpGet, HttpPost etc) attribute to the Action Method or a RouteAttribute to the controller class.");
+                throw new InvalidOperationException($"Cannot build a route template for rel {rel} in controller {controllerType}. Did you forget to add a HttpMethod (HttpGet, HttpPost etc) attribute to the Action Method or a RouteAttribute to the controller class or Action Method.");
+            }
+
+            //Ensure leading slash
+            if (this.UrlTemplate[0] != '\\' && this.UrlTemplate[0] != '/')
+            {
+                this.UrlTemplate = '/' + this.UrlTemplate;
             }
 
             //Remove the * from any route variables that include one
@@ -85,6 +88,15 @@ namespace Threax.AspNetCore.Halcyon.Ext
                         throw new InvalidOperationException($"The route argument {arg} for Action Method {actionMethodName} in controller {controllerType} is not valid. It must be in the format key=value.");
                     }
                 }
+            }
+        }
+
+        private void EnsureTrailingUrlTemplateSlash()
+        {
+            var trailingChar = this.UrlTemplate[this.UrlTemplate.Length - 1];
+            if (trailingChar != '/' && trailingChar != '\\')
+            {
+                this.UrlTemplate += '/';
             }
         }
 
