@@ -38,7 +38,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         {
             if (!this.CanConvert(model?.GetType()))
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException($"Cannot convert type {model.GetType().FullName}. Did you forget a HalModelAttribute on the model class you are returning?");
             }
 
             //If the object is an ICollectionView, use that to parse.
