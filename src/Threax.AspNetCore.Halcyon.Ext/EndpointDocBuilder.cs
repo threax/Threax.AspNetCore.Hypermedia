@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using System.Reflection;
 using Halcyon.HAL.Attributes;
 using NJsonSchema;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
@@ -35,12 +36,32 @@ namespace Threax.AspNetCore.Halcyon.Ext
             var action = group.Items.First(i => i.HttpMethod == method && i.RelativePath == relativePath);
 
             var description = new EndpointDoc();
+            Type queryModelType = null;
             foreach (var param in action.ParameterDescriptions)
             {
-                if (param.Source.IsFromRequest && param.Source.Id == "Body")
+                if (param.Source.IsFromRequest)
                 {
-                    description.RequestSchema = GetSchema(param.Type);
+                    if (param.Source.CanAcceptDataFrom(BindingSource.Body))
+                    {
+                        description.RequestSchema = GetSchema(param.Type);
+                    }
+                    else if (param.Source.CanAcceptDataFrom(BindingSource.Query))
+                    {
+                        if (queryModelType == null)
+                        {
+                            queryModelType = param.ModelMetadata.ContainerType;
+                        }
+                        else if (queryModelType != param.ModelMetadata.ContainerType)
+                        {
+                            throw new InvalidOperationException($"Cannot build a query parameter for multiple different models for group: {groupName} method: {method} relativePath: {relativePath}");
+                        }
+                    }
                 }
+            }
+
+            if (queryModelType != null)
+            {
+                description.QuerySchema = GetSchema(queryModelType);
             }
 
             var controllerActionDesc = action.ActionDescriptor as ControllerActionDescriptor;

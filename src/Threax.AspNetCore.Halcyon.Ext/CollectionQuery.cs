@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Halcyon.HAL.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,6 +25,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
     /// <summary>
     /// Default implementation of ICollectionQuery.
     /// </summary>
+    [HalModel]
     public class CollectionQuery
     {
         /// <summary>

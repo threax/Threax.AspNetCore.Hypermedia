@@ -10,6 +10,8 @@ namespace Threax.AspNetCore.Halcyon.Ext
     [HalModel]
     public class EndpointDoc
     {
+        public JsonSchema4 QuerySchema { get; set; }
+
         public JsonSchema4 RequestSchema { get; set; }
 
         public JsonSchema4 ResponseSchema { get; set; }
