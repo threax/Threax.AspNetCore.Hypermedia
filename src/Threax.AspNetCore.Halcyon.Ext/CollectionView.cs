@@ -77,10 +77,13 @@ namespace Threax.AspNetCore.Halcyon.Ext
                         sb.AppendQueryString($"offset=0&limit={Limit}");
                         yield return new HalLinkAttribute("first", sb.ToString(), null, halLinkAttr.Method);
 
-                        var lastIndex = Total / Limit;
-                        sb = new StringBuilder(halLinkAttr.Href);
-                        sb.AppendQueryString($"offset={lastIndex}&limit={Limit}");
-                        yield return new HalLinkAttribute("last", sb.ToString(), null, halLinkAttr.Method);
+                        if (Limit != 0)
+                        {
+                            var lastIndex = Total / Limit;
+                            sb = new StringBuilder(halLinkAttr.Href);
+                            sb.AppendQueryString($"offset={lastIndex}&limit={Limit}");
+                            yield return new HalLinkAttribute("last", sb.ToString(), null, halLinkAttr.Method);
+                        }
                     }
                 }
             }

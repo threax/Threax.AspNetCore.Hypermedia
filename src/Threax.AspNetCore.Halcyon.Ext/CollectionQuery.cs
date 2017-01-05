@@ -29,11 +29,11 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// <summary>
         /// The number of pages (item number = Offset * Limit) into the collection to query.
         /// </summary>
-        public int Offset { get; set; }
+        public int Offset { get; set; } = 0;
 
         /// <summary>
         /// The limit of the number of items to return.
         /// </summary>
-        public int Limit { get; set; }
+        public int Limit { get; set; } = 10;
     }
 }
