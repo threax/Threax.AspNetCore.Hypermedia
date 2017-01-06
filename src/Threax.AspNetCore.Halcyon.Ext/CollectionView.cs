@@ -53,7 +53,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
             {
                 //Get the HalActionLinkAttributes, but ignore the self links
                 var halLinkAttr = attr as HalActionLinkAttribute;
-                if(halLinkAttr != null && !(halLinkAttr is HalSelfActionLinkAttribute))
+                if(halLinkAttr != null)
                 {
                     if (halLinkAttr.HalRelAttr.IsPaged && Offset.HasValue && Limit.HasValue && Total.HasValue)
                     {

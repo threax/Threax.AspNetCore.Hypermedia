@@ -49,6 +49,10 @@ namespace Threax.AspNetCore.Halcyon.Ext
                     {
                         yield return new Link(linkAttribute.Rel, linkAttribute.Href, linkAttribute.Title, linkAttribute.Method);
                     }
+                    else if (attribute is HalSelfLinkAttribute)
+                    {
+                        yield return new Link(Link.RelForSelf, context.Request.Path + context.Request.QueryString, method: context.Request.Method, replaceParameters: false);
+                    }
                 }
             }
 
