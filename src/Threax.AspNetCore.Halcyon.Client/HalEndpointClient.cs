@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Net;
 
 namespace Threax.AspNetCore.Halcyon.Client
 {
@@ -38,50 +39,70 @@ namespace Threax.AspNetCore.Halcyon.Client
 
         public bool HasLink(String rel)
         {
+            if(links == null)
+            {
+                return false;
+            }
             return links[rel] != null;
         }
 
         public async Task<HalEndpointClient> LoadLink(String rel)
         {
-            var link = links[rel];
-            if (link != null)
+            if (links != null)
             {
-                return await Load<Object>(link.ToObject<HalLink>(), clientFactory, null);
+                var link = links[rel];
+                if (link != null)
+                {
+                    return await Load<Object>(link.ToObject<HalLink>(), clientFactory, null);
+                }
             }
             throw new InvalidOperationException($"Cannot find a link named {rel}.");
         }
 
         public async Task<HalEndpointClient> LoadLinkWith<RequestType>(String rel, RequestType data)
         {
-            var link = links[rel];
-            if (link != null)
+            if (links != null)
             {
-                return await Load<RequestType>(link.ToObject<HalLink>(), clientFactory, data);
+                var link = links[rel];
+                if (link != null)
+                {
+                    return await Load<RequestType>(link.ToObject<HalLink>(), clientFactory, data);
+                }
             }
             throw new InvalidOperationException($"Cannot find a link named {rel}.");
         }
 
         public bool HasEmbed(String name)
         {
+            if(embeds == null)
+            {
+                return false;
+            }
             return embeds[name] != null;
         }
 
         public IEnumerable<EmbedType> GetEmbeds<EmbedType>(String name)
         {
-            var embed = embeds[name];
-            if (embed != null)
+            if(embeds != null)
             {
-                return embed.Select(i => i.ToObject<EmbedType>());
+                var embed = embeds[name];
+                if (embed != null)
+                {
+                    return embed.Select(i => i.ToObject<EmbedType>());
+                }
             }
             throw new InvalidOperationException($"Cannot find an embed named {name}.");
         }
 
         public JToken GetEmbeds(String name)
         {
-            var embed = embeds[name];
-            if (embed != null)
+            if (embeds != null)
             {
-                return embed;
+                var embed = embeds[name];
+                if (embed != null)
+                {
+                    return embed;
+                }
             }
             throw new InvalidOperationException($"Cannot find an embed named {name}.");
         }
@@ -94,7 +115,11 @@ namespace Threax.AspNetCore.Halcyon.Client
         /// <returns>The converted data.</returns>
         public T GetData<T>()
         {
-            return data.ToObject<T>();
+            if(data != null)
+            {
+                return data.ToObject<T>();
+            }
+            return default(T);
         }
 
         /// <summary>
@@ -105,6 +130,11 @@ namespace Threax.AspNetCore.Halcyon.Client
         {
             return data;
         }
+
+        /// <summary>
+        /// The status code of the last request.
+        /// </summary>
+        public HttpStatusCode StatusCode { get; set; }
 
         private async Task Load(Object data)
         {
@@ -119,10 +149,10 @@ namespace Threax.AspNetCore.Halcyon.Client
                         request.Content = new StringContent(JsonConvert.SerializeObject(data));
                     }
                     var response = await client.SendAsync(request);
-                    var status = (int)response.StatusCode;
-                    if (status > 299)
+                    StatusCode = response.StatusCode;
+                    if ((int)StatusCode > 299)
                     {
-                        throw new InvalidOperationException($"The HTTP status code {status} is not a valid response for this client.");
+                        throw new InvalidOperationException($"The HTTP status code {StatusCode} is not a valid response for this client.");
                     }
                     var responseString = await response.Content.ReadAsStringAsync();
                     var responseData = JObject.Parse(responseString);
