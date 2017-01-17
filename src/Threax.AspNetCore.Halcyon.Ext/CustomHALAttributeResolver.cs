@@ -1,6 +1,7 @@
 ﻿using Halcyon.HAL;
 using Halcyon.HAL.Attributes;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,9 +31,26 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 {
                     if (actionLinkAttribute.CanUserAccess(context.User))
                     {
-                        yield return new Link(actionLinkAttribute.Rel, actionLinkAttribute.Href, actionLinkAttribute.Title, actionLinkAttribute.Method);
+                        var href = actionLinkAttribute.Href;
+                        if (actionLinkAttribute.IncludeRequestQuery)
+                        {
+                            var displayUrlBuilder = new UriBuilder(context.Request.GetDisplayUrl());
+                            var query = displayUrlBuilder.Query;
+                            if (!String.IsNullOrEmpty(query))
+                            {
+                                if (href.Contains('?'))
+                                {
+                                    href += "&" + displayUrlBuilder.Query.Substring(1);
+                                }
+                                else
+                                {
+                                    href += displayUrlBuilder.Query;
+                                }
+                            }
+                        }
+                        yield return new Link(actionLinkAttribute.Rel, href, actionLinkAttribute.Title, actionLinkAttribute.Method);
 
-                        if (endpointInfo != null)
+                        if (endpointInfo != null && actionLinkAttribute.HasDocs)
                         {
                             var docLink = actionLinkAttribute.GetDocLink(endpointInfo);
                             if (docLink != null)
@@ -48,10 +66,6 @@ namespace Threax.AspNetCore.Halcyon.Ext
                     if (linkAttribute != null)
                     {
                         yield return new Link(linkAttribute.Rel, linkAttribute.Href, linkAttribute.Title, linkAttribute.Method);
-                    }
-                    else if (attribute is HalSelfLinkAttribute)
-                    {
-                        yield return new Link(Link.RelForSelf, context.Request.Path + context.Request.QueryString, method: context.Request.Method, replaceParameters: false);
                     }
                 }
             }

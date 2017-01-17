@@ -53,7 +53,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
             {
                 //Get the HalActionLinkAttributes, but ignore the self links
                 var halLinkAttr = attr as HalActionLinkAttribute;
-                if(halLinkAttr != null)
+                if(halLinkAttr != null && !(halLinkAttr is HalSelfActionLinkAttribute))
                 {
                     if (halLinkAttr.HalRelAttr.IsPaged && Offset.HasValue && Limit.HasValue && Total.HasValue)
                     {
@@ -73,10 +73,12 @@ namespace Threax.AspNetCore.Halcyon.Ext
                             yield return new HalLinkAttribute("previous", sb.ToString(), null, halLinkAttr.Method);
                         }
 
+                        //First link
                         sb = new StringBuilder(halLinkAttr.Href);
                         sb.AppendQueryString($"offset=0&limit={Limit}");
                         yield return new HalLinkAttribute("first", sb.ToString(), null, halLinkAttr.Method);
 
+                        //Last link
                         if (Limit != 0)
                         {
                             var lastIndex = Total / Limit;
