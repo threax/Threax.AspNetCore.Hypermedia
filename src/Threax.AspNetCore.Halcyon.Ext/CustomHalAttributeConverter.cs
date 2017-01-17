@@ -80,7 +80,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 var authority = $"{currentUri.Scheme}://{currentUri.Authority}";
                 halConfig = new HALModelConfig()
                 {
-                    LinkBase = options.BaseUrl.Replace(HalcyonConventionOptions.AuthorityVariable, authority),
+                    LinkBase = options.BaseUrl.Replace(HalcyonConventionOptions.HostVariable, authority),
                     ForceHAL = false
                 };
             }

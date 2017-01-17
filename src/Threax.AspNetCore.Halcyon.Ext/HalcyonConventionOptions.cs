@@ -10,14 +10,14 @@ namespace Microsoft.Extensions.DependencyInjection
     /// </summary>
     public class HalcyonConventionOptions
     {
-        public const String AuthorityVariable = "{{authority}}";
+        public const String HostVariable = "{{host}}";
 
         /// <summary>
-        /// Set the base url to use when creating links. You can add the variable {{authority}} to the string
+        /// Set the base url to use when creating links. You can add the variable {{host}} to the string
         /// to replace that path with the current Request.GetDisplayUrl().Authority value. Otherwise you can
         /// set the url to whatever you want.
         /// </summary>
-        public string BaseUrl { get; set; }
+        public string BaseUrl { get; set; } = HostVariable;
 
         /// <summary>
         /// Provides info about the controller endpoint that exposes documentation. Can be null to not support documentation.
