@@ -76,11 +76,20 @@ namespace Threax.AspNetCore.Halcyon.Ext
             IHALModelConfig halConfig;
             if(options.BaseUrl != null)
             {
+                var pathBaseValue = "";
+                var pathBase = context.Request.PathBase;
+                if (pathBase.HasValue)
+                {
+                    //If we have a value, use that as the pathBaseValue, otherwise stick with the empty string.
+                    pathBaseValue = pathBase.Value;
+                }
+
                 var currentUri = new Uri(context.Request.GetDisplayUrl());
-                var authority = $"{currentUri.Scheme}://{currentUri.Authority}";
+                var host = $"{currentUri.Scheme}://{currentUri.Authority}{pathBaseValue}";
+
                 halConfig = new HALModelConfig()
                 {
-                    LinkBase = options.BaseUrl.Replace(HalcyonConventionOptions.HostVariable, authority),
+                    LinkBase = options.BaseUrl.Replace(HalcyonConventionOptions.HostVariable, host),
                     ForceHAL = false
                 };
             }

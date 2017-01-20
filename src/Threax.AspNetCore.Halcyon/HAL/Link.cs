@@ -81,15 +81,8 @@ namespace Halcyon.HAL {
             if(!String.IsNullOrWhiteSpace(baseUriString)) {
                 var hrefUri = GetHrefUri(clone.Href);
                 if(!hrefUri.IsAbsoluteUri) {
-                    var baseUri = new Uri(baseUriString, UriKind.RelativeOrAbsolute);
-
-                    if(baseUri.IsAbsoluteUri) {
-                        var rebasedUri = new Uri(baseUri, hrefUri);
-                        clone.Href = rebasedUri.ToString();
-                    } else {
-                        // very simplistic but shoult work
-                        clone.Href = String.Format("{0}/{1}", baseUriString.TrimEnd('/'), clone.Href.TrimStart('/'));
-                    }
+                    // very simplistic but shoult work
+                    clone.Href = String.Format("{0}/{1}", baseUriString.TrimEnd('/'), clone.Href.TrimStart('/'));
                 }
             }
 
