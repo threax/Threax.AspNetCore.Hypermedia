@@ -93,10 +93,17 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
         private void EnsureTrailingUrlTemplateSlash()
         {
-            var trailingChar = this.UrlTemplate[this.UrlTemplate.Length - 1];
-            if (trailingChar != '/' && trailingChar != '\\')
+            if (this.UrlTemplate == null || this.UrlTemplate.Length == 0)
             {
-                this.UrlTemplate += '/';
+                this.UrlTemplate = "/";
+            }
+            else
+            {
+                var trailingChar = this.UrlTemplate[this.UrlTemplate.Length - 1];
+                if (trailingChar != '/' && trailingChar != '\\')
+                {
+                    this.UrlTemplate += '/';
+                }
             }
         }
 
