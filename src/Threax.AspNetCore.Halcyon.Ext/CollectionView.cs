@@ -57,38 +57,54 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 {
                     if (halLinkAttr.HalRelAttr.IsPaged && Offset.HasValue && Limit.HasValue && Total.HasValue)
                     {
-                        StringBuilder sb;
                         //Next link
                         if ((Offset + 1) * Limit < Total)
                         {
-                            sb = new StringBuilder(halLinkAttr.Href);
-                            sb.AppendQueryString($"offset={Offset + 1}&limit={Limit}");
-                            yield return new HalLinkAttribute("next", sb.ToString(), null, halLinkAttr.Method);
+                            var next = AddPageQuery(halLinkAttr.Href, Offset + 1, Limit);
+                            yield return new HalLinkAttribute("next", next, null, halLinkAttr.Method);
                         }
                         //Previous link
                         if(Offset - 1 > -1)
                         {
-                            sb = new StringBuilder(halLinkAttr.Href);
-                            sb.AppendQueryString($"offset={Offset - 1}&limit={Limit}");
-                            yield return new HalLinkAttribute("previous", sb.ToString(), null, halLinkAttr.Method);
+                            var prev = AddPageQuery(halLinkAttr.Href, Offset - 1, Limit);
+                            yield return new HalLinkAttribute("previous", prev, null, halLinkAttr.Method);
                         }
 
                         //First link
-                        sb = new StringBuilder(halLinkAttr.Href);
-                        sb.AppendQueryString($"offset=0&limit={Limit}");
-                        yield return new HalLinkAttribute("first", sb.ToString(), null, halLinkAttr.Method);
+                        var first = AddPageQuery(halLinkAttr.Href, 0, Limit);
+                        yield return new HalLinkAttribute("first", first, null, halLinkAttr.Method);
 
                         //Last link
                         if (Limit != 0)
                         {
                             var lastIndex = Total / Limit;
-                            sb = new StringBuilder(halLinkAttr.Href);
-                            sb.AppendQueryString($"offset={lastIndex}&limit={Limit}");
-                            yield return new HalLinkAttribute("last", sb.ToString(), null, halLinkAttr.Method);
+                            var last = AddPageQuery(halLinkAttr.Href, lastIndex, Limit);
+                            yield return new HalLinkAttribute("last", last, null, halLinkAttr.Method);
                         }
                     }
                 }
             }
+        }
+
+        private string AddPageQuery(String url, int? offset, int? limit)
+        {
+            if(offset.HasValue && limit.HasValue)
+            {
+                url = url.AppendQueryString($"offset={offset}&limit={limit}");
+            }
+            return AddCustomQuery(url);
+        }
+
+        /// <summary>
+        /// This function can be overwritten to add any additional custom query strings needed
+        /// to the query url. The base class version just returns url, so there is no need to 
+        /// call it from your subclass.
+        /// </summary>
+        /// <param name="url">The url to modify.</param>
+        /// <returns>The customized query string.</returns>
+        protected virtual String AddCustomQuery(String url)
+        {
+            return url;
         }
     }
 }

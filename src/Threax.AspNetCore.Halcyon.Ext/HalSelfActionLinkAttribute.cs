@@ -29,7 +29,6 @@ namespace Threax.AspNetCore.Halcyon.Ext
         public HalSelfActionLinkAttribute(string rel, Type controllerType, String[] routeArgs = null, string title = null)
             :base("self", rel, controllerType, routeArgs, title)
         {
-            IncludeRequestQuery = true;
             HasDocs = false;
         }
     }

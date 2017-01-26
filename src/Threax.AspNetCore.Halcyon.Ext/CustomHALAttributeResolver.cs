@@ -23,6 +23,8 @@ namespace Threax.AspNetCore.Halcyon.Ext
             var type = model.GetType();
             var classAttributes = type.GetTypeInfo().GetCustomAttributes();
 
+            var queryProvider = model as IQueryStringProvider;
+
             foreach (var attribute in classAttributes)
             {
                 //Handle our HalLinkAttributes, this way we can make sure the user can access the links
@@ -32,21 +34,9 @@ namespace Threax.AspNetCore.Halcyon.Ext
                     if (actionLinkAttribute.CanUserAccess(context.User))
                     {
                         var href = actionLinkAttribute.Href;
-                        if (actionLinkAttribute.IncludeRequestQuery)
+                        if(queryProvider != null)
                         {
-                            var displayUrlBuilder = new UriBuilder(context.Request.GetDisplayUrl());
-                            var query = displayUrlBuilder.Query;
-                            if (!String.IsNullOrEmpty(query))
-                            {
-                                if (href.Contains('?'))
-                                {
-                                    href += "&" + displayUrlBuilder.Query.Substring(1);
-                                }
-                                else
-                                {
-                                    href += displayUrlBuilder.Query;
-                                }
-                            }
+                            href = queryProvider.AddQuery(href);
                         }
                         yield return new Link(actionLinkAttribute.Rel, href, actionLinkAttribute.Title, actionLinkAttribute.Method);
 

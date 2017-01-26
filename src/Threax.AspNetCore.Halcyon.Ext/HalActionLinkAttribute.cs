@@ -90,11 +90,6 @@ namespace Threax.AspNetCore.Halcyon.Ext
         }
 
         /// <summary>
-        /// Set to true to include the original request query string in the self link.
-        /// </summary>
-        public bool IncludeRequestQuery { get; set; }
-
-        /// <summary>
         /// Set to true (default) to include docs for this link. Set to false to never include docs for this link.
         /// </summary>
         public bool HasDocs { get; set; } = true;

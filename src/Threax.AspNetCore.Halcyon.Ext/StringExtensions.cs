@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
-    public static class StringBuilderExtensions
+    public static class StringExtensions
     {
         /// <summary>
         /// This function will append a query string to a string url while accounting
@@ -14,16 +14,18 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// </summary>
         /// <param name="build">The string builder to append to.</param>
         /// <param name="appendQuery">The query to append, must already be in query format, not escaped by this function.</param>
-        public static void AppendQueryString(this StringBuilder build, String appendQuery)
+        public static String AppendQueryString(this String build, String appendQuery)
         {
-            if (!build.ToString().Contains('?'))
+            if (!build.Contains('?'))
             {
-                build.AppendFormat("?{0}", appendQuery);
+                build += String.Format("?{0}", appendQuery);
             }
             else
             {
-                build.AppendFormat("&{0}", appendQuery);
+                build += String.Format("&{0}", appendQuery);
             }
+
+            return build;
         }
     }
 }
