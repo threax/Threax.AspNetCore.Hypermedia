@@ -36,7 +36,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                         var href = actionLinkAttribute.Href;
                         if(queryProvider != null)
                         {
-                            href = queryProvider.AddQuery(href);
+                            href = queryProvider.AddQuery(actionLinkAttribute.Rel, href);
                         }
                         yield return new Link(actionLinkAttribute.Rel, href, actionLinkAttribute.Title, actionLinkAttribute.Method);
 

@@ -12,6 +12,6 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// </summary>
         /// <param name="url">The url to add a query to.</param>
         /// <returns>The url with the query appended.</returns>
-        String AddQuery(String url);
+        String AddQuery(String rel, String url);
     }
 }

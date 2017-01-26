@@ -14,6 +14,8 @@ namespace Threax.AspNetCore.Halcyon.Ext
 {
     public class HalSelfActionLinkAttribute : HalActionLinkAttribute
     {
+        public const String SelfRelName = "self";
+
         /// <summary>
         /// Create a new link based on a controller and a function.
         /// These links will include thier request query and have no docs
@@ -27,7 +29,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// <param name="method"></param>
         /// <param name="templateDontProvide">This is used to hold some data during construction, no need to provide this param as it is always overwritten.</param>
         public HalSelfActionLinkAttribute(string rel, Type controllerType, String[] routeArgs = null, string title = null)
-            :base("self", rel, controllerType, routeArgs, title)
+            :base(SelfRelName, rel, controllerType, routeArgs, title)
         {
             HasDocs = false;
         }

@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
-    public class CollectionView<T> : ICollectionView<T>, IHalLinkProvider
+    public class CollectionView<T> : ICollectionView<T>, IHalLinkProvider, IQueryStringProvider
     {
         public CollectionView(IEnumerable<T> items = null, String name = "values")
         {
@@ -84,6 +84,15 @@ namespace Threax.AspNetCore.Halcyon.Ext
                     }
                 }
             }
+        }
+
+        public string AddQuery(String rel, string url)
+        {
+            if(rel == HalSelfActionLinkAttribute.SelfRelName)
+            {
+                url = AddPageQuery(url, Offset, Limit);
+            }
+            return url;
         }
 
         private string AddPageQuery(String url, int? offset, int? limit)
