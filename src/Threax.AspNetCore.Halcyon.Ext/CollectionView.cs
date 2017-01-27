@@ -11,6 +11,14 @@ namespace Threax.AspNetCore.Halcyon.Ext
 {
     public class CollectionView<T> : ICollectionView<T>, IHalLinkProvider, IQueryStringProvider
     {
+        public class Rels
+        {
+            public const String Next = "next";
+            public const String Previous = "previous";
+            public const String First = "first";
+            public const String Last = "last";
+        }
+
         public CollectionView(IEnumerable<T> items = null, String name = "values")
         {
             this.Items = items;
@@ -60,26 +68,26 @@ namespace Threax.AspNetCore.Halcyon.Ext
                         //Next link
                         if ((Offset + 1) * Limit < Total)
                         {
-                            var next = AddPageQuery(halLinkAttr.Href, Offset + 1, Limit);
-                            yield return new HalLinkAttribute("next", next, null, halLinkAttr.Method);
+                            var next = AddPageQuery(Rels.Next, halLinkAttr.Href, Offset + 1, Limit);
+                            yield return new HalLinkAttribute(Rels.Next, next, null, halLinkAttr.Method);
                         }
                         //Previous link
                         if(Offset - 1 > -1)
                         {
-                            var prev = AddPageQuery(halLinkAttr.Href, Offset - 1, Limit);
-                            yield return new HalLinkAttribute("previous", prev, null, halLinkAttr.Method);
+                            var prev = AddPageQuery(Rels.Previous, halLinkAttr.Href, Offset - 1, Limit);
+                            yield return new HalLinkAttribute(Rels.Previous, prev, null, halLinkAttr.Method);
                         }
 
                         //First link
-                        var first = AddPageQuery(halLinkAttr.Href, 0, Limit);
-                        yield return new HalLinkAttribute("first", first, null, halLinkAttr.Method);
+                        var first = AddPageQuery(Rels.First, halLinkAttr.Href, 0, Limit);
+                        yield return new HalLinkAttribute(Rels.First, first, null, halLinkAttr.Method);
 
                         //Last link
                         if (Limit != 0)
                         {
                             var lastIndex = Total / Limit;
-                            var last = AddPageQuery(halLinkAttr.Href, lastIndex, Limit);
-                            yield return new HalLinkAttribute("last", last, null, halLinkAttr.Method);
+                            var last = AddPageQuery(Rels.Last, halLinkAttr.Href, lastIndex, Limit);
+                            yield return new HalLinkAttribute(Rels.Last, last, null, halLinkAttr.Method);
                         }
                     }
                 }
@@ -90,18 +98,18 @@ namespace Threax.AspNetCore.Halcyon.Ext
         {
             if(rel == HalSelfActionLinkAttribute.SelfRelName)
             {
-                url = AddPageQuery(url, Offset, Limit);
+                url = AddPageQuery(rel, url, Offset, Limit);
             }
             return url;
         }
 
-        private string AddPageQuery(String url, int? offset, int? limit)
+        private string AddPageQuery(String rel, String url, int? offset, int? limit)
         {
             if(offset.HasValue && limit.HasValue)
             {
                 url = url.AppendQueryString($"offset={offset}&limit={limit}");
             }
-            return AddCustomQuery(url);
+            return AddCustomQuery(rel, url);
         }
 
         /// <summary>
@@ -111,7 +119,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// </summary>
         /// <param name="url">The url to modify.</param>
         /// <returns>The customized query string.</returns>
-        protected virtual String AddCustomQuery(String url)
+        protected virtual String AddCustomQuery(String rel, String url)
         {
             return url;
         }
