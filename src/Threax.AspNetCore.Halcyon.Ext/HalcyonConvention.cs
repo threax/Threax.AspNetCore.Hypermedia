@@ -56,10 +56,11 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         public static MvcOptions UseConventionalHalcyon(this MvcOptions mvcOptions, JsonSerializerSettings serializerSettings = null)
         {
+            mvcOptions.RespectBrowserAcceptHeader = true;
             mvcOptions.Filters.AddService(typeof(HalModelResultFilterAttribute));
 
             JsonHalOutputFormatter outputFormatter;
-            var mediaTypes = new string[] { "application/json" };
+            var mediaTypes = new string[] { "application/json+halcyon" };
             if (serializerSettings == null)
             {
                 outputFormatter = new JsonHalOutputFormatter(mediaTypes);
@@ -69,7 +70,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 outputFormatter = new JsonHalOutputFormatter(serializerSettings, mediaTypes);
             }
             mvcOptions.OutputFormatters.Add(outputFormatter);
-            mvcOptions.Filters.Add(new ProducesAttribute("application/json"));
+            mvcOptions.Filters.Add(new ProducesAttribute("application/json+halcyon"));
 
             return mvcOptions;
         }

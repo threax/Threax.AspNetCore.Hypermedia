@@ -54,6 +54,7 @@ namespace Halcyon.Web.HAL.Json {
             }
 
             var jsonContext = new OutputFormatterWriteContext(context.HttpContext, context.WriterFactory, value.GetType(), value);
+            jsonContext.ContentType = context.ContentType;
 
             await jsonFormatter.WriteAsync(jsonContext);
         }
