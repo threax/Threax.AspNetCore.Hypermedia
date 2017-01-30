@@ -86,6 +86,12 @@ namespace Threax.AspNetCore.Halcyon.Ext
                         if (Limit != 0)
                         {
                             var lastIndex = Total / Limit;
+                            //If there is no remainder this is an even multiple, do not start the last page on the even multiple, but one before it
+                            var remainder = Total % Limit;
+                            if(remainder == 0 && lastIndex > 0)
+                            {
+                                --lastIndex;
+                            }
                             var last = AddPageQuery(Rels.Last, halLinkAttr.Href, lastIndex, Limit);
                             yield return new HalLinkAttribute(Rels.Last, last, null, halLinkAttr.Method);
                         }
