@@ -74,6 +74,7 @@ namespace Microsoft.Extensions.DependencyInjection
             var outputFormatter = new JsonHalOutputFormatter(serializerSettings, mediaTypes);
             mvcOptions.OutputFormatters.Add(outputFormatter);
             mvcOptions.Filters.Add(new ProducesAttribute("application/json+halcyon"));
+            mvcOptions.Conventions.Add(new ApiExplorerVisibilityEnabledConvention());
 
             return mvcOptions;
         }
