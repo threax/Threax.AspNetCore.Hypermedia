@@ -16,6 +16,9 @@ using Halcyon.HAL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json.Converters;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -50,7 +53,8 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
         /// <summary>
-        /// Add Halcyon with some custom formatters that handle marked up models better.
+        /// Add Halcyon with some custom formatters that handle marked up models better. If no serializerSettings are provided
+        /// the serializer will be setup for camelcase property names and strings to enums.
         /// </summary>
         /// <param name="mvcOptions">The MVC options to extend.</param>
         /// <returns></returns>
@@ -59,16 +63,15 @@ namespace Microsoft.Extensions.DependencyInjection
             mvcOptions.RespectBrowserAcceptHeader = true;
             mvcOptions.Filters.AddService(typeof(HalModelResultFilterAttribute));
 
-            JsonHalOutputFormatter outputFormatter;
             var mediaTypes = new string[] { "application/json+halcyon" };
             if (serializerSettings == null)
             {
-                outputFormatter = new JsonHalOutputFormatter(mediaTypes);
+                serializerSettings = JsonSerializerSettingsProvider.CreateSerializerSettings();
+                serializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                serializerSettings.Converters.Add(new StringEnumConverter());
             }
-            else
-            {
-                outputFormatter = new JsonHalOutputFormatter(serializerSettings, mediaTypes);
-            }
+
+            var outputFormatter = new JsonHalOutputFormatter(serializerSettings, mediaTypes);
             mvcOptions.OutputFormatters.Add(outputFormatter);
             mvcOptions.Filters.Add(new ProducesAttribute("application/json+halcyon"));
 
