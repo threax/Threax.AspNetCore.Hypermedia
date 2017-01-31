@@ -10,8 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		global.json = global.json
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Threax.AspNetCore.ExceptionToJson", "src\Threax.AspNetCore.ExceptionToJson\Threax.AspNetCore.ExceptionToJson.xproj", "{5B8700B7-8C1E-44AE-807C-64DC1C7BA7D7}"
-EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Threax.AspNetCore.ClientGenerator", "src\Threax.AspNetCore.ClientGenerator\Threax.AspNetCore.ClientGenerator.xproj", "{C6992B36-B17E-4BCE-9A79-44B3DFBA1912}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Threax.AspNetCore.Halcyon.Ext", "src\Threax.AspNetCore.Halcyon.Ext\Threax.AspNetCore.Halcyon.Ext.xproj", "{EBB729F8-6B6B-48A8-AA7E-3117B65B5A7E}"
@@ -24,16 +22,14 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Threax.AspNetCore.Halcyon.C
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Threax.AspNetCore.Halcyon", "src\Threax.AspNetCore.Halcyon\Threax.AspNetCore.Halcyon.xproj", "{2F5A3BF0-7E6B-45F3-8AC5-5052A4EDAD01}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Threax.AspNetCore.ExceptionFilter", "src\Threax.AspNetCore.ExceptionFilter\Threax.AspNetCore.ExceptionFilter.xproj", "{0F437156-E559-4749-8EA9-E788DAF07F74}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5B8700B7-8C1E-44AE-807C-64DC1C7BA7D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5B8700B7-8C1E-44AE-807C-64DC1C7BA7D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5B8700B7-8C1E-44AE-807C-64DC1C7BA7D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5B8700B7-8C1E-44AE-807C-64DC1C7BA7D7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C6992B36-B17E-4BCE-9A79-44B3DFBA1912}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C6992B36-B17E-4BCE-9A79-44B3DFBA1912}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6992B36-B17E-4BCE-9A79-44B3DFBA1912}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -58,17 +54,21 @@ Global
 		{2F5A3BF0-7E6B-45F3-8AC5-5052A4EDAD01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F5A3BF0-7E6B-45F3-8AC5-5052A4EDAD01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F5A3BF0-7E6B-45F3-8AC5-5052A4EDAD01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F437156-E559-4749-8EA9-E788DAF07F74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F437156-E559-4749-8EA9-E788DAF07F74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F437156-E559-4749-8EA9-E788DAF07F74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F437156-E559-4749-8EA9-E788DAF07F74}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{5B8700B7-8C1E-44AE-807C-64DC1C7BA7D7} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 		{C6992B36-B17E-4BCE-9A79-44B3DFBA1912} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 		{EBB729F8-6B6B-48A8-AA7E-3117B65B5A7E} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 		{0AD246DA-07AB-4F4C-AAFF-EFC13AACD49F} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 		{D8EC5447-B890-4CD7-9B48-6945BE83A8AD} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 		{B3B042AC-AEA9-480A-920F-E0FACDE5DAF7} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 		{2F5A3BF0-7E6B-45F3-8AC5-5052A4EDAD01} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
+		{0F437156-E559-4749-8EA9-E788DAF07F74} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 	EndGlobalSection
 EndGlobal
