@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ApplicationModels;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         {
             foreach (var controller in application.Controllers)
             {
-                if (controller.ApiExplorer.IsVisible == null)
+                if (controller.Attributes.Any(a => a is RouteAttribute) && controller.ApiExplorer.IsVisible == null)
                 {
                     controller.ApiExplorer.IsVisible = true;
                     controller.ApiExplorer.GroupName = controller.ControllerName;
