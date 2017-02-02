@@ -2,7 +2,7 @@
   "version": "1.7.1-*",
 
   "dependencies": {
-    "Microsoft.AspNetCore.Mvc": "1.1.0",
+    "Microsoft.AspNetCore.Mvc": "1.1.1",
     "NETStandard.Library": "1.6.1",
     "NJsonSchema": "7.5.6218.39574",
     "Threax.AspNetCore.Halcyon": "1.0.0-*"
