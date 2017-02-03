@@ -10,6 +10,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// <summary>
         /// Add a query string to the passed url and return it.
         /// </summary>
+        /// <param name="rel">The current rel.</param>
         /// <param name="url">The url to add a query to.</param>
         /// <returns>The url with the query appended.</returns>
         String AddQuery(String rel, String url);

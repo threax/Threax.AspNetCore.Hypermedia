@@ -22,7 +22,6 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// </summary>
         /// <param name="rel"></param>
         /// <param name="controllerType"></param>
-        /// <param name="actionMethod"></param>
         /// <param name="routeArgs"></param>
         /// <param name="title"></param>
         public HalActionLinkAttribute(string rel, Type controllerType, String[] routeArgs = null, string title = null)

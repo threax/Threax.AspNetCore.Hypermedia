@@ -33,6 +33,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// not be setup correctly.
         /// </summary>
         /// <param name="services">The service collection to modify.</param>
+        /// <param name="options">The options.</param>
         /// <returns></returns>
         public static IServiceCollection AddConventionalHalcyon(this IServiceCollection services, HalcyonConventionOptions options = null)
         {
@@ -57,6 +58,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// the serializer will be setup for camelcase property names and strings to enums.
         /// </summary>
         /// <param name="mvcOptions">The MVC options to extend.</param>
+        /// <param name="serializerSettings">The serializer settings. Can be null to use the default settings.</param>
         /// <returns></returns>
         public static MvcOptions UseConventionalHalcyon(this MvcOptions mvcOptions, JsonSerializerSettings serializerSettings = null)
         {

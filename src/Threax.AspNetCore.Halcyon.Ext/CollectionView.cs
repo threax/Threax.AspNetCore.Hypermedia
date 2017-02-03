@@ -123,6 +123,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// to the query url. The base class version just returns url, so there is no need to 
         /// call it from your subclass.
         /// </summary>
+        /// <param name="rel">The input rel.</param>
         /// <param name="url">The url to modify.</param>
         /// <returns>The customized query string.</returns>
         protected virtual String AddCustomQuery(String rel, String url)

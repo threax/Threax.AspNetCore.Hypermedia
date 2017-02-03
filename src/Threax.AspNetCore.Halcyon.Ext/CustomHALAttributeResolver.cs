@@ -16,7 +16,9 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// <summary>
         /// Get the links that the current user is allowed to use.
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="model">The model class to scan.</param>
+        /// <param name="context">The curren httpcontext.</param>
+        /// <param name="endpointInfo">The info for this endpoint.</param>
         /// <returns></returns>
         public IEnumerable<Link> GetUserLinks(object model, HttpContext context, IHalDocEndpointInfo endpointInfo)
         {

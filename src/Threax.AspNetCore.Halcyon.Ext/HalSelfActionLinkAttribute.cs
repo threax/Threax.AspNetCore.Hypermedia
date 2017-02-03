@@ -23,11 +23,8 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// </summary>
         /// <param name="rel"></param>
         /// <param name="controllerType"></param>
-        /// <param name="actionMethod"></param>
         /// <param name="routeArgs"></param>
         /// <param name="title"></param>
-        /// <param name="method"></param>
-        /// <param name="templateDontProvide">This is used to hold some data during construction, no need to provide this param as it is always overwritten.</param>
         public HalSelfActionLinkAttribute(string rel, Type controllerType, String[] routeArgs = null, string title = null)
             :base(SelfRelName, rel, controllerType, routeArgs, title)
         {

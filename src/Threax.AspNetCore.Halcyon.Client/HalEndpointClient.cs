@@ -13,7 +13,7 @@ namespace Threax.AspNetCore.Halcyon.Client
     {
         private IHttpClientFactory clientFactory;
         private HalLink link;
-        private JObject data;
+        private JObject data = null;
         private JToken links;
         private JToken embeds;
 
