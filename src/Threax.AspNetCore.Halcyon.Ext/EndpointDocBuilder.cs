@@ -27,7 +27,11 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
         public virtual EndpointDoc GetDoc(String groupName, String method, String relativePath)
         {
-            if (relativePath != null && (relativePath.EndsWith("/") || relativePath.EndsWith("\\")))
+            if(relativePath == null)
+            {
+                relativePath = "";
+            }
+            else if (relativePath.EndsWith("/") || relativePath.EndsWith("\\"))
             {
                 relativePath = relativePath.Substring(0, relativePath.Length - 1);
             }
