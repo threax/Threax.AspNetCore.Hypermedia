@@ -47,7 +47,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
             {
                 var itemType = dataCollection.CollectionType;
                 var response = ConvertInstance(model, httpContext, options);
-                response.AddEmbeddedCollection(dataCollection.CollectionName, GetEmbeddedResponses(dataCollection.AsObjects, httpContext, options));
+                response.AddEmbeddedCollection("values", GetEmbeddedResponses(dataCollection.AsObjects, httpContext, options));
                 return response;
             }
 

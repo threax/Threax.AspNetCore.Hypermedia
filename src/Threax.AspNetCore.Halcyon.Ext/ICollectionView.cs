@@ -9,9 +9,6 @@ namespace Threax.AspNetCore.Halcyon.Ext
     public interface ICollectionView
     {
         [JsonIgnore]
-        String CollectionName { get; }
-
-        [JsonIgnore]
         Type CollectionType { get; }
 
         [JsonIgnore]

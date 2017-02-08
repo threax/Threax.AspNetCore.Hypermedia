@@ -19,13 +19,10 @@ namespace Threax.AspNetCore.Halcyon.Ext
             public const String Last = "last";
         }
 
-        public CollectionView(IEnumerable<T> items = null, String name = "values")
+        public CollectionView(IEnumerable<T> items = null)
         {
             this.Items = items;
-            this.CollectionName = name;
         }
-
-        public string CollectionName { get; private set; }
 
         public Type CollectionType
         {
