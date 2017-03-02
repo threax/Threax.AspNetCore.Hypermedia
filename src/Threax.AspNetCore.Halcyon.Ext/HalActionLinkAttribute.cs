@@ -60,9 +60,9 @@ namespace Threax.AspNetCore.Halcyon.Ext
             Object halRefObj;
             var href = CreateHref(docEndpointInfo.Rel, docEndpointInfo.ControllerType,
                 new String[] {
-                    $"{docEndpointInfo.GroupArg}={Utils.GetControllerName(controllerType)}",
+                    $"{docEndpointInfo.GroupArg}={GroupName}",
                     $"{docEndpointInfo.MethodArg}={Method}",
-                    $"{docEndpointInfo.RelativePathArg}={halRefInfo.UrlTemplate}"
+                    $"{docEndpointInfo.RelativePathArg}={UriTemplate}"
                 }, out halRefObj);
 
             var docHalRefInfo = ((HalRelInfo)halRefObj);
@@ -85,6 +85,28 @@ namespace Threax.AspNetCore.Halcyon.Ext
             get
             {
                 return halRefInfo.HalRelAttr;
+            }
+        }
+
+        /// <summary>
+        /// The "GroupName" for documentation lookup.
+        /// </summary>
+        public String GroupName
+        {
+            get
+            {
+                return Utils.GetControllerName(controllerType);
+            }
+        }
+
+        /// <summary>
+        /// The uri template, can be used for "RelativePath" for documentation lookup.
+        /// </summary>
+        public String UriTemplate
+        {
+            get
+            {
+                return halRefInfo.UrlTemplate;
             }
         }
 
