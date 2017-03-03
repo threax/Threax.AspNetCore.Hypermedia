@@ -24,6 +24,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
             this.Items = items;
         }
 
+        [JsonIgnore]
         public Type CollectionType
         {
             get
@@ -41,8 +42,10 @@ namespace Threax.AspNetCore.Halcyon.Ext
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int? Total { get; set; }
 
+        [JsonIgnore]
         public IEnumerable<T> Items { get; set; }
 
+        [JsonIgnore]
         public IEnumerable<object> AsObjects
         {
             get

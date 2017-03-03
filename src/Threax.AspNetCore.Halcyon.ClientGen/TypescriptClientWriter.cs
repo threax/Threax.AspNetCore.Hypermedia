@@ -32,6 +32,7 @@ import { Fetcher } from 'hr.fetcher';");
                 {
                     var generator = new TypeScriptGenerator(write);
                     generator.Settings.TypeStyle = TypeScriptTypeStyle.Interface;
+                    generator.Settings.MarkOptionalProperties = true;
                     var classes = generator.GenerateType(write.Title);
                     writer.WriteLine(classes.Code);
                 }
@@ -56,13 +57,6 @@ export class {client.Name}ResultView {{
         return this.client.GetData<{client.Name}>();
     }}
 ");
-
-                //Write data accessor if data on endpoint
-                //                    writer.Write($@"
-                //    public get data(): ClientEditModel {{
-                //        return this.client.GetData<ClientEditModel>();
-                //    }}
-                //");
 
                 foreach (var link in client.Links)
                 {
@@ -153,19 +147,6 @@ export class {client.Name}ResultView {{
         return this.client.HasLink(""{link.Rel}"");
     }}
 ");
-                    //                    }
-                    //                    else
-                    //                    {
-                    //                        writer.WriteLine($@"
-                    //    public {link.Rel}({inArgs}){linkReturnType} {{
-                    //        return {returnClassOpen}this.client.{func}(""{link.Rel}""{outArgs}){returnClassClose};
-                    //    }}
-
-                    //    public can{link.Rel}(): boolean {{
-                    //        return this.client.HasLink(""{link.Rel}"");
-                    //    }}
-                    //");
-                    //                    }
                 }
 
                 //Close class
