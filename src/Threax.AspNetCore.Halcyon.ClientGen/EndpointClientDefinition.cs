@@ -9,6 +9,8 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
 {
     public class EndpointClientDefinition
     {
+        private const BindingFlags AllConstructorsFlags = BindingFlags.Public | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Instance;
+
         private Type type;
 
         public EndpointClientDefinition(Type type)
@@ -41,6 +43,21 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
                     return null;
                 }
 
+                //Try to activate the type and return the type the class specifies, only works if there is an empty constructor
+                try
+                {
+                    if (type.GetTypeInfo().GetConstructors(AllConstructorsFlags).Any(i => i.GetParameters().Length == 0))
+                    {
+                        var instance = Activator.CreateInstance(type, true) as ICollectionView;
+                        return instance.CollectionType;
+                    }
+                }
+                catch (Exception)
+                {
+                    //Do nothing, means we can't instantiate it
+                }
+
+                //No empty constructor found, search the type to see if it is a ICollectionView and return its generic type instead.
                 var currentType = type;
                 while (currentType != null)
                 {
@@ -56,6 +73,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
                     }
                 }
 
+                //Couldn't figure it out, return object to represent anything.
                 return typeof(Object);
             }
         }
