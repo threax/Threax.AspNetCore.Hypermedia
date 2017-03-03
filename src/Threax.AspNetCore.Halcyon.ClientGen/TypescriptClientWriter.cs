@@ -18,29 +18,24 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
             this.clientGenerator = clientGenerator;
         }
 
-        public String CreateClient()
+        public void CreateClient(TextWriter writer)
         {
             Dictionary<String, JsonSchema4> interfacesToWrite = new Dictionary<string, JsonSchema4>();
 
-            using (var writer = new StringWriter())
-            {
 writer.WriteLine(
 @"import * as hal from 'hr.halcyon.EndpointClient';
 import { Fetcher } from 'hr.fetcher';"
 );
 
-                WriteClient(interfacesToWrite, writer);
+            WriteClient(interfacesToWrite, writer);
 
-                foreach (var write in interfacesToWrite.Values)
-                {
-                    var generator = new TypeScriptGenerator(write);
-                    generator.Settings.TypeStyle = TypeScriptTypeStyle.Interface;
-                    generator.Settings.MarkOptionalProperties = true;
-                    var classes = generator.GenerateType(write.Title);
-                    writer.WriteLine(classes.Code);
-                }
-
-                return writer.ToString();
+            foreach (var write in interfacesToWrite.Values)
+            {
+                var generator = new TypeScriptGenerator(write);
+                generator.Settings.TypeStyle = TypeScriptTypeStyle.Interface;
+                generator.Settings.MarkOptionalProperties = true;
+                var classes = generator.GenerateType(write.Title);
+                writer.WriteLine(classes.Code);
             }
         }
 
