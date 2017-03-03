@@ -37,7 +37,16 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
                         var declaredLink = link as DeclareHalLinkAttribute;
                         if(declaredLink != null)
                         {
-                            clientDef.Links.Add(new EndpointClientLinkDefinition(declaredLink.Rel, new EndpointDoc()));
+                            EndpointDoc doc;
+                            if (declaredLink.LinkedToControllerRel)
+                            {
+                                doc = endpointDocBuilder.GetDoc(declaredLink.GroupName, declaredLink.Method, declaredLink.UriTemplate.Substring(1));
+                            }
+                            else
+                            {
+                                doc = new EndpointDoc();
+                            }
+                            clientDef.Links.Add(new EndpointClientLinkDefinition(declaredLink.Rel, doc));
                         }
                     }
                 }
