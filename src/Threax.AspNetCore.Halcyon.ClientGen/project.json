@@ -1,10 +1,10 @@
 {
-  "version": "1.0.1-*",
+  "version": "1.1.0-*",
 
   "dependencies": {
     "NETStandard.Library": "1.6.1",
     "NJsonSchema.CodeGeneration.TypeScript": "8.8.6270.12850",
-    "Threax.AspNetCore.Halcyon.Ext": "1.9.1-*"
+    "Threax.AspNetCore.Halcyon.Ext": "1.10.0-*"
   },
 
   "frameworks": {
