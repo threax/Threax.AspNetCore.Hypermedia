@@ -46,6 +46,15 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
                             {
                                 doc = new EndpointDoc();
                             }
+
+                            //If the link is response only, send only the response
+                            if (declaredLink.ResponseOnly)
+                            {
+                                var oldDoc = doc;
+                                doc = new EndpointDoc();
+                                doc.ResponseSchema = oldDoc.ResponseSchema;
+                            }
+
                             clientDef.Links.Add(new EndpointClientLinkDefinition(declaredLink.Rel, doc));
                         }
                     }
