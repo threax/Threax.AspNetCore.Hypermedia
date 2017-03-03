@@ -14,8 +14,5 @@ namespace Threax.AspNetCore.Halcyon.Ext
         }
 
         public String Rel { get; private set; }
-
-        //Can this be done another way, perhaps identify the arguments offset and limit
-        public bool IsPaged { get; set; } = false;
     }
 }

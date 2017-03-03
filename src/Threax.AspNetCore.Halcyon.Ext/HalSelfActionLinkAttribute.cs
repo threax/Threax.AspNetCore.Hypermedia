@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class HalSelfActionLinkAttribute : HalActionLinkAttribute
     {
         public const String SelfRelName = "self";
