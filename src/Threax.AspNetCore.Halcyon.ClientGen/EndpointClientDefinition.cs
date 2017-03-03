@@ -34,7 +34,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
             }
         }
 
-        public Type CollectionType
+        public String CollectionType
         {
             get
             {
@@ -49,7 +49,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
                     if (type.GetTypeInfo().GetConstructors(AllConstructorsFlags).Any(i => i.GetParameters().Length == 0))
                     {
                         var instance = Activator.CreateInstance(type, true) as ICollectionView;
-                        return instance.CollectionType;
+                        return instance.CollectionType.Name;
                     }
                 }
                 catch (Exception)
@@ -65,7 +65,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
                     var collectionType = currentTypeInfo.ImplementedInterfaces.FirstOrDefault(t => t.GetGenericTypeDefinition() == typeof(ICollectionView<>));
                     if (collectionType != null)
                     {
-                        return collectionType.GetGenericArguments()[0];
+                        return collectionType.GetGenericArguments()[0].Name;
                     }
                     else
                     {
@@ -73,8 +73,8 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
                     }
                 }
 
-                //Couldn't figure it out, return object to represent anything.
-                return typeof(Object);
+                //Couldn't figure it out, return null to represent anything.
+                return null;
             }
         }
 

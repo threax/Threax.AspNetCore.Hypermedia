@@ -63,7 +63,20 @@ export class {client.Name}{ResultClassSuffix} {{
 
                 if (client.IsCollectionView)
                 {
-                    var collectionType = client.CollectionType.Name;
+                    var collectionType = client.CollectionType;
+                    if(collectionType == null)
+                    {
+                        //No collection type, write out an "any" client.
+writer.WriteLine($@"
+    public get items(): hal.HalEndpointClient[] {{
+        var embeds = this.client.GetEmbed(""values"");
+        return embeds.GetAllClients();
+    }}
+");
+                    }
+                    else
+                    {
+                        //Collection type found, write out results for each data entry.
 writer.WriteLine($@"
     public get items(): {collectionType}{ResultClassSuffix}[] {{
         var embeds = this.client.GetEmbed(""values"");
@@ -75,6 +88,7 @@ writer.WriteLine($@"
         return result;
     }}
 ");
+                    }
                 }
 
                 foreach (var link in client.Links)
