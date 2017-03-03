@@ -195,8 +195,10 @@ writer.WriteLine($@"
         return this.client.HasLink(""{link.Rel}"");
     }}");
 
-                    //Write link docs
-                    writer.WriteLine($@"
+                    if (link.EndpointDoc.HasDocumentation)
+                    {
+                        //Write link docs
+                        writer.WriteLine($@"
     public get{upperFuncName}Docs(): Promise<hal.HalEndpointDoc> {{
         return this.client.LoadLinkDoc(""{link.Rel}"")
             .then(r => {{
@@ -207,6 +209,7 @@ writer.WriteLine($@"
     public has{upperFuncName}Docs(): boolean {{
         return this.client.HasLinkDoc(""{link.Rel}"");
     }}");
+                    }
                 }
 
                 //Close class
