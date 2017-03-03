@@ -4,7 +4,7 @@
   "dependencies": {
     "NETStandard.Library": "1.6.1",
     "NJsonSchema.CodeGeneration.TypeScript": "8.8.6270.12850",
-    "Threax.AspNetCore.Halcyon.Ext": "1.8.0-*"
+    "Threax.AspNetCore.Halcyon.Ext": "1.9.0-*"
   },
 
   "frameworks": {

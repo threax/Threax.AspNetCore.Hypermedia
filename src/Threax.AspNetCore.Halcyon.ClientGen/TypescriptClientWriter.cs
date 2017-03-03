@@ -50,16 +50,30 @@ import { Fetcher } from 'hr.fetcher';"
             {
 writer.WriteLine($@"
 export class {client.Name}{ResultClassSuffix} {{
-    private client: hal.HalEndpointClient;
+    private client: hal.HalEndpointClient;");
 
+                if (client.IsEntryPoint)
+                {
+                    writer.WriteLine($@"
+    public static Load(url: string, fetcher: Fetcher): Promise<{client.Name}{ResultClassSuffix}> {{
+        return hal.HalEndpointClient.Load({{
+            href: url,
+            method: ""GET""
+        }}, fetcher)
+            .then(c => {{
+                 return new {client.Name}{ResultClassSuffix}(c);
+             }});
+            }}");
+                }
+
+writer.WriteLine($@"
     constructor(client: hal.HalEndpointClient) {{
         this.client = client;
     }}
 
     public get data(): {client.Name} {{
         return this.client.GetData<{client.Name}>();
-    }}
-");
+    }}");
 
                 if (client.IsCollectionView)
                 {
@@ -71,8 +85,7 @@ writer.WriteLine($@"
     public get items(): hal.HalEndpointClient[] {{
         var embeds = this.client.GetEmbed(""values"");
         return embeds.GetAllClients();
-    }}
-");
+    }}");
                     }
                     else
                     {
@@ -86,8 +99,7 @@ writer.WriteLine($@"
             result.push(new {collectionType}{ResultClassSuffix}(clients[i]));
         }}
         return result;
-    }}
-");
+    }}");
                     }
                 }
 
@@ -181,8 +193,20 @@ writer.WriteLine($@"
 
     public can{upperFuncName}(): boolean {{
         return this.client.HasLink(""{link.Rel}"");
+    }}");
+
+                    //Write link docs
+                    writer.WriteLine($@"
+    public get{upperFuncName}Docs(): Promise<hal.HalEndpointDoc> {{
+        return this.client.LoadLinkDoc(""{link.Rel}"")
+            .then(r => {{
+                return r.GetData<hal.HalEndpointDoc>();
+            }});
     }}
-");
+
+    public has{upperFuncName}Docs(): boolean {{
+        return this.client.HasLinkDoc(""{link.Rel}"");
+    }}");
                 }
 
                 //Close class

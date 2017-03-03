@@ -26,6 +26,14 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
             }
         }
 
+        public bool IsEntryPoint
+        {
+            get
+            {
+                return type.GetTypeInfo().GetCustomAttribute(typeof(HalEntryPointAttribute)) != null;
+            }
+        }
+
         public bool IsCollectionView
         {
             get
