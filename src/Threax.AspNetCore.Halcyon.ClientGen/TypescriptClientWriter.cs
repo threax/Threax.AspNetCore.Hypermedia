@@ -23,8 +23,10 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
 
             using (var writer = new StringWriter())
             {
-                writer.WriteLine(@"import * as hal from 'hr.halcyon.EndpointClient';
-import { Fetcher } from 'hr.fetcher';");
+writer.WriteLine(
+@"import * as hal from 'hr.halcyon.EndpointClient';
+import { Fetcher } from 'hr.fetcher';"
+);
 
                 WriteClient(interfacesToWrite, writer);
 
@@ -45,7 +47,7 @@ import { Fetcher } from 'hr.fetcher';");
         {
             foreach (var client in clientGenerator.GetEndpointDefinitions())
             {
-                writer.WriteLine($@"
+writer.WriteLine($@"
 export class {client.Name}ResultView {{
     private client: hal.HalEndpointClient;
 
@@ -134,23 +136,26 @@ export class {client.Name}ResultView {{
                         func = "LoadLink";
                     }
 
+                    var lowerFuncName = funcName.Substring(0, 1).ToLowerInvariant() + funcName.Substring(1);
+                    var upperFuncName = funcName.Substring(0, 1).ToUpperInvariant() + funcName.Substring(1);
+
                     //Write link
                     writer.WriteLine($@"
-    public {funcName}({inArgs}){linkReturnType} {{
+    public {lowerFuncName}({inArgs}){linkReturnType} {{
         return this.client.{func}(""{link.Rel}""{outArgs})
                .then(r => {{
                     return {returnClassOpen}r{returnClassClose};
                 }});
     }}
 
-    public can{funcName}(): boolean {{
+    public can{upperFuncName}(): boolean {{
         return this.client.HasLink(""{link.Rel}"");
     }}
 ");
                 }
 
                 //Close class
-                writer.WriteLine(@"
+writer.WriteLine(@"
 }");
             }
         }
