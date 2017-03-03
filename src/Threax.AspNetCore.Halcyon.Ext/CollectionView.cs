@@ -9,6 +9,10 @@ using Newtonsoft.Json;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
+    [DeclareHalLink(CollectionView<Object>.Rels.Next)]
+    [DeclareHalLink(CollectionView<Object>.Rels.Previous)]
+    [DeclareHalLink(CollectionView<Object>.Rels.First)]
+    [DeclareHalLink(CollectionView<Object>.Rels.Last)]
     public class CollectionView<T> : ICollectionView<T>, IHalLinkProvider, IQueryStringProvider
     {
         public class Rels

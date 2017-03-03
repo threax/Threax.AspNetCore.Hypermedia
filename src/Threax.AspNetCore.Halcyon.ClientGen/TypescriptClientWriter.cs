@@ -186,8 +186,7 @@ writer.WriteLine($@"
                 }
 
                 //Close class
-writer.WriteLine(@"
-}");
+writer.WriteLine("}");
             }
         }
     }
