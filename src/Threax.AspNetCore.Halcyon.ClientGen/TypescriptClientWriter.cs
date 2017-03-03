@@ -11,6 +11,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
     public class TypescriptClientWriter
     {
         private IClientGenerator clientGenerator;
+        private const String ResultClassSuffix = "Result";
 
         public TypescriptClientWriter(IClientGenerator clientGenerator)
         {
@@ -48,7 +49,7 @@ import { Fetcher } from 'hr.fetcher';"
             foreach (var client in clientGenerator.GetEndpointDefinitions())
             {
 writer.WriteLine($@"
-export class {client.Name}ResultView {{
+export class {client.Name}{ResultClassSuffix} {{
     private client: hal.HalEndpointClient;
 
     constructor(client: hal.HalEndpointClient) {{
@@ -59,6 +60,22 @@ export class {client.Name}ResultView {{
         return this.client.GetData<{client.Name}>();
     }}
 ");
+
+                if (client.IsCollectionView)
+                {
+                    var collectionType = client.CollectionType.Name;
+writer.WriteLine($@"
+    public get items(): {collectionType}{ResultClassSuffix}[] {{
+        var embeds = this.client.GetEmbed(""values"");
+        var clients = embeds.GetAllClients();
+        var result: {collectionType}{ResultClassSuffix}[] = [];
+        for (var i = 0; i < clients.length; ++i) {{
+            result.push(new {collectionType}{ResultClassSuffix}(clients[i]));
+        }}
+        return result;
+    }}
+");
+                }
 
                 foreach (var link in client.Links)
                 {
@@ -93,8 +110,8 @@ export class {client.Name}ResultView {{
                         {
                             interfacesToWrite.Add(link.EndpointDoc.ResponseSchema.Title, link.EndpointDoc.ResponseSchema);
                         }
-                        linkReturnType = $": Promise<{link.EndpointDoc.ResponseSchema.Title}ResultView>";
-                        returnClassOpen = $"new {link.EndpointDoc.ResponseSchema.Title}ResultView(";
+                        linkReturnType = $": Promise<{link.EndpointDoc.ResponseSchema.Title}{ResultClassSuffix}>";
+                        returnClassOpen = $"new {link.EndpointDoc.ResponseSchema.Title}{ResultClassSuffix}(";
                         returnClassClose = ")";
                     }
 
