@@ -22,10 +22,10 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
         {
             foreach(var type in resultViewProvider.GetResultViewTypes())
             {
-                EndpointClientDefinition clientDef = new EndpointClientDefinition(type.Name + "ResultView");
+                EndpointClientDefinition clientDef = new EndpointClientDefinition(type.Name);
                 foreach(var link in type.GetTypeInfo().GetCustomAttributes().Where(i => i is HalActionLinkAttribute).Select(i => i as HalActionLinkAttribute))
                 {
-                    var doc = endpointDocBuilder.GetDoc(link.GroupName, link.Method, link.UriTemplate);
+                    var doc = endpointDocBuilder.GetDoc(link.GroupName, link.Method, link.UriTemplate.Substring(1));
                     clientDef.Links.Add(new EndpointClientLinkDefinition(link.Rel, doc));
                 }
                 yield return clientDef;
