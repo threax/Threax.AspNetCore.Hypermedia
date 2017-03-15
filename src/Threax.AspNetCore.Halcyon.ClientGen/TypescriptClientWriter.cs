@@ -43,6 +43,30 @@ import { Fetcher } from 'hr.fetcher';"
         {
             foreach (var client in clientGenerator.GetEndpointDefinitions())
             {
+                //Write injector
+                if (client.IsEntryPoint)
+                {
+writer.WriteLine($@"
+export class {client.Name}Injector {{
+    private url: string;
+    private fetcher: Fetcher;
+    private instance: Promise<{client.Name}{ResultClassSuffix}>;
+
+    constructor(url: string, fetcher: Fetcher) {{
+        this.url = url;
+        this.fetcher = fetcher;
+    }}
+
+    public load(): Promise<{client.Name}{ResultClassSuffix}> {{
+        if (!this.instance) {{
+            this.instance = {client.Name}{ResultClassSuffix}.Load(this.url, this.fetcher);
+        }}
+
+        return this.instance;
+    }}
+}}");
+                }
+
 writer.WriteLine($@"
 export class {client.Name}{ResultClassSuffix} {{
     private client: hal.HalEndpointClient;");
