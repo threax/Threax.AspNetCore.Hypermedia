@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
-    public interface ISearchCollectionQuery : ICollectionQuery, ISearchQuery
+    public interface ISearchCollectionQuery : IPagedCollectionQuery, ISearchQuery
     {
 
     }

@@ -18,7 +18,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
             public const String Last = "last";
         }
 
-        public PagedCollectionView(ICollectionQuery query, int total, IEnumerable<T> items)
+        public PagedCollectionView(IPagedCollectionQuery query, int total, IEnumerable<T> items)
         {
             this.Items = items;
             this.Offset = query.Offset;
@@ -35,13 +35,10 @@ namespace Threax.AspNetCore.Halcyon.Ext
             }
         }
 
-        [JsonProperty]
         public int Offset { get; set; }
 
-        [JsonProperty]
         public int Limit { get; set; }
 
-        [JsonProperty]
         public int Total { get; set; }
 
         [JsonIgnore]

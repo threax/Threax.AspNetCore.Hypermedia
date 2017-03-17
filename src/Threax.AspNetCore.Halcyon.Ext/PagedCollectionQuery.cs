@@ -9,7 +9,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
     /// <summary>
     /// An interface to get the collection args from a query object.
     /// </summary>
-    public interface ICollectionQuery
+    public interface IPagedCollectionQuery
     {
         /// <summary>
         /// The number of pages (item number = Offset * Limit) into the collection to query.
@@ -22,7 +22,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         int Limit { get; set; }
     }
 
-    public static class ICollectionQueryExtensions
+    public static class IPagedCollectionQueryExtensions
     {
         /// <summary>
         /// Get the page to skip to within total, this will alter the offset
@@ -38,7 +38,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// <param name="query">The query.</param>
         /// <param name="total">The total count of items in the collection to query or null for no check.</param>
         /// <returns></returns>
-        public static int SkipTo(this ICollectionQuery query, int? total = null)
+        public static int SkipTo(this IPagedCollectionQuery query, int? total = null)
         {
             var skipTo = query.Offset * query.Limit;
             if (total.HasValue && skipTo > total)
@@ -54,7 +54,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
     /// Default implementation of ICollectionQuery.
     /// </summary>
     [HalModel]
-    public class CollectionQuery : ICollectionQuery
+    public class PagedCollectionQuery : IPagedCollectionQuery
     {
         /// <summary>
         /// The number of pages (item number = Offset * Limit) into the collection to query.
