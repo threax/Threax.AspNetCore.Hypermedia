@@ -12,13 +12,12 @@ namespace Threax.AspNetCore.Halcyon.Ext
         {
         }
 
-        public string AddQuery(string rel, string url)
+        public void AddQuery(string rel, QueryStringBuilder query)
         {
             if (rel == HalSelfActionLinkAttribute.SelfRelName && Term != null)
             {
-                url = url.AppendQueryString($"term={Term}");
+                query.AppendQueryString($"term={Term}");
             }
-            return url;
         }
 
         public String Term { get; set; }

@@ -23,16 +23,15 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// override this function.
         /// </summary>
         /// <param name="rel">The input rel.</param>
-        /// <param name="url">The url to modify.</param>
+        /// <param name="query">The query builder.</param>
         /// <returns>The customized query string.</returns>
-        protected override String AddCustomQuery(String rel, String url)
+        protected override void AddCustomQuery(String rel, QueryStringBuilder query)
         {
-            url = base.AddCustomQuery(rel, url);
+            base.AddCustomQuery(rel, query);
             if (Term != null)
             {
-                url = url.AppendQueryString($"term={Term}");
+                query.AppendQueryString($"term={Term}");
             }
-            return url;
         }
 
         public String Term { get; set; }
