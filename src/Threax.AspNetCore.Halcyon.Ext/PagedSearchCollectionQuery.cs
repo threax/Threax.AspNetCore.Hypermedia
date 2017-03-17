@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
-    public interface ISearchCollectionQuery : IPagedCollectionQuery, ISearchQuery
+    public interface IPagedSearchCollectionQuery : IPagedCollectionQuery, ISearchQuery
     {
 
     }
 
-    public class SearchCollectionQuery : ISearchCollectionQuery
+    public class PagedSearchCollectionQuery : IPagedSearchCollectionQuery
     {
         public int Limit { get; set; }
 

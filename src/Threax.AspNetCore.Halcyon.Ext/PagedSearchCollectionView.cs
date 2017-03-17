@@ -9,9 +9,9 @@ using Newtonsoft.Json;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
-    public class SearchCollectionView<T> : PagedCollectionView<T>
+    public class PagedSearchCollectionView<T> : PagedCollectionView<T>
     {
-        public SearchCollectionView(ISearchCollectionQuery query, int total, IEnumerable<T> items)
+        public PagedSearchCollectionView(IPagedSearchCollectionQuery query, int total, IEnumerable<T> items)
             :base(query, total, items)
         {
             this.Term = query.Term;
