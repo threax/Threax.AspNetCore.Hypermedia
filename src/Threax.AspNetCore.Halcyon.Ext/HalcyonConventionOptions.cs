@@ -1,5 +1,6 @@
 ﻿using Halcyon.HAL;
 using Newtonsoft.Json;
+using NJsonSchema.Generation;
 using NJsonSchema.Generation.TypeMappers;
 using System;
 using System.Collections.Generic;
@@ -30,5 +31,11 @@ namespace Microsoft.Extensions.DependencyInjection
         /// Custom json serializer settings, if needed.
         /// </summary>
         public JsonSerializerSettings JsonSerializerSettings { get; set; } = HalcyonConvention.DefaultJsonSerializerSettings;
+
+        /// <summary>
+        /// Custom json schema generator settings if needed, keep it synchronized with the JsonSerializerSettings in terms
+        /// of case and enum handling.
+        /// </summary>
+        public JsonSchemaGeneratorSettings JsonSchemaGeneratorSettings { get; set; } = HalcyonConvention.DefaultJsonSchemaGeneratorSettings;
     }
 }

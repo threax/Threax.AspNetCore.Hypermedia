@@ -44,13 +44,7 @@ namespace Microsoft.Extensions.DependencyInjection
             });
             services.TryAddScoped<ISchemaBuilder>(s =>
             {
-                var settings = new JsonSchemaGeneratorSettings()
-                {
-                    DefaultEnumHandling = EnumHandling.String,
-                    DefaultPropertyNameHandling = PropertyNameHandling.CamelCase,
-                    FlattenInheritanceHierarchy = true,
-                };
-                return new SchemaBuilder(new ValueProviderJsonSchemaGenerator(settings, s.GetRequiredService<IValueProviderResolver>()));
+                return new SchemaBuilder(new ValueProviderJsonSchemaGenerator(options.JsonSchemaGeneratorSettings, s.GetRequiredService<IValueProviderResolver>()));
             });
 
             return services;
@@ -66,6 +60,23 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 var serializerSettings = JsonSerializerSettingsProvider.CreateSerializerSettings();
                 return serializerSettings.SetToHalcyonDefault();
+            }
+        }
+
+        /// <summary>
+        /// A default setup for the json serializer settings, reccomended to use unless you want to customize.
+        /// By default it will use the StringEnumConverter and the CamelCasePropertyNamesContractResolver.
+        /// </summary>
+        public static JsonSchemaGeneratorSettings DefaultJsonSchemaGeneratorSettings
+        {
+            get
+            {
+                return new JsonSchemaGeneratorSettings()
+                {
+                    DefaultEnumHandling = EnumHandling.String,
+                    DefaultPropertyNameHandling = PropertyNameHandling.CamelCase,
+                    FlattenInheritanceHierarchy = true,
+                };
             }
         }
 
