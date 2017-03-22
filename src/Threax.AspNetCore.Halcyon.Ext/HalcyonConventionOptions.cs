@@ -1,6 +1,8 @@
 ﻿using Halcyon.HAL;
 using Newtonsoft.Json;
+using NJsonSchema.Generation.TypeMappers;
 using System;
+using System.Collections.Generic;
 using Threax.AspNetCore.Halcyon.Ext;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -23,5 +25,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// Provides info about the controller endpoint that exposes documentation. Can be null to not support documentation.
         /// </summary>
         public IHalDocEndpointInfo HalDocEndpointInfo { get; set; } = null;
+
+        /// <summary>
+        /// Custom json serializer settings, if needed.
+        /// </summary>
+        public JsonSerializerSettings JsonSerializerSettings { get; set; } = HalcyonConvention.DefaultJsonSerializerSettings;
     }
 }

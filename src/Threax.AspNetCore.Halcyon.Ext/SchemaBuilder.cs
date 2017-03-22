@@ -6,16 +6,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Threax.AspNetCore.Halcyon.Ext.ValueProviders;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
     public class SchemaBuilder : ISchemaBuilder
     {
-        JsonSchemaGeneratorSettings settings;
+        JsonSchemaGenerator generator;
 
-        public SchemaBuilder(JsonSchemaGeneratorSettings settings)
+        public SchemaBuilder(JsonSchemaGenerator generator)
         {
-            this.settings = settings;
+            this.generator = generator;
         }
 
         public JsonSchema4 GetSchema(Type type)
@@ -39,7 +40,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
             }
 
             //Finally return the schema
-            var t = JsonSchema4.FromTypeAsync(type, settings);
+            var t = generator.GenerateAsync(type);
             t.Wait();
             return t.Result;
         }

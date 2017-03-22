@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
-using System.IO;
-using Microsoft.AspNetCore.Hosting.Server.Features;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Halcyon.Web.HAL.Json;
 using Threax.AspNetCore.Halcyon.Ext;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -21,6 +12,7 @@ using Newtonsoft.Json.Converters;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using NJsonSchema.Generation;
 using NJsonSchema;
+using Threax.AspNetCore.Halcyon.Ext.ValueProviders;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -37,13 +29,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">The service collection to modify.</param>
         /// <param name="options">The options.</param>
         /// <returns></returns>
-        public static IServiceCollection AddConventionalHalcyon(this IServiceCollection services, HalcyonConventionOptions options = null)
+        public static IServiceCollection AddConventionalHalcyon(this IServiceCollection services, HalcyonConventionOptions options)
         {
-            if (options == null)
-            {
-                options = new HalcyonConventionOptions();
-            }
-
             services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.TryAddSingleton<IUrlHelperFactory, UrlHelperFactory>();
             services.TryAddSingleton<HalcyonConventionOptions>(options);
@@ -51,46 +38,68 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddScoped<HalModelResultFilterAttribute, HalModelResultFilterAttribute>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.TryAddScoped<IEndpointDocBuilder, EndpointDocBuilder>();
-            services.TryAddScoped<JsonSchemaGeneratorSettings>(s =>
+            services.TryAddScoped<IValueProviderResolver>(s =>
             {
-                return new JsonSchemaGeneratorSettings()
+                return new ValueProviderResolver(s);
+            });
+            services.TryAddScoped<ISchemaBuilder>(s =>
+            {
+                var settings = new JsonSchemaGeneratorSettings()
                 {
                     DefaultEnumHandling = EnumHandling.String,
                     DefaultPropertyNameHandling = PropertyNameHandling.CamelCase,
-                    FlattenInheritanceHierarchy = true
+                    FlattenInheritanceHierarchy = true,
                 };
+                return new SchemaBuilder(new ValueProviderJsonSchemaGenerator(settings, s.GetRequiredService<IValueProviderResolver>()));
             });
-            services.TryAddScoped<ISchemaBuilder, SchemaBuilder>();
 
             return services;
         }
 
         /// <summary>
-        /// Add Halcyon with some custom formatters that handle marked up models better. If no serializerSettings are provided
-        /// the serializer will be setup for camelcase property names and strings to enums.
+        /// A default setup for the json serializer settings, reccomended to use unless you want to customize.
+        /// By default it will use the StringEnumConverter and the CamelCasePropertyNamesContractResolver.
+        /// </summary>
+        public static JsonSerializerSettings DefaultJsonSerializerSettings
+        {
+            get
+            {
+                var serializerSettings = JsonSerializerSettingsProvider.CreateSerializerSettings();
+                return serializerSettings.SetToHalcyonDefault();
+            }
+        }
+
+        /// <summary>
+        /// Add Halcyon with some custom formatters that handle marked up models better.
         /// </summary>
         /// <param name="mvcOptions">The MVC options to extend.</param>
-        /// <param name="serializerSettings">The serializer settings. Can be null to use the default settings.</param>
+        /// <param name="options">The hal options, send the same value you sent to AddConventionalHalcyon.</param>
         /// <returns></returns>
-        public static MvcOptions UseConventionalHalcyon(this MvcOptions mvcOptions, JsonSerializerSettings serializerSettings = null)
+        public static MvcOptions UseConventionalHalcyon(this MvcOptions mvcOptions, HalcyonConventionOptions options)
         {
             mvcOptions.RespectBrowserAcceptHeader = true;
             mvcOptions.Filters.AddService(typeof(HalModelResultFilterAttribute));
 
             var mediaTypes = new string[] { "application/json+halcyon" };
-            if (serializerSettings == null)
-            {
-                serializerSettings = JsonSerializerSettingsProvider.CreateSerializerSettings();
-                serializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                serializerSettings.Converters.Add(new StringEnumConverter());
-            }
-
-            var outputFormatter = new JsonHalOutputFormatter(serializerSettings, mediaTypes);
+            var outputFormatter = new JsonHalOutputFormatter(options.JsonSerializerSettings, mediaTypes);
             mvcOptions.OutputFormatters.Add(outputFormatter);
             mvcOptions.Filters.Add(new ProducesAttribute("application/json+halcyon"));
             mvcOptions.Conventions.Add(new ApiExplorerVisibilityEnabledConvention());
 
             return mvcOptions;
+        }
+
+        /// <summary>
+        /// If using the default serializer settings you can easily apply them to mvc by calling this function
+        /// from inside AddJsonOptions when adding mvc. Otherwise you must sync your serializer settings manually.
+        /// </summary>
+        /// <param name="settings">The settings to set to default.</param>
+        /// <returns>The settings.</returns>
+        public static JsonSerializerSettings SetToHalcyonDefault(this JsonSerializerSettings settings)
+        {
+            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            settings.Converters.Add(new StringEnumConverter());
+            return settings;
         }
     }
 }
