@@ -19,6 +19,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json.Converters;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using NJsonSchema.Generation;
+using NJsonSchema;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -37,7 +39,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         public static IServiceCollection AddConventionalHalcyon(this IServiceCollection services, HalcyonConventionOptions options = null)
         {
-            if(options == null)
+            if (options == null)
             {
                 options = new HalcyonConventionOptions();
             }
@@ -49,6 +51,16 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddScoped<HalModelResultFilterAttribute, HalModelResultFilterAttribute>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.TryAddScoped<IEndpointDocBuilder, EndpointDocBuilder>();
+            services.TryAddScoped<JsonSchemaGeneratorSettings>(s =>
+            {
+                return new JsonSchemaGeneratorSettings()
+                {
+                    DefaultEnumHandling = EnumHandling.String,
+                    DefaultPropertyNameHandling = PropertyNameHandling.CamelCase,
+                    FlattenInheritanceHierarchy = true
+                };
+            });
+            services.TryAddScoped<ISchemaBuilder, SchemaBuilder>();
 
             return services;
         }
