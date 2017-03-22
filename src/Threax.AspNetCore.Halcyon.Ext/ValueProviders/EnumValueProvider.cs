@@ -71,7 +71,14 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
                 name = args.ValueProviderAttr.PropertyName;
             }
 
-            var source = new EnumSource(GetSources());
+            var sources = GetSources();
+            var source = new EnumSource(sources);
+
+            if (schemaProp.ExtensionData == null)
+            {
+                schemaProp.ExtensionData = new Dictionary<String, Object>();
+            }
+
             schemaProp.ExtensionData.Add(name, source);
         }
 
