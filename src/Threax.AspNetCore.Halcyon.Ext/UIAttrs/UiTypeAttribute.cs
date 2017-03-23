@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace Threax.AspNetCore.Halcyon.Ext.UIAttrs
 {
+    /// <summary>
+    /// Use this to alter the type of this a before sending the schema
+    /// to the ui for processing.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Property)]
     public class UiTypeAttribute : JsonSchemaExtensionDataAttribute
     {
-        public UiTypeAttribute(object value) : base("x-ui-type", value)
+        public UiTypeAttribute(String value) : base("x-ui-type", value)
         {
         }
     }
