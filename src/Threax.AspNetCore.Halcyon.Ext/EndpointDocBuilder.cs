@@ -33,8 +33,17 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 relativePath = relativePath.Substring(0, relativePath.Length - 1);
             }
 
-            var group = descriptionProvider.ApiDescriptionGroups.Items.First(i => i.GroupName == groupName);
-            var action = group.Items.First(i => i.HttpMethod == method && i.RelativePath == relativePath);
+            var group = descriptionProvider.ApiDescriptionGroups.Items.FirstOrDefault(i => i.GroupName == groupName);
+            if(group == null)
+            {
+                throw new InvalidOperationException($"Cannot find an api group for {groupName}. Did you declare a route to that group?");
+            }
+
+            var action = group.Items.FirstOrDefault(i => i.HttpMethod == method && i.RelativePath == relativePath);
+            if(action == null)
+            {
+                throw new InvalidOperationException($"Cannot find an api action for {relativePath} and method {method} in api group {groupName}.");
+            }
 
             var description = new EndpointDoc();
             Type queryModelType = null;
