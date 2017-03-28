@@ -20,7 +20,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// <summary>
         /// Create a new link based on a controller and a function.
         /// </summary>
-        /// <param name="lookupRel">The rel on the controller to lookup.</param>
+        /// <param name="rel">The rel on the controller to lookup.</param>
         /// <param name="controllerType">The controller type to lookup the rel on.</param>
         /// <param name="routeArgs">Any additional route args.</param>
         /// <param name="title">Title for the link.</param>
