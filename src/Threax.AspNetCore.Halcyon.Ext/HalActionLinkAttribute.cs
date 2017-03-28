@@ -20,12 +20,26 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// <summary>
         /// Create a new link based on a controller and a function.
         /// </summary>
-        /// <param name="rel"></param>
-        /// <param name="controllerType"></param>
-        /// <param name="routeArgs"></param>
-        /// <param name="title"></param>
+        /// <param name="lookupRel">The rel on the controller to lookup.</param>
+        /// <param name="controllerType">The controller type to lookup the rel on.</param>
+        /// <param name="routeArgs">Any additional route args.</param>
+        /// <param name="title">Title for the link.</param>
         public HalActionLinkAttribute(string rel, Type controllerType, String[] routeArgs = null, string title = null)
-            : this(rel, rel, controllerType, routeArgs, title)
+            : this(rel, rel, controllerType, routeArgs, title, null)
+        {
+            //Everything done in other constructor
+        }
+
+        /// <summary>
+        /// Remap a rel to a different name, useful for links that need a common name.
+        /// </summary>
+        /// <param name="realRel">The rel to display to the world.</param>
+        /// <param name="lookupRel">The rel on the controller to lookup.</param>
+        /// <param name="controllerType">The controller type to lookup the rel on.</param>
+        /// <param name="routeArgs">Any additional route args.</param>
+        /// <param name="title">Title for the link.</param>
+        public HalActionLinkAttribute(string realRel, string lookupRel, Type controllerType, String[] routeArgs = null, string title = null)
+            :this(realRel, lookupRel, controllerType, routeArgs, title, null)
         {
             //Everything done in other constructor
         }
