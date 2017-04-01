@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.AspNetCore.BuiltInTo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.AspNetCore.Halcyon.ClientGen", "src\Threax.AspNetCore.Halcyon.ClientGen\Threax.AspNetCore.Halcyon.ClientGen.csproj", "{70EA959D-1385-436A-A367-5D69C3C827C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Threax.NetCore.FileCopier", "Threax.NetCore.FileCopier\Threax.NetCore.FileCopier.csproj", "{CA7CC38B-2F7B-4423-A897-9D46A0F602D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.NetCore.FileCopier", "src\Threax.NetCore.FileCopier\Threax.NetCore.FileCopier.csproj", "{748AD216-15CC-49E8-AB35-92A5B1EC1030}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,10 +69,10 @@ Global
 		{70EA959D-1385-436A-A367-5D69C3C827C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70EA959D-1385-436A-A367-5D69C3C827C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70EA959D-1385-436A-A367-5D69C3C827C0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CA7CC38B-2F7B-4423-A897-9D46A0F602D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CA7CC38B-2F7B-4423-A897-9D46A0F602D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CA7CC38B-2F7B-4423-A897-9D46A0F602D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CA7CC38B-2F7B-4423-A897-9D46A0F602D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{748AD216-15CC-49E8-AB35-92A5B1EC1030}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{748AD216-15CC-49E8-AB35-92A5B1EC1030}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{748AD216-15CC-49E8-AB35-92A5B1EC1030}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{748AD216-15CC-49E8-AB35-92A5B1EC1030}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +87,6 @@ Global
 		{0F437156-E559-4749-8EA9-E788DAF07F74} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 		{29316056-EEE5-477C-9FC7-AC5C19E4A802} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 		{70EA959D-1385-436A-A367-5D69C3C827C0} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
-		{CA7CC38B-2F7B-4423-A897-9D46A0F602D3} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
+		{748AD216-15CC-49E8-AB35-92A5B1EC1030} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 	EndGlobalSection
 EndGlobal
