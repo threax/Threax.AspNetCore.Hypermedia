@@ -128,5 +128,10 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// Set to true (default) to include docs for this link. Set to false to never include docs for this link.
         /// </summary>
         public bool HasDocs { get; set; } = true;
+
+        /// <summary>
+        /// Set this to true to include only docs for the link, with no actual link.
+        /// </summary>
+        public bool DocsOnly { get; set; } = false;
     }
 }

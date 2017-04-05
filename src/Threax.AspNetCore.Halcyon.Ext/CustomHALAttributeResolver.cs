@@ -35,14 +35,17 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 {
                     if (actionLinkAttribute.CanUserAccess(context.User))
                     {
-                        var href = actionLinkAttribute.Href;
-                        if(queryProvider != null)
+                        if (!actionLinkAttribute.DocsOnly)
                         {
-                            var builder = new QueryStringBuilder();
-                            queryProvider.AddQuery(actionLinkAttribute.Rel, builder);
-                            href = builder.AddToUrl(href);
+                            var href = actionLinkAttribute.Href;
+                            if (queryProvider != null)
+                            {
+                                var builder = new QueryStringBuilder();
+                                queryProvider.AddQuery(actionLinkAttribute.Rel, builder);
+                                href = builder.AddToUrl(href);
+                            }
+                            yield return new Link(actionLinkAttribute.Rel, href, actionLinkAttribute.Title, actionLinkAttribute.Method);
                         }
-                        yield return new Link(actionLinkAttribute.Rel, href, actionLinkAttribute.Title, actionLinkAttribute.Method);
 
                         if (endpointInfo != null && actionLinkAttribute.HasDocs)
                         {

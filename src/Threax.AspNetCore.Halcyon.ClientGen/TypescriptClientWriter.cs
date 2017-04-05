@@ -201,8 +201,10 @@ writer.WriteLine($@"
                     var lowerFuncName = funcName.Substring(0, 1).ToLowerInvariant() + funcName.Substring(1);
                     var upperFuncName = funcName.Substring(0, 1).ToUpperInvariant() + funcName.Substring(1);
 
-                    //Write link
-                    writer.WriteLine($@"
+                    if (!link.DocsOnly)
+                    {
+                        //Write link
+                        writer.WriteLine($@"
     public {lowerFuncName}({inArgs}){linkReturnType} {{
         return this.client.{func}(""{link.Rel}""{outArgs})
                .then(r => {{
@@ -213,6 +215,7 @@ writer.WriteLine($@"
     public can{upperFuncName}(): boolean {{
         return this.client.HasLink(""{link.Rel}"");
     }}");
+                    }
 
                     if (link.EndpointDoc.HasDocumentation)
                     {
