@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Threax.AspNetCore.Halcyon.Ext;
 
 namespace Threax.AspNetCore.Halcyon.ClientGen
 {
@@ -138,6 +139,10 @@ writer.WriteLine($@"
                             interfacesToWrite.Add(link.EndpointDoc.QuerySchema.Title, link.EndpointDoc.QuerySchema);
                         }
                         linkQueryArg = $"query: {link.EndpointDoc.QuerySchema.Title}";
+                        if (link.EndpointDoc.QuerySchema.IsArray())
+                        {
+                            linkQueryArg += "[]";
+                        }
                     }
 
                     if (link.EndpointDoc.RequestSchema != null)
@@ -147,6 +152,10 @@ writer.WriteLine($@"
                             interfacesToWrite.Add(link.EndpointDoc.RequestSchema.Title, link.EndpointDoc.RequestSchema);
                         }
                         linkRequestArg = $"data: {link.EndpointDoc.RequestSchema.Title}";
+                        if (link.EndpointDoc.RequestSchema.IsArray())
+                        {
+                            linkRequestArg += "[]";
+                        }
                     }
 
                     if (link.EndpointDoc.ResponseSchema != null)

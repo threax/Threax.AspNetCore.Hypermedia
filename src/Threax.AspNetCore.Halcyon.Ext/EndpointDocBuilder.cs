@@ -53,7 +53,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 {
                     if (param.Source.CanAcceptDataFrom(BindingSource.Body))
                     {
-                        description.RequestSchema = schemaBuilder.GetSchema(param.Type);
+                        description.RequestSchema = schemaBuilder.GetSchema(param.Type, true);
                     }
                     else if (param.Source.CanAcceptDataFrom(BindingSource.Query))
                     {
@@ -71,7 +71,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
             if (queryModelType != null)
             {
-                description.QuerySchema = schemaBuilder.GetSchema(queryModelType);
+                description.QuerySchema = schemaBuilder.GetSchema(queryModelType, true);
             }
 
             var controllerActionDesc = action.ActionDescriptor as ControllerActionDescriptor;

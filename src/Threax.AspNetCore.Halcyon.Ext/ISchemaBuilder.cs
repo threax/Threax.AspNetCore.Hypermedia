@@ -8,6 +8,6 @@ namespace Threax.AspNetCore.Halcyon.Ext
 {
     public interface ISchemaBuilder
     {
-        JsonSchema4 GetSchema(Type type);
+        JsonSchema4 GetSchema(Type type, bool allowCollections = false);
     }
 }
