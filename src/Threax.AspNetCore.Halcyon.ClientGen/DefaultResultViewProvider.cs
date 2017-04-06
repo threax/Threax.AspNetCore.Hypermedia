@@ -22,7 +22,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
             return AllTypes().Where(i =>
             {
                 var attrs = i.GetTypeInfo().GetCustomAttributes();
-                return attrs.Any(j => j is HalModelAttribute) && attrs.Any(j => j is HalActionLinkAttribute); //Return stuff that is a hal model and has at least one action link
+                return attrs.Any(j => j is HalModelAttribute) && attrs.Any(j => j is HalActionLinkAttribute || j is DeclareHalLinkAttribute); //Return stuff that is a hal model and has at least one action link
             });
         }
 
