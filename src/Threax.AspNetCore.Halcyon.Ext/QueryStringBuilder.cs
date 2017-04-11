@@ -28,11 +28,16 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
         /// <summary>
         /// This function will append a query string to a string url while accounting
-        /// for the fact that there might be a query already.
+        /// for the fact that there might be a query already. If appendQuery is null no changes are made.
         /// </summary>
         /// <param name="appendQuery">The query to append, must already be in query format, not escaped by this function.</param>
         public void AppendQueryString(String appendQuery)
         {
+            if(appendQuery == null)
+            {
+                return;
+            }
+
             String format = "&{0}";
             if (String.IsNullOrEmpty(query))
             {
