@@ -18,7 +18,8 @@ namespace Threax.AspNetCore.Halcyon.Ext.UIAttrs
         /// Setup the ui order for this property.
         /// </summary>
         /// <param name="order">Order is optional, the default is the line number of the attribute.</param>
-        public UiOrderAttribute([CallerLineNumber] int order = 0) : base("x-ui-order", order)
+        /// <param name="offset">An offset to add to the calculated order value. Useful to try to keep order between multiple classes.</param>
+        public UiOrderAttribute(int offset = 0, [CallerLineNumber] int order = 0) : base("x-ui-order", order + offset)
         {
         }
     }
