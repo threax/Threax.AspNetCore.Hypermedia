@@ -24,7 +24,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 this.UrlTemplate += routeAttr.Template;
             }
 
-            foreach (var item in controllerTypeInfo.DeclaredMethods.Concat(controllerTypeInfo.GetMethods(BindingFlags.Public)))
+            foreach (var item in controllerTypeInfo.DeclaredMethods.Concat(controllerTypeInfo.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy)))
             {
                 //This loop will search the DeclaredMethods first since we are most likely to find the method there, then all of them
                 var relAttr = item.GetCustomAttribute<HalRelAttribute>();
