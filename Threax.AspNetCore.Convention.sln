@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EBBC3E56-D59A-447E-8021-DA2D17B6AD50}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C7333F03-3D9B-434C-84DE-B27FDD3A3743}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.AspNetCore.ClientGenerator", "src\Threax.AspNetCore.ClientGenerator\Threax.AspNetCore.ClientGenerator.csproj", "{C6992B36-B17E-4BCE-9A79-44B3DFBA1912}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.AspNetCore.Halcyon.Ext", "src\Threax.AspNetCore.Halcyon.Ext\Threax.AspNetCore.Halcyon.Ext.csproj", "{EBB729F8-6B6B-48A8-AA7E-3117B65B5A7E}"
 EndProject
@@ -25,20 +23,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.AspNetCore.BuiltInTo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.AspNetCore.Halcyon.ClientGen", "src\Threax.AspNetCore.Halcyon.ClientGen\Threax.AspNetCore.Halcyon.ClientGen.csproj", "{70EA959D-1385-436A-A367-5D69C3C827C0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.NetCore.FileCopier", "src\Threax.NetCore.FileCopier\Threax.NetCore.FileCopier.csproj", "{748AD216-15CC-49E8-AB35-92A5B1EC1030}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Threax.NetCore.FileCopier.Tests", "src\Threax.NetCore.FileCopier.Tests\Threax.NetCore.FileCopier.Tests.csproj", "{1A750620-B321-465F-A360-BFBC95D4F33B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C6992B36-B17E-4BCE-9A79-44B3DFBA1912}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C6992B36-B17E-4BCE-9A79-44B3DFBA1912}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C6992B36-B17E-4BCE-9A79-44B3DFBA1912}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C6992B36-B17E-4BCE-9A79-44B3DFBA1912}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EBB729F8-6B6B-48A8-AA7E-3117B65B5A7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EBB729F8-6B6B-48A8-AA7E-3117B65B5A7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBB729F8-6B6B-48A8-AA7E-3117B65B5A7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -71,20 +61,11 @@ Global
 		{70EA959D-1385-436A-A367-5D69C3C827C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70EA959D-1385-436A-A367-5D69C3C827C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70EA959D-1385-436A-A367-5D69C3C827C0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{748AD216-15CC-49E8-AB35-92A5B1EC1030}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{748AD216-15CC-49E8-AB35-92A5B1EC1030}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{748AD216-15CC-49E8-AB35-92A5B1EC1030}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{748AD216-15CC-49E8-AB35-92A5B1EC1030}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1A750620-B321-465F-A360-BFBC95D4F33B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1A750620-B321-465F-A360-BFBC95D4F33B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1A750620-B321-465F-A360-BFBC95D4F33B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1A750620-B321-465F-A360-BFBC95D4F33B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{C6992B36-B17E-4BCE-9A79-44B3DFBA1912} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 		{EBB729F8-6B6B-48A8-AA7E-3117B65B5A7E} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 		{0AD246DA-07AB-4F4C-AAFF-EFC13AACD49F} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 		{D8EC5447-B890-4CD7-9B48-6945BE83A8AD} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
@@ -93,7 +74,5 @@ Global
 		{0F437156-E559-4749-8EA9-E788DAF07F74} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 		{29316056-EEE5-477C-9FC7-AC5C19E4A802} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 		{70EA959D-1385-436A-A367-5D69C3C827C0} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
-		{748AD216-15CC-49E8-AB35-92A5B1EC1030} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
-		{1A750620-B321-465F-A360-BFBC95D4F33B} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 	EndGlobalSection
 EndGlobal
