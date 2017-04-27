@@ -37,5 +37,11 @@ namespace Microsoft.Extensions.DependencyInjection
         /// of case and enum handling.
         /// </summary>
         public JsonSchemaGeneratorSettings JsonSchemaGeneratorSettings { get; set; } = HalcyonConvention.DefaultJsonSchemaGeneratorSettings;
+
+        /// <summary>
+        /// When this is true (default) the HalModelResultFilterAttribute and ProducesHalAttribute will be added to all controllers.
+        /// Otherwise you must manually add these attributes to controllers that send hal results.
+        /// </summary>
+        public bool MakeAllControllersHalcyon { get; set; } = true;
     }
 }

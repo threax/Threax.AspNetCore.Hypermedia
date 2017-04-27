@@ -89,12 +89,14 @@ namespace Microsoft.Extensions.DependencyInjection
         public static MvcOptions UseConventionalHalcyon(this MvcOptions mvcOptions, HalcyonConventionOptions options)
         {
             mvcOptions.RespectBrowserAcceptHeader = true;
-            mvcOptions.Filters.AddService(typeof(HalModelResultFilterAttribute));
-
-            var mediaTypes = new string[] { "application/json+halcyon" };
+            var mediaTypes = new string[] { ProducesHalAttribute.MediaType };
             var outputFormatter = new JsonHalOutputFormatter(options.JsonSerializerSettings, mediaTypes);
             mvcOptions.OutputFormatters.Add(outputFormatter);
-            mvcOptions.Filters.Add(new ProducesAttribute("application/json+halcyon"));
+            if (options.MakeAllControllersHalcyon)
+            {
+                mvcOptions.Filters.Add(new ProducesHalAttribute());
+                mvcOptions.Filters.AddService(typeof(HalModelResultFilterAttribute));
+            }
             mvcOptions.Conventions.Add(new ApiExplorerVisibilityEnabledConvention());
 
             return mvcOptions;
