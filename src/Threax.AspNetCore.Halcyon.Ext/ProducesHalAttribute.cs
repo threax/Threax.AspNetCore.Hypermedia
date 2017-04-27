@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
-    class ProducesHalAttribute : ProducesAttribute
+    public class ProducesHalAttribute : ProducesAttribute
     {
         public const String MediaType = "application/json+halcyon";
 
