@@ -112,6 +112,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             settings.Converters.Add(new StringEnumConverter());
+            settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             return settings;
         }
     }
