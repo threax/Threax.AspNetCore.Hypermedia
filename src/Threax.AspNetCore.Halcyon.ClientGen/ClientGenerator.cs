@@ -32,7 +32,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
                     if(actionLink != null)
                     {
                         var doc = endpointDocBuilder.GetDoc(actionLink.GroupName, actionLink.Method, actionLink.UriTemplate.Substring(1));
-                        clientDef.Links.Add(new EndpointClientLinkDefinition(actionLink.Rel, doc, actionLink.DocsOnly));
+                        clientDef.AddLink(new EndpointClientLinkDefinition(actionLink.Rel, doc, actionLink.DocsOnly));
                     }
                     else
                     {
@@ -57,7 +57,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
                                 doc.ResponseSchema = oldDoc.ResponseSchema;
                             }
 
-                            clientDef.Links.Add(new EndpointClientLinkDefinition(declaredLink.Rel, doc, false));
+                            clientDef.AddLink(new EndpointClientLinkDefinition(declaredLink.Rel, doc, false));
                         }
                     }
                 }

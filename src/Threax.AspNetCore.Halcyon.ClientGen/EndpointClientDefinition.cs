@@ -12,6 +12,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
     public class EndpointClientDefinition
     {
         private const BindingFlags AllConstructorsFlags = BindingFlags.Public | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Instance;
+        private List<EndpointClientLinkDefinition> clientLinks = new List<EndpointClientLinkDefinition>();
 
         public EndpointClientDefinition()
         {
@@ -24,6 +25,15 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
             this.IsCollectionView = typeof(ICollectionView).GetTypeInfo().IsAssignableFrom(type);
             this.CollectionType = GetCollectionType(type, IsCollectionView);
             this.Schema = schema;
+        }
+
+        public void AddLink(EndpointClientLinkDefinition linkDefinition)
+        {
+            if(clientLinks.Any(i => i.Rel == linkDefinition.Rel))
+            {
+                throw new ClientGenException($"Duplicate rel {linkDefinition.Rel} on {Name}. Please remove or rename one of the links.");
+            }
+            this.clientLinks.Add(linkDefinition);
         }
 
         /// <summary>
@@ -54,7 +64,13 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
         /// <summary>
         /// The potential links this view will include.
         /// </summary>
-        public List<EndpointClientLinkDefinition> Links { get; set; } = new List<EndpointClientLinkDefinition>();
+        public IEnumerable<EndpointClientLinkDefinition> Links
+        {
+            get
+            {
+                return clientLinks;
+            }
+        }
 
         private static String GetCollectionType(Type type, bool isCollectionView)
         {
