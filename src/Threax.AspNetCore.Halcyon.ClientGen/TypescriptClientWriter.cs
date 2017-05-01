@@ -86,6 +86,8 @@ export class {client.Name}{ResultClassSuffix} {{
             }}");
                 }
 
+                //Write accessor for data
+
 writer.WriteLine($@"
     constructor(client: hal.HalEndpointClient) {{
         this.client = client;
@@ -94,6 +96,12 @@ writer.WriteLine($@"
     public get data(): {client.Name} {{
         return this.client.GetData<{client.Name}>();
     }}");
+
+                //Write data interface if we haven't found it yet
+                if (!interfacesToWrite.ContainsKey(client.Name))
+                {
+                    interfacesToWrite.Add(client.Name, client.Schema);
+                }
 
                 if (client.IsCollectionView)
                 {

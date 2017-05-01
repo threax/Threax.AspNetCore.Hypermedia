@@ -1,4 +1,5 @@
 ﻿using Halcyon.HAL.Attributes;
+using NJsonSchema;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,18 +17,24 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
         {
         }
 
-        public EndpointClientDefinition(Type type)
+        public EndpointClientDefinition(Type type, JsonSchema4 schema)
         {
             this.Name = type.Name;
             this.IsEntryPoint = type.GetTypeInfo().GetCustomAttribute(typeof(HalEntryPointAttribute)) != null;
             this.IsCollectionView = typeof(ICollectionView).GetTypeInfo().IsAssignableFrom(type);
             this.CollectionType = GetCollectionType(type, IsCollectionView);
+            this.Schema = schema;
         }
 
         /// <summary>
         /// The name of the class for this endpoint.
         /// </summary>
         public String Name { get; set; }
+
+        /// <summary>
+        /// The json schema for the type returned by this endpoint.
+        /// </summary>
+        public JsonSchema4 Schema { get; set; }
 
         /// <summary>
         /// True if this endpoint is considered an entry point to the service.

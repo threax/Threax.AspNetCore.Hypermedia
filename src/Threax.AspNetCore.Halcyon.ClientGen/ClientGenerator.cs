@@ -9,20 +9,22 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
 {
     public class ClientGenerator : IClientGenerator
     {
-        IResultViewProvider resultViewProvider;
-        IEndpointDocBuilder endpointDocBuilder;
+        private IResultViewProvider resultViewProvider;
+        private IEndpointDocBuilder endpointDocBuilder;
+        private ISchemaBuilder schemaBuilder;
 
-        public ClientGenerator(IResultViewProvider resultViewProvider, IEndpointDocBuilder endpointDocBuilder)
+        public ClientGenerator(IResultViewProvider resultViewProvider, IEndpointDocBuilder endpointDocBuilder, ISchemaBuilder schemaBuilder)
         {
             this.resultViewProvider = resultViewProvider;
             this.endpointDocBuilder = endpointDocBuilder;
+            this.schemaBuilder = schemaBuilder;
         }
 
         public IEnumerable<EndpointClientDefinition> GetEndpointDefinitions()
         {
             foreach(var type in resultViewProvider.GetResultViewTypes())
             {
-                EndpointClientDefinition clientDef = new EndpointClientDefinition(type);
+                EndpointClientDefinition clientDef = new EndpointClientDefinition(type, schemaBuilder.GetSchema(type));
                 var customAttrs = type.GetTypeInfo().GetCustomAttributes();
                 foreach (var link in customAttrs)
                 {
