@@ -1,3 +1,3 @@
 pushd %~dp0
-dotnet pack --configuration Release
+dotnet pack --include-symbols --configuration Release
 popd
