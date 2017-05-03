@@ -107,14 +107,13 @@ writer.WriteLine($@"
 
                 if (client.IsCollectionView)
                 {
-                    writer.WriteLine($@"
-    private strongItems;");
-
                     var collectionType = client.CollectionType;
                     if(collectionType == null)
                     {
                         //No collection type, write out an "any" client.
+
 writer.WriteLine($@"
+    private strongItems: any[];
     public get items(): hal.HalEndpointClient[] {{
         if(this.strongItems === undefined){{
             var embeds = this.client.GetEmbed(""values"");
@@ -127,6 +126,7 @@ writer.WriteLine($@"
                     {
                         //Collection type found, write out results for each data entry.
 writer.WriteLine($@"
+    private strongItems: {collectionType}{ResultClassSuffix}[];
     public get items(): {collectionType}{ResultClassSuffix}[] {{
         if(this.strongItems === undefined){{
             var embeds = this.client.GetEmbed(""values"");
