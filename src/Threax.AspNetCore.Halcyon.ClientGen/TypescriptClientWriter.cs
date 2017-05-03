@@ -93,8 +93,10 @@ writer.WriteLine($@"
         this.client = client;
     }}
 
+    private strongData: {client.Name} = undefined;
     public get data(): {client.Name} {{
-        return this.client.GetData<{client.Name}>();
+        this.strongData = this.strongData || this.client.GetData<{client.Name}>();
+        return this.strongData;
     }}");
 
                 //Write data interface if we haven't found it yet
@@ -105,14 +107,20 @@ writer.WriteLine($@"
 
                 if (client.IsCollectionView)
                 {
+                    writer.WriteLine($@"
+    private strongItems;");
+
                     var collectionType = client.CollectionType;
                     if(collectionType == null)
                     {
                         //No collection type, write out an "any" client.
 writer.WriteLine($@"
     public get items(): hal.HalEndpointClient[] {{
-        var embeds = this.client.GetEmbed(""values"");
-        return embeds.GetAllClients();
+        if(this.strongItems === undefined){{
+            var embeds = this.client.GetEmbed(""values"");
+            this.strongItems = embeds.GetAllClients();
+        }}
+        return this.strongItems;
     }}");
                     }
                     else
@@ -120,13 +128,15 @@ writer.WriteLine($@"
                         //Collection type found, write out results for each data entry.
 writer.WriteLine($@"
     public get items(): {collectionType}{ResultClassSuffix}[] {{
-        var embeds = this.client.GetEmbed(""values"");
-        var clients = embeds.GetAllClients();
-        var result: {collectionType}{ResultClassSuffix}[] = [];
-        for (var i = 0; i < clients.length; ++i) {{
-            result.push(new {collectionType}{ResultClassSuffix}(clients[i]));
+        if(this.strongItems === undefined){{
+            var embeds = this.client.GetEmbed(""values"");
+            var clients = embeds.GetAllClients();
+            this.strongItems = [];
+            for (var i = 0; i < clients.length; ++i) {{
+                this.strongItems.push(new {collectionType}{ResultClassSuffix}(clients[i]));
+            }}
         }}
-        return result;
+        return this.strongItems;
     }}");
                     }
                 }
