@@ -104,21 +104,21 @@ namespace Threax.AspNetCore.Halcyon.Ext
             }
         }
 
-        public void AddQuery(String rel, QueryStringBuilder query)
+        public void AddQuery(String rel, QueryStringBuilder queryString)
         {
             if (rel == HalSelfActionLinkAttribute.SelfRelName)
             {
-                AddPageQuery(rel, query, Offset, Limit);
+                AddPageQuery(rel, queryString, Offset, Limit);
             }
         }
 
-        private void AddPageQuery(String rel, QueryStringBuilder query, int? offset, int? limit)
+        private void AddPageQuery(String rel, QueryStringBuilder queryString, int? offset, int? limit)
         {
             if (offset.HasValue && limit.HasValue)
             {
-                query.AppendQueryString($"offset={offset}&limit={limit}");
+                queryString.AppendQueryString($"offset={offset}&limit={limit}");
             }
-            AddCustomQuery(rel, query);
+            AddCustomQuery(rel, queryString);
         }
 
         /// <summary>
@@ -127,9 +127,9 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// call it from your subclass.
         /// </summary>
         /// <param name="rel">The input rel.</param>
-        /// <param name="query">The query builder.</param>
+        /// <param name="queryString">The query builder.</param>
         /// <returns>The customized query string.</returns>
-        protected virtual void AddCustomQuery(String rel, QueryStringBuilder query)
+        protected virtual void AddCustomQuery(String rel, QueryStringBuilder queryString)
         {
             
         }

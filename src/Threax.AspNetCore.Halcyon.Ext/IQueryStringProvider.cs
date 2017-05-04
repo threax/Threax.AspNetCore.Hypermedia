@@ -11,8 +11,8 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// Add a query string to the passed url and return it.
         /// </summary>
         /// <param name="rel">The current rel.</param>
-        /// <param name="query">The query builder.</param>
+        /// <param name="queryString">The query builder.</param>
         /// <returns>The url with the query appended.</returns>
-        void AddQuery(String rel, QueryStringBuilder query);
+        void AddQuery(String rel, QueryStringBuilder queryString);
     }
 }
