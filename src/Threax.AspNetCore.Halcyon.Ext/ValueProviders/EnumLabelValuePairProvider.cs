@@ -9,16 +9,43 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
 {
     class EnumLabelValuePairProvider : LabelValuePairProviderSync
     {
-        TypeInfo enumTypeInfo;
+        Type enumType;
+        bool nullable;
+        PropertyInfo propertyInfo;
 
-        public EnumLabelValuePairProvider(TypeInfo enumTypeInfo)
+        public EnumLabelValuePairProvider(Type enumType, PropertyInfo propertyInfo, bool nullable)
         {
-            this.enumTypeInfo = enumTypeInfo;
+            this.enumType = enumType;
+            if (!enumType.GetTypeInfo().IsEnum)
+            {
+                throw new InvalidOperationException($"Cannot get enum values for type that is not an enum {enumType.FullName}");
+            }
+            this.nullable = nullable;
+            this.propertyInfo = propertyInfo;
         }
 
         protected override IEnumerable<LabelValuePair> GetSourcesSync()
         {
-            foreach (var member in enumTypeInfo.DeclaredFields.Where(i => i.IsStatic)) //The static decalared fields are our enum values
+            if (nullable)
+            {
+                //Include the null enum label since we can take null values
+                var labelAttribute = propertyInfo.GetCustomAttribute<NullEnumLabelAttribute>();
+                if (labelAttribute == null)
+                {
+                    labelAttribute = enumType.GetTypeInfo().GetCustomAttribute<NullEnumLabelAttribute>();
+                    if (labelAttribute == null)
+                    {
+                        labelAttribute = new NullEnumLabelAttribute();
+                    }
+                }
+                yield return new LabelValuePair()
+                {
+                    Label = labelAttribute.Label,
+                    Value = null
+                };
+            }
+
+            foreach (var member in enumType.GetTypeInfo().DeclaredFields.Where(i => i.IsStatic)) //The static decalared fields are our enum values
             {
                 var label = member.Name;
                 var display = member.GetCustomAttribute<DisplayAttribute>();

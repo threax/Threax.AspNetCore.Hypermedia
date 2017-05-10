@@ -43,9 +43,28 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
                 }
                 else //Check for and handle enums
                 {
-                    var propType = prop.GetType();
-                    var propTypeInfo = prop.PropertyType.GetTypeInfo();
-                    if (propTypeInfo.IsEnum)
+                    var propType = prop.PropertyType;
+                    var propTypeInfo = propType.GetTypeInfo();
+                    var isEnum = propTypeInfo.IsEnum;
+                    var isNullableEnum = false;
+                    if (!isEnum)
+                    {
+                        //If already found to be an enum, will not be a nullable enum, so skip that check
+                        if(propTypeInfo.IsGenericType &&
+                            propTypeInfo.GetGenericTypeDefinition() == typeof(Nullable<>))
+                        {
+                            //If this is nullable check the generic arg
+                            var nullableArgType = propTypeInfo.GetGenericArguments()[0];
+                            if (nullableArgType.GetTypeInfo().IsEnum)
+                            {
+                                //If the first arg is an enum change our type to be that
+                                isNullableEnum = true;
+                                propType = nullableArgType;
+                                propTypeInfo = nullableArgType.GetTypeInfo();
+                            }
+                        }
+                    }
+                    if (isEnum || isNullableEnum)
                     {
                         var propName = JsonReflectionUtilities.GetPropertyName(prop, Settings.DefaultPropertyNameHandling);
                         var schemaProp = schema.Properties[propName];
@@ -56,7 +75,7 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
                         schemaProp.Not = null;
                         schemaProp.OneOf.Clear();
 
-                        var labelProvider = new EnumLabelValuePairProvider(propTypeInfo);
+                        var labelProvider = new EnumLabelValuePairProvider(propType, prop, isNullableEnum);
                         switch (settings.DefaultEnumHandling)
                         {
                             case EnumHandling.Integer:
@@ -67,7 +86,7 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
                                 schemaProp.Type = JsonObjectType.String;
                                 break;
                         }
-                        await labelProvider.AddExtensions(schemaProp, new ValueProviderArgs(new ValueProviderAttribute(propType), this));
+                        await labelProvider.AddExtensions(schemaProp, new ValueProviderArgs(new ValueProviderAttribute(typeof(Object)), this));
                     }
                 }
             }
