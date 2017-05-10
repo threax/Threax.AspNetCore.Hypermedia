@@ -41,6 +41,35 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
                         throw new ValueProviderException($"Cannot find value provider {valueProviderAttr.ProviderType.Name}. It needs to be registered in the IValueProviderResolver or in services by default.");
                     }
                 }
+                else //Check for and handle enums
+                {
+                    var propType = prop.GetType();
+                    var propTypeInfo = prop.PropertyType.GetTypeInfo();
+                    if (propTypeInfo.IsEnum)
+                    {
+                        var propName = JsonReflectionUtilities.GetPropertyName(prop, Settings.DefaultPropertyNameHandling);
+                        var schemaProp = schema.Properties[propName];
+
+                        //Cleanup stuff we are not supporting right now (oneOf, anyOf, not etc).
+                        schemaProp.AllOf.Clear();
+                        schemaProp.AnyOf.Clear();
+                        schemaProp.Not = null;
+                        schemaProp.OneOf.Clear();
+
+                        var labelProvider = new EnumLabelValuePairProvider(propTypeInfo);
+                        switch (settings.DefaultEnumHandling)
+                        {
+                            case EnumHandling.Integer:
+                                schemaProp.Type = JsonObjectType.Integer;
+                                break;
+                            case EnumHandling.String:
+                            default:
+                                schemaProp.Type = JsonObjectType.String;
+                                break;
+                        }
+                        await labelProvider.AddExtensions(schemaProp, new ValueProviderArgs(new ValueProviderAttribute(propType), this));
+                    }
+                }
             }
         }
     }
