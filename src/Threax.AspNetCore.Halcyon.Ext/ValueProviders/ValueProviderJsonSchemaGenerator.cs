@@ -34,7 +34,7 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
                     IValueProvider valueProvider;
                     if (valueProviders.TryGetValueProvider(valueProviderAttr.ProviderType, out valueProvider))
                     {
-                        valueProvider.AddExtensions(schemaProp, new ValueProviderArgs(valueProviderAttr, this));
+                        await valueProvider.AddExtensions(schemaProp, new ValueProviderArgs(valueProviderAttr, this));
                     }
                     else
                     {

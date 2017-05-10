@@ -31,6 +31,12 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
 
     public interface IValueProvider
     {
-        void AddExtensions(JsonProperty schemaProp, ValueProviderArgs args);
+        /// <summary>
+        /// Add the extensions for the provided values.
+        /// </summary>
+        /// <param name="schemaProp">The schema property.</param>
+        /// <param name="args">The args.</param>
+        /// <returns>Void task.</returns>
+        Task AddExtensions(JsonProperty schemaProp, ValueProviderArgs args);
     }
 }
