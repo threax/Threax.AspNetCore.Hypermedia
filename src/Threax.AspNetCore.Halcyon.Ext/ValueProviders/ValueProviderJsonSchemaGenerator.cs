@@ -1,4 +1,5 @@
-﻿using NJsonSchema;
+﻿using Newtonsoft.Json.Serialization;
+using NJsonSchema;
 using NJsonSchema.Generation;
 using System;
 using System.Collections.Generic;
@@ -20,9 +21,9 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
             this.valueProviders = valueProviders;
         }
 
-        protected override async Task GenerateObjectAsync<TSchemaType>(Type type, TSchemaType schema, NJsonSchema.JsonSchemaResolver schemaResolver)
+        protected override async Task GenerateObjectAsync<TSchemaType>(Type type, JsonObjectContract objectContract, TSchemaType schema, JsonSchemaResolver schemaResolver)
         {
-            await base.GenerateObjectAsync<TSchemaType>(type, schema, schemaResolver);
+            await base.GenerateObjectAsync<TSchemaType>(type, objectContract, schema, schemaResolver);
 
             foreach (var prop in type.GetTypeInfo().GetProperties())
             {
