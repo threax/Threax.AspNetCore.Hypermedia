@@ -21,7 +21,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
 
         public void CreateClient(TextWriter writer)
         {
-            Dictionary<String, JsonSchema4> interfacesToWrite = new Dictionary<string, JsonSchema4>();
+            var interfacesToWrite = new InterfaceManager();
 
 writer.WriteLine(
 @"import * as hal from 'hr.halcyon.EndpointClient';
@@ -30,17 +30,27 @@ import { Fetcher } from 'hr.fetcher';"
 
             WriteClient(interfacesToWrite, writer);
 
-            foreach (var write in interfacesToWrite.Values)
+            //Write interfaces, kind of weird, no good docs for this
+            var settings = new TypeScriptGeneratorSettings()
             {
-                var generator = new TypeScriptGenerator(write);
-                generator.Settings.TypeStyle = TypeScriptTypeStyle.Interface;
-                generator.Settings.MarkOptionalProperties = true;
-                var classes = generator.GenerateType(write.Title);
-                writer.WriteLine(classes.Code);
+                TypeStyle = TypeScriptTypeStyle.Interface,
+                MarkOptionalProperties = true
+            };
+
+            var root = new Object(); //Dunno why it needs this, but this does work
+            var resolver = new TypeScriptTypeResolver(settings, root);
+            resolver.AddGenerators(interfacesToWrite.Interfaces); //Add all discovered generators
+
+            var schema = interfacesToWrite.FirstSchema;
+            if (schema != null) {
+                var generator = new TypeScriptGenerator(schema, settings, resolver, root);
+                var classes = generator.GenerateFile();
+                writer.WriteLine(classes);
             }
+            //End Write Interfaces
         }
 
-        private void WriteClient(Dictionary<string, JsonSchema4> interfacesToWrite, TextWriter writer)
+        private void WriteClient(InterfaceManager interfacesToWrite, TextWriter writer)
         {
             foreach (var client in clientGenerator.GetEndpointDefinitions())
             {
@@ -100,10 +110,7 @@ writer.WriteLine($@"
     }}");
 
                 //Write data interface if we haven't found it yet
-                if (!interfacesToWrite.ContainsKey(client.Name))
-                {
-                    interfacesToWrite.Add(client.Name, client.Schema);
-                }
+                interfacesToWrite.Add(client.Schema);
 
                 if (client.IsCollectionView)
                 {
@@ -152,10 +159,7 @@ writer.WriteLine($@"
                     //Extract any interfaces that need to be written
                     if (link.EndpointDoc.QuerySchema != null)
                     {
-                        if (!interfacesToWrite.ContainsKey(link.EndpointDoc.QuerySchema.Title))
-                        {
-                            interfacesToWrite.Add(link.EndpointDoc.QuerySchema.Title, link.EndpointDoc.QuerySchema);
-                        }
+                        interfacesToWrite.Add(link.EndpointDoc.QuerySchema);
                         linkQueryArg = $"query: {link.EndpointDoc.QuerySchema.Title}";
                         if (link.EndpointDoc.QuerySchema.IsArray())
                         {
@@ -165,10 +169,7 @@ writer.WriteLine($@"
 
                     if (link.EndpointDoc.RequestSchema != null)
                     {
-                        if (!interfacesToWrite.ContainsKey(link.EndpointDoc.RequestSchema.Title))
-                        {
-                            interfacesToWrite.Add(link.EndpointDoc.RequestSchema.Title, link.EndpointDoc.RequestSchema);
-                        }
+                        interfacesToWrite.Add(link.EndpointDoc.RequestSchema);
                         linkRequestArg = $"data: {link.EndpointDoc.RequestSchema.Title}";
                         if (link.EndpointDoc.RequestSchema.IsArray())
                         {
@@ -178,10 +179,7 @@ writer.WriteLine($@"
 
                     if (link.EndpointDoc.ResponseSchema != null)
                     {
-                        if (!interfacesToWrite.ContainsKey(link.EndpointDoc.ResponseSchema.Title))
-                        {
-                            interfacesToWrite.Add(link.EndpointDoc.ResponseSchema.Title, link.EndpointDoc.ResponseSchema);
-                        }
+                        interfacesToWrite.Add(link.EndpointDoc.ResponseSchema);
                         linkReturnType = $": Promise<{link.EndpointDoc.ResponseSchema.Title}{ResultClassSuffix}>";
                         returnClassOpen = $"new {link.EndpointDoc.ResponseSchema.Title}{ResultClassSuffix}(";
                         returnClassClose = ")";
