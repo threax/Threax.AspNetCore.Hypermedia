@@ -38,13 +38,14 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddScoped<HalModelResultFilterAttribute, HalModelResultFilterAttribute>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.TryAddScoped<IEndpointDocBuilder, EndpointDocBuilder>();
+            services.TryAddScoped<IValidSchemaTypeManager, ValidSchemaTypeManager>();
             services.TryAddScoped<IValueProviderResolver>(s =>
             {
                 return new ValueProviderResolver(s);
             });
             services.TryAddScoped<ISchemaBuilder>(s =>
             {
-                return new SchemaBuilder(new ValueProviderJsonSchemaGenerator(options.JsonSchemaGeneratorSettings, s.GetRequiredService<IValueProviderResolver>()));
+                return new SchemaBuilder(new ValueProviderJsonSchemaGenerator(options.JsonSchemaGeneratorSettings, s.GetRequiredService<IValueProviderResolver>()), s.GetRequiredService<IValidSchemaTypeManager>());
             });
 
             return services;

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using NJsonSchema;
 using NJsonSchema.Generation;
+using NJsonSchema.Generation.TypeMappers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,10 +16,12 @@ namespace Threax.AspNetCore.Halcyon.Ext
     public class SchemaBuilder : ISchemaBuilder
     {
         JsonSchemaGenerator generator;
+        IValidSchemaTypeManager validSchemaManager;
 
-        public SchemaBuilder(JsonSchemaGenerator generator)
+        public SchemaBuilder(JsonSchemaGenerator generator, IValidSchemaTypeManager validSchemaManager)
         {
             this.generator = generator;
+            this.validSchemaManager = validSchemaManager;
         }
 
         public JsonSchema4 GetSchema(Type type, bool allowEnumerables = false)
@@ -44,10 +47,9 @@ namespace Threax.AspNetCore.Halcyon.Ext
             }
 
             //Also make sure we have a HalModelAttribute on the class. 
-            var typeInfo = type.GetTypeInfo();
-            if (typeInfo.GetCustomAttribute<HalModelAttribute>() == null && type != typeof(IFormFile))
+            if (!validSchemaManager.IsValid(type))
             {
-                throw new InvalidOperationException($"{type.Name} is not a valid schema object. Declare a HalModel attribute on it to mark it valid.");
+                throw new InvalidOperationException($"{type.Name} is not a valid schema object. {validSchemaManager.ErrorMessage}");
             }
 
             //Create schema from type

@@ -155,7 +155,7 @@ writer.WriteLine($@"
                     var linkReturnType = "";
                     var linkQueryArg = "";
                     var linkRequestArg = "";
-                    var reqIsUpload = false;
+                    var reqIsForm = false;
 
                     //Extract any interfaces that need to be written
                     if (link.EndpointDoc.QuerySchema != null)
@@ -168,24 +168,21 @@ writer.WriteLine($@"
                         }
                     }
 
+                    //Only take a request or upload, prefer requests
                     if (link.EndpointDoc.RequestSchema != null)
                     {
                         interfacesToWrite.Add(link.EndpointDoc.RequestSchema);
-                        var reqType = link.EndpointDoc.RequestSchema.Title;
-                        if (link.EndpointDoc.RequestSchema.Title == "IFormFile") //If this is a file upload, use file info
+                        linkRequestArg = $"data: {link.EndpointDoc.RequestSchema.Title}";
+                        if (link.EndpointDoc.RequestSchema.IsArray())
                         {
-                            reqType = "hal.FileInfo";
-                            if (link.EndpointDoc.RequestSchema.IsArray())
-                            {
-                                reqType += " | hal.FileInfo[]";
-                            }
-                            reqIsUpload = true;
+                            linkRequestArg += "[]";
                         }
-                        else if (link.EndpointDoc.RequestSchema.IsArray())
+
+                        Object reqIsFormOut; //Type goofyness for line below
+                        if (link.EndpointDoc.RequestSchema.ExtensionData.TryGetValue("x-data-is-form", out reqIsFormOut))
                         {
-                            reqType += "[]";
+                            reqIsForm = (bool)reqIsFormOut;
                         }
-                        linkRequestArg = $"data: {reqType}";
                     }
 
                     if (link.EndpointDoc.ResponseSchema != null)
@@ -209,9 +206,9 @@ writer.WriteLine($@"
                         if (linkRequestArg != "")
                         {
                             inArgs += ", ";
-                            if (reqIsUpload)
+                            if (reqIsForm)
                             {
-                                func = "LoadLinkWithQueryAndFile";
+                                func = "LoadLinkWithQueryAndForm";
                             }
                             else
                             {
@@ -227,9 +224,9 @@ writer.WriteLine($@"
                         outArgs += ", data";
                         if (!bothArgs)
                         {
-                            if (reqIsUpload)
+                            if (reqIsForm)
                             {
-                                func = "LoadLinkWithFile";
+                                func = "LoadLinkWithForm";
                             }
                             else
                             {
