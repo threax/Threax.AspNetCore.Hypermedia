@@ -12,7 +12,7 @@
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <Version>3.0.4</Version>
+    <Version>3.0.5</Version>
     <AssemblyVersion>3.0.3.0</AssemblyVersion>
     <FileVersion>3.0.3.0</FileVersion>
   </PropertyGroup>
