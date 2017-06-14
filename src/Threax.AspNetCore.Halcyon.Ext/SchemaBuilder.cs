@@ -1,4 +1,5 @@
 ﻿using Halcyon.HAL.Attributes;
+using Microsoft.AspNetCore.Http;
 using NJsonSchema;
 using NJsonSchema.Generation;
 using System;
@@ -44,7 +45,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
             //Also make sure we have a HalModelAttribute on the class. 
             var typeInfo = type.GetTypeInfo();
-            if (typeInfo.GetCustomAttribute<HalModelAttribute>() == null)
+            if (typeInfo.GetCustomAttribute<HalModelAttribute>() == null && type != typeof(IFormFile))
             {
                 throw new InvalidOperationException($"{type.Name} is not a valid schema object. Declare a HalModel attribute on it to mark it valid.");
             }

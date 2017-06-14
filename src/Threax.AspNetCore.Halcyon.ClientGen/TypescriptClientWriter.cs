@@ -155,6 +155,7 @@ writer.WriteLine($@"
                     var linkReturnType = "";
                     var linkQueryArg = "";
                     var linkRequestArg = "";
+                    var reqIsUpload = false;
 
                     //Extract any interfaces that need to be written
                     if (link.EndpointDoc.QuerySchema != null)
@@ -170,11 +171,21 @@ writer.WriteLine($@"
                     if (link.EndpointDoc.RequestSchema != null)
                     {
                         interfacesToWrite.Add(link.EndpointDoc.RequestSchema);
-                        linkRequestArg = $"data: {link.EndpointDoc.RequestSchema.Title}";
-                        if (link.EndpointDoc.RequestSchema.IsArray())
+                        var reqType = link.EndpointDoc.RequestSchema.Title;
+                        if (link.EndpointDoc.RequestSchema.Title == "IFormFile") //If this is a file upload, use file info
                         {
-                            linkRequestArg += "[]";
+                            reqType = "FileInfo";
+                            if (link.EndpointDoc.RequestSchema.IsArray())
+                            {
+                                reqType += " | FileInfo[]";
+                            }
+                            reqIsUpload = true;
                         }
+                        else if (link.EndpointDoc.RequestSchema.IsArray())
+                        {
+                            reqType += "[]";
+                        }
+                        linkRequestArg = $"data: {reqType}";
                     }
 
                     if (link.EndpointDoc.ResponseSchema != null)
@@ -198,7 +209,14 @@ writer.WriteLine($@"
                         if (linkRequestArg != "")
                         {
                             inArgs += ", ";
-                            func = "LoadLinkWithQueryAndBody";
+                            if (reqIsUpload)
+                            {
+                                func = "LoadLinkWithQueryAndFile";
+                            }
+                            else
+                            {
+                                func = "LoadLinkWithQueryAndBody";
+                            }
                             bothArgs = true;
                         }
                     }
@@ -209,7 +227,14 @@ writer.WriteLine($@"
                         outArgs += ", data";
                         if (!bothArgs)
                         {
-                            func = "LoadLinkWithBody";
+                            if (reqIsUpload)
+                            {
+                                func = "LoadLinkWithFile";
+                            }
+                            else
+                            {
+                                func = "LoadLinkWithBody";
+                            }
                         }
                     }
 
