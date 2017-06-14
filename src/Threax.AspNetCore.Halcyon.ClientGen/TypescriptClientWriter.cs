@@ -174,10 +174,10 @@ writer.WriteLine($@"
                         var reqType = link.EndpointDoc.RequestSchema.Title;
                         if (link.EndpointDoc.RequestSchema.Title == "IFormFile") //If this is a file upload, use file info
                         {
-                            reqType = "FileInfo";
+                            reqType = "hal.FileInfo";
                             if (link.EndpointDoc.RequestSchema.IsArray())
                             {
-                                reqType += " | FileInfo[]";
+                                reqType += " | hal.FileInfo[]";
                             }
                             reqIsUpload = true;
                         }
