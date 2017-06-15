@@ -187,6 +187,9 @@ writer.WriteLine($@"
                         {
                             linkReturnType = $": Promise<hal.Response>";
                             loadFuncType = "LoadRaw";
+                            //Blank means return directly, we want to return the response
+                            returnClassOpen = "";
+                            returnClassClose = "";
                         }
                         else
                         {
@@ -262,16 +265,14 @@ writer.WriteLine($@"
                     if (!link.DocsOnly)
                     {
                         //Write link
-                        writer.WriteLine($@"
-    public {lowerFuncName}({inArgs}){linkReturnType} {{
-        return this.client.{fullLoadFunc}(""{link.Rel}""{outArgs})");
+                        writer.Write($@"
+    public async {lowerFuncName}({inArgs}){linkReturnType} {{
+        var r = await this.client.{fullLoadFunc}(""{link.Rel}""{outArgs})");
 
                         //See if there is a special class to return, otherwise return the result directly
                         if (returnClassOpen != null && returnClassClose != null) { 
-                        writer.WriteLine($@"
-               .then(r => {{
-                    return {returnClassOpen}r{returnClassClose};
-                }});");
+                        writer.Write($@"
+        return {returnClassOpen}r{returnClassClose};");
                         }
 
                         writer.WriteLine($@"
