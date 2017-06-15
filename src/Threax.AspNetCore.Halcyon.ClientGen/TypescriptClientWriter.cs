@@ -24,8 +24,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
             var interfacesToWrite = new InterfaceManager();
 
 writer.WriteLine(
-@"import * as hal from 'hr.halcyon.EndpointClient';
-import { Fetcher } from 'hr.fetcher';"
+@"import * as hal from 'hr.halcyon.EndpointClient';"
 );
 
             WriteClient(interfacesToWrite, writer);
@@ -60,10 +59,10 @@ import { Fetcher } from 'hr.fetcher';"
 writer.WriteLine($@"
 export class {client.Name}Injector {{
     private url: string;
-    private fetcher: Fetcher;
+    private fetcher: hal.Fetcher;
     private instance: Promise<{client.Name}{ResultClassSuffix}>;
 
-    constructor(url: string, fetcher: Fetcher) {{
+    constructor(url: string, fetcher: hal.Fetcher) {{
         this.url = url;
         this.fetcher = fetcher;
     }}
@@ -85,7 +84,7 @@ export class {client.Name}{ResultClassSuffix} {{
                 if (client.IsEntryPoint)
                 {
                     writer.WriteLine($@"
-    public static Load(url: string, fetcher: Fetcher): Promise<{client.Name}{ResultClassSuffix}> {{
+    public static Load(url: string, fetcher: hal.Fetcher): Promise<{client.Name}{ResultClassSuffix}> {{
         return hal.HalEndpointClient.Load({{
             href: url,
             method: ""GET""
@@ -156,6 +155,7 @@ writer.WriteLine($@"
                     var linkQueryArg = "";
                     var linkRequestArg = "";
                     var reqIsForm = false;
+                    var loadFuncType = "Load";
 
                     //Extract any interfaces that need to be written
                     if (link.EndpointDoc.QuerySchema != null)
@@ -183,10 +183,18 @@ writer.WriteLine($@"
 
                     if (link.EndpointDoc.ResponseSchema != null)
                     {
-                        interfacesToWrite.Add(link.EndpointDoc.ResponseSchema);
-                        linkReturnType = $": Promise<{link.EndpointDoc.ResponseSchema.Title}{ResultClassSuffix}>";
-                        returnClassOpen = $"new {link.EndpointDoc.ResponseSchema.Title}{ResultClassSuffix}(";
-                        returnClassClose = ")";
+                        if (link.EndpointDoc.ResponseSchema.IsRawResponse())
+                        {
+                            linkReturnType = $": Promise<hal.Response>";
+                            loadFuncType = "LoadRaw";
+                        }
+                        else
+                        {
+                            interfacesToWrite.Add(link.EndpointDoc.ResponseSchema);
+                            linkReturnType = $": Promise<{link.EndpointDoc.ResponseSchema.Title}{ResultClassSuffix}>";
+                            returnClassOpen = $"new {link.EndpointDoc.ResponseSchema.Title}{ResultClassSuffix}(";
+                            returnClassClose = ")";
+                        }
                     }
 
                     if(linkReturnType == null)
@@ -194,14 +202,14 @@ writer.WriteLine($@"
                         linkReturnType = ": Promise<void>";
                     }
 
-                    var func = "LoadLink";
+                    var loadFunc = "Link";
                     var inArgs = "";
                     var outArgs = "";
                     bool bothArgs = false;
                     if (linkQueryArg != "")
                     {
                         inArgs = linkQueryArg;
-                        func = "LoadLinkWithQuery";
+                        loadFunc = "LinkWithQuery";
                         outArgs = ", query";
 
                         if (linkRequestArg != "")
@@ -209,11 +217,11 @@ writer.WriteLine($@"
                             inArgs += ", ";
                             if (reqIsForm)
                             {
-                                func = "LoadLinkWithQueryAndForm";
+                                loadFunc = "LinkWithQueryAndForm";
                             }
                             else
                             {
-                                func = "LoadLinkWithQueryAndBody";
+                                loadFunc = "LinkWithQueryAndBody";
                             }
                             bothArgs = true;
                         }
@@ -227,11 +235,11 @@ writer.WriteLine($@"
                         {
                             if (reqIsForm)
                             {
-                                func = "LoadLinkWithForm";
+                                loadFunc = "LinkWithForm";
                             }
                             else
                             {
-                                func = "LoadLinkWithBody";
+                                loadFunc = "LinkWithBody";
                             }
                         }
                     }
@@ -243,18 +251,20 @@ writer.WriteLine($@"
                         funcName = "refresh";
                         inArgs = "";
                         outArgs = "";
-                        func = "LoadLink";
+                        loadFunc = "Link";
                     }
 
                     var lowerFuncName = funcName.Substring(0, 1).ToLowerInvariant() + funcName.Substring(1);
                     var upperFuncName = funcName.Substring(0, 1).ToUpperInvariant() + funcName.Substring(1);
+
+                    var fullLoadFunc = loadFuncType + loadFunc;
 
                     if (!link.DocsOnly)
                     {
                         //Write link
                         writer.WriteLine($@"
     public {lowerFuncName}({inArgs}){linkReturnType} {{
-        return this.client.{func}(""{link.Rel}""{outArgs})");
+        return this.client.{fullLoadFunc}(""{link.Rel}""{outArgs})");
 
                         //See if there is a special class to return, otherwise return the result directly
                         if (returnClassOpen != null && returnClassClose != null) { 
