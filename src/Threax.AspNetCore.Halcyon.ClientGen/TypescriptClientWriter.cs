@@ -13,6 +13,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
     {
         private IClientGenerator clientGenerator;
         private const String ResultClassSuffix = "Result";
+        private const string VoidReturnType = ": Promise<void>";
 
         public TypescriptClientWriter(IClientGenerator clientGenerator)
         {
@@ -149,8 +150,8 @@ writer.WriteLine($@"
 
                 foreach (var link in client.Links)
                 {
-                    String returnClassOpen = null;
-                    String returnClassClose = null;
+                    String returnOpen = null;
+                    String returnClose = null;
                     String linkReturnType = null;
                     var linkQueryArg = "";
                     var linkRequestArg = "";
@@ -187,22 +188,19 @@ writer.WriteLine($@"
                         {
                             linkReturnType = $": Promise<hal.Response>";
                             loadFuncType = "LoadRaw";
-                            //Blank means return directly, we want to return the response
-                            returnClassOpen = "";
-                            returnClassClose = "";
                         }
                         else
                         {
                             interfacesToWrite.Add(link.EndpointDoc.ResponseSchema);
                             linkReturnType = $": Promise<{link.EndpointDoc.ResponseSchema.Title}{ResultClassSuffix}>";
-                            returnClassOpen = $"new {link.EndpointDoc.ResponseSchema.Title}{ResultClassSuffix}(";
-                            returnClassClose = ")";
+                            returnOpen = $"new {link.EndpointDoc.ResponseSchema.Title}{ResultClassSuffix}(";
+                            returnClose = ")";
                         }
                     }
 
                     if(linkReturnType == null)
                     {
-                        linkReturnType = ": Promise<void>";
+                        linkReturnType = VoidReturnType;
                     }
 
                     var loadFunc = "Link";
@@ -266,13 +264,23 @@ writer.WriteLine($@"
                     {
                         //Write link
                         writer.Write($@"
-    public async {lowerFuncName}({inArgs}){linkReturnType} {{
-        var r = await this.client.{fullLoadFunc}(""{link.Rel}""{outArgs})");
+    public {lowerFuncName}({inArgs}){linkReturnType} {{
+        return this.client.{fullLoadFunc}(""{link.Rel}""{outArgs})");
 
-                        //See if there is a special class to return, otherwise return the result directly
-                        if (returnClassOpen != null && returnClassClose != null) { 
-                        writer.Write($@"
-        return {returnClassOpen}r{returnClassClose};");
+                        //If the returns are set return r, otherwise void out the promise so we don't leak on void functions
+                        if (returnOpen != null && returnClose != null) {
+                            writer.WriteLine($@"
+               .then(r => {{
+                    return {returnOpen}r{returnClose};
+                }});");
+                        }
+                        else if(linkReturnType == VoidReturnType) //Write a then that will hide the promise result and become void.
+                        {
+                            writer.Write(".then(hal.makeVoid);");
+                        }
+                        else //Returning the respose directly
+                        {
+                            writer.Write(";");
                         }
 
                         writer.WriteLine($@"
