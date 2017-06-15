@@ -13,8 +13,6 @@
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <Version>3.0.7</Version>
-    <AssemblyVersion>3.0.3.0</AssemblyVersion>
-    <FileVersion>3.0.3.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
