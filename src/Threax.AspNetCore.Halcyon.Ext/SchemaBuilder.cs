@@ -1,5 +1,6 @@
 ﻿using Halcyon.HAL.Attributes;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using NJsonSchema;
 using NJsonSchema.Generation;
 using NJsonSchema.Generation.TypeMappers;
@@ -44,6 +45,17 @@ namespace Threax.AspNetCore.Halcyon.Ext
             {
                 type = type.GenericTypeArguments.First();
                 isEnumerable = true;
+            }
+
+            //Handle action results special, mark an extension in the schema 
+            if (typeof(IActionResult).IsAssignableFrom(type))
+            {
+                var schema = new JsonSchema4()
+                {
+                    Title = "Response",
+                };
+                schema.SetRawResponse(true);
+                return schema;
             }
 
             //Also make sure we have a HalModelAttribute on the class. 

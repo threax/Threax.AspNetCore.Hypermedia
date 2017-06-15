@@ -97,7 +97,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                         if (type != null && validSchemaManager.IsValid(type))
                         {
                             description.RequestSchema = schemaBuilder.GetSchema(type, true);
-                            description.RequestSchema.ExtensionData.Add("x-data-is-form", true);
+                            description.RequestSchema.SetDataIsForm(true);
                         }
                     }
                 }
@@ -112,9 +112,10 @@ namespace Threax.AspNetCore.Halcyon.Ext
             if (controllerActionDesc != null)
             {
                 var methodInfo = controllerActionDesc.MethodInfo;
-                if (methodInfo.ReturnType != typeof(void))
+                var returnType = methodInfo.ReturnType;
+                if (returnType != typeof(void))
                 {
-                    description.ResponseSchema = schemaBuilder.GetSchema(methodInfo.ReturnType);
+                    description.ResponseSchema = schemaBuilder.GetSchema(returnType);
                 }
             }
 

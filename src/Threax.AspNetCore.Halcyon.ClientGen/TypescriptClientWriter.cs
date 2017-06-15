@@ -150,9 +150,9 @@ writer.WriteLine($@"
 
                 foreach (var link in client.Links)
                 {
-                    var returnClassOpen = "";
-                    var returnClassClose = "";
-                    var linkReturnType = "";
+                    String returnClassOpen = null;
+                    String returnClassClose = null;
+                    String linkReturnType = null;
                     var linkQueryArg = "";
                     var linkRequestArg = "";
                     var reqIsForm = false;
@@ -178,11 +178,7 @@ writer.WriteLine($@"
                             linkRequestArg += "[]";
                         }
 
-                        Object reqIsFormOut; //Type goofyness for line below
-                        if (link.EndpointDoc.RequestSchema.ExtensionData.TryGetValue("x-data-is-form", out reqIsFormOut))
-                        {
-                            reqIsForm = (bool)reqIsFormOut;
-                        }
+                        reqIsForm = link.EndpointDoc.RequestSchema.DataIsForm();
                     }
 
                     if (link.EndpointDoc.ResponseSchema != null)
@@ -191,6 +187,11 @@ writer.WriteLine($@"
                         linkReturnType = $": Promise<{link.EndpointDoc.ResponseSchema.Title}{ResultClassSuffix}>";
                         returnClassOpen = $"new {link.EndpointDoc.ResponseSchema.Title}{ResultClassSuffix}(";
                         returnClassClose = ")";
+                    }
+
+                    if(linkReturnType == null)
+                    {
+                        linkReturnType = ": Promise<void>";
                     }
 
                     var func = "LoadLink";
@@ -253,10 +254,17 @@ writer.WriteLine($@"
                         //Write link
                         writer.WriteLine($@"
     public {lowerFuncName}({inArgs}){linkReturnType} {{
-        return this.client.{func}(""{link.Rel}""{outArgs})
+        return this.client.{func}(""{link.Rel}""{outArgs})");
+
+                        //See if there is a special class to return, otherwise return the result directly
+                        if (returnClassOpen != null && returnClassClose != null) { 
+                        writer.WriteLine($@"
                .then(r => {{
                     return {returnClassOpen}r{returnClassClose};
-                }});
+                }});");
+                        }
+
+                        writer.WriteLine($@"
     }}
 
     public can{upperFuncName}(): boolean {{
