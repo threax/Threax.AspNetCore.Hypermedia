@@ -122,7 +122,7 @@ writer.WriteLine($@"
 writer.WriteLine($@"
     private strongItems: any[];
     public get items(): hal.HalEndpointClient[] {{
-        if(this.strongItems === undefined){{
+        if (this.strongItems === undefined) {{
             var embeds = this.client.GetEmbed(""values"");
             this.strongItems = embeds.GetAllClients();
         }}
@@ -135,7 +135,7 @@ writer.WriteLine($@"
 writer.WriteLine($@"
     private strongItems: {collectionType}{ResultClassSuffix}[];
     public get items(): {collectionType}{ResultClassSuffix}[] {{
-        if(this.strongItems === undefined){{
+        if (this.strongItems === undefined) {{
             var embeds = this.client.GetEmbed(""values"");
             var clients = embeds.GetAllClients();
             this.strongItems = [];
