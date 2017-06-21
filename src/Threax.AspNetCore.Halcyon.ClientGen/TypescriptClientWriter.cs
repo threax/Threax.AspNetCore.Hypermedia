@@ -61,7 +61,7 @@ writer.WriteLine($@"
 export class {client.Name}Injector {{
     private url: string;
     private fetcher: hal.Fetcher;
-    private instance: Promise<{client.Name}{ResultClassSuffix}>;
+    private instance: {client.Name}{ResultClassSuffix};
 
     constructor(url: string, fetcher: hal.Fetcher) {{
         this.url = url;
@@ -70,10 +70,13 @@ export class {client.Name}Injector {{
 
     public load(): Promise<{client.Name}{ResultClassSuffix}> {{
         if (!this.instance) {{
-            this.instance = {client.Name}{ResultClassSuffix}.Load(this.url, this.fetcher);
+            return {client.Name}{ResultClassSuffix}.Load(this.url, this.fetcher).then((r) => {{
+                this.instance = r;
+                return r;
+            }});
         }}
 
-        return this.instance;
+        return Promise.resolve(this.instance);
     }}
 }}");
                 }
