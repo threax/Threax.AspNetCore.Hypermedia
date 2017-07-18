@@ -13,8 +13,6 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
 
     public interface ILabelValuePair<T> : ILabelValuePair
     {
-        String Label { get; set; }
-
         T Value { get; set; }
     }
 }
