@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
 {
-    public class LabelValuePair
+    public class LabelValuePair<T>
     {
         public LabelValuePair()
         {
 
         }
 
-        public LabelValuePair(String label, String value)
+        public LabelValuePair(String label, T value)
         {
             this.Label = label;
             this.Value = value;
@@ -20,6 +20,20 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
 
         public String Label { get; set; }
 
-        public String Value { get; set; }
+        public T Value { get; set; }
+    }
+
+    public class LabelValuePair : LabelValuePair<String>
+    {
+        public LabelValuePair()
+        {
+
+        }
+
+        public LabelValuePair(String label, String value)
+            :base(label, value)
+        {
+            
+        }
     }
 }
