@@ -44,7 +44,7 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
         /// without needing async calls use LabelValuePairProviderSync instead.
         /// </summary>
         /// <returns></returns>
-        protected abstract Task<IEnumerable<LabelValuePair>> GetSources();
+        protected abstract Task<IEnumerable<ILabelValuePair>> GetSources();
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
         /// Seal task based GetSources().
         /// </summary>
         /// <returns></returns>
-        protected override sealed Task<IEnumerable<LabelValuePair>> GetSources()
+        protected override sealed Task<IEnumerable<ILabelValuePair>> GetSources()
         {
             return Task.FromResult(GetSourcesSync());
         }
@@ -73,6 +73,6 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
         /// class instead.
         /// </summary>
         /// <returns></returns>
-        protected abstract IEnumerable<LabelValuePair> GetSourcesSync();
+        protected abstract IEnumerable<ILabelValuePair> GetSourcesSync();
     }
 }

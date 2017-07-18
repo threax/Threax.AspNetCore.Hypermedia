@@ -24,7 +24,7 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
             this.propertyInfo = propertyInfo;
         }
 
-        protected override IEnumerable<LabelValuePair> GetSourcesSync()
+        protected override IEnumerable<ILabelValuePair> GetSourcesSync()
         {
             if (nullable)
             {

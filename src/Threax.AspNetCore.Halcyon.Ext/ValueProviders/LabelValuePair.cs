@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
 {
-    public class LabelValuePair<T>
+    public class LabelValuePair<T> : ILabelValuePair<T>
     {
         public LabelValuePair()
         {
