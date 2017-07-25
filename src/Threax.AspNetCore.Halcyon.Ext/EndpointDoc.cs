@@ -17,16 +17,19 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// <summary>
         /// The json schema for an object that represents the query to the request.
         /// </summary>
+        [JsonConverter(typeof(SchemaJsonConverter))]
         public JsonSchema4 QuerySchema { get; set; }
 
         /// <summary>
         /// The json schema for an object that is the body to the request.
         /// </summary>
+        [JsonConverter(typeof(SchemaJsonConverter))]
         public JsonSchema4 RequestSchema { get; set; }
 
         /// <summary>
         /// The json schema for an object that is the body of the response.
         /// </summary>
+        [JsonConverter(typeof(SchemaJsonConverter))]
         public JsonSchema4 ResponseSchema { get; set; }
 
         /// <summary>
