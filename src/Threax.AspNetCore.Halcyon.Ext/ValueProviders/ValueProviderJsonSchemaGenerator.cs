@@ -21,9 +21,9 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
             this.valueProviders = valueProviders;
         }
 
-        protected override async Task GenerateObjectAsync<TSchemaType>(Type type, JsonObjectContract objectContract, TSchemaType schema, JsonSchemaResolver schemaResolver)
+        protected override async Task GenerateObjectAsync<TSchemaType>(Type type, JsonContract contract, TSchemaType schema, JsonSchemaResolver schemaResolver)
         {
-            await base.GenerateObjectAsync<TSchemaType>(type, objectContract, schema, schemaResolver);
+            await base.GenerateObjectAsync<TSchemaType>(type, contract, schema, schemaResolver);
 
             foreach (var prop in type.GetTypeInfo().GetProperties())
             {
