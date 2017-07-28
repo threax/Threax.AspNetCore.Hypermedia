@@ -1,8 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NJsonSchema;
+using NJsonSchema.Generation;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using System.Text;
 
@@ -25,7 +28,17 @@ namespace Threax.AspNetCore.Halcyon.Ext
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             var jsonSchema = value as JsonSchema4;
-            writer.WriteRawValue(jsonSchema.ToJson());
+            //This single line will do the same thing, but the object is not correct, the actual code for this
+            //function does what ToJson below does, but uses json.net to serialize the schema so the settings
+            //match the rest of the system.
+            //writer.WriteRawValue(jsonSchema.ToJson(HalcyonConvention.DefaultJsonSchemaGeneratorSettings));
+            JsonSchemaReferenceUtilities.UpdateSchemaReferencePaths(jsonSchema);
+            using (var sw = new StringWriter())
+            {
+                serializer.Serialize(sw, jsonSchema);
+                var json = JsonSchemaReferenceUtilities.ConvertPropertyReferences(sw.ToString());
+                writer.WriteRawValue(json);
+            }
         }
     }
 }
