@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
 {
-    class EnumLabelValuePairProvider : LabelValuePairProviderSync
+    public class EnumLabelValuePairProvider : LabelValuePairProviderSync
     {
         Type enumType;
         bool nullable;
