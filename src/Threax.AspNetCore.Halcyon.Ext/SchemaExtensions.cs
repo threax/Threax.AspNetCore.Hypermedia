@@ -8,7 +8,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
     /// <summary>
     /// This class adds extensions to json schema for code generation.
     /// </summary>
-    public static class SchemaCustomizations
+    public static class SchemaExtensions
     {
         private const String IsArrayExt = "x-is-array";
         private const string DataIsFormExt = "x-data-is-form";

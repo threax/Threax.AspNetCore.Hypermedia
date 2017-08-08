@@ -14,12 +14,14 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
     {
         JsonSchemaGeneratorSettings settings;
         IValueProviderResolver valueProviders;
+        ISchemaCustomizerResolver schemaCustomizers;
 
-        public ValueProviderJsonSchemaGenerator(JsonSchemaGeneratorSettings settings, IValueProviderResolver valueProviders)
+        public ValueProviderJsonSchemaGenerator(JsonSchemaGeneratorSettings settings, IValueProviderResolver valueProviders, ISchemaCustomizerResolver schemaCustomizers)
             : base(settings)
         {
             this.settings = settings;
             this.valueProviders = valueProviders;
+            this.schemaCustomizers = schemaCustomizers;
         }
 
         protected override async Task GenerateObjectAsync<TSchemaType>(Type type, JsonContract contract, TSchemaType schema, JsonSchemaResolver schemaResolver)
@@ -28,10 +30,11 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
 
             foreach (var prop in type.GetTypeInfo().GetProperties())
             {
+                var propName = JsonReflectionUtilities.GetPropertyName(prop, Settings.DefaultPropertyNameHandling);
+
                 var valueProviderAttr = prop.GetCustomAttributes().FirstOrDefault(i => i.GetType() == typeof(ValueProviderAttribute)) as ValueProviderAttribute;
                 if (valueProviderAttr != null)
                 {
-                    var propName = JsonReflectionUtilities.GetPropertyName(prop, Settings.DefaultPropertyNameHandling);
                     var schemaProp = schema.Properties[propName];
                     IValueProvider valueProvider;
                     if (valueProviders.TryGetValueProvider(valueProviderAttr.ProviderType, out valueProvider))
@@ -68,7 +71,6 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
                     }
                     if (isEnum || isNullableEnum)
                     {
-                        var propName = JsonReflectionUtilities.GetPropertyName(prop, Settings.DefaultPropertyNameHandling);
                         var schemaProp = schema.Properties[propName];
 
                         //For some reason enums do not get the custom attributes, so do it here
@@ -102,6 +104,22 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
                                 break;
                         }
                         await labelProvider.AddExtensions(schemaProp, new ValueProviderArgs(new ValueProviderAttribute(typeof(Object)), this));
+                    }
+                }
+
+                //Handle any schema customizations
+                var schemaCustomizerAttr = prop.GetCustomAttributes().FirstOrDefault(i => i.GetType() == typeof(CustomizeSchemaAttribute)) as CustomizeSchemaAttribute;
+                if (schemaCustomizerAttr != null)
+                {
+                    var schemaProp = schema.Properties[propName];
+                    ISchemaCustomizer customizer;
+                    if (schemaCustomizers.TryGetValueProvider(schemaCustomizerAttr.CustomizerType, out customizer))
+                    {
+                        await customizer.Customize(new SchemaCustomizerArgs(propName, prop, schemaProp, schema));
+                    }
+                    else
+                    {
+                        throw new ValueProviderException($"Cannot find schema customizer {schemaCustomizerAttr.CustomizerType.Name}. It needs to be registered in the IValueProviderResolver or in services by default.");
                     }
                 }
             }
