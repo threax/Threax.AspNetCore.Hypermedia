@@ -13,6 +13,13 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
         bool nullable;
         PropertyInfo propertyInfo;
 
+
+        public EnumLabelValuePairProvider(Type enumType, bool nullable)
+            :this(enumType, null, nullable)
+        {
+
+        }
+
         public EnumLabelValuePairProvider(Type enumType, PropertyInfo propertyInfo, bool nullable)
         {
             this.enumType = enumType;
@@ -29,18 +36,25 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
             if (nullable)
             {
                 //Include the null enum label since we can take null values
-                var labelAttribute = propertyInfo.GetCustomAttribute<NullEnumLabelAttribute>();
-                if (labelAttribute == null)
+                NullEnumLabelAttribute nullLabel = null;
+                if (propertyInfo != null)
                 {
-                    labelAttribute = enumType.GetTypeInfo().GetCustomAttribute<NullEnumLabelAttribute>();
-                    if (labelAttribute == null)
-                    {
-                        labelAttribute = new NullEnumLabelAttribute();
-                    }
+                    nullLabel = propertyInfo.GetCustomAttribute<NullEnumLabelAttribute>();
                 }
+
+                if (nullLabel == null)
+                {
+                    nullLabel = enumType.GetTypeInfo().GetCustomAttribute<NullEnumLabelAttribute>();
+                }
+
+                if (nullLabel == null)
+                {
+                    nullLabel = new NullEnumLabelAttribute();
+                }
+
                 yield return new LabelValuePair()
                 {
-                    Label = labelAttribute.Label,
+                    Label = nullLabel.Label,
                     Value = null
                 };
             }
