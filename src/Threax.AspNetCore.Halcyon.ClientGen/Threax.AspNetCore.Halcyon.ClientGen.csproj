@@ -22,9 +22,4 @@
     <PackageReference Include="NJsonSchema.CodeGeneration.TypeScript" Version="9.4.3" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-
 </Project>
