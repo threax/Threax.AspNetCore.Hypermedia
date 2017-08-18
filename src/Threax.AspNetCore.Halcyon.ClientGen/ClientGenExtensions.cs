@@ -13,6 +13,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
             services.AddScoped<IResultViewProvider>(s => new DefaultResultViewProvider(options.SourceAssemblies));
             services.AddScoped<IClientGenerator, ClientGenerator>();
             services.AddScoped<TypescriptClientWriter>();
+            services.AddScoped<CSharpClientWriter>();
 
             return services;
         }
