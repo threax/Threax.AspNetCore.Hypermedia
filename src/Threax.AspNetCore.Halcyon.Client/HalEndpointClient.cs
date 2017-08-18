@@ -59,7 +59,20 @@ namespace Threax.AspNetCore.Halcyon.Client
             throw new InvalidOperationException($"Cannot find a link named {rel}.");
         }
 
-        public async Task<HalEndpointClient> LoadLinkWith<RequestType>(String rel, RequestType data)
+        //public async Task<HalEndpointClient> LoadLinkWithQuery<QueryType>(String rel, QueryType data)
+        //{
+        //    if (links != null)
+        //    {
+        //        var link = links[rel];
+        //        if (link != null)
+        //        {
+        //            return await Load<RequestType>(link.ToObject<HalLink>(), clientFactory, data);
+        //        }
+        //    }
+        //    throw new InvalidOperationException($"Cannot find a link named {rel}.");
+        //}
+
+        public async Task<HalEndpointClient> LoadLinkWithBody<RequestType>(String rel, RequestType data)
         {
             if (links != null)
             {
@@ -147,6 +160,32 @@ namespace Threax.AspNetCore.Halcyon.Client
                     if (data != null)
                     {
                         request.Content = new StringContent(JsonConvert.SerializeObject(data));
+                    }
+                    var response = await client.SendAsync(request);
+                    StatusCode = response.StatusCode;
+                    if ((int)StatusCode > 299)
+                    {
+                        throw new InvalidOperationException($"The HTTP status code {StatusCode} is not a valid response for this client.");
+                    }
+                    var responseString = await response.Content.ReadAsStringAsync();
+                    var responseData = JObject.Parse(responseString);
+                    links = responseData["_links"];
+                    embeds = responseData["_embedded"];
+                }
+            }
+        }
+
+        private async Task LoadWithQuery(Object query)
+        {
+            using (var client = clientFactory.GetClient())
+            {
+                using (var request = clientFactory.GetRequestMessage())
+                {
+                    request.Method = new HttpMethod(link.Method);
+                    request.RequestUri = new Uri(link.Href);
+                    if (query != null)
+                    {
+                        request.Content = new StringContent(JsonConvert.SerializeObject(query));
                     }
                     var response = await client.SendAsync(request);
                     StatusCode = response.StatusCode;

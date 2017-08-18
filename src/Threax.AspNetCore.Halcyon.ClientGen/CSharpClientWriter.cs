@@ -25,7 +25,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
             var interfacesToWrite = new InterfaceManager();
 
 writer.WriteLine(
-@"import * as hal from 'hr.halcyon.EndpointClient';"
+@"using Threax.AspNetCore.Halcyon.Client;"
 );
 
             WriteClient(interfacesToWrite, writer);
@@ -58,8 +58,8 @@ writer.WriteLine(
                 if (client.IsEntryPoint)
                 {
 writer.WriteLine($@"
-export class {client.Name}Injector {{
-    private url: string;
+public class {client.Name}Injector {{
+    private string url;
     private fetcher: hal.Fetcher;
     private instance: {client.Name}{ResultClassSuffix};
 
