@@ -1,1184 +1,1187 @@
 ﻿using Threax.AspNetCore.Halcyon.Client;
 using System.Threading.Tasks;
-using ServiceClient;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Linq;
 
-public class EntryPointsInjector
+namespace TestHalcyonApi.ServiceClient
 {
-    private string url;
-    private IHttpClientFactory fetcher;
-    private EntryPointsResult instance = default(EntryPointsResult);
 
-    EntryPointsInjector(string url, IHttpClientFactory fetcher)
+    public class EntryPointsInjector
     {
-        this.url = url;
-        this.fetcher = fetcher;
-    }
+        private string url;
+        private IHttpClientFactory fetcher;
+        private EntryPointsResult instance = default(EntryPointsResult);
 
-    public async Task<EntryPointsResult> Load()
-    {
-        if (this.instance == default(EntryPointsResult))
+        EntryPointsInjector(string url, IHttpClientFactory fetcher)
         {
-            this.instance = await EntryPointsResult.Load(this.url, this.fetcher);
+            this.url = url;
+            this.fetcher = fetcher;
         }
-        return this.instance;
-    }
-}
 
-public class EntryPointsResult
-{
-    private HalEndpointClient client;
-
-    public static async Task<EntryPointsResult> Load(string url, IHttpClientFactory fetcher)
-    {
-        var result = await HalEndpointClient.Load(new HalLink(url, "GET"), fetcher);
-        return new EntryPointsResult(result);
-    }
-
-    public EntryPointsResult(HalEndpointClient client)
-    {
-        this.client = client;
-    }
-
-    private EntryPoints strongData = default(EntryPoints);
-    public EntryPoints Data
-    {
-        get
+        public async Task<EntryPointsResult> Load()
         {
-            if (this.strongData == default(EntryPoints))
+            if (this.instance == default(EntryPointsResult))
             {
-                this.strongData = this.client.GetData<EntryPoints>();
+                this.instance = await EntryPointsResult.Load(this.url, this.fetcher);
             }
-            return this.strongData;
+            return this.instance;
         }
     }
 
-    public async Task<EntryPointsResult> Refresh()
+    public class EntryPointsResult
     {
-        var result = await this.client.LoadLink("self");
-        return new EntryPointsResult(result);
+        private HalEndpointClient client;
 
-    }
-
-    public bool CanRefresh()
-    {
-        return this.client.HasLink("self");
-    }
-
-    public async Task<HalEndpointDoc> GetRefreshDocs()
-    {
-        var result = await this.client.LoadLinkDoc("self");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasRefreshDocs()
-    {
-        return this.client.HasLinkDoc("self");
-    }
-
-    public async Task<ThingyCollectionViewResult> ListThingies(PagedCollectionQuery query)
-    {
-        var result = await this.client.LoadLinkWithQuery("listThingies", query);
-        return new ThingyCollectionViewResult(result);
-
-    }
-
-    public bool CanListThingies()
-    {
-        return this.client.HasLink("listThingies");
-    }
-
-    public async Task<HalEndpointDoc> GetListThingiesDocs()
-    {
-        var result = await this.client.LoadLinkDoc("listThingies");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasListThingiesDocs()
-    {
-        return this.client.HasLinkDoc("listThingies");
-    }
-
-    public async Task<ThingyViewResult> AddThingy(ThingyView data)
-    {
-        var result = await this.client.LoadLinkWithBody("addThingy", data);
-        return new ThingyViewResult(result);
-
-    }
-
-    public bool CanAddThingy()
-    {
-        return this.client.HasLink("addThingy");
-    }
-
-    public async Task<HalEndpointDoc> GetAddThingyDocs()
-    {
-        var result = await this.client.LoadLinkDoc("addThingy");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasAddThingyDocs()
-    {
-        return this.client.HasLinkDoc("addThingy");
-    }
-
-    public async Task<MultipartInput1Result> BeginAddMultipart()
-    {
-        var result = await this.client.LoadLink("BeginAddMultipart");
-        return new MultipartInput1Result(result);
-
-    }
-
-    public bool CanBeginAddMultipart()
-    {
-        return this.client.HasLink("BeginAddMultipart");
-    }
-
-    public async Task<HalEndpointDoc> GetBeginAddMultipartDocs()
-    {
-        var result = await this.client.LoadLinkDoc("BeginAddMultipart");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasBeginAddMultipartDocs()
-    {
-        return this.client.HasLinkDoc("BeginAddMultipart");
-    }
-
-    public async Task<HalEndpointDoc> GetUpdateThingyDocs()
-    {
-        var result = await this.client.LoadLinkDoc("updateThingy");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasUpdateThingyDocs()
-    {
-        return this.client.HasLinkDoc("updateThingy");
-    }
-
-    public async Task TestTakeListInput(IEnumerable<ThingyView> data)
-    {
-        var result = await this.client.LoadLinkWithBody("TestTakeListInput", data);
-    }
-
-    public bool CanTestTakeListInput()
-    {
-        return this.client.HasLink("TestTakeListInput");
-    }
-
-    public async Task<HalEndpointDoc> GetTestTakeListInputDocs()
-    {
-        var result = await this.client.LoadLinkDoc("TestTakeListInput");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasTestTakeListInputDocs()
-    {
-        return this.client.HasLinkDoc("TestTakeListInput");
-    }
-
-    public async Task FileInput(SingleFileInput data)
-    {
-        var result = await this.client.LoadLinkWithForm("FileInput", data);
-    }
-
-    public bool CanFileInput()
-    {
-        return this.client.HasLink("FileInput");
-    }
-
-    public async Task<HalEndpointDoc> GetFileInputDocs()
-    {
-        var result = await this.client.LoadLinkDoc("FileInput");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasFileInputDocs()
-    {
-        return this.client.HasLinkDoc("FileInput");
-    }
-
-    public async Task FileInputMultiple(MultiFileInput data)
-    {
-        var result = await this.client.LoadLinkWithForm("FileInputMultiple", data);
-    }
-
-    public bool CanFileInputMultiple()
-    {
-        return this.client.HasLink("FileInputMultiple");
-    }
-
-    public async Task<HalEndpointDoc> GetFileInputMultipleDocs()
-    {
-        var result = await this.client.LoadLinkDoc("FileInputMultiple");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasFileInputMultipleDocs()
-    {
-        return this.client.HasLinkDoc("FileInputMultiple");
-    }
-
-    public async Task FileInputQuery(PagedCollectionQuery query, SingleFileInput data)
-    {
-        var result = await this.client.LoadLinkWithQueryAndForm("FileInputQuery", query, data);
-    }
-
-    public bool CanFileInputQuery()
-    {
-        return this.client.HasLink("FileInputQuery");
-    }
-
-    public async Task<HalEndpointDoc> GetFileInputQueryDocs()
-    {
-        var result = await this.client.LoadLinkDoc("FileInputQuery");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasFileInputQueryDocs()
-    {
-        return this.client.HasLinkDoc("FileInputQuery");
-    }
-
-    public async Task FileInputMultipleQuery(PagedCollectionQuery query, MultiFileInput data)
-    {
-        var result = await this.client.LoadLinkWithQueryAndForm("FileInputMultipleQuery", query, data);
-    }
-
-    public bool CanFileInputMultipleQuery()
-    {
-        return this.client.HasLink("FileInputMultipleQuery");
-    }
-
-    public async Task<HalEndpointDoc> GetFileInputMultipleQueryDocs()
-    {
-        var result = await this.client.LoadLinkDoc("FileInputMultipleQuery");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasFileInputMultipleQueryDocs()
-    {
-        return this.client.HasLinkDoc("FileInputMultipleQuery");
-    }
-
-    public async Task<HttpResponseMessage> ReturnActionResult()
-    {
-        var result = await this.client.LoadRawLink("ReturnActionResult");
-        return result;
-    }
-
-    public bool CanReturnActionResult()
-    {
-        return this.client.HasLink("ReturnActionResult");
-    }
-
-    public async Task<HalEndpointDoc> GetReturnActionResultDocs()
-    {
-        var result = await this.client.LoadLinkDoc("ReturnActionResult");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasReturnActionResultDocs()
-    {
-        return this.client.HasLinkDoc("ReturnActionResult");
-    }
-}
-
-public class SubThingyCollectionViewResult
-{
-    private HalEndpointClient client;
-
-    public SubThingyCollectionViewResult(HalEndpointClient client)
-    {
-        this.client = client;
-    }
-
-    private SubThingyCollectionView strongData = default(SubThingyCollectionView);
-    public SubThingyCollectionView Data
-    {
-        get
+        public static async Task<EntryPointsResult> Load(string url, IHttpClientFactory fetcher)
         {
-            if (this.strongData == default(SubThingyCollectionView))
-            {
-                this.strongData = this.client.GetData<SubThingyCollectionView>();
-            }
-            return this.strongData;
+            var result = await HalEndpointClient.Load(new HalLink(url, "GET"), fetcher);
+            return new EntryPointsResult(result);
         }
-    }
 
-    private List<SubThingyViewResult> strongItems = null;
-    public List<SubThingyViewResult> Items
-    {
-        get
+        public EntryPointsResult(HalEndpointClient client)
         {
-            if (this.strongItems == null)
-            {
-                var embeds = this.client.GetEmbed("values");
-                var clients = embeds.GetAllClients();
-                this.strongItems = new List<SubThingyViewResult>(clients.Select(i => new SubThingyViewResult(i)));
-            }
-            return this.strongItems;
+            this.client = client;
         }
-    }
 
-    public async Task<SubThingyCollectionViewResult> Refresh()
-    {
-        var result = await this.client.LoadLink("self");
-        return new SubThingyCollectionViewResult(result);
-
-    }
-
-    public bool CanRefresh()
-    {
-        return this.client.HasLink("self");
-    }
-
-    public async Task<HalEndpointDoc> GetRefreshDocs()
-    {
-        var result = await this.client.LoadLinkDoc("self");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasRefreshDocs()
-    {
-        return this.client.HasLinkDoc("self");
-    }
-
-    public async Task<SubThingyCollectionViewResult> ListSubThingies()
-    {
-        var result = await this.client.LoadLink("listSubThingies");
-        return new SubThingyCollectionViewResult(result);
-
-    }
-
-    public bool CanListSubThingies()
-    {
-        return this.client.HasLink("listSubThingies");
-    }
-
-    public async Task<HalEndpointDoc> GetListSubThingiesDocs()
-    {
-        var result = await this.client.LoadLinkDoc("listSubThingies");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasListSubThingiesDocs()
-    {
-        return this.client.HasLinkDoc("listSubThingies");
-    }
-}
-
-public class SubThingyViewResult
-{
-    private HalEndpointClient client;
-
-    public SubThingyViewResult(HalEndpointClient client)
-    {
-        this.client = client;
-    }
-
-    private SubThingyView strongData = default(SubThingyView);
-    public SubThingyView Data
-    {
-        get
+        private EntryPoints strongData = default(EntryPoints);
+        public EntryPoints Data
         {
-            if (this.strongData == default(SubThingyView))
+            get
             {
-                this.strongData = this.client.GetData<SubThingyView>();
+                if (this.strongData == default(EntryPoints))
+                {
+                    this.strongData = this.client.GetData<EntryPoints>();
+                }
+                return this.strongData;
             }
-            return this.strongData;
         }
-    }
 
-    public async Task<SubThingyViewResult> Refresh()
-    {
-        var result = await this.client.LoadLink("self");
-        return new SubThingyViewResult(result);
-
-    }
-
-    public bool CanRefresh()
-    {
-        return this.client.HasLink("self");
-    }
-
-    public async Task<HalEndpointDoc> GetRefreshDocs()
-    {
-        var result = await this.client.LoadLinkDoc("self");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasRefreshDocs()
-    {
-        return this.client.HasLinkDoc("self");
-    }
-
-    public async Task<SubThingyCollectionViewResult> ListSubThingies()
-    {
-        var result = await this.client.LoadLink("listSubThingies");
-        return new SubThingyCollectionViewResult(result);
-
-    }
-
-    public bool CanListSubThingies()
-    {
-        return this.client.HasLink("listSubThingies");
-    }
-
-    public async Task<HalEndpointDoc> GetListSubThingiesDocs()
-    {
-        var result = await this.client.LoadLinkDoc("listSubThingies");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasListSubThingiesDocs()
-    {
-        return this.client.HasLinkDoc("listSubThingies");
-    }
-
-    public async Task<SubThingyViewResult> UpdateSubThingy(SubThingyView data)
-    {
-        var result = await this.client.LoadLinkWithBody("updateSubThingy", data);
-        return new SubThingyViewResult(result);
-
-    }
-
-    public bool CanUpdateSubThingy()
-    {
-        return this.client.HasLink("updateSubThingy");
-    }
-
-    public async Task<HalEndpointDoc> GetUpdateSubThingyDocs()
-    {
-        var result = await this.client.LoadLinkDoc("updateSubThingy");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasUpdateSubThingyDocs()
-    {
-        return this.client.HasLinkDoc("updateSubThingy");
-    }
-
-    public async Task DeleteSubThingy()
-    {
-        var result = await this.client.LoadLink("deleteSubThingy");
-    }
-
-    public bool CanDeleteSubThingy()
-    {
-        return this.client.HasLink("deleteSubThingy");
-    }
-
-    public async Task<SubThingyViewResult> GetSubThingy()
-    {
-        var result = await this.client.LoadLink("getSubThingy");
-        return new SubThingyViewResult(result);
-
-    }
-
-    public bool CanGetSubThingy()
-    {
-        return this.client.HasLink("getSubThingy");
-    }
-
-    public async Task<HalEndpointDoc> GetGetSubThingyDocs()
-    {
-        var result = await this.client.LoadLinkDoc("getSubThingy");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasGetSubThingyDocs()
-    {
-        return this.client.HasLinkDoc("getSubThingy");
-    }
-
-    public async Task<ThingyViewResult> GetThingy()
-    {
-        var result = await this.client.LoadLink("getThingy");
-        return new ThingyViewResult(result);
-
-    }
-
-    public bool CanGetThingy()
-    {
-        return this.client.HasLink("getThingy");
-    }
-
-    public async Task<HalEndpointDoc> GetGetThingyDocs()
-    {
-        var result = await this.client.LoadLinkDoc("getThingy");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasGetThingyDocs()
-    {
-        return this.client.HasLinkDoc("getThingy");
-    }
-}
-
-public class ThingyCollectionViewResult
-{
-    private HalEndpointClient client;
-
-    public ThingyCollectionViewResult(HalEndpointClient client)
-    {
-        this.client = client;
-    }
-
-    private ThingyCollectionView strongData = default(ThingyCollectionView);
-    public ThingyCollectionView Data
-    {
-        get
+        public async Task<EntryPointsResult> Refresh()
         {
-            if (this.strongData == default(ThingyCollectionView))
-            {
-                this.strongData = this.client.GetData<ThingyCollectionView>();
-            }
-            return this.strongData;
-        }
-    }
+            var result = await this.client.LoadLink("self");
+            return new EntryPointsResult(result);
 
-    private List<ThingyViewResult> strongItems = null;
-    public List<ThingyViewResult> Items
-    {
-        get
+        }
+
+        public bool CanRefresh()
         {
-            if (this.strongItems == null)
-            {
-                var embeds = this.client.GetEmbed("values");
-                var clients = embeds.GetAllClients();
-                this.strongItems = new List<ThingyViewResult>(clients.Select(i => new ThingyViewResult(i)));
-            }
-            return this.strongItems;
+            return this.client.HasLink("self");
         }
-    }
 
-    public async Task<ThingyCollectionViewResult> Refresh()
-    {
-        var result = await this.client.LoadLink("self");
-        return new ThingyCollectionViewResult(result);
-
-    }
-
-    public bool CanRefresh()
-    {
-        return this.client.HasLink("self");
-    }
-
-    public async Task<HalEndpointDoc> GetRefreshDocs()
-    {
-        var result = await this.client.LoadLinkDoc("self");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasRefreshDocs()
-    {
-        return this.client.HasLinkDoc("self");
-    }
-
-    public async Task<ThingyCollectionViewResult> ListThingies(PagedCollectionQuery query)
-    {
-        var result = await this.client.LoadLinkWithQuery("listThingies", query);
-        return new ThingyCollectionViewResult(result);
-
-    }
-
-    public bool CanListThingies()
-    {
-        return this.client.HasLink("listThingies");
-    }
-
-    public async Task<HalEndpointDoc> GetListThingiesDocs()
-    {
-        var result = await this.client.LoadLinkDoc("listThingies");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasListThingiesDocs()
-    {
-        return this.client.HasLinkDoc("listThingies");
-    }
-
-    public async Task<ThingyViewResult> AddThingy(ThingyView data)
-    {
-        var result = await this.client.LoadLinkWithBody("addThingy", data);
-        return new ThingyViewResult(result);
-
-    }
-
-    public bool CanAddThingy()
-    {
-        return this.client.HasLink("addThingy");
-    }
-
-    public async Task<HalEndpointDoc> GetAddThingyDocs()
-    {
-        var result = await this.client.LoadLinkDoc("addThingy");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasAddThingyDocs()
-    {
-        return this.client.HasLinkDoc("addThingy");
-    }
-
-    public async Task<ThingyCollectionViewResult> Next()
-    {
-        var result = await this.client.LoadLink("next");
-        return new ThingyCollectionViewResult(result);
-
-    }
-
-    public bool CanNext()
-    {
-        return this.client.HasLink("next");
-    }
-
-    public async Task<HalEndpointDoc> GetNextDocs()
-    {
-        var result = await this.client.LoadLinkDoc("next");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasNextDocs()
-    {
-        return this.client.HasLinkDoc("next");
-    }
-
-    public async Task<ThingyCollectionViewResult> Previous()
-    {
-        var result = await this.client.LoadLink("previous");
-        return new ThingyCollectionViewResult(result);
-
-    }
-
-    public bool CanPrevious()
-    {
-        return this.client.HasLink("previous");
-    }
-
-    public async Task<HalEndpointDoc> GetPreviousDocs()
-    {
-        var result = await this.client.LoadLinkDoc("previous");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasPreviousDocs()
-    {
-        return this.client.HasLinkDoc("previous");
-    }
-
-    public async Task<ThingyCollectionViewResult> First()
-    {
-        var result = await this.client.LoadLink("first");
-        return new ThingyCollectionViewResult(result);
-
-    }
-
-    public bool CanFirst()
-    {
-        return this.client.HasLink("first");
-    }
-
-    public async Task<HalEndpointDoc> GetFirstDocs()
-    {
-        var result = await this.client.LoadLinkDoc("first");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasFirstDocs()
-    {
-        return this.client.HasLinkDoc("first");
-    }
-
-    public async Task<ThingyCollectionViewResult> Last()
-    {
-        var result = await this.client.LoadLink("last");
-        return new ThingyCollectionViewResult(result);
-
-    }
-
-    public bool CanLast()
-    {
-        return this.client.HasLink("last");
-    }
-
-    public async Task<HalEndpointDoc> GetLastDocs()
-    {
-        var result = await this.client.LoadLinkDoc("last");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasLastDocs()
-    {
-        return this.client.HasLinkDoc("last");
-    }
-}
-
-public class ThingyViewResult
-{
-    private HalEndpointClient client;
-
-    public ThingyViewResult(HalEndpointClient client)
-    {
-        this.client = client;
-    }
-
-    private ThingyView strongData = default(ThingyView);
-    public ThingyView Data
-    {
-        get
+        public async Task<HalEndpointDoc> GetRefreshDocs()
         {
-            if (this.strongData == default(ThingyView))
-            {
-                this.strongData = this.client.GetData<ThingyView>();
-            }
-            return this.strongData;
+            var result = await this.client.LoadLinkDoc("self");
+            return result.GetData<HalEndpointDoc>();
         }
-    }
 
-    public async Task<ThingyViewResult> Refresh()
-    {
-        var result = await this.client.LoadLink("self");
-        return new ThingyViewResult(result);
-
-    }
-
-    public bool CanRefresh()
-    {
-        return this.client.HasLink("self");
-    }
-
-    public async Task<HalEndpointDoc> GetRefreshDocs()
-    {
-        var result = await this.client.LoadLinkDoc("self");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasRefreshDocs()
-    {
-        return this.client.HasLinkDoc("self");
-    }
-
-    public async Task<ThingyViewResult> GetThingy()
-    {
-        var result = await this.client.LoadLink("getThingy");
-        return new ThingyViewResult(result);
-
-    }
-
-    public bool CanGetThingy()
-    {
-        return this.client.HasLink("getThingy");
-    }
-
-    public async Task<HalEndpointDoc> GetGetThingyDocs()
-    {
-        var result = await this.client.LoadLinkDoc("getThingy");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasGetThingyDocs()
-    {
-        return this.client.HasLinkDoc("getThingy");
-    }
-
-    public async Task<ThingyViewResult> UpdateThingy(ThingyView data)
-    {
-        var result = await this.client.LoadLinkWithBody("updateThingy", data);
-        return new ThingyViewResult(result);
-
-    }
-
-    public bool CanUpdateThingy()
-    {
-        return this.client.HasLink("updateThingy");
-    }
-
-    public async Task<HalEndpointDoc> GetUpdateThingyDocs()
-    {
-        var result = await this.client.LoadLinkDoc("updateThingy");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasUpdateThingyDocs()
-    {
-        return this.client.HasLinkDoc("updateThingy");
-    }
-
-    public async Task DeleteThingy()
-    {
-        var result = await this.client.LoadLink("deleteThingy");
-    }
-
-    public bool CanDeleteThingy()
-    {
-        return this.client.HasLink("deleteThingy");
-    }
-
-    public async Task<SubThingyCollectionViewResult> ListThingySubThingies()
-    {
-        var result = await this.client.LoadLink("listThingySubThingies");
-        return new SubThingyCollectionViewResult(result);
-
-    }
-
-    public bool CanListThingySubThingies()
-    {
-        return this.client.HasLink("listThingySubThingies");
-    }
-
-    public async Task<HalEndpointDoc> GetListThingySubThingiesDocs()
-    {
-        var result = await this.client.LoadLinkDoc("listThingySubThingies");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasListThingySubThingiesDocs()
-    {
-        return this.client.HasLinkDoc("listThingySubThingies");
-    }
-
-    public async Task<SubThingyViewResult> AddSubThingy(SubThingyView data)
-    {
-        var result = await this.client.LoadLinkWithBody("addSubThingy", data);
-        return new SubThingyViewResult(result);
-
-    }
-
-    public bool CanAddSubThingy()
-    {
-        return this.client.HasLink("addSubThingy");
-    }
-
-    public async Task<HalEndpointDoc> GetAddSubThingyDocs()
-    {
-        var result = await this.client.LoadLinkDoc("addSubThingy");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasAddSubThingyDocs()
-    {
-        return this.client.HasLinkDoc("addSubThingy");
-    }
-
-    public async Task AuthorizedpropertiesThingies()
-    {
-        var result = await this.client.LoadLink("authorizedpropertiesThingies");
-    }
-
-    public bool CanAuthorizedpropertiesThingies()
-    {
-        return this.client.HasLink("authorizedpropertiesThingies");
-    }
-
-    public async Task RolepropertiesThingies()
-    {
-        var result = await this.client.LoadLink("rolepropertiesThingies");
-    }
-
-    public bool CanRolepropertiesThingies()
-    {
-        return this.client.HasLink("rolepropertiesThingies");
-    }
-
-    public async Task TestDeclareLinkToRel(PagedCollectionQuery query)
-    {
-        var result = await this.client.LoadLinkWithQuery("testDeclareLinkToRel", query);
-    }
-
-    public bool CanTestDeclareLinkToRel()
-    {
-        return this.client.HasLink("testDeclareLinkToRel");
-    }
-
-    public async Task<HalEndpointDoc> GetTestDeclareLinkToRelDocs()
-    {
-        var result = await this.client.LoadLinkDoc("testDeclareLinkToRel");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasTestDeclareLinkToRelDocs()
-    {
-        return this.client.HasLinkDoc("testDeclareLinkToRel");
-    }
-}
-
-public class MultipartInput1Result
-{
-    private HalEndpointClient client;
-
-    public MultipartInput1Result(HalEndpointClient client)
-    {
-        this.client = client;
-    }
-
-    private MultipartInput1 strongData = default(MultipartInput1);
-    public MultipartInput1 Data
-    {
-        get
+        public bool HasRefreshDocs()
         {
-            if (this.strongData == default(MultipartInput1))
-            {
-                this.strongData = this.client.GetData<MultipartInput1>();
-            }
-            return this.strongData;
+            return this.client.HasLinkDoc("self");
         }
-    }
 
-    public async Task<MultipartInput1Result> Previous()
-    {
-        var result = await this.client.LoadLink("previous");
-        return new MultipartInput1Result(result);
-
-    }
-
-    public bool CanPrevious()
-    {
-        return this.client.HasLink("previous");
-    }
-
-    public async Task<HalEndpointDoc> GetPreviousDocs()
-    {
-        var result = await this.client.LoadLinkDoc("previous");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasPreviousDocs()
-    {
-        return this.client.HasLinkDoc("previous");
-    }
-
-    public async Task<MultipartInput2Result> Next()
-    {
-        var result = await this.client.LoadLink("next");
-        return new MultipartInput2Result(result);
-
-    }
-
-    public bool CanNext()
-    {
-        return this.client.HasLink("next");
-    }
-
-    public async Task<HalEndpointDoc> GetNextDocs()
-    {
-        var result = await this.client.LoadLinkDoc("next");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasNextDocs()
-    {
-        return this.client.HasLinkDoc("next");
-    }
-
-    public async Task<MultipartInput1Result> Save(MultipartInput1 data)
-    {
-        var result = await this.client.LoadLinkWithBody("save", data);
-        return new MultipartInput1Result(result);
-
-    }
-
-    public bool CanSave()
-    {
-        return this.client.HasLink("save");
-    }
-
-    public async Task<HalEndpointDoc> GetSaveDocs()
-    {
-        var result = await this.client.LoadLinkDoc("save");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasSaveDocs()
-    {
-        return this.client.HasLinkDoc("save");
-    }
-}
-
-public class MultipartInput2Result
-{
-    private HalEndpointClient client;
-
-    public MultipartInput2Result(HalEndpointClient client)
-    {
-        this.client = client;
-    }
-
-    private MultipartInput2 strongData = default(MultipartInput2);
-    public MultipartInput2 Data
-    {
-        get
+        public async Task<ThingyCollectionViewResult> ListThingies(PagedCollectionQuery query)
         {
-            if (this.strongData == default(MultipartInput2))
-            {
-                this.strongData = this.client.GetData<MultipartInput2>();
-            }
-            return this.strongData;
+            var result = await this.client.LoadLinkWithQuery("listThingies", query);
+            return new ThingyCollectionViewResult(result);
+
         }
-    }
 
-    public async Task<MultipartInput1Result> Previous()
-    {
-        var result = await this.client.LoadLink("previous");
-        return new MultipartInput1Result(result);
-
-    }
-
-    public bool CanPrevious()
-    {
-        return this.client.HasLink("previous");
-    }
-
-    public async Task<HalEndpointDoc> GetPreviousDocs()
-    {
-        var result = await this.client.LoadLinkDoc("previous");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasPreviousDocs()
-    {
-        return this.client.HasLinkDoc("previous");
-    }
-
-    public async Task<MultipartInput3Result> Next()
-    {
-        var result = await this.client.LoadLink("next");
-        return new MultipartInput3Result(result);
-
-    }
-
-    public bool CanNext()
-    {
-        return this.client.HasLink("next");
-    }
-
-    public async Task<HalEndpointDoc> GetNextDocs()
-    {
-        var result = await this.client.LoadLinkDoc("next");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasNextDocs()
-    {
-        return this.client.HasLinkDoc("next");
-    }
-
-    public async Task<MultipartInput2Result> Save(MultipartInput2 data)
-    {
-        var result = await this.client.LoadLinkWithBody("save", data);
-        return new MultipartInput2Result(result);
-
-    }
-
-    public bool CanSave()
-    {
-        return this.client.HasLink("save");
-    }
-
-    public async Task<HalEndpointDoc> GetSaveDocs()
-    {
-        var result = await this.client.LoadLinkDoc("save");
-        return result.GetData<HalEndpointDoc>();
-    }
-
-    public bool HasSaveDocs()
-    {
-        return this.client.HasLinkDoc("save");
-    }
-}
-
-public class MultipartInput3Result
-{
-    private HalEndpointClient client;
-
-    public MultipartInput3Result(HalEndpointClient client)
-    {
-        this.client = client;
-    }
-
-    private MultipartInput3 strongData = default(MultipartInput3);
-    public MultipartInput3 Data
-    {
-        get
+        public bool CanListThingies()
         {
-            if (this.strongData == default(MultipartInput3))
-            {
-                this.strongData = this.client.GetData<MultipartInput3>();
-            }
-            return this.strongData;
+            return this.client.HasLink("listThingies");
+        }
+
+        public async Task<HalEndpointDoc> GetListThingiesDocs()
+        {
+            var result = await this.client.LoadLinkDoc("listThingies");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasListThingiesDocs()
+        {
+            return this.client.HasLinkDoc("listThingies");
+        }
+
+        public async Task<ThingyViewResult> AddThingy(ThingyView data)
+        {
+            var result = await this.client.LoadLinkWithBody("addThingy", data);
+            return new ThingyViewResult(result);
+
+        }
+
+        public bool CanAddThingy()
+        {
+            return this.client.HasLink("addThingy");
+        }
+
+        public async Task<HalEndpointDoc> GetAddThingyDocs()
+        {
+            var result = await this.client.LoadLinkDoc("addThingy");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasAddThingyDocs()
+        {
+            return this.client.HasLinkDoc("addThingy");
+        }
+
+        public async Task<MultipartInput1Result> BeginAddMultipart()
+        {
+            var result = await this.client.LoadLink("BeginAddMultipart");
+            return new MultipartInput1Result(result);
+
+        }
+
+        public bool CanBeginAddMultipart()
+        {
+            return this.client.HasLink("BeginAddMultipart");
+        }
+
+        public async Task<HalEndpointDoc> GetBeginAddMultipartDocs()
+        {
+            var result = await this.client.LoadLinkDoc("BeginAddMultipart");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasBeginAddMultipartDocs()
+        {
+            return this.client.HasLinkDoc("BeginAddMultipart");
+        }
+
+        public async Task<HalEndpointDoc> GetUpdateThingyDocs()
+        {
+            var result = await this.client.LoadLinkDoc("updateThingy");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasUpdateThingyDocs()
+        {
+            return this.client.HasLinkDoc("updateThingy");
+        }
+
+        public async Task TestTakeListInput(IEnumerable<ThingyView> data)
+        {
+            var result = await this.client.LoadLinkWithBody("TestTakeListInput", data);
+        }
+
+        public bool CanTestTakeListInput()
+        {
+            return this.client.HasLink("TestTakeListInput");
+        }
+
+        public async Task<HalEndpointDoc> GetTestTakeListInputDocs()
+        {
+            var result = await this.client.LoadLinkDoc("TestTakeListInput");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasTestTakeListInputDocs()
+        {
+            return this.client.HasLinkDoc("TestTakeListInput");
+        }
+
+        public async Task FileInput(SingleFileInput data)
+        {
+            var result = await this.client.LoadLinkWithForm("FileInput", data);
+        }
+
+        public bool CanFileInput()
+        {
+            return this.client.HasLink("FileInput");
+        }
+
+        public async Task<HalEndpointDoc> GetFileInputDocs()
+        {
+            var result = await this.client.LoadLinkDoc("FileInput");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasFileInputDocs()
+        {
+            return this.client.HasLinkDoc("FileInput");
+        }
+
+        public async Task FileInputMultiple(MultiFileInput data)
+        {
+            var result = await this.client.LoadLinkWithForm("FileInputMultiple", data);
+        }
+
+        public bool CanFileInputMultiple()
+        {
+            return this.client.HasLink("FileInputMultiple");
+        }
+
+        public async Task<HalEndpointDoc> GetFileInputMultipleDocs()
+        {
+            var result = await this.client.LoadLinkDoc("FileInputMultiple");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasFileInputMultipleDocs()
+        {
+            return this.client.HasLinkDoc("FileInputMultiple");
+        }
+
+        public async Task FileInputQuery(PagedCollectionQuery query, SingleFileInput data)
+        {
+            var result = await this.client.LoadLinkWithQueryAndForm("FileInputQuery", query, data);
+        }
+
+        public bool CanFileInputQuery()
+        {
+            return this.client.HasLink("FileInputQuery");
+        }
+
+        public async Task<HalEndpointDoc> GetFileInputQueryDocs()
+        {
+            var result = await this.client.LoadLinkDoc("FileInputQuery");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasFileInputQueryDocs()
+        {
+            return this.client.HasLinkDoc("FileInputQuery");
+        }
+
+        public async Task FileInputMultipleQuery(PagedCollectionQuery query, MultiFileInput data)
+        {
+            var result = await this.client.LoadLinkWithQueryAndForm("FileInputMultipleQuery", query, data);
+        }
+
+        public bool CanFileInputMultipleQuery()
+        {
+            return this.client.HasLink("FileInputMultipleQuery");
+        }
+
+        public async Task<HalEndpointDoc> GetFileInputMultipleQueryDocs()
+        {
+            var result = await this.client.LoadLinkDoc("FileInputMultipleQuery");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasFileInputMultipleQueryDocs()
+        {
+            return this.client.HasLinkDoc("FileInputMultipleQuery");
+        }
+
+        public async Task<HttpResponseMessage> ReturnActionResult()
+        {
+            var result = await this.client.LoadRawLink("ReturnActionResult");
+            return result;
+        }
+
+        public bool CanReturnActionResult()
+        {
+            return this.client.HasLink("ReturnActionResult");
+        }
+
+        public async Task<HalEndpointDoc> GetReturnActionResultDocs()
+        {
+            var result = await this.client.LoadLinkDoc("ReturnActionResult");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasReturnActionResultDocs()
+        {
+            return this.client.HasLinkDoc("ReturnActionResult");
         }
     }
 
-    public async Task<MultipartInput2Result> Previous()
+    public class SubThingyCollectionViewResult
     {
-        var result = await this.client.LoadLink("previous");
-        return new MultipartInput2Result(result);
+        private HalEndpointClient client;
 
+        public SubThingyCollectionViewResult(HalEndpointClient client)
+        {
+            this.client = client;
+        }
+
+        private SubThingyCollectionView strongData = default(SubThingyCollectionView);
+        public SubThingyCollectionView Data
+        {
+            get
+            {
+                if (this.strongData == default(SubThingyCollectionView))
+                {
+                    this.strongData = this.client.GetData<SubThingyCollectionView>();
+                }
+                return this.strongData;
+            }
+        }
+
+        private List<SubThingyViewResult> strongItems = null;
+        public List<SubThingyViewResult> Items
+        {
+            get
+            {
+                if (this.strongItems == null)
+                {
+                    var embeds = this.client.GetEmbed("values");
+                    var clients = embeds.GetAllClients();
+                    this.strongItems = new List<SubThingyViewResult>(clients.Select(i => new SubThingyViewResult(i)));
+                }
+                return this.strongItems;
+            }
+        }
+
+        public async Task<SubThingyCollectionViewResult> Refresh()
+        {
+            var result = await this.client.LoadLink("self");
+            return new SubThingyCollectionViewResult(result);
+
+        }
+
+        public bool CanRefresh()
+        {
+            return this.client.HasLink("self");
+        }
+
+        public async Task<HalEndpointDoc> GetRefreshDocs()
+        {
+            var result = await this.client.LoadLinkDoc("self");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasRefreshDocs()
+        {
+            return this.client.HasLinkDoc("self");
+        }
+
+        public async Task<SubThingyCollectionViewResult> ListSubThingies()
+        {
+            var result = await this.client.LoadLink("listSubThingies");
+            return new SubThingyCollectionViewResult(result);
+
+        }
+
+        public bool CanListSubThingies()
+        {
+            return this.client.HasLink("listSubThingies");
+        }
+
+        public async Task<HalEndpointDoc> GetListSubThingiesDocs()
+        {
+            var result = await this.client.LoadLinkDoc("listSubThingies");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasListSubThingiesDocs()
+        {
+            return this.client.HasLinkDoc("listSubThingies");
+        }
     }
 
-    public bool CanPrevious()
+    public class SubThingyViewResult
     {
-        return this.client.HasLink("previous");
+        private HalEndpointClient client;
+
+        public SubThingyViewResult(HalEndpointClient client)
+        {
+            this.client = client;
+        }
+
+        private SubThingyView strongData = default(SubThingyView);
+        public SubThingyView Data
+        {
+            get
+            {
+                if (this.strongData == default(SubThingyView))
+                {
+                    this.strongData = this.client.GetData<SubThingyView>();
+                }
+                return this.strongData;
+            }
+        }
+
+        public async Task<SubThingyViewResult> Refresh()
+        {
+            var result = await this.client.LoadLink("self");
+            return new SubThingyViewResult(result);
+
+        }
+
+        public bool CanRefresh()
+        {
+            return this.client.HasLink("self");
+        }
+
+        public async Task<HalEndpointDoc> GetRefreshDocs()
+        {
+            var result = await this.client.LoadLinkDoc("self");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasRefreshDocs()
+        {
+            return this.client.HasLinkDoc("self");
+        }
+
+        public async Task<SubThingyCollectionViewResult> ListSubThingies()
+        {
+            var result = await this.client.LoadLink("listSubThingies");
+            return new SubThingyCollectionViewResult(result);
+
+        }
+
+        public bool CanListSubThingies()
+        {
+            return this.client.HasLink("listSubThingies");
+        }
+
+        public async Task<HalEndpointDoc> GetListSubThingiesDocs()
+        {
+            var result = await this.client.LoadLinkDoc("listSubThingies");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasListSubThingiesDocs()
+        {
+            return this.client.HasLinkDoc("listSubThingies");
+        }
+
+        public async Task<SubThingyViewResult> UpdateSubThingy(SubThingyView data)
+        {
+            var result = await this.client.LoadLinkWithBody("updateSubThingy", data);
+            return new SubThingyViewResult(result);
+
+        }
+
+        public bool CanUpdateSubThingy()
+        {
+            return this.client.HasLink("updateSubThingy");
+        }
+
+        public async Task<HalEndpointDoc> GetUpdateSubThingyDocs()
+        {
+            var result = await this.client.LoadLinkDoc("updateSubThingy");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasUpdateSubThingyDocs()
+        {
+            return this.client.HasLinkDoc("updateSubThingy");
+        }
+
+        public async Task DeleteSubThingy()
+        {
+            var result = await this.client.LoadLink("deleteSubThingy");
+        }
+
+        public bool CanDeleteSubThingy()
+        {
+            return this.client.HasLink("deleteSubThingy");
+        }
+
+        public async Task<SubThingyViewResult> GetSubThingy()
+        {
+            var result = await this.client.LoadLink("getSubThingy");
+            return new SubThingyViewResult(result);
+
+        }
+
+        public bool CanGetSubThingy()
+        {
+            return this.client.HasLink("getSubThingy");
+        }
+
+        public async Task<HalEndpointDoc> GetGetSubThingyDocs()
+        {
+            var result = await this.client.LoadLinkDoc("getSubThingy");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasGetSubThingyDocs()
+        {
+            return this.client.HasLinkDoc("getSubThingy");
+        }
+
+        public async Task<ThingyViewResult> GetThingy()
+        {
+            var result = await this.client.LoadLink("getThingy");
+            return new ThingyViewResult(result);
+
+        }
+
+        public bool CanGetThingy()
+        {
+            return this.client.HasLink("getThingy");
+        }
+
+        public async Task<HalEndpointDoc> GetGetThingyDocs()
+        {
+            var result = await this.client.LoadLinkDoc("getThingy");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasGetThingyDocs()
+        {
+            return this.client.HasLinkDoc("getThingy");
+        }
     }
 
-    public async Task<HalEndpointDoc> GetPreviousDocs()
+    public class ThingyCollectionViewResult
     {
-        var result = await this.client.LoadLinkDoc("previous");
-        return result.GetData<HalEndpointDoc>();
+        private HalEndpointClient client;
+
+        public ThingyCollectionViewResult(HalEndpointClient client)
+        {
+            this.client = client;
+        }
+
+        private ThingyCollectionView strongData = default(ThingyCollectionView);
+        public ThingyCollectionView Data
+        {
+            get
+            {
+                if (this.strongData == default(ThingyCollectionView))
+                {
+                    this.strongData = this.client.GetData<ThingyCollectionView>();
+                }
+                return this.strongData;
+            }
+        }
+
+        private List<ThingyViewResult> strongItems = null;
+        public List<ThingyViewResult> Items
+        {
+            get
+            {
+                if (this.strongItems == null)
+                {
+                    var embeds = this.client.GetEmbed("values");
+                    var clients = embeds.GetAllClients();
+                    this.strongItems = new List<ThingyViewResult>(clients.Select(i => new ThingyViewResult(i)));
+                }
+                return this.strongItems;
+            }
+        }
+
+        public async Task<ThingyCollectionViewResult> Refresh()
+        {
+            var result = await this.client.LoadLink("self");
+            return new ThingyCollectionViewResult(result);
+
+        }
+
+        public bool CanRefresh()
+        {
+            return this.client.HasLink("self");
+        }
+
+        public async Task<HalEndpointDoc> GetRefreshDocs()
+        {
+            var result = await this.client.LoadLinkDoc("self");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasRefreshDocs()
+        {
+            return this.client.HasLinkDoc("self");
+        }
+
+        public async Task<ThingyCollectionViewResult> ListThingies(PagedCollectionQuery query)
+        {
+            var result = await this.client.LoadLinkWithQuery("listThingies", query);
+            return new ThingyCollectionViewResult(result);
+
+        }
+
+        public bool CanListThingies()
+        {
+            return this.client.HasLink("listThingies");
+        }
+
+        public async Task<HalEndpointDoc> GetListThingiesDocs()
+        {
+            var result = await this.client.LoadLinkDoc("listThingies");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasListThingiesDocs()
+        {
+            return this.client.HasLinkDoc("listThingies");
+        }
+
+        public async Task<ThingyViewResult> AddThingy(ThingyView data)
+        {
+            var result = await this.client.LoadLinkWithBody("addThingy", data);
+            return new ThingyViewResult(result);
+
+        }
+
+        public bool CanAddThingy()
+        {
+            return this.client.HasLink("addThingy");
+        }
+
+        public async Task<HalEndpointDoc> GetAddThingyDocs()
+        {
+            var result = await this.client.LoadLinkDoc("addThingy");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasAddThingyDocs()
+        {
+            return this.client.HasLinkDoc("addThingy");
+        }
+
+        public async Task<ThingyCollectionViewResult> Next()
+        {
+            var result = await this.client.LoadLink("next");
+            return new ThingyCollectionViewResult(result);
+
+        }
+
+        public bool CanNext()
+        {
+            return this.client.HasLink("next");
+        }
+
+        public async Task<HalEndpointDoc> GetNextDocs()
+        {
+            var result = await this.client.LoadLinkDoc("next");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasNextDocs()
+        {
+            return this.client.HasLinkDoc("next");
+        }
+
+        public async Task<ThingyCollectionViewResult> Previous()
+        {
+            var result = await this.client.LoadLink("previous");
+            return new ThingyCollectionViewResult(result);
+
+        }
+
+        public bool CanPrevious()
+        {
+            return this.client.HasLink("previous");
+        }
+
+        public async Task<HalEndpointDoc> GetPreviousDocs()
+        {
+            var result = await this.client.LoadLinkDoc("previous");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasPreviousDocs()
+        {
+            return this.client.HasLinkDoc("previous");
+        }
+
+        public async Task<ThingyCollectionViewResult> First()
+        {
+            var result = await this.client.LoadLink("first");
+            return new ThingyCollectionViewResult(result);
+
+        }
+
+        public bool CanFirst()
+        {
+            return this.client.HasLink("first");
+        }
+
+        public async Task<HalEndpointDoc> GetFirstDocs()
+        {
+            var result = await this.client.LoadLinkDoc("first");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasFirstDocs()
+        {
+            return this.client.HasLinkDoc("first");
+        }
+
+        public async Task<ThingyCollectionViewResult> Last()
+        {
+            var result = await this.client.LoadLink("last");
+            return new ThingyCollectionViewResult(result);
+
+        }
+
+        public bool CanLast()
+        {
+            return this.client.HasLink("last");
+        }
+
+        public async Task<HalEndpointDoc> GetLastDocs()
+        {
+            var result = await this.client.LoadLinkDoc("last");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasLastDocs()
+        {
+            return this.client.HasLinkDoc("last");
+        }
     }
 
-    public bool HasPreviousDocs()
+    public class ThingyViewResult
     {
-        return this.client.HasLinkDoc("previous");
+        private HalEndpointClient client;
+
+        public ThingyViewResult(HalEndpointClient client)
+        {
+            this.client = client;
+        }
+
+        private ThingyView strongData = default(ThingyView);
+        public ThingyView Data
+        {
+            get
+            {
+                if (this.strongData == default(ThingyView))
+                {
+                    this.strongData = this.client.GetData<ThingyView>();
+                }
+                return this.strongData;
+            }
+        }
+
+        public async Task<ThingyViewResult> Refresh()
+        {
+            var result = await this.client.LoadLink("self");
+            return new ThingyViewResult(result);
+
+        }
+
+        public bool CanRefresh()
+        {
+            return this.client.HasLink("self");
+        }
+
+        public async Task<HalEndpointDoc> GetRefreshDocs()
+        {
+            var result = await this.client.LoadLinkDoc("self");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasRefreshDocs()
+        {
+            return this.client.HasLinkDoc("self");
+        }
+
+        public async Task<ThingyViewResult> GetThingy()
+        {
+            var result = await this.client.LoadLink("getThingy");
+            return new ThingyViewResult(result);
+
+        }
+
+        public bool CanGetThingy()
+        {
+            return this.client.HasLink("getThingy");
+        }
+
+        public async Task<HalEndpointDoc> GetGetThingyDocs()
+        {
+            var result = await this.client.LoadLinkDoc("getThingy");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasGetThingyDocs()
+        {
+            return this.client.HasLinkDoc("getThingy");
+        }
+
+        public async Task<ThingyViewResult> UpdateThingy(ThingyView data)
+        {
+            var result = await this.client.LoadLinkWithBody("updateThingy", data);
+            return new ThingyViewResult(result);
+
+        }
+
+        public bool CanUpdateThingy()
+        {
+            return this.client.HasLink("updateThingy");
+        }
+
+        public async Task<HalEndpointDoc> GetUpdateThingyDocs()
+        {
+            var result = await this.client.LoadLinkDoc("updateThingy");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasUpdateThingyDocs()
+        {
+            return this.client.HasLinkDoc("updateThingy");
+        }
+
+        public async Task DeleteThingy()
+        {
+            var result = await this.client.LoadLink("deleteThingy");
+        }
+
+        public bool CanDeleteThingy()
+        {
+            return this.client.HasLink("deleteThingy");
+        }
+
+        public async Task<SubThingyCollectionViewResult> ListThingySubThingies()
+        {
+            var result = await this.client.LoadLink("listThingySubThingies");
+            return new SubThingyCollectionViewResult(result);
+
+        }
+
+        public bool CanListThingySubThingies()
+        {
+            return this.client.HasLink("listThingySubThingies");
+        }
+
+        public async Task<HalEndpointDoc> GetListThingySubThingiesDocs()
+        {
+            var result = await this.client.LoadLinkDoc("listThingySubThingies");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasListThingySubThingiesDocs()
+        {
+            return this.client.HasLinkDoc("listThingySubThingies");
+        }
+
+        public async Task<SubThingyViewResult> AddSubThingy(SubThingyView data)
+        {
+            var result = await this.client.LoadLinkWithBody("addSubThingy", data);
+            return new SubThingyViewResult(result);
+
+        }
+
+        public bool CanAddSubThingy()
+        {
+            return this.client.HasLink("addSubThingy");
+        }
+
+        public async Task<HalEndpointDoc> GetAddSubThingyDocs()
+        {
+            var result = await this.client.LoadLinkDoc("addSubThingy");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasAddSubThingyDocs()
+        {
+            return this.client.HasLinkDoc("addSubThingy");
+        }
+
+        public async Task AuthorizedpropertiesThingies()
+        {
+            var result = await this.client.LoadLink("authorizedpropertiesThingies");
+        }
+
+        public bool CanAuthorizedpropertiesThingies()
+        {
+            return this.client.HasLink("authorizedpropertiesThingies");
+        }
+
+        public async Task RolepropertiesThingies()
+        {
+            var result = await this.client.LoadLink("rolepropertiesThingies");
+        }
+
+        public bool CanRolepropertiesThingies()
+        {
+            return this.client.HasLink("rolepropertiesThingies");
+        }
+
+        public async Task TestDeclareLinkToRel(PagedCollectionQuery query)
+        {
+            var result = await this.client.LoadLinkWithQuery("testDeclareLinkToRel", query);
+        }
+
+        public bool CanTestDeclareLinkToRel()
+        {
+            return this.client.HasLink("testDeclareLinkToRel");
+        }
+
+        public async Task<HalEndpointDoc> GetTestDeclareLinkToRelDocs()
+        {
+            var result = await this.client.LoadLinkDoc("testDeclareLinkToRel");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasTestDeclareLinkToRelDocs()
+        {
+            return this.client.HasLinkDoc("testDeclareLinkToRel");
+        }
     }
 
-    public async Task<MultipartInput3Result> Next()
+    public class MultipartInput1Result
     {
-        var result = await this.client.LoadLink("next");
-        return new MultipartInput3Result(result);
+        private HalEndpointClient client;
 
+        public MultipartInput1Result(HalEndpointClient client)
+        {
+            this.client = client;
+        }
+
+        private MultipartInput1 strongData = default(MultipartInput1);
+        public MultipartInput1 Data
+        {
+            get
+            {
+                if (this.strongData == default(MultipartInput1))
+                {
+                    this.strongData = this.client.GetData<MultipartInput1>();
+                }
+                return this.strongData;
+            }
+        }
+
+        public async Task<MultipartInput1Result> Previous()
+        {
+            var result = await this.client.LoadLink("previous");
+            return new MultipartInput1Result(result);
+
+        }
+
+        public bool CanPrevious()
+        {
+            return this.client.HasLink("previous");
+        }
+
+        public async Task<HalEndpointDoc> GetPreviousDocs()
+        {
+            var result = await this.client.LoadLinkDoc("previous");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasPreviousDocs()
+        {
+            return this.client.HasLinkDoc("previous");
+        }
+
+        public async Task<MultipartInput2Result> Next()
+        {
+            var result = await this.client.LoadLink("next");
+            return new MultipartInput2Result(result);
+
+        }
+
+        public bool CanNext()
+        {
+            return this.client.HasLink("next");
+        }
+
+        public async Task<HalEndpointDoc> GetNextDocs()
+        {
+            var result = await this.client.LoadLinkDoc("next");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasNextDocs()
+        {
+            return this.client.HasLinkDoc("next");
+        }
+
+        public async Task<MultipartInput1Result> Save(MultipartInput1 data)
+        {
+            var result = await this.client.LoadLinkWithBody("save", data);
+            return new MultipartInput1Result(result);
+
+        }
+
+        public bool CanSave()
+        {
+            return this.client.HasLink("save");
+        }
+
+        public async Task<HalEndpointDoc> GetSaveDocs()
+        {
+            var result = await this.client.LoadLinkDoc("save");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasSaveDocs()
+        {
+            return this.client.HasLinkDoc("save");
+        }
     }
 
-    public bool CanNext()
+    public class MultipartInput2Result
     {
-        return this.client.HasLink("next");
+        private HalEndpointClient client;
+
+        public MultipartInput2Result(HalEndpointClient client)
+        {
+            this.client = client;
+        }
+
+        private MultipartInput2 strongData = default(MultipartInput2);
+        public MultipartInput2 Data
+        {
+            get
+            {
+                if (this.strongData == default(MultipartInput2))
+                {
+                    this.strongData = this.client.GetData<MultipartInput2>();
+                }
+                return this.strongData;
+            }
+        }
+
+        public async Task<MultipartInput1Result> Previous()
+        {
+            var result = await this.client.LoadLink("previous");
+            return new MultipartInput1Result(result);
+
+        }
+
+        public bool CanPrevious()
+        {
+            return this.client.HasLink("previous");
+        }
+
+        public async Task<HalEndpointDoc> GetPreviousDocs()
+        {
+            var result = await this.client.LoadLinkDoc("previous");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasPreviousDocs()
+        {
+            return this.client.HasLinkDoc("previous");
+        }
+
+        public async Task<MultipartInput3Result> Next()
+        {
+            var result = await this.client.LoadLink("next");
+            return new MultipartInput3Result(result);
+
+        }
+
+        public bool CanNext()
+        {
+            return this.client.HasLink("next");
+        }
+
+        public async Task<HalEndpointDoc> GetNextDocs()
+        {
+            var result = await this.client.LoadLinkDoc("next");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasNextDocs()
+        {
+            return this.client.HasLinkDoc("next");
+        }
+
+        public async Task<MultipartInput2Result> Save(MultipartInput2 data)
+        {
+            var result = await this.client.LoadLinkWithBody("save", data);
+            return new MultipartInput2Result(result);
+
+        }
+
+        public bool CanSave()
+        {
+            return this.client.HasLink("save");
+        }
+
+        public async Task<HalEndpointDoc> GetSaveDocs()
+        {
+            var result = await this.client.LoadLinkDoc("save");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasSaveDocs()
+        {
+            return this.client.HasLinkDoc("save");
+        }
     }
 
-    public async Task<HalEndpointDoc> GetNextDocs()
+    public class MultipartInput3Result
     {
-        var result = await this.client.LoadLinkDoc("next");
-        return result.GetData<HalEndpointDoc>();
-    }
+        private HalEndpointClient client;
 
-    public bool HasNextDocs()
-    {
-        return this.client.HasLinkDoc("next");
-    }
+        public MultipartInput3Result(HalEndpointClient client)
+        {
+            this.client = client;
+        }
 
-    public async Task<MultipartInput3Result> Save(MultipartInput3 data)
-    {
-        var result = await this.client.LoadLinkWithBody("save", data);
-        return new MultipartInput3Result(result);
+        private MultipartInput3 strongData = default(MultipartInput3);
+        public MultipartInput3 Data
+        {
+            get
+            {
+                if (this.strongData == default(MultipartInput3))
+                {
+                    this.strongData = this.client.GetData<MultipartInput3>();
+                }
+                return this.strongData;
+            }
+        }
 
-    }
+        public async Task<MultipartInput2Result> Previous()
+        {
+            var result = await this.client.LoadLink("previous");
+            return new MultipartInput2Result(result);
 
-    public bool CanSave()
-    {
-        return this.client.HasLink("save");
-    }
+        }
 
-    public async Task<HalEndpointDoc> GetSaveDocs()
-    {
-        var result = await this.client.LoadLinkDoc("save");
-        return result.GetData<HalEndpointDoc>();
-    }
+        public bool CanPrevious()
+        {
+            return this.client.HasLink("previous");
+        }
 
-    public bool HasSaveDocs()
-    {
-        return this.client.HasLinkDoc("save");
+        public async Task<HalEndpointDoc> GetPreviousDocs()
+        {
+            var result = await this.client.LoadLinkDoc("previous");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasPreviousDocs()
+        {
+            return this.client.HasLinkDoc("previous");
+        }
+
+        public async Task<MultipartInput3Result> Next()
+        {
+            var result = await this.client.LoadLink("next");
+            return new MultipartInput3Result(result);
+
+        }
+
+        public bool CanNext()
+        {
+            return this.client.HasLink("next");
+        }
+
+        public async Task<HalEndpointDoc> GetNextDocs()
+        {
+            var result = await this.client.LoadLinkDoc("next");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasNextDocs()
+        {
+            return this.client.HasLinkDoc("next");
+        }
+
+        public async Task<MultipartInput3Result> Save(MultipartInput3 data)
+        {
+            var result = await this.client.LoadLinkWithBody("save", data);
+            return new MultipartInput3Result(result);
+
+        }
+
+        public bool CanSave()
+        {
+            return this.client.HasLink("save");
+        }
+
+        public async Task<HalEndpointDoc> GetSaveDocs()
+        {
+            var result = await this.client.LoadLinkDoc("save");
+            return result.GetData<HalEndpointDoc>();
+        }
+
+        public bool HasSaveDocs()
+        {
+            return this.client.HasLinkDoc("save");
+        }
     }
 }
 //----------------------
@@ -1187,7 +1190,7 @@ public class MultipartInput3Result
 // </auto-generated>
 //----------------------
 
-namespace ServiceClient
+namespace TestHalcyonApi.ServiceClient
 {
 #pragma warning disable // Disable all warnings
 
@@ -1254,7 +1257,7 @@ namespace ServiceClient
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.4.5.0")]
     public partial class ComplexObject
     {
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Name { get; set; }
 
         [Newtonsoft.Json.JsonProperty("number", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1280,7 +1283,7 @@ namespace ServiceClient
         [Newtonsoft.Json.JsonProperty("thingyId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int ThingyId { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Name { get; set; }
 
         public string ToJson()

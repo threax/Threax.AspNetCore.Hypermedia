@@ -9,5 +9,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
     public class HalClientGenOptions
     {
         public IEnumerable<Assembly> SourceAssemblies { get; set; }
+
+        public CSharpOptions CSharp { get; set; } = new CSharpOptions();
     }
 }

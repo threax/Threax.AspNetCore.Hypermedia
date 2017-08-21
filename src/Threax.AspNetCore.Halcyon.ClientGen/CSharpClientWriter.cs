@@ -14,10 +14,12 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
         private IClientGenerator clientGenerator;
         private const String ResultClassSuffix = "Result";
         private const string VoidReturnType = "Task";
+        private CSharpOptions options;
 
-        public CSharpClientWriter(IClientGenerator clientGenerator)
+        public CSharpClientWriter(IClientGenerator clientGenerator, CSharpOptions options)
         {
             this.clientGenerator = clientGenerator;
+            this.options = options;
         }
 
         public void CreateClient(TextWriter writer)
@@ -25,22 +27,26 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
             var interfacesToWrite = new InterfaceManager();
 
 writer.WriteLine(
-@"using Threax.AspNetCore.Halcyon.Client;
+$@"using Threax.AspNetCore.Halcyon.Client;
 using System.Threading.Tasks;
-using ServiceClient;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Linq;"
+using System.Linq;
+
+namespace {options.Namespace} {{"
 );
 
             WriteClient(interfacesToWrite, writer);
 
+writer.WriteLine("}");
+
             //Write interfaces, kind of weird, no good docs for this
             var settings = new CSharpGeneratorSettings()
             {
-                Namespace = "ServiceClient",
+                Namespace = options.Namespace,
                 GenerateDataAnnotations = false,
                 ClassStyle = CSharpClassStyle.Poco,  
+                RequiredPropertiesMustBeDefined = false,
             };
 
             var root = new Object(); //Dunno why it needs this, but this does work
@@ -64,7 +70,8 @@ using System.Linq;"
                 if (client.IsEntryPoint)
                 {
 writer.WriteLine($@"
-public class {client.Name}Injector {{
+public class {client.Name}Injector 
+{{
     private string url;
     private IHttpClientFactory fetcher;
     private {client.Name}{ResultClassSuffix} instance = default({client.Name}{ResultClassSuffix});

@@ -10,6 +10,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
     {
         public static IServiceCollection AddHalClientGen(this IServiceCollection services, HalClientGenOptions options)
         {
+            services.AddSingleton<CSharpOptions>(options.CSharp);
             services.AddScoped<IResultViewProvider>(s => new DefaultResultViewProvider(options.SourceAssemblies));
             services.AddScoped<IClientGenerator, ClientGenerator>();
             services.AddScoped<TypescriptClientWriter>();
