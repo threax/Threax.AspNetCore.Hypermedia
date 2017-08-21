@@ -11,9 +11,11 @@ namespace Threax.AspNetCore.Halcyon.Client
 {
     public class HalEndpointClient
     {
-        public static Task<HalEndpointClient> Load(HalLink halLink, IHttpClientFactory fetcher)
+        public static async Task<HalEndpointClient> Load(HalLink halLink, IHttpClientFactory fetcher)
         {
-            throw new NotImplementedException();
+            var client = new HalEndpointClient(halLink, fetcher);
+            await client.Load(default(Object), default(Object));
+            return client;
         }
 
         private IHttpClientFactory clientFactory;
@@ -26,6 +28,12 @@ namespace Threax.AspNetCore.Halcyon.Client
         {
             this.clientFactory = clientFactory;
             this.link = link;
+        }
+
+        public HalEndpointClient(JObject data, IHttpClientFactory clientFactory)
+        {
+            this.data = data;
+            this.clientFactory = clientFactory;
         }
 
         public bool HasLink(String rel)
@@ -138,7 +146,7 @@ namespace Threax.AspNetCore.Halcyon.Client
 
         public Embed GetEmbed(string name)
         {
-            throw new NotImplementedException();
+            return new Embed(name, embeds[name], this.clientFactory);
         }
 
         public Task<HalEndpointClient> LoadLinkDoc(string rel)
@@ -214,7 +222,7 @@ namespace Threax.AspNetCore.Halcyon.Client
             }
         }
 
-        internal Task<HttpResponseMessage> LoadRawLink(string rel)
+        public Task<HttpResponseMessage> LoadRawLink(string rel)
         {
             throw new NotImplementedException();
         }
