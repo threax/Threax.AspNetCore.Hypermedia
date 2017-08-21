@@ -1192,11 +1192,8 @@ namespace ServiceClient
 #pragma warning disable // Disable all warnings
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.4.5.0")]
-    public partial class EntryPoints : System.ComponentModel.INotifyPropertyChanged
+    public partial class EntryPoints
     {
-
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-
         public string ToJson()
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
@@ -1206,53 +1203,19 @@ namespace ServiceClient
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<EntryPoints>(data);
         }
-
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-        }
     }
 
     /// <summary>Default implementation of ICollectionQuery.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.4.5.0")]
-    public partial class PagedCollectionQuery : System.ComponentModel.INotifyPropertyChanged
+    public partial class PagedCollectionQuery
     {
-        private int _offset;
-        private int _limit;
-
         /// <summary>The number of pages (item number = Offset * Limit) into the collection to query.</summary>
         [Newtonsoft.Json.JsonProperty("offset", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Offset
-        {
-            get { return _offset; }
-            set
-            {
-                if (_offset != value)
-                {
-                    _offset = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public int Offset { get; set; }
 
         /// <summary>The limit of the number of items to return.</summary>
         [Newtonsoft.Json.JsonProperty("limit", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Limit
-        {
-            get { return _limit; }
-            set
-            {
-                if (_limit != value)
-                {
-                    _limit = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public int Limit { get; set; }
 
         public string ToJson()
         {
@@ -1263,65 +1226,19 @@ namespace ServiceClient
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<PagedCollectionQuery>(data);
         }
-
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-        }
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.4.5.0")]
-    public partial class ThingyCollectionView : System.ComponentModel.INotifyPropertyChanged
+    public partial class ThingyCollectionView
     {
-        private int _offset;
-        private int _limit;
-        private int _total;
-
         [Newtonsoft.Json.JsonProperty("offset", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Offset
-        {
-            get { return _offset; }
-            set
-            {
-                if (_offset != value)
-                {
-                    _offset = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public int Offset { get; set; }
 
         [Newtonsoft.Json.JsonProperty("limit", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Limit
-        {
-            get { return _limit; }
-            set
-            {
-                if (_limit != value)
-                {
-                    _limit = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public int Limit { get; set; }
 
         [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Total
-        {
-            get { return _total; }
-            set
-            {
-                if (_total != value)
-                {
-                    _total = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public int Total { get; set; }
 
         public string ToJson()
         {
@@ -1332,50 +1249,16 @@ namespace ServiceClient
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ThingyCollectionView>(data);
         }
-
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-        }
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.4.5.0")]
-    public partial class ComplexObject : System.ComponentModel.INotifyPropertyChanged
+    public partial class ComplexObject
     {
-        private string _name;
-        private int _number;
-
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
-        public string Name
-        {
-            get { return _name; }
-            set
-            {
-                if (_name != value)
-                {
-                    _name = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public string Name { get; set; }
 
         [Newtonsoft.Json.JsonProperty("number", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Number
-        {
-            get { return _number; }
-            set
-            {
-                if (_number != value)
-                {
-                    _number = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public int Number { get; set; }
 
         public string ToJson()
         {
@@ -1386,65 +1269,19 @@ namespace ServiceClient
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ComplexObject>(data);
         }
-
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-        }
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.4.5.0")]
-    public partial class ThingyView : System.ComponentModel.INotifyPropertyChanged
+    public partial class ThingyView
     {
-        private System.Collections.ObjectModel.ObservableCollection<ComplexObject> _complexObjects;
-        private int _thingyId;
-        private string _name;
-
         [Newtonsoft.Json.JsonProperty("complexObjects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.ObjectModel.ObservableCollection<ComplexObject> ComplexObjects
-        {
-            get { return _complexObjects; }
-            set
-            {
-                if (_complexObjects != value)
-                {
-                    _complexObjects = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public System.Collections.ObjectModel.ObservableCollection<ComplexObject> ComplexObjects { get; set; }
 
         [Newtonsoft.Json.JsonProperty("thingyId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int ThingyId
-        {
-            get { return _thingyId; }
-            set
-            {
-                if (_thingyId != value)
-                {
-                    _thingyId = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public int ThingyId { get; set; }
 
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
-        public string Name
-        {
-            get { return _name; }
-            set
-            {
-                if (_name != value)
-                {
-                    _name = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public string Name { get; set; }
 
         public string ToJson()
         {
@@ -1455,50 +1292,16 @@ namespace ServiceClient
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ThingyView>(data);
         }
-
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-        }
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.4.5.0")]
-    public partial class MultipartInput1 : System.ComponentModel.INotifyPropertyChanged
+    public partial class MultipartInput1
     {
-        private int _part1Number;
-        private string _part1String;
-
         [Newtonsoft.Json.JsonProperty("part1Number", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Part1Number
-        {
-            get { return _part1Number; }
-            set
-            {
-                if (_part1Number != value)
-                {
-                    _part1Number = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public int Part1Number { get; set; }
 
         [Newtonsoft.Json.JsonProperty("part1String", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Part1String
-        {
-            get { return _part1String; }
-            set
-            {
-                if (_part1String != value)
-                {
-                    _part1String = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public string Part1String { get; set; }
 
         public string ToJson()
         {
@@ -1509,35 +1312,13 @@ namespace ServiceClient
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<MultipartInput1>(data);
         }
-
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-        }
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.4.5.0")]
-    public partial class SingleFileInput : System.ComponentModel.INotifyPropertyChanged
+    public partial class SingleFileInput
     {
-        private byte[] _daFile;
-
         [Newtonsoft.Json.JsonProperty("daFile", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public byte[] DaFile
-        {
-            get { return _daFile; }
-            set
-            {
-                if (_daFile != value)
-                {
-                    _daFile = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public byte[] DaFile { get; set; }
 
         public string ToJson()
         {
@@ -1548,35 +1329,13 @@ namespace ServiceClient
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<SingleFileInput>(data);
         }
-
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-        }
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.4.5.0")]
-    public partial class MultiFileInput : System.ComponentModel.INotifyPropertyChanged
+    public partial class MultiFileInput
     {
-        private System.Collections.ObjectModel.ObservableCollection<byte[]> _daFile;
-
         [Newtonsoft.Json.JsonProperty("daFile", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.ObjectModel.ObservableCollection<byte[]> DaFile
-        {
-            get { return _daFile; }
-            set
-            {
-                if (_daFile != value)
-                {
-                    _daFile = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public System.Collections.ObjectModel.ObservableCollection<byte[]> DaFile { get; set; }
 
         public string ToJson()
         {
@@ -1587,21 +1346,11 @@ namespace ServiceClient
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<MultiFileInput>(data);
         }
-
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-        }
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.4.5.0")]
-    public partial class SubThingyCollectionView : System.ComponentModel.INotifyPropertyChanged
+    public partial class SubThingyCollectionView
     {
-
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-
         public string ToJson()
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
@@ -1610,13 +1359,6 @@ namespace ServiceClient
         public static SubThingyCollectionView FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<SubThingyCollectionView>(data);
-        }
-
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
         }
     }
 
@@ -1635,115 +1377,28 @@ namespace ServiceClient
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.4.5.0")]
-    public partial class SubThingyView : System.ComponentModel.INotifyPropertyChanged
+    public partial class SubThingyView
     {
-        private System.Guid _otherWeirdThing;
-        private int _subThingyId;
-        private decimal _amount;
-        private int _thingyId;
-        private string _enumTest;
-        private string _enumTestNullable;
-        private string _enumTestNullableRelabel;
-
         [Newtonsoft.Json.JsonProperty("otherWeirdThing", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Guid OtherWeirdThing
-        {
-            get { return _otherWeirdThing; }
-            set
-            {
-                if (_otherWeirdThing != value)
-                {
-                    _otherWeirdThing = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public System.Guid OtherWeirdThing { get; set; }
 
         [Newtonsoft.Json.JsonProperty("subThingyId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int SubThingyId
-        {
-            get { return _subThingyId; }
-            set
-            {
-                if (_subThingyId != value)
-                {
-                    _subThingyId = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public int SubThingyId { get; set; }
 
         [Newtonsoft.Json.JsonProperty("amount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public decimal Amount
-        {
-            get { return _amount; }
-            set
-            {
-                if (_amount != value)
-                {
-                    _amount = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public decimal Amount { get; set; }
 
         [Newtonsoft.Json.JsonProperty("thingyId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int ThingyId
-        {
-            get { return _thingyId; }
-            set
-            {
-                if (_thingyId != value)
-                {
-                    _thingyId = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public int ThingyId { get; set; }
 
         [Newtonsoft.Json.JsonProperty("enumTest", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string EnumTest
-        {
-            get { return _enumTest; }
-            set
-            {
-                if (_enumTest != value)
-                {
-                    _enumTest = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public string EnumTest { get; set; }
 
         [Newtonsoft.Json.JsonProperty("enumTestNullable", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string EnumTestNullable
-        {
-            get { return _enumTestNullable; }
-            set
-            {
-                if (_enumTestNullable != value)
-                {
-                    _enumTestNullable = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public string EnumTestNullable { get; set; }
 
         [Newtonsoft.Json.JsonProperty("enumTestNullableRelabel", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string EnumTestNullableRelabel
-        {
-            get { return _enumTestNullableRelabel; }
-            set
-            {
-                if (_enumTestNullableRelabel != value)
-                {
-                    _enumTestNullableRelabel = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public string EnumTestNullableRelabel { get; set; }
 
         public string ToJson()
         {
@@ -1754,50 +1409,16 @@ namespace ServiceClient
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<SubThingyView>(data);
         }
-
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-        }
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.4.5.0")]
-    public partial class MultipartInput2 : System.ComponentModel.INotifyPropertyChanged
+    public partial class MultipartInput2
     {
-        private int _part2Number;
-        private string _part2String;
-
         [Newtonsoft.Json.JsonProperty("part2Number", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Part2Number
-        {
-            get { return _part2Number; }
-            set
-            {
-                if (_part2Number != value)
-                {
-                    _part2Number = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public int Part2Number { get; set; }
 
         [Newtonsoft.Json.JsonProperty("part2String", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Part2String
-        {
-            get { return _part2String; }
-            set
-            {
-                if (_part2String != value)
-                {
-                    _part2String = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public string Part2String { get; set; }
 
         public string ToJson()
         {
@@ -1808,50 +1429,16 @@ namespace ServiceClient
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<MultipartInput2>(data);
         }
-
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-        }
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.4.5.0")]
-    public partial class MultipartInput3 : System.ComponentModel.INotifyPropertyChanged
+    public partial class MultipartInput3
     {
-        private int _part3Number;
-        private string _part3String;
-
         [Newtonsoft.Json.JsonProperty("part3Number", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Part3Number
-        {
-            get { return _part3Number; }
-            set
-            {
-                if (_part3Number != value)
-                {
-                    _part3Number = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public int Part3Number { get; set; }
 
         [Newtonsoft.Json.JsonProperty("part3String", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Part3String
-        {
-            get { return _part3String; }
-            set
-            {
-                if (_part3String != value)
-                {
-                    _part3String = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public string Part3String { get; set; }
 
         public string ToJson()
         {
@@ -1861,13 +1448,6 @@ namespace ServiceClient
         public static MultipartInput3 FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<MultipartInput3>(data);
-        }
-
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
         }
     }
 }

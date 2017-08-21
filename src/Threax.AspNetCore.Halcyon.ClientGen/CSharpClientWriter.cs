@@ -39,9 +39,8 @@ using System.Linq;"
             var settings = new CSharpGeneratorSettings()
             {
                 Namespace = "ServiceClient",
-                GenerateDataAnnotations = false
-                //TypeStyle = TypeScriptTypeStyle.Interface,
-                //MarkOptionalProperties = true
+                GenerateDataAnnotations = false,
+                ClassStyle = CSharpClassStyle.Poco,  
             };
 
             var root = new Object(); //Dunno why it needs this, but this does work
@@ -183,7 +182,11 @@ writer.WriteLine($@"
                         linkQueryArg = $"{link.EndpointDoc.QuerySchema.Title} query";
                         if (link.EndpointDoc.QuerySchema.IsArray())
                         {
-                            linkQueryArg += "[]";
+                            linkQueryArg = $"IEnumerable<{link.EndpointDoc.QuerySchema.Title}> query";
+                        }
+                        else
+                        {
+                            linkQueryArg = $"{link.EndpointDoc.QuerySchema.Title} query";
                         }
                     }
 
