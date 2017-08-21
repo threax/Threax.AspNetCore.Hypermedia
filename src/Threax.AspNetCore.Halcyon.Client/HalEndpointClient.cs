@@ -17,20 +17,6 @@ namespace Threax.AspNetCore.Halcyon.Client
         private JToken links;
         private JToken embeds;
 
-        public static async Task<HalEndpointClient> Load(HalLink link, IHttpClientFactory clientFactory)
-        {
-            var client = new HalEndpointClient(link, clientFactory);
-            await client.Load(null);
-            return client;
-        }
-
-        public static async Task<HalEndpointClient> Load<RequestType>(HalLink link, IHttpClientFactory clientFactory, RequestType data = default(RequestType))
-        {
-            var client = new HalEndpointClient(link, clientFactory);
-            await client.Load(data);
-            return client;
-        }
-
         private HalEndpointClient(HalLink link, IHttpClientFactory clientFactory)
         {
             this.clientFactory = clientFactory;
@@ -53,33 +39,84 @@ namespace Threax.AspNetCore.Halcyon.Client
                 var link = links[rel];
                 if (link != null)
                 {
-                    return await Load<Object>(link.ToObject<HalLink>(), clientFactory, null);
+                    var client = new HalEndpointClient(link.ToObject<HalLink>(), clientFactory);
+                    await client.Load(null, null);
+                    return client;
                 }
             }
             throw new InvalidOperationException($"Cannot find a link named {rel}.");
         }
 
-        //public async Task<HalEndpointClient> LoadLinkWithQuery<QueryType>(String rel, QueryType data)
-        //{
-        //    if (links != null)
-        //    {
-        //        var link = links[rel];
-        //        if (link != null)
-        //        {
-        //            return await Load<RequestType>(link.ToObject<HalLink>(), clientFactory, data);
-        //        }
-        //    }
-        //    throw new InvalidOperationException($"Cannot find a link named {rel}.");
-        //}
-
-        public async Task<HalEndpointClient> LoadLinkWithBody<RequestType>(String rel, RequestType data)
+        public async Task<HalEndpointClient> LoadLinkWithQuery<QueryType>(String rel, QueryType query)
         {
             if (links != null)
             {
                 var link = links[rel];
                 if (link != null)
                 {
-                    return await Load<RequestType>(link.ToObject<HalLink>(), clientFactory, data);
+                    var client = new HalEndpointClient(link.ToObject<HalLink>(), clientFactory);
+                    await client.Load(null, query);
+                    return client;
+                }
+            }
+            throw new InvalidOperationException($"Cannot find a link named {rel}.");
+        }
+
+        public async Task<HalEndpointClient> LoadLinkWithBody<BodyType>(String rel, BodyType data)
+        {
+            if (links != null)
+            {
+                var link = links[rel];
+                if (link != null)
+                {
+                    var client = new HalEndpointClient(link.ToObject<HalLink>(), clientFactory);
+                    await client.Load(data, null);
+                    return client;
+                }
+            }
+            throw new InvalidOperationException($"Cannot find a link named {rel}.");
+        }
+
+        public async Task<HalEndpointClient> LoadLinkWithQueryAndBody<QueryType, BodyType>(String rel, QueryType query, BodyType data)
+        {
+            if (links != null)
+            {
+                var link = links[rel];
+                if (link != null)
+                {
+                    var client = new HalEndpointClient(link.ToObject<HalLink>(), clientFactory);
+                    await client.Load(data, query);
+                    return client;
+                }
+            }
+            throw new InvalidOperationException($"Cannot find a link named {rel}.");
+        }
+
+        public async Task<HalEndpointClient> LoadLinkWithForm<FormType>(String rel, FormType data)
+        {
+            if (links != null)
+            {
+                var link = links[rel];
+                if (link != null)
+                {
+                    var client = new HalEndpointClient(link.ToObject<HalLink>(), clientFactory);
+                    await client.LoadWithForm(data, null);
+                    return client;
+                }
+            }
+            throw new InvalidOperationException($"Cannot find a link named {rel}.");
+        }
+
+        public async Task<HalEndpointClient> LoadLinkWithQueryAndForm<QueryType, FormType>(String rel, QueryType query, FormType data)
+        {
+            if (links != null)
+            {
+                var link = links[rel];
+                if (link != null)
+                {
+                    var client = new HalEndpointClient(link.ToObject<HalLink>(), clientFactory);
+                    await client.LoadWithForm(data, query);
+                    return client;
                 }
             }
             throw new InvalidOperationException($"Cannot find a link named {rel}.");
@@ -149,14 +186,22 @@ namespace Threax.AspNetCore.Halcyon.Client
         /// </summary>
         public HttpStatusCode StatusCode { get; set; }
 
-        private async Task Load(Object data)
+        private async Task Load(Object data, Object query)
         {
             using (var client = clientFactory.GetClient())
             {
                 using (var request = clientFactory.GetRequestMessage())
                 {
                     request.Method = new HttpMethod(link.Method);
-                    request.RequestUri = new Uri(link.Href);
+                    var uriBuilder = new UriBuilder(link.Href);
+                    
+                    if(query != null)
+                    {
+                        uriBuilder.Query = QueryBuilder.BuildQueryString(query);
+                    }
+
+                    request.RequestUri = uriBuilder.Uri;
+
                     if (data != null)
                     {
                         request.Content = new StringContent(JsonConvert.SerializeObject(data));
@@ -175,28 +220,41 @@ namespace Threax.AspNetCore.Halcyon.Client
             }
         }
 
-        private async Task LoadWithQuery(Object query)
+        private async Task LoadWithForm(Object data, Object query)
         {
             using (var client = clientFactory.GetClient())
             {
                 using (var request = clientFactory.GetRequestMessage())
                 {
-                    request.Method = new HttpMethod(link.Method);
-                    request.RequestUri = new Uri(link.Href);
-                    if (query != null)
+                    using(var form = new MultipartFormDataContent())
                     {
-                        request.Content = new StringContent(JsonConvert.SerializeObject(query));
+                        request.Method = new HttpMethod(link.Method);
+                        var uriBuilder = new UriBuilder(link.Href);
+
+                        if (query != null)
+                        {
+                            uriBuilder.Query = QueryBuilder.BuildQueryString(query);
+                        }
+
+                        request.RequestUri = uriBuilder.Uri;
+
+                        if (data != null)
+                        {
+                            FormContentBuilder.BuildFormContent(data, form);
+                            request.Content = form;
+                        }
+
+                        var response = await client.SendAsync(request);
+                        StatusCode = response.StatusCode;
+                        if ((int)StatusCode > 299)
+                        {
+                            throw new InvalidOperationException($"The HTTP status code {StatusCode} is not a valid response for this client.");
+                        }
+                        var responseString = await response.Content.ReadAsStringAsync();
+                        var responseData = JObject.Parse(responseString);
+                        links = responseData["_links"];
+                        embeds = responseData["_embedded"];
                     }
-                    var response = await client.SendAsync(request);
-                    StatusCode = response.StatusCode;
-                    if ((int)StatusCode > 299)
-                    {
-                        throw new InvalidOperationException($"The HTTP status code {StatusCode} is not a valid response for this client.");
-                    }
-                    var responseString = await response.Content.ReadAsStringAsync();
-                    var responseData = JObject.Parse(responseString);
-                    links = responseData["_links"];
-                    embeds = responseData["_embedded"];
                 }
             }
         }
