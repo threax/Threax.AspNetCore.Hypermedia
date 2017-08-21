@@ -135,6 +135,36 @@ namespace Threax.AspNetCore.Halcyon.Client
             throw new InvalidOperationException($"Cannot find a link named {rel}.");
         }
 
+        public Task<HttpResponseMessage> LoadRawLink(string rel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<HttpResponseMessage> LoadRawLinkWithQuery<QueryType>(string rel, QueryType query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<HttpResponseMessage> LoadRawLinkWithBody<BodyType>(string rel, BodyType data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<HttpResponseMessage> LoadRawLinkWithQueryAndBody<QueryType, BodyType>(string rel, QueryType query, BodyType data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<HttpResponseMessage> LoadRawLinkWithForm<FormType>(string rel, FormType data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<HttpResponseMessage> LoadRawLinkWithQueryAndForm<QueryType, FormType>(string rel, QueryType query, FormType data)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool HasEmbed(String name)
         {
             if(embeds == null)
@@ -211,15 +241,12 @@ namespace Threax.AspNetCore.Halcyon.Client
                         request.Content = new StringContent(JsonConvert.SerializeObject(data));
                     }
 
-                    var response = await client.SendAsync(request);
-                    await HandleResponse(response);
+                    using (var response = await client.SendAsync(request))
+                    {
+                        await HandleResponse(response);
+                    }
                 }
             }
-        }
-
-        public Task<HttpResponseMessage> LoadRawLink(string rel)
-        {
-            throw new NotImplementedException();
         }
 
         private async Task LoadWithForm(Object data, Object query)
@@ -246,8 +273,10 @@ namespace Threax.AspNetCore.Halcyon.Client
                             request.Content = form;
                         }
 
-                        var response = await client.SendAsync(request);
-                        await HandleResponse(response);
+                        using (var response = await client.SendAsync(request))
+                        {
+                            await HandleResponse(response);
+                        }
                     }
                 }
             }
