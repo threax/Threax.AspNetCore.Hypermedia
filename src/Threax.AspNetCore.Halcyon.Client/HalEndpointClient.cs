@@ -11,6 +11,11 @@ namespace Threax.AspNetCore.Halcyon.Client
 {
     public class HalEndpointClient
     {
+        public static Task<HalEndpointClient> Load(HalLink halLink, IHttpClientFactory fetcher)
+        {
+            throw new NotImplementedException();
+        }
+
         private IHttpClientFactory clientFactory;
         private HalLink link;
         private JObject data = null;
@@ -131,30 +136,19 @@ namespace Threax.AspNetCore.Halcyon.Client
             return embeds[name] != null;
         }
 
-        public IEnumerable<EmbedType> GetEmbeds<EmbedType>(String name)
+        public Embed GetEmbed(string name)
         {
-            if(embeds != null)
-            {
-                var embed = embeds[name];
-                if (embed != null)
-                {
-                    return embed.Select(i => i.ToObject<EmbedType>());
-                }
-            }
-            throw new InvalidOperationException($"Cannot find an embed named {name}.");
+            throw new NotImplementedException();
         }
 
-        public JToken GetEmbeds(String name)
+        public Task<HalEndpointClient> LoadLinkDoc(string rel)
         {
-            if (embeds != null)
-            {
-                var embed = embeds[name];
-                if (embed != null)
-                {
-                    return embed;
-                }
-            }
-            throw new InvalidOperationException($"Cannot find an embed named {name}.");
+            throw new NotImplementedException();
+        }
+
+        public bool HasLinkDoc(string rel)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

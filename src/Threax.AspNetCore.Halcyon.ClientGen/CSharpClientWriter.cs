@@ -1,5 +1,5 @@
 ﻿using NJsonSchema;
-using NJsonSchema.CodeGeneration.TypeScript;
+using NJsonSchema.CodeGeneration.CSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,7 +13,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
     {
         private IClientGenerator clientGenerator;
         private const String ResultClassSuffix = "Result";
-        private const string VoidReturnType = ": Promise<void>";
+        private const string VoidReturnType = "Task";
 
         public CSharpClientWriter(IClientGenerator clientGenerator)
         {
@@ -25,25 +25,30 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
             var interfacesToWrite = new InterfaceManager();
 
 writer.WriteLine(
-@"using Threax.AspNetCore.Halcyon.Client;"
+@"using Threax.AspNetCore.Halcyon.Client;
+using System.Threading.Tasks;
+using ServiceClient;
+using System.Collections.Generic;
+using System.Net.Http;"
 );
 
             WriteClient(interfacesToWrite, writer);
 
             //Write interfaces, kind of weird, no good docs for this
-            var settings = new TypeScriptGeneratorSettings()
+            var settings = new CSharpGeneratorSettings()
             {
-                TypeStyle = TypeScriptTypeStyle.Interface,
-                MarkOptionalProperties = true
+                Namespace = "ServiceClient"
+                //TypeStyle = TypeScriptTypeStyle.Interface,
+                //MarkOptionalProperties = true
             };
 
             var root = new Object(); //Dunno why it needs this, but this does work
-            var resolver = new TypeScriptTypeResolver(settings, root);
+            var resolver = new CSharpTypeResolver(settings, root);
             resolver.AddGenerators(interfacesToWrite.Interfaces); //Add all discovered generators
 
             var schema = interfacesToWrite.FirstSchema;
             if (schema != null) {
-                var generator = new TypeScriptGenerator(schema, settings, resolver, root);
+                var generator = new CSharpGenerator(schema, settings, resolver, root);
                 var classes = generator.GenerateFile();
                 writer.WriteLine(classes);
             }
@@ -60,56 +65,57 @@ writer.WriteLine(
 writer.WriteLine($@"
 public class {client.Name}Injector {{
     private string url;
-    private fetcher: hal.Fetcher;
-    private instance: {client.Name}{ResultClassSuffix};
+    private IHttpClientFactory fetcher;
+    private {client.Name}{ResultClassSuffix} instance = default({client.Name}{ResultClassSuffix});
 
-    constructor(url: string, fetcher: hal.Fetcher) {{
+    {client.Name}Injector(string url, IHttpClientFactory fetcher) {{
         this.url = url;
         this.fetcher = fetcher;
     }}
 
-    public load(): Promise<{client.Name}{ResultClassSuffix}> {{
-        if (!this.instance) {{
-            return {client.Name}{ResultClassSuffix}.Load(this.url, this.fetcher).then((r) => {{
-                this.instance = r;
-                return r;
-            }});
+    public async Task<{client.Name}{ResultClassSuffix}> Load() {{
+        if (this.instance == default({client.Name}{ResultClassSuffix})) {{
+            this.instance = await {client.Name}{ResultClassSuffix}.Load(this.url, this.fetcher);
         }}
-
-        return Promise.resolve(this.instance);
+        return this.instance;
     }}
 }}");
                 }
 
 writer.WriteLine($@"
-export class {client.Name}{ResultClassSuffix} {{
-    private client: hal.HalEndpointClient;");
+public class {client.Name}{ResultClassSuffix} 
+{{
+    private HalEndpointClient client;");
 
                 if (client.IsEntryPoint)
                 {
                     writer.WriteLine($@"
-    public static Load(url: string, fetcher: hal.Fetcher): Promise<{client.Name}{ResultClassSuffix}> {{
-        return hal.HalEndpointClient.Load({{
-            href: url,
-            method: ""GET""
-        }}, fetcher)
-            .then(c => {{
-                 return new {client.Name}{ResultClassSuffix}(c);
-             }});
-            }}");
+    public static async Task<{client.Name}{ResultClassSuffix}> Load(string url, IHttpClientFactory fetcher)
+    {{
+        var result = await HalEndpointClient.Load(new HalLink(url, ""GET""), fetcher);
+        return new {client.Name}{ResultClassSuffix}(result);
+    }}");
                 }
 
                 //Write accessor for data
 
 writer.WriteLine($@"
-    constructor(client: hal.HalEndpointClient) {{
+    public {client.Name}{ResultClassSuffix}(HalEndpointClient client) 
+    {{
         this.client = client;
     }}
 
-    private strongData: {client.Name} = undefined;
-    public get data(): {client.Name} {{
-        this.strongData = this.strongData || this.client.GetData<{client.Name}>();
-        return this.strongData;
+    private {client.Name} strongData = default({client.Name});
+    public {client.Name} Data 
+    {{
+        get
+        {{
+            if(this.strongData == default({client.Name}))
+            {{
+                this.strongData = this.client.GetData<{client.Name}>();  
+            }}
+            return this.strongData;
+        }}
     }}");
 
                 //Write data interface if we haven't found it yet
@@ -123,30 +129,41 @@ writer.WriteLine($@"
                         //No collection type, write out an "any" client.
 
 writer.WriteLine($@"
-    private strongItems: any[];
-    public get items(): hal.HalEndpointClient[] {{
-        if (this.strongItems === undefined) {{
-            var embeds = this.client.GetEmbed(""values"");
-            this.strongItems = embeds.GetAllClients();
+    private List<HalEndpointClient> strongItems;
+    public List<HalEndpointClient> Items
+    {{
+        get
+        {{
+            if (this.strongItems == null) 
+            {{
+                var embeds = this.client.GetEmbed(""values"");
+                this.strongItems = embeds.GetAllClients();
+            }}
+            return this.strongItems;
         }}
-        return this.strongItems;
     }}");
                     }
                     else
                     {
                         //Collection type found, write out results for each data entry.
 writer.WriteLine($@"
-    private strongItems: {collectionType}{ResultClassSuffix}[];
-    public get items(): {collectionType}{ResultClassSuffix}[] {{
-        if (this.strongItems === undefined) {{
-            var embeds = this.client.GetEmbed(""values"");
-            var clients = embeds.GetAllClients();
-            this.strongItems = [];
-            for (var i = 0; i < clients.length; ++i) {{
-                this.strongItems.push(new {collectionType}{ResultClassSuffix}(clients[i]));
+    private List<{collectionType}{ResultClassSuffix}> strongItems = null;
+    public List<{collectionType}{ResultClassSuffix}> Items
+    {{
+        get
+        {{
+            if (this.strongItems == null) 
+            {{
+                var embeds = this.client.GetEmbed(""values"");
+                var clients = embeds.GetAllClients();
+                this.strongItems = new List<{collectionType}{ResultClassSuffix}>();
+                for (var i = 0; i < clients.length; ++i) 
+                {{
+                    this.strongItems.Add(new {collectionType}{ResultClassSuffix}(clients[i]));
+                }}
             }}
+            return this.strongItems;
         }}
-        return this.strongItems;
     }}");
                     }
                 }
@@ -165,7 +182,7 @@ writer.WriteLine($@"
                     if (link.EndpointDoc.QuerySchema != null)
                     {
                         interfacesToWrite.Add(link.EndpointDoc.QuerySchema);
-                        linkQueryArg = $"query: {link.EndpointDoc.QuerySchema.Title}";
+                        linkQueryArg = $"{link.EndpointDoc.QuerySchema.Title} query";
                         if (link.EndpointDoc.QuerySchema.IsArray())
                         {
                             linkQueryArg += "[]";
@@ -176,7 +193,7 @@ writer.WriteLine($@"
                     if (link.EndpointDoc.RequestSchema != null)
                     {
                         interfacesToWrite.Add(link.EndpointDoc.RequestSchema);
-                        linkRequestArg = $"data: {link.EndpointDoc.RequestSchema.Title}";
+                        linkRequestArg = $"{link.EndpointDoc.RequestSchema.Title} data";
                         if (link.EndpointDoc.RequestSchema.IsArray())
                         {
                             linkRequestArg += "[]";
@@ -189,13 +206,13 @@ writer.WriteLine($@"
                     {
                         if (link.EndpointDoc.ResponseSchema.IsRawResponse())
                         {
-                            linkReturnType = $": Promise<hal.Response>";
+                            linkReturnType = $"Task<HttpResponseMessage>";
                             loadFuncType = "LoadRaw";
                         }
                         else
                         {
                             interfacesToWrite.Add(link.EndpointDoc.ResponseSchema);
-                            linkReturnType = $": Promise<{link.EndpointDoc.ResponseSchema.Title}{ResultClassSuffix}>";
+                            linkReturnType = $"Task<{link.EndpointDoc.ResponseSchema.Title}{ResultClassSuffix}>";
                             returnOpen = $"new {link.EndpointDoc.ResponseSchema.Title}{ResultClassSuffix}(";
                             returnClose = ")";
                         }
@@ -267,29 +284,29 @@ writer.WriteLine($@"
                     {
                         //Write link
                         writer.Write($@"
-    public {lowerFuncName}({inArgs}){linkReturnType} {{
-        return this.client.{fullLoadFunc}(""{link.Rel}""{outArgs})");
+    public async {linkReturnType} {upperFuncName}({inArgs}) 
+    {{
+        var result = await this.client.{fullLoadFunc}(""{link.Rel}""{outArgs});");
 
                         //If the returns are set return r, otherwise void out the promise so we don't leak on void functions
                         if (returnOpen != null && returnClose != null) {
                             writer.WriteLine($@"
-               .then(r => {{
-                    return {returnOpen}r{returnClose};
-                }});");
+        return {returnOpen}result{returnClose};");
                         }
-                        else if(linkReturnType == VoidReturnType) //Write a then that will hide the promise result and become void.
+                        else if (linkReturnType == VoidReturnType) //Write a then that will hide the promise result and become void.
                         {
-                            writer.Write(".then(hal.makeVoid);");
+                            //Don't write anything for this
                         }
                         else //Returning the respose directly
                         {
-                            writer.Write(";");
+                            writer.Write(@"
+        return result;");
                         }
 
                         writer.WriteLine($@"
     }}
 
-    public can{upperFuncName}(): boolean {{
+    public bool Can{upperFuncName}() {{
         return this.client.HasLink(""{link.Rel}"");
     }}");
                     }
@@ -298,14 +315,13 @@ writer.WriteLine($@"
                     {
                         //Write link docs
                         writer.WriteLine($@"
-    public get{upperFuncName}Docs(): Promise<hal.HalEndpointDoc> {{
-        return this.client.LoadLinkDoc(""{link.Rel}"")
-            .then(r => {{
-                return r.GetData<hal.HalEndpointDoc>();
-            }});
+    public async Task<HalEndpointDoc> Get{upperFuncName}Docs() 
+    {{
+        var result = await this.client.LoadLinkDoc(""{link.Rel}"");
+        return result.GetData<HalEndpointDoc>();
     }}
 
-    public has{upperFuncName}Docs(): boolean {{
+    public bool Has{upperFuncName}Docs() {{
         return this.client.HasLinkDoc(""{link.Rel}"");
     }}");
                     }
