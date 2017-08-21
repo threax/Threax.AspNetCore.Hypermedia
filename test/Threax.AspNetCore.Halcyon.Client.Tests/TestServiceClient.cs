@@ -13,7 +13,7 @@ namespace TestHalcyonApi.ServiceClient
         private IHttpClientFactory fetcher;
         private EntryPointsResult instance = default(EntryPointsResult);
 
-        EntryPointsInjector(string url, IHttpClientFactory fetcher)
+        public EntryPointsInjector(string url, IHttpClientFactory fetcher)
         {
             this.url = url;
             this.fetcher = fetcher;

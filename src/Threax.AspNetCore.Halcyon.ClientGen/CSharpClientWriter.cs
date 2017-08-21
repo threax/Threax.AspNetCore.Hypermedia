@@ -76,7 +76,7 @@ public class {client.Name}Injector
     private IHttpClientFactory fetcher;
     private {client.Name}{ResultClassSuffix} instance = default({client.Name}{ResultClassSuffix});
 
-    {client.Name}Injector(string url, IHttpClientFactory fetcher)
+    public {client.Name}Injector(string url, IHttpClientFactory fetcher)
     {{
         this.url = url;
         this.fetcher = fetcher;
