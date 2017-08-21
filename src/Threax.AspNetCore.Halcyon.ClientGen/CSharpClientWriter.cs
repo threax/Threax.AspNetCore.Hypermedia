@@ -76,13 +76,16 @@ public class {client.Name}Injector
     private IHttpClientFactory fetcher;
     private {client.Name}{ResultClassSuffix} instance = default({client.Name}{ResultClassSuffix});
 
-    {client.Name}Injector(string url, IHttpClientFactory fetcher) {{
+    {client.Name}Injector(string url, IHttpClientFactory fetcher)
+    {{
         this.url = url;
         this.fetcher = fetcher;
     }}
 
-    public async Task<{client.Name}{ResultClassSuffix}> Load() {{
-        if (this.instance == default({client.Name}{ResultClassSuffix})) {{
+    public async Task<{client.Name}{ResultClassSuffix}> Load()
+    {{
+        if (this.instance == default({client.Name}{ResultClassSuffix}))
+        {{
             this.instance = await {client.Name}{ResultClassSuffix}.Load(this.url, this.fetcher);
         }}
         return this.instance;
