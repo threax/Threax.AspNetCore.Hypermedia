@@ -45,7 +45,7 @@ namespace Threax.AspNetCore.Halcyon.Client
                 if (link != null)
                 {
                     var client = new HalEndpointClient(link.ToObject<HalLink>(), clientFactory);
-                    await client.Load(null, null);
+                    await client.Load(default(Object), default(Object));
                     return client;
                 }
             }
@@ -212,6 +212,11 @@ namespace Threax.AspNetCore.Halcyon.Client
                     embeds = responseData["_embedded"];
                 }
             }
+        }
+
+        internal Task<HttpResponseMessage> LoadRawLink(string rel)
+        {
+            throw new NotImplementedException();
         }
 
         private async Task LoadWithForm(Object data, Object query)

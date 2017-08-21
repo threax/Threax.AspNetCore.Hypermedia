@@ -29,7 +29,8 @@ writer.WriteLine(
 using System.Threading.Tasks;
 using ServiceClient;
 using System.Collections.Generic;
-using System.Net.Http;"
+using System.Net.Http;
+using System.Linq;"
 );
 
             WriteClient(interfacesToWrite, writer);
@@ -37,7 +38,8 @@ using System.Net.Http;"
             //Write interfaces, kind of weird, no good docs for this
             var settings = new CSharpGeneratorSettings()
             {
-                Namespace = "ServiceClient"
+                Namespace = "ServiceClient",
+                GenerateDataAnnotations = false
                 //TypeStyle = TypeScriptTypeStyle.Interface,
                 //MarkOptionalProperties = true
             };
@@ -156,11 +158,7 @@ writer.WriteLine($@"
             {{
                 var embeds = this.client.GetEmbed(""values"");
                 var clients = embeds.GetAllClients();
-                this.strongItems = new List<{collectionType}{ResultClassSuffix}>();
-                for (var i = 0; i < clients.length; ++i) 
-                {{
-                    this.strongItems.Add(new {collectionType}{ResultClassSuffix}(clients[i]));
-                }}
+                this.strongItems = new List<{collectionType}{ResultClassSuffix}>(clients.Select(i => new {collectionType}{ResultClassSuffix}(i)));
             }}
             return this.strongItems;
         }}
@@ -193,10 +191,13 @@ writer.WriteLine($@"
                     if (link.EndpointDoc.RequestSchema != null)
                     {
                         interfacesToWrite.Add(link.EndpointDoc.RequestSchema);
-                        linkRequestArg = $"{link.EndpointDoc.RequestSchema.Title} data";
                         if (link.EndpointDoc.RequestSchema.IsArray())
                         {
-                            linkRequestArg += "[]";
+                            linkRequestArg = $"IEnumerable<{link.EndpointDoc.RequestSchema.Title}> data";
+                        }
+                        else
+                        {
+                            linkRequestArg = $"{link.EndpointDoc.RequestSchema.Title} data";
                         }
 
                         reqIsForm = link.EndpointDoc.RequestSchema.DataIsForm();

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using ServiceClient;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Linq;
 
 public class EntryPointsInjector
 {
@@ -157,7 +158,7 @@ public class EntryPointsResult
         return this.client.HasLinkDoc("updateThingy");
     }
 
-    public async Task TestTakeListInput(ThingyView data[])
+    public async Task TestTakeListInput(IEnumerable<ThingyView> data)
     {
         var result = await this.client.LoadLinkWithBody("TestTakeListInput", data);
     }
@@ -316,11 +317,7 @@ public class SubThingyCollectionViewResult
             {
                 var embeds = this.client.GetEmbed("values");
                 var clients = embeds.GetAllClients();
-                this.strongItems = new List<SubThingyViewResult>();
-                for (var i = 0; i < clients.length; ++i)
-                {
-                    this.strongItems.Add(new SubThingyViewResult(clients[i]));
-                }
+                this.strongItems = new List<SubThingyViewResult>(clients.Select(i => new SubThingyViewResult(i)));
             }
             return this.strongItems;
         }
@@ -552,11 +549,7 @@ public class ThingyCollectionViewResult
             {
                 var embeds = this.client.GetEmbed("values");
                 var clients = embeds.GetAllClients();
-                this.strongItems = new List<ThingyViewResult>();
-                for (var i = 0; i < clients.length; ++i)
-                {
-                    this.strongItems.Add(new ThingyViewResult(clients[i]));
-                }
+                this.strongItems = new List<ThingyViewResult>(clients.Select(i => new ThingyViewResult(i)));
             }
             return this.strongItems;
         }
@@ -1355,8 +1348,6 @@ namespace ServiceClient
         private int _number;
 
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        [System.ComponentModel.DataAnnotations.StringLength(25)]
         public string Name
         {
             get { return _name; }
@@ -1440,8 +1431,6 @@ namespace ServiceClient
         }
 
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        [System.ComponentModel.DataAnnotations.StringLength(25)]
         public string Name
         {
             get { return _name; }

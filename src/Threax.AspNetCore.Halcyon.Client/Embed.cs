@@ -6,5 +6,9 @@ namespace Threax.AspNetCore.Halcyon.Client
 {
     public class Embed
     {
+        public IEnumerable<HalEndpointClient> GetAllClients()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
