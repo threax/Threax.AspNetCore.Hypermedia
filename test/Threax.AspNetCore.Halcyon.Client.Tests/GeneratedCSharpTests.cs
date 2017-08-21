@@ -32,5 +32,17 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
             var items = thingies.Items;
             Assert.NotEmpty(items);
         }
+
+        [Fact]
+        public async Task AddThingyDocs()
+        {
+            var entryPointInjector = new EntryPointsInjector("http://localhost:65405/", new DefaultHttpClientFactory());
+            var entryPoint = await entryPointInjector.Load();
+            var addThingyDocs = await entryPoint.GetAddThingyDocs();
+            Assert.Null(addThingyDocs.QuerySchema);
+            Assert.NotNull(addThingyDocs);
+            Assert.NotNull(addThingyDocs.RequestSchema);
+            Assert.NotNull(addThingyDocs.ResponseSchema);
+        }
     }
 }

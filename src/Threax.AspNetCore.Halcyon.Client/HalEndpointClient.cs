@@ -149,14 +149,25 @@ namespace Threax.AspNetCore.Halcyon.Client
             return new Embed(name, embeds[name], this.clientFactory);
         }
 
-        public Task<HalEndpointClient> LoadLinkDoc(string rel)
+        public async Task<HalEndpointClient> LoadLinkDoc(string rel)
         {
-            throw new NotImplementedException();
+            rel += ".Docs";
+            if (links != null)
+            {
+                var link = links[rel];
+                if (link != null)
+                {
+                    var client = new HalEndpointClient(link.ToObject<HalLink>(), clientFactory);
+                    await client.Load(default(Object), default(Object));
+                    return client;
+                }
+            }
+            throw new InvalidOperationException($"Cannot find a link named {rel}.");
         }
 
         public bool HasLinkDoc(string rel)
         {
-            throw new NotImplementedException();
+            return HasLink(rel + ".Docs");
         }
 
         /// <summary>
@@ -199,16 +210,9 @@ namespace Threax.AspNetCore.Halcyon.Client
                     {
                         request.Content = new StringContent(JsonConvert.SerializeObject(data));
                     }
+
                     var response = await client.SendAsync(request);
-                    StatusCode = response.StatusCode;
-                    if ((int)StatusCode > 299)
-                    {
-                        throw new InvalidOperationException($"The HTTP status code {StatusCode} is not a valid response for this client.");
-                    }
-                    var responseString = await response.Content.ReadAsStringAsync();
-                    var responseData = JObject.Parse(responseString);
-                    links = responseData["_links"];
-                    embeds = responseData["_embedded"];
+                    await HandleResponse(response);
                 }
             }
         }
@@ -243,18 +247,27 @@ namespace Threax.AspNetCore.Halcyon.Client
                         }
 
                         var response = await client.SendAsync(request);
-                        StatusCode = response.StatusCode;
-                        if ((int)StatusCode > 299)
-                        {
-                            throw new InvalidOperationException($"The HTTP status code {StatusCode} is not a valid response for this client.");
-                        }
-                        var responseString = await response.Content.ReadAsStringAsync();
-                        var responseData = JObject.Parse(responseString);
-                        links = responseData["_links"];
-                        embeds = responseData["_embedded"];
+                        await HandleResponse(response);
                     }
                 }
             }
+        }
+
+        private async Task HandleResponse(HttpResponseMessage response)
+        {
+            StatusCode = response.StatusCode;
+            if ((int)StatusCode > 299)
+            {
+                throw new InvalidOperationException($"The HTTP status code {StatusCode} is not a valid response for this client.");
+            }
+            var responseString = await response.Content.ReadAsStringAsync();
+            var responseData = JObject.Parse(responseString);
+            if (responseData != null)
+            {
+                data = responseData.Root;
+            }
+            links = responseData["_links"];
+            embeds = responseData["_embedded"];
         }
     }
 }
