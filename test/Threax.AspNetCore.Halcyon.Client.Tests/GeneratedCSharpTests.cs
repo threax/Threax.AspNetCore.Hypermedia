@@ -28,6 +28,9 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
                 Offset = 0
             });
             Assert.NotNull(thingies);
+
+            var items = thingies.Items;
+            Assert.NotEmpty(items);
         }
     }
 }

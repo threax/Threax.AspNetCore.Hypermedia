@@ -20,7 +20,7 @@ namespace Threax.AspNetCore.Halcyon.Client
 
         private IHttpClientFactory clientFactory;
         private HalLink link;
-        private JObject data = null;
+        private JToken data = null;
         private JToken links;
         private JToken embeds;
 
@@ -30,7 +30,7 @@ namespace Threax.AspNetCore.Halcyon.Client
             this.link = link;
         }
 
-        public HalEndpointClient(JObject data, IHttpClientFactory clientFactory)
+        internal HalEndpointClient(JToken data, IHttpClientFactory clientFactory)
         {
             this.data = data;
             this.clientFactory = clientFactory;
@@ -160,7 +160,7 @@ namespace Threax.AspNetCore.Halcyon.Client
         }
 
         /// <summary>
-        /// Parse the data to the specified objec type. The object returned will 
+        /// Parse the data to the specified object type. The object returned will 
         /// be a strongly typed copy of the data.
         /// </summary>
         /// <typeparam name="T">The type to convert the data to.</typeparam>
@@ -172,15 +172,6 @@ namespace Threax.AspNetCore.Halcyon.Client
                 return data.ToObject<T>();
             }
             return default(T);
-        }
-
-        /// <summary>
-        /// Get the JObject representation of the data.
-        /// </summary>
-        /// <returns></returns>
-        public JObject GetData()
-        {
-            return data;
         }
 
         /// <summary>

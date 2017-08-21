@@ -20,8 +20,7 @@ namespace Threax.AspNetCore.Halcyon.Client
 
         public IEnumerable<HalEndpointClient> GetAllClients()
         {
-            throw new NotImplementedException();
-            //return embeds.Select(i => new HalEndpointClient(i, this.fetcher));
+            return embeds.Children().Select(i => new HalEndpointClient(i, this.fetcher));
         }
 
         public String Name { get; private set; }
