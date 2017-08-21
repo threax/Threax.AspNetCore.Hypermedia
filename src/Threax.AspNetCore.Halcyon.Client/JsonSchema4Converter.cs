@@ -8,6 +8,10 @@ using System.Text;
 
 namespace Threax.AspNetCore.Halcyon.Client
 {
+    /// <summary>
+    /// For whatever reason this class is needed to deserialize and allow null values, there is probablay another
+    /// way to do this, but this also does the trick.
+    /// </summary>
     class JsonSchema4Converter : JsonConverter
     {
         private static readonly TypeInfo JsonSchema4TypeInfo = typeof(JsonSchema4).GetTypeInfo();
