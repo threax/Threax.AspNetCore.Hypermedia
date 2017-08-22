@@ -220,7 +220,7 @@ writer.WriteLine($@"
                     {
                         if (link.EndpointDoc.ResponseSchema.IsRawResponse())
                         {
-                            linkReturnType = $"Task<HttpResponseMessage>";
+                            linkReturnType = $"Task<RawEndpointResult>";
                             loadFuncType = "LoadRaw";
                         }
                         else

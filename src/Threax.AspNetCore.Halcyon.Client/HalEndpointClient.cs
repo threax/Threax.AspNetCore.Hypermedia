@@ -135,34 +135,88 @@ namespace Threax.AspNetCore.Halcyon.Client
             throw new InvalidOperationException($"Cannot find a link named {rel}.");
         }
 
-        public Task<HttpResponseMessage> LoadRawLink(string rel)
+        public Task<RawEndpointResult> LoadRawLink(string rel)
         {
-            throw new NotImplementedException();
+            if (links != null)
+            {
+                var link = links[rel];
+                if (link != null)
+                {
+                    var client = new HalEndpointClient(link.ToObject<HalLink>(), clientFactory);
+                    return client.LoadRaw(default(Object), default(Object));
+                }
+            }
+            throw new InvalidOperationException($"Cannot find a link named {rel}.");
         }
 
-        public Task<HttpResponseMessage> LoadRawLinkWithQuery<QueryType>(string rel, QueryType query)
+        public Task<RawEndpointResult> LoadRawLinkWithQuery<QueryType>(string rel, QueryType query)
         {
-            throw new NotImplementedException();
+            if (links != null)
+            {
+                var link = links[rel];
+                if (link != null)
+                {
+                    var client = new HalEndpointClient(link.ToObject<HalLink>(), clientFactory);
+                    return client.LoadRaw(default(Object), query);
+                }
+            }
+            throw new InvalidOperationException($"Cannot find a link named {rel}.");
         }
 
-        public Task<HttpResponseMessage> LoadRawLinkWithBody<BodyType>(string rel, BodyType data)
+        public Task<RawEndpointResult> LoadRawLinkWithBody<BodyType>(string rel, BodyType data)
         {
-            throw new NotImplementedException();
+            if (links != null)
+            {
+                var link = links[rel];
+                if (link != null)
+                {
+                    var client = new HalEndpointClient(link.ToObject<HalLink>(), clientFactory);
+                    return client.LoadRaw(data, default(Object));
+                }
+            }
+            throw new InvalidOperationException($"Cannot find a link named {rel}.");
         }
 
-        public Task<HttpResponseMessage> LoadRawLinkWithQueryAndBody<QueryType, BodyType>(string rel, QueryType query, BodyType data)
+        public Task<RawEndpointResult> LoadRawLinkWithQueryAndBody<QueryType, BodyType>(string rel, QueryType query, BodyType data)
         {
-            throw new NotImplementedException();
+            if (links != null)
+            {
+                var link = links[rel];
+                if (link != null)
+                {
+                    var client = new HalEndpointClient(link.ToObject<HalLink>(), clientFactory);
+                    return client.LoadRaw(data, query);
+                }
+            }
+            throw new InvalidOperationException($"Cannot find a link named {rel}.");
         }
 
-        public Task<HttpResponseMessage> LoadRawLinkWithForm<FormType>(string rel, FormType data)
+        public Task<RawEndpointResult> LoadRawLinkWithForm<FormType>(string rel, FormType data)
         {
-            throw new NotImplementedException();
+            if (links != null)
+            {
+                var link = links[rel];
+                if (link != null)
+                {
+                    var client = new HalEndpointClient(link.ToObject<HalLink>(), clientFactory);
+                    return client.LoadWithFormRaw(data, default(Object));
+                }
+            }
+            throw new InvalidOperationException($"Cannot find a link named {rel}.");
         }
 
-        public Task<HttpResponseMessage> LoadRawLinkWithQueryAndForm<QueryType, FormType>(string rel, QueryType query, FormType data)
+        public Task<RawEndpointResult> LoadRawLinkWithQueryAndForm<QueryType, FormType>(string rel, QueryType query, FormType data)
         {
-            throw new NotImplementedException();
+            if (links != null)
+            {
+                var link = links[rel];
+                if (link != null)
+                {
+                    var client = new HalEndpointClient(link.ToObject<HalLink>(), clientFactory);
+                    return client.LoadWithFormRaw(data, query);
+                }
+            }
+            throw new InvalidOperationException($"Cannot find a link named {rel}.");
         }
 
         public bool HasEmbed(String name)
@@ -279,6 +333,76 @@ namespace Threax.AspNetCore.Halcyon.Client
                         }
                     }
                 }
+            }
+        }
+
+        private async Task<RawEndpointResult> LoadRaw(Object data, Object query)
+        {
+            var endpointResult = new RawEndpointResult();
+
+            try
+            {
+                endpointResult.Client = clientFactory.GetClient();
+                endpointResult.Request = clientFactory.GetRequestMessage();
+                endpointResult.Request.Method = new HttpMethod(link.Method);
+                var uriBuilder = new UriBuilder(link.Href);
+
+                if (query != null)
+                {
+                    uriBuilder.Query = QueryBuilder.BuildQueryString(query);
+                }
+
+                endpointResult.Request.RequestUri = uriBuilder.Uri;
+
+                if (data != null)
+                {
+                    endpointResult.Request.Content = new StringContent(JsonConvert.SerializeObject(data));
+                }
+
+                endpointResult.Response = await endpointResult.Client.SendAsync(endpointResult.Request);
+
+                return endpointResult;
+            }
+            catch (Exception)
+            {
+                endpointResult.Dispose(); //If there are any errors, dispose the result and rethrow
+                throw;
+            }
+        }
+
+        private async Task<RawEndpointResult> LoadWithFormRaw(Object data, Object query)
+        {
+            var endpointResult = new RawEndpointResult();
+
+            try
+            {
+                endpointResult.Client = clientFactory.GetClient();
+                endpointResult.Request = clientFactory.GetRequestMessage();
+                endpointResult.FormData = new MultipartFormDataContent();
+
+                endpointResult.Request.Method = new HttpMethod(link.Method);
+                var uriBuilder = new UriBuilder(link.Href);
+
+                if (query != null)
+                {
+                    uriBuilder.Query = QueryBuilder.BuildQueryString(query);
+                }
+
+                endpointResult.Request.RequestUri = uriBuilder.Uri;
+
+                if (data != null)
+                {
+                    FormContentBuilder.BuildFormContent(data, endpointResult.FormData);
+                    endpointResult.Request.Content = endpointResult.FormData;
+                }
+
+                endpointResult.Response = await endpointResult.Client.SendAsync(endpointResult.Request);
+                return endpointResult;
+            }
+            catch (Exception)
+            {
+                endpointResult.Dispose(); //If there are any errors, dispose the result and rethrow
+                throw;
             }
         }
 

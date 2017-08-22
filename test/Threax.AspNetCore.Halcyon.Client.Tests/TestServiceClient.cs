@@ -265,7 +265,7 @@ namespace TestHalcyonApi.ServiceClient
             return this.client.HasLinkDoc("FileInputMultipleQuery");
         }
 
-        public async Task<HttpResponseMessage> ReturnActionResult()
+        public async Task<RawEndpointResult> ReturnActionResult()
         {
             var result = await this.client.LoadRawLink("ReturnActionResult");
             return result;

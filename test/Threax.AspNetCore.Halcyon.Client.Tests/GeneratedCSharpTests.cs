@@ -44,5 +44,16 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
             Assert.NotNull(addThingyDocs.RequestSchema);
             Assert.NotNull(addThingyDocs.ResponseSchema);
         }
+
+        [Fact]
+        public async Task RawResultTest()
+        {
+            var entryPointInjector = new EntryPointsInjector("http://localhost:65405/", new DefaultHttpClientFactory());
+            var entryPoint = await entryPointInjector.Load();
+            using (var rawResult = await entryPoint.ReturnActionResult())
+            {
+                Assert.NotNull(rawResult);
+            }
+        }
     }
 }
