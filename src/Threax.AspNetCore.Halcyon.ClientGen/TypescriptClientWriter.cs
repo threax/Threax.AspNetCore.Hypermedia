@@ -34,7 +34,8 @@ writer.WriteLine(
             var settings = new TypeScriptGeneratorSettings()
             {
                 TypeStyle = TypeScriptTypeStyle.Interface,
-                MarkOptionalProperties = true
+                MarkOptionalProperties = true,
+                EnumNameGenerator = new EnumValueEnumNameGenerator()
             };
 
             var root = new Object(); //Dunno why it needs this, but this does work
