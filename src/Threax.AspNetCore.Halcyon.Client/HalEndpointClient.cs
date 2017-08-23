@@ -276,63 +276,17 @@ namespace Threax.AspNetCore.Halcyon.Client
 
         private async Task Load(Object data, Object query)
         {
-            using (var client = clientFactory.GetClient())
+            using(var rawResult = await LoadRaw(data, query))
             {
-                using (var request = clientFactory.GetRequestMessage())
-                {
-                    request.Method = new HttpMethod(link.Method);
-                    var uriBuilder = new UriBuilder(link.Href);
-                    
-                    if(query != null)
-                    {
-                        uriBuilder.Query = QueryBuilder.BuildQueryString(query);
-                    }
-
-                    request.RequestUri = uriBuilder.Uri;
-
-                    if (data != null)
-                    {
-                        request.Content = new StringContent(JsonConvert.SerializeObject(data));
-                    }
-
-                    using (var response = await client.SendAsync(request))
-                    {
-                        await HandleResponse(response);
-                    }
-                }
+                await HandleResponse(rawResult.Response);
             }
         }
 
         private async Task LoadWithForm(Object data, Object query)
         {
-            using (var client = clientFactory.GetClient())
+            using (var rawResult = await LoadWithFormRaw(data, query))
             {
-                using (var request = clientFactory.GetRequestMessage())
-                {
-                    using(var form = new MultipartFormDataContent())
-                    {
-                        request.Method = new HttpMethod(link.Method);
-                        var uriBuilder = new UriBuilder(link.Href);
-
-                        if (query != null)
-                        {
-                            uriBuilder.Query = QueryBuilder.BuildQueryString(query);
-                        }
-
-                        request.RequestUri = uriBuilder.Uri;
-
-                        if (data != null)
-                        {
-                            FormContentBuilder.BuildFormContent(data, form);
-                            request.Content = form;
-                        }
-
-                        using (var response = await client.SendAsync(request))
-                        {
-                            await HandleResponse(response);
-                        }
-                    }
-                }
+                await HandleResponse(rawResult.Response);
             }
         }
 
@@ -342,7 +296,7 @@ namespace Threax.AspNetCore.Halcyon.Client
 
             try
             {
-                endpointResult.Client = clientFactory.GetClient();
+                var httpClient = clientFactory.GetClient();
                 endpointResult.Request = clientFactory.GetRequestMessage();
                 endpointResult.Request.Method = new HttpMethod(link.Method);
                 var uriBuilder = new UriBuilder(link.Href);
@@ -359,7 +313,7 @@ namespace Threax.AspNetCore.Halcyon.Client
                     endpointResult.Request.Content = new StringContent(JsonConvert.SerializeObject(data));
                 }
 
-                endpointResult.Response = await endpointResult.Client.SendAsync(endpointResult.Request);
+                endpointResult.Response = await httpClient.SendAsync(endpointResult.Request);
 
                 return endpointResult;
             }
@@ -376,7 +330,7 @@ namespace Threax.AspNetCore.Halcyon.Client
 
             try
             {
-                endpointResult.Client = clientFactory.GetClient();
+                var httpClient = clientFactory.GetClient();
                 endpointResult.Request = clientFactory.GetRequestMessage();
                 endpointResult.FormData = new MultipartFormDataContent();
 
@@ -396,7 +350,7 @@ namespace Threax.AspNetCore.Halcyon.Client
                     endpointResult.Request.Content = endpointResult.FormData;
                 }
 
-                endpointResult.Response = await endpointResult.Client.SendAsync(endpointResult.Request);
+                endpointResult.Response = await httpClient.SendAsync(endpointResult.Request);
                 return endpointResult;
             }
             catch (Exception)

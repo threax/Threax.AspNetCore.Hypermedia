@@ -12,47 +12,59 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
         [Fact]
         public async Task EntryPoint()
         {
-            var entryPointInjector = new EntryPointsInjector("http://localhost:65405/", new DefaultHttpClientFactory());
-            var entryPoint = await entryPointInjector.Load();
-            Assert.NotNull(entryPoint);
+            using (var clientFactory = new DefaultHttpClientFactory())
+            {
+                var entryPointInjector = new EntryPointsInjector("http://localhost:65405/", clientFactory);
+                var entryPoint = await entryPointInjector.Load();
+                Assert.NotNull(entryPoint);
+            }
         }
 
         [Fact]
         public async Task ListThingies()
         {
-            var entryPointInjector = new EntryPointsInjector("http://localhost:65405/", new DefaultHttpClientFactory());
-            var entryPoint = await entryPointInjector.Load();
-            var thingies = await entryPoint.ListThingies(new PagedCollectionQuery()
+            using (var clientFactory = new DefaultHttpClientFactory())
             {
-                Limit = 15,
-                Offset = 0
-            });
-            Assert.NotNull(thingies);
+                var entryPointInjector = new EntryPointsInjector("http://localhost:65405/", clientFactory);
+                var entryPoint = await entryPointInjector.Load();
+                var thingies = await entryPoint.ListThingies(new PagedCollectionQuery()
+                {
+                    Limit = 15,
+                    Offset = 0
+                });
+                Assert.NotNull(thingies);
 
-            var items = thingies.Items;
-            Assert.NotEmpty(items);
+                var items = thingies.Items;
+                Assert.NotEmpty(items);
+            }
         }
 
         [Fact]
         public async Task AddThingyDocs()
         {
-            var entryPointInjector = new EntryPointsInjector("http://localhost:65405/", new DefaultHttpClientFactory());
-            var entryPoint = await entryPointInjector.Load();
-            var addThingyDocs = await entryPoint.GetAddThingyDocs();
-            Assert.Null(addThingyDocs.QuerySchema);
-            Assert.NotNull(addThingyDocs);
-            Assert.NotNull(addThingyDocs.RequestSchema);
-            Assert.NotNull(addThingyDocs.ResponseSchema);
+            using (var clientFactory = new DefaultHttpClientFactory())
+            {
+                var entryPointInjector = new EntryPointsInjector("http://localhost:65405/", clientFactory);
+                var entryPoint = await entryPointInjector.Load();
+                var addThingyDocs = await entryPoint.GetAddThingyDocs();
+                Assert.Null(addThingyDocs.QuerySchema);
+                Assert.NotNull(addThingyDocs);
+                Assert.NotNull(addThingyDocs.RequestSchema);
+                Assert.NotNull(addThingyDocs.ResponseSchema);
+            }
         }
 
         [Fact]
         public async Task RawResultTest()
         {
-            var entryPointInjector = new EntryPointsInjector("http://localhost:65405/", new DefaultHttpClientFactory());
-            var entryPoint = await entryPointInjector.Load();
-            using (var rawResult = await entryPoint.ReturnActionResult())
+            using (var clientFactory = new DefaultHttpClientFactory())
             {
-                Assert.NotNull(rawResult);
+                var entryPointInjector = new EntryPointsInjector("http://localhost:65405/", clientFactory);
+                var entryPoint = await entryPointInjector.Load();
+                using (var rawResult = await entryPoint.ReturnActionResult())
+                {
+                    Assert.NotNull(rawResult);
+                }
             }
         }
     }
