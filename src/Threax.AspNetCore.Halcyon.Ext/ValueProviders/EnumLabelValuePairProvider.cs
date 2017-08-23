@@ -4,10 +4,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
+using NJsonSchema;
 
 namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
 {
-    public class EnumLabelValuePairProvider : LabelValuePairProviderSync
+    public class EnumLabelValuePairProvider : IValueProvider
     {
         Type enumType;
         bool nullable;
@@ -31,7 +33,25 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
             this.propertyInfo = propertyInfo;
         }
 
-        protected override IEnumerable<ILabelValuePair> GetSourcesSync()
+        public Task AddExtensions(JsonProperty schemaProp, ValueProviderArgs args)
+        {
+            var sources = GetSourcesSync();
+
+            foreach(var source in sources)
+            {
+                schemaProp.EnumerationNames.Add(source.Label);
+                schemaProp.Enumeration.Add(source.Value);
+            }
+
+            if (schemaProp.ExtensionData == null)
+            {
+                schemaProp.ExtensionData = new Dictionary<String, Object>();
+            }
+
+            return Task.FromResult(0);
+        }
+
+        protected virtual IEnumerable<LabelValuePair> GetSourcesSync()
         {
             if (nullable)
             {
