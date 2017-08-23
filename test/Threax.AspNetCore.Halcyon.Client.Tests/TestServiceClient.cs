@@ -64,9 +64,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanRefresh()
+        public bool CanRefresh
         {
-            return this.client.HasLink("self");
+            get
+            {
+                return this.client.HasLink("self");
+            }
         }
 
         public async Task<HalEndpointDoc> GetRefreshDocs()
@@ -87,9 +90,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanListThingies()
+        public bool CanListThingies
         {
-            return this.client.HasLink("listThingies");
+            get
+            {
+                return this.client.HasLink("listThingies");
+            }
         }
 
         public async Task<HalEndpointDoc> GetListThingiesDocs()
@@ -110,9 +116,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanAddThingy()
+        public bool CanAddThingy
         {
-            return this.client.HasLink("addThingy");
+            get
+            {
+                return this.client.HasLink("addThingy");
+            }
         }
 
         public async Task<HalEndpointDoc> GetAddThingyDocs()
@@ -133,9 +142,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanBeginAddMultipart()
+        public bool CanBeginAddMultipart
         {
-            return this.client.HasLink("BeginAddMultipart");
+            get
+            {
+                return this.client.HasLink("BeginAddMultipart");
+            }
         }
 
         public async Task<HalEndpointDoc> GetBeginAddMultipartDocs()
@@ -165,9 +177,12 @@ namespace TestHalcyonApi.ServiceClient
             var result = await this.client.LoadLinkWithBody("TestTakeListInput", data);
         }
 
-        public bool CanTestTakeListInput()
+        public bool CanTestTakeListInput
         {
-            return this.client.HasLink("TestTakeListInput");
+            get
+            {
+                return this.client.HasLink("TestTakeListInput");
+            }
         }
 
         public async Task<HalEndpointDoc> GetTestTakeListInputDocs()
@@ -186,9 +201,12 @@ namespace TestHalcyonApi.ServiceClient
             var result = await this.client.LoadLinkWithForm("FileInput", data);
         }
 
-        public bool CanFileInput()
+        public bool CanFileInput
         {
-            return this.client.HasLink("FileInput");
+            get
+            {
+                return this.client.HasLink("FileInput");
+            }
         }
 
         public async Task<HalEndpointDoc> GetFileInputDocs()
@@ -207,9 +225,12 @@ namespace TestHalcyonApi.ServiceClient
             var result = await this.client.LoadLinkWithForm("FileInputMultiple", data);
         }
 
-        public bool CanFileInputMultiple()
+        public bool CanFileInputMultiple
         {
-            return this.client.HasLink("FileInputMultiple");
+            get
+            {
+                return this.client.HasLink("FileInputMultiple");
+            }
         }
 
         public async Task<HalEndpointDoc> GetFileInputMultipleDocs()
@@ -228,9 +249,12 @@ namespace TestHalcyonApi.ServiceClient
             var result = await this.client.LoadLinkWithQueryAndForm("FileInputQuery", query, data);
         }
 
-        public bool CanFileInputQuery()
+        public bool CanFileInputQuery
         {
-            return this.client.HasLink("FileInputQuery");
+            get
+            {
+                return this.client.HasLink("FileInputQuery");
+            }
         }
 
         public async Task<HalEndpointDoc> GetFileInputQueryDocs()
@@ -249,9 +273,12 @@ namespace TestHalcyonApi.ServiceClient
             var result = await this.client.LoadLinkWithQueryAndForm("FileInputMultipleQuery", query, data);
         }
 
-        public bool CanFileInputMultipleQuery()
+        public bool CanFileInputMultipleQuery
         {
-            return this.client.HasLink("FileInputMultipleQuery");
+            get
+            {
+                return this.client.HasLink("FileInputMultipleQuery");
+            }
         }
 
         public async Task<HalEndpointDoc> GetFileInputMultipleQueryDocs()
@@ -271,9 +298,12 @@ namespace TestHalcyonApi.ServiceClient
             return result;
         }
 
-        public bool CanReturnActionResult()
+        public bool CanReturnActionResult
         {
-            return this.client.HasLink("ReturnActionResult");
+            get
+            {
+                return this.client.HasLink("ReturnActionResult");
+            }
         }
 
         public async Task<HalEndpointDoc> GetReturnActionResultDocs()
@@ -332,9 +362,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanRefresh()
+        public bool CanRefresh
         {
-            return this.client.HasLink("self");
+            get
+            {
+                return this.client.HasLink("self");
+            }
         }
 
         public async Task<HalEndpointDoc> GetRefreshDocs()
@@ -355,9 +388,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanListSubThingies()
+        public bool CanListSubThingies
         {
-            return this.client.HasLink("listSubThingies");
+            get
+            {
+                return this.client.HasLink("listSubThingies");
+            }
         }
 
         public async Task<HalEndpointDoc> GetListSubThingiesDocs()
@@ -401,9 +437,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanRefresh()
+        public bool CanRefresh
         {
-            return this.client.HasLink("self");
+            get
+            {
+                return this.client.HasLink("self");
+            }
         }
 
         public async Task<HalEndpointDoc> GetRefreshDocs()
@@ -424,9 +463,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanListSubThingies()
+        public bool CanListSubThingies
         {
-            return this.client.HasLink("listSubThingies");
+            get
+            {
+                return this.client.HasLink("listSubThingies");
+            }
         }
 
         public async Task<HalEndpointDoc> GetListSubThingiesDocs()
@@ -447,9 +489,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanUpdateSubThingy()
+        public bool CanUpdateSubThingy
         {
-            return this.client.HasLink("updateSubThingy");
+            get
+            {
+                return this.client.HasLink("updateSubThingy");
+            }
         }
 
         public async Task<HalEndpointDoc> GetUpdateSubThingyDocs()
@@ -468,9 +513,12 @@ namespace TestHalcyonApi.ServiceClient
             var result = await this.client.LoadLink("deleteSubThingy");
         }
 
-        public bool CanDeleteSubThingy()
+        public bool CanDeleteSubThingy
         {
-            return this.client.HasLink("deleteSubThingy");
+            get
+            {
+                return this.client.HasLink("deleteSubThingy");
+            }
         }
 
         public async Task<SubThingyViewResult> GetSubThingy()
@@ -480,9 +528,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanGetSubThingy()
+        public bool CanGetSubThingy
         {
-            return this.client.HasLink("getSubThingy");
+            get
+            {
+                return this.client.HasLink("getSubThingy");
+            }
         }
 
         public async Task<HalEndpointDoc> GetGetSubThingyDocs()
@@ -503,9 +554,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanGetThingy()
+        public bool CanGetThingy
         {
-            return this.client.HasLink("getThingy");
+            get
+            {
+                return this.client.HasLink("getThingy");
+            }
         }
 
         public async Task<HalEndpointDoc> GetGetThingyDocs()
@@ -564,9 +618,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanRefresh()
+        public bool CanRefresh
         {
-            return this.client.HasLink("self");
+            get
+            {
+                return this.client.HasLink("self");
+            }
         }
 
         public async Task<HalEndpointDoc> GetRefreshDocs()
@@ -587,9 +644,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanListThingies()
+        public bool CanListThingies
         {
-            return this.client.HasLink("listThingies");
+            get
+            {
+                return this.client.HasLink("listThingies");
+            }
         }
 
         public async Task<HalEndpointDoc> GetListThingiesDocs()
@@ -610,9 +670,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanAddThingy()
+        public bool CanAddThingy
         {
-            return this.client.HasLink("addThingy");
+            get
+            {
+                return this.client.HasLink("addThingy");
+            }
         }
 
         public async Task<HalEndpointDoc> GetAddThingyDocs()
@@ -633,9 +696,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanNext()
+        public bool CanNext
         {
-            return this.client.HasLink("next");
+            get
+            {
+                return this.client.HasLink("next");
+            }
         }
 
         public async Task<HalEndpointDoc> GetNextDocs()
@@ -656,9 +722,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanPrevious()
+        public bool CanPrevious
         {
-            return this.client.HasLink("previous");
+            get
+            {
+                return this.client.HasLink("previous");
+            }
         }
 
         public async Task<HalEndpointDoc> GetPreviousDocs()
@@ -679,9 +748,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanFirst()
+        public bool CanFirst
         {
-            return this.client.HasLink("first");
+            get
+            {
+                return this.client.HasLink("first");
+            }
         }
 
         public async Task<HalEndpointDoc> GetFirstDocs()
@@ -702,9 +774,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanLast()
+        public bool CanLast
         {
-            return this.client.HasLink("last");
+            get
+            {
+                return this.client.HasLink("last");
+            }
         }
 
         public async Task<HalEndpointDoc> GetLastDocs()
@@ -748,9 +823,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanRefresh()
+        public bool CanRefresh
         {
-            return this.client.HasLink("self");
+            get
+            {
+                return this.client.HasLink("self");
+            }
         }
 
         public async Task<HalEndpointDoc> GetRefreshDocs()
@@ -771,9 +849,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanGetThingy()
+        public bool CanGetThingy
         {
-            return this.client.HasLink("getThingy");
+            get
+            {
+                return this.client.HasLink("getThingy");
+            }
         }
 
         public async Task<HalEndpointDoc> GetGetThingyDocs()
@@ -794,9 +875,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanUpdateThingy()
+        public bool CanUpdateThingy
         {
-            return this.client.HasLink("updateThingy");
+            get
+            {
+                return this.client.HasLink("updateThingy");
+            }
         }
 
         public async Task<HalEndpointDoc> GetUpdateThingyDocs()
@@ -815,9 +899,12 @@ namespace TestHalcyonApi.ServiceClient
             var result = await this.client.LoadLink("deleteThingy");
         }
 
-        public bool CanDeleteThingy()
+        public bool CanDeleteThingy
         {
-            return this.client.HasLink("deleteThingy");
+            get
+            {
+                return this.client.HasLink("deleteThingy");
+            }
         }
 
         public async Task<SubThingyCollectionViewResult> ListThingySubThingies()
@@ -827,9 +914,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanListThingySubThingies()
+        public bool CanListThingySubThingies
         {
-            return this.client.HasLink("listThingySubThingies");
+            get
+            {
+                return this.client.HasLink("listThingySubThingies");
+            }
         }
 
         public async Task<HalEndpointDoc> GetListThingySubThingiesDocs()
@@ -850,9 +940,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanAddSubThingy()
+        public bool CanAddSubThingy
         {
-            return this.client.HasLink("addSubThingy");
+            get
+            {
+                return this.client.HasLink("addSubThingy");
+            }
         }
 
         public async Task<HalEndpointDoc> GetAddSubThingyDocs()
@@ -871,9 +964,12 @@ namespace TestHalcyonApi.ServiceClient
             var result = await this.client.LoadLink("authorizedpropertiesThingies");
         }
 
-        public bool CanAuthorizedpropertiesThingies()
+        public bool CanAuthorizedpropertiesThingies
         {
-            return this.client.HasLink("authorizedpropertiesThingies");
+            get
+            {
+                return this.client.HasLink("authorizedpropertiesThingies");
+            }
         }
 
         public async Task RolepropertiesThingies()
@@ -881,9 +977,12 @@ namespace TestHalcyonApi.ServiceClient
             var result = await this.client.LoadLink("rolepropertiesThingies");
         }
 
-        public bool CanRolepropertiesThingies()
+        public bool CanRolepropertiesThingies
         {
-            return this.client.HasLink("rolepropertiesThingies");
+            get
+            {
+                return this.client.HasLink("rolepropertiesThingies");
+            }
         }
 
         public async Task TestDeclareLinkToRel(PagedCollectionQuery query)
@@ -891,9 +990,12 @@ namespace TestHalcyonApi.ServiceClient
             var result = await this.client.LoadLinkWithQuery("testDeclareLinkToRel", query);
         }
 
-        public bool CanTestDeclareLinkToRel()
+        public bool CanTestDeclareLinkToRel
         {
-            return this.client.HasLink("testDeclareLinkToRel");
+            get
+            {
+                return this.client.HasLink("testDeclareLinkToRel");
+            }
         }
 
         public async Task<HalEndpointDoc> GetTestDeclareLinkToRelDocs()
@@ -937,9 +1039,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanPrevious()
+        public bool CanPrevious
         {
-            return this.client.HasLink("previous");
+            get
+            {
+                return this.client.HasLink("previous");
+            }
         }
 
         public async Task<HalEndpointDoc> GetPreviousDocs()
@@ -960,9 +1065,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanNext()
+        public bool CanNext
         {
-            return this.client.HasLink("next");
+            get
+            {
+                return this.client.HasLink("next");
+            }
         }
 
         public async Task<HalEndpointDoc> GetNextDocs()
@@ -983,9 +1091,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanSave()
+        public bool CanSave
         {
-            return this.client.HasLink("save");
+            get
+            {
+                return this.client.HasLink("save");
+            }
         }
 
         public async Task<HalEndpointDoc> GetSaveDocs()
@@ -1029,9 +1140,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanPrevious()
+        public bool CanPrevious
         {
-            return this.client.HasLink("previous");
+            get
+            {
+                return this.client.HasLink("previous");
+            }
         }
 
         public async Task<HalEndpointDoc> GetPreviousDocs()
@@ -1052,9 +1166,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanNext()
+        public bool CanNext
         {
-            return this.client.HasLink("next");
+            get
+            {
+                return this.client.HasLink("next");
+            }
         }
 
         public async Task<HalEndpointDoc> GetNextDocs()
@@ -1075,9 +1192,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanSave()
+        public bool CanSave
         {
-            return this.client.HasLink("save");
+            get
+            {
+                return this.client.HasLink("save");
+            }
         }
 
         public async Task<HalEndpointDoc> GetSaveDocs()
@@ -1121,9 +1241,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanPrevious()
+        public bool CanPrevious
         {
-            return this.client.HasLink("previous");
+            get
+            {
+                return this.client.HasLink("previous");
+            }
         }
 
         public async Task<HalEndpointDoc> GetPreviousDocs()
@@ -1144,9 +1267,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanNext()
+        public bool CanNext
         {
-            return this.client.HasLink("next");
+            get
+            {
+                return this.client.HasLink("next");
+            }
         }
 
         public async Task<HalEndpointDoc> GetNextDocs()
@@ -1167,9 +1293,12 @@ namespace TestHalcyonApi.ServiceClient
 
         }
 
-        public bool CanSave()
+        public bool CanSave
         {
-            return this.client.HasLink("save");
+            get
+            {
+                return this.client.HasLink("save");
+            }
         }
 
         public async Task<HalEndpointDoc> GetSaveDocs()

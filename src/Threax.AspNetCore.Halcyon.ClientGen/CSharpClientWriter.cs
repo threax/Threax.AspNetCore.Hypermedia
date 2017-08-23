@@ -320,8 +320,12 @@ writer.WriteLine($@"
                         writer.WriteLine($@"
     }}
 
-    public bool Can{upperFuncName}() {{
-        return this.client.HasLink(""{link.Rel}"");
+    public bool Can{upperFuncName} 
+    {{
+        get 
+        {{
+            return this.client.HasLink(""{link.Rel}"");
+        }}
     }}");
                     }
 
