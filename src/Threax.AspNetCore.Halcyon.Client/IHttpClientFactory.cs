@@ -9,7 +9,7 @@ namespace Threax.AspNetCore.Halcyon.Client
     /// <summary>
     /// A factory used by the HalEndpointClient to build http requests.
     /// </summary>
-    public interface IHttpClientFactory : IDisposable
+    public interface IHttpClientFactory
     {
         /// <summary>
         /// Get a the http client. DO NOT dispose it. The instance will be shared as reccomended by Microsoft.

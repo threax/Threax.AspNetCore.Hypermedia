@@ -10,8 +10,9 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class HalcyonClientDiExtensions
     {
         /// <summary>
-        /// Add the halcyon client services, this will register IHttpClientFactory as a singleton. 
-        /// You can decorate it as needed by supplying a configureOptions callback.
+        /// Add the halcyon client services, this will register IHttpClientFactory as a singleton.
+        /// You can decorate it as needed by supplying a configureOptions callback. This will also register
+        /// the DefaultHttpClientFactory as a singleton, which will handle its disposal automatically.
         /// </summary>
         /// <param name="services"></param>
         /// <param name="configureOptions"></param>
@@ -21,9 +22,10 @@ namespace Microsoft.Extensions.DependencyInjection
             var options = new HalcyonClientOptions();
             configureOptions?.Invoke(options);
 
+            services.TryAddSingleton<DefaultHttpClientFactory>();
             services.TryAddSingleton<IHttpClientFactory>(s =>
             {
-                IHttpClientFactory factory = new DefaultHttpClientFactory();
+                IHttpClientFactory factory = s.GetRequiredService<DefaultHttpClientFactory>();
                 if (options.DecorateClientFactory != null)
                 {
                     factory = options.DecorateClientFactory(factory);
