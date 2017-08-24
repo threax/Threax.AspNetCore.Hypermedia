@@ -10,7 +10,7 @@ namespace Threax.AspNetCore.Halcyon.Client
     /// Send an access token under a "bearer" (default) or other header. Be careful to only make
     /// https requests using this or else you could leak access tokens.
     /// </summary>
-    public class BearerHttpClientFactory : IHttpClientFactory
+    public class BearerHttpClientFactory<TRef> : IHttpClientFactory<TRef>
     {
         private IHttpClientFactory next;
 

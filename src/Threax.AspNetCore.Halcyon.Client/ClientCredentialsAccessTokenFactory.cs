@@ -21,13 +21,13 @@ namespace Threax.AspNetCore.Halcyon.Client
     /// </typeparam>
     public class ClientCredentialsAccessTokenFactory<TRef> : IHttpClientFactory<TRef>, IDisposable
     {
-        private BearerHttpClientFactory next;
+        private BearerHttpClientFactory<TRef> next;
         private DateTime jwtExpiration;
         private DiscoveryResponse discoveryClient;
         private ClientCredentailsAccessTokenFactoryOptions options;
         private SemaphoreSlim refreshLocker = new SemaphoreSlim(1, 1);
 
-        public ClientCredentialsAccessTokenFactory(ClientCredentailsAccessTokenFactoryOptions options)
+        public ClientCredentialsAccessTokenFactory(ClientCredentailsAccessTokenFactoryOptions options, BearerHttpClientFactory<TRef> next)
         {
             if (options.ExpirationTimeFraction < 0.0d || options.ExpirationTimeFraction > 1.0d)
             {
@@ -35,7 +35,7 @@ namespace Threax.AspNetCore.Halcyon.Client
             }
 
             this.options = options;
-            this.next = options.BearerHttpClientFactory;
+            this.next = next;
         }
 
         public void Dispose()

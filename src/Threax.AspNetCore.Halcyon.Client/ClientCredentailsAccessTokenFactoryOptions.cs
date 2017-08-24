@@ -30,11 +30,6 @@ namespace Threax.AspNetCore.Halcyon.Client
         public String Scope { get; set; }
 
         /// <summary>
-        /// The BearerHttpClientFactory that will send the access token this class gets.
-        /// </summary>
-        public BearerHttpClientFactory BearerHttpClientFactory { get; set; }
-
-        /// <summary>
         /// This represents the fraction of the total lifetime of the access token to keep using it until
         /// it should be refreshed. It should be between 0 and 1, the default is 0.8 (use token for 80% of the total time, then refresh)
         /// </summary>

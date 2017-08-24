@@ -11,8 +11,9 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         /// <summary>
         /// Add the halcyon client services, this will register IHttpClientFactory as a singleton.
-        /// You can decorate it as needed by supplying a configureOptions callback. This will also register
-        /// the DefaultHttpClientFactory as a singleton, which will handle its disposal automatically.
+        /// You can decorate it as needed by supplying a configureOptions callback. Whatever you configure
+        /// for the IHttpClientFactory should be reusable across all services, any additional customization
+        /// should be made when registering the generated entry point injectors.
         /// </summary>
         /// <param name="services"></param>
         /// <param name="configureOptions"></param>
