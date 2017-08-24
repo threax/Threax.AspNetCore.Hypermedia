@@ -7,7 +7,10 @@ using Threax.AspNetCore.Halcyon.Client;
 
 namespace Threax.AspNetCore.Halcyon.Client
 {
-    public class AddHeaderHttpClientFactory : IHttpClientFactory
+    /// <summary>
+    /// This factory can add a header when creating HttpRequestMessages.
+    /// </summary>
+    public class AddHeaderHttpClientFactory<TRef> : IHttpClientFactory<TRef>
     {
         private Func<String> valueAccessor;
         private IHttpClientFactory next;
