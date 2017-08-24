@@ -19,9 +19,10 @@ namespace Threax.AspNetCore.Halcyon.Client
         HttpClient GetClient();
 
         /// <summary>
-        /// Get a new HttpRequestMessage. Calling code must dispose the instance.
+        /// Get a new HttpRequestMessage. This might do other work, so it is async.
+        /// Calling code must dispose the instance.
         /// </summary>
         /// <returns></returns>
-        HttpRequestMessage GetRequestMessage();
+        Task<HttpRequestMessage> GetRequestMessage();
     }
 }

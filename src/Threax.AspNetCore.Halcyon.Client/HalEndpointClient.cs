@@ -297,7 +297,7 @@ namespace Threax.AspNetCore.Halcyon.Client
             try
             {
                 var httpClient = clientFactory.GetClient();
-                endpointResult.Request = clientFactory.GetRequestMessage();
+                endpointResult.Request = await clientFactory.GetRequestMessage();
                 endpointResult.Request.Method = new HttpMethod(link.Method);
                 var uriBuilder = new UriBuilder(link.Href);
 
@@ -331,7 +331,7 @@ namespace Threax.AspNetCore.Halcyon.Client
             try
             {
                 var httpClient = clientFactory.GetClient();
-                endpointResult.Request = clientFactory.GetRequestMessage();
+                endpointResult.Request = await clientFactory.GetRequestMessage();
                 endpointResult.FormData = new MultipartFormDataContent();
 
                 endpointResult.Request.Method = new HttpMethod(link.Method);

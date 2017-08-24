@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Threax.AspNetCore.Halcyon.Client
 {
@@ -21,9 +22,9 @@ namespace Threax.AspNetCore.Halcyon.Client
             return next.GetClient();
         }
 
-        public HttpRequestMessage GetRequestMessage()
+        public async Task<HttpRequestMessage> GetRequestMessage()
         {
-            var req = next.GetRequestMessage();
+            var req = await next.GetRequestMessage();
             req.Headers.TryAddWithoutValidation(HeaderName, accessToken);
             return req;
         }

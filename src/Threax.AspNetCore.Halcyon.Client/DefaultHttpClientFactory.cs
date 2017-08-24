@@ -20,9 +20,9 @@ namespace Threax.AspNetCore.Halcyon.Client
             return httpClient;
         }
 
-        public HttpRequestMessage GetRequestMessage()
+        public Task<HttpRequestMessage> GetRequestMessage()
         {
-            return new HttpRequestMessage();
+            return Task.FromResult(new HttpRequestMessage());
         }
     }
 }

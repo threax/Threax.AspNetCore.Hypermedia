@@ -25,9 +25,9 @@ namespace Threax.AspNetCore.Halcyon.Client
             return next.GetClient();
         }
 
-        public HttpRequestMessage GetRequestMessage()
+        public async Task<HttpRequestMessage> GetRequestMessage()
         {
-            var req = next.GetRequestMessage();
+            var req = await next.GetRequestMessage();
             req.Headers.TryAddWithoutValidation(headerName, valueAccessor());
             return req;
         }
