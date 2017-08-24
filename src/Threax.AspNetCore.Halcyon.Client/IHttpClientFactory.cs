@@ -25,4 +25,13 @@ namespace Threax.AspNetCore.Halcyon.Client
         /// <returns></returns>
         Task<HttpRequestMessage> GetRequestMessage();
     }
+
+    /// <summary>
+    /// A generic verison of the IHttpClientFactory to make dependency injection more flexible.
+    /// </summary>
+    /// <typeparam name="TRef"></typeparam>
+    public interface IHttpClientFactory<TRef> : IHttpClientFactory
+    {
+
+    }
 }

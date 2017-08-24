@@ -19,7 +19,7 @@ namespace Threax.AspNetCore.Halcyon.Client
     /// for different halcyon entry points if needed. TRef is never used by this class.
     /// If in doubt use the injector class this will end up a part of.
     /// </typeparam>
-    public class ClientCredentialsAccessTokenFactory<TRef> : IHttpClientFactory, IDisposable
+    public class ClientCredentialsAccessTokenFactory<TRef> : IHttpClientFactory<TRef>, IDisposable
     {
         private BearerHttpClientFactory next;
         private DateTime jwtExpiration;
