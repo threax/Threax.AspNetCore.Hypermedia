@@ -17,6 +17,11 @@ namespace Threax.AspNetCore.Halcyon.Client
             this.next = next;
         }
 
+        public void Dispose()
+        {
+            next.Dispose();
+        }
+
         public HttpClient GetClient()
         {
             return next.GetClient();

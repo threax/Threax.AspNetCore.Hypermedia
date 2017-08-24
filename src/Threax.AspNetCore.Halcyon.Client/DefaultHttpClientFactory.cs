@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Threax.AspNetCore.Halcyon.Client
 {
-    public class DefaultHttpClientFactory : IHttpClientFactory, IDisposable
+    public class DefaultHttpClientFactory : IHttpClientFactory
     {
         private HttpClient httpClient = new HttpClient();
 
