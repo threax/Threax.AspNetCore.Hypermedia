@@ -76,7 +76,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 new String[] {
                     $"{docEndpointInfo.GroupArg}={GroupName}",
                     $"{docEndpointInfo.MethodArg}={Method}",
-                    $"{docEndpointInfo.RelativePathArg}={UriTemplate}"
+                    $"{docEndpointInfo.RelativePathArg}={UriTemplate.TrimStart('\\', '/')}"
                 }, out halRefObj);
 
             var docHalRefInfo = ((HalRelInfo)halRefObj);
