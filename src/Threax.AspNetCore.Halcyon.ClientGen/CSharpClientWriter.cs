@@ -47,7 +47,8 @@ writer.WriteLine("}");
                 GenerateDataAnnotations = false,
                 ClassStyle = CSharpClassStyle.Poco,  
                 RequiredPropertiesMustBeDefined = false,
-                EnumNameGenerator = new EnumValueEnumNameGenerator()
+                EnumNameGenerator = new EnumValueEnumNameGenerator(),
+                ArrayType = "List" //This is imported in the using statements above (System.Collections.Generic.List)
             };
 
             var root = new Object(); //Dunno why it needs this, but this does work

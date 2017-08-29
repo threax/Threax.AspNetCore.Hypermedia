@@ -1407,7 +1407,7 @@ namespace TestHalcyonApi.ServiceClient
     public partial class ThingyView
     {
         [Newtonsoft.Json.JsonProperty("complexObjects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.ObjectModel.ObservableCollection<ComplexObject> ComplexObjects { get; set; }
+        public List<ComplexObject> ComplexObjects { get; set; }
 
         [Newtonsoft.Json.JsonProperty("thingyId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int ThingyId { get; set; }
@@ -1467,7 +1467,7 @@ namespace TestHalcyonApi.ServiceClient
     public partial class MultiFileInput
     {
         [Newtonsoft.Json.JsonProperty("daFile", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.ObjectModel.ObservableCollection<byte[]> DaFile { get; set; }
+        public List<byte[]> DaFile { get; set; }
 
         public string ToJson()
         {
@@ -1524,13 +1524,16 @@ namespace TestHalcyonApi.ServiceClient
         public int ThingyId { get; set; }
 
         [Newtonsoft.Json.JsonProperty("enumTest", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string EnumTest { get; set; }
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public SubThingyViewEnumTest EnumTest { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("enumTestNullable", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string EnumTestNullable { get; set; }
+        [Newtonsoft.Json.JsonProperty("enumTestNullable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public SubThingyViewEnumTestNullable? EnumTestNullable { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("enumTestNullableRelabel", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string EnumTestNullableRelabel { get; set; }
+        [Newtonsoft.Json.JsonProperty("enumTestNullableRelabel", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public SubThingyViewEnumTestNullableRelabel? EnumTestNullableRelabel { get; set; }
 
         public string ToJson()
         {
@@ -1581,6 +1584,48 @@ namespace TestHalcyonApi.ServiceClient
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<MultipartInput3>(data);
         }
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.4.5.0")]
+    public enum SubThingyViewEnumTest
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "TestValue1")]
+        TestValue1 = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = "TestValue2")]
+        TestValue2 = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = "TestValue3")]
+        TestValue3 = 2,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.4.5.0")]
+    public enum SubThingyViewEnumTestNullable
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "TestValue1")]
+        TestValue1 = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = "TestValue2")]
+        TestValue2 = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = "TestValue3")]
+        TestValue3 = 3,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.4.5.0")]
+    public enum SubThingyViewEnumTestNullableRelabel
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "TestValue1")]
+        TestValue1 = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = "TestValue2")]
+        TestValue2 = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = "TestValue3")]
+        TestValue3 = 3,
+
     }
 }
 
