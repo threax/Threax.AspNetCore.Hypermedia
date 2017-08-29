@@ -55,6 +55,21 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
         }
 
         [Fact]
+        public async Task AddThingy()
+        {
+            using (var clientFactory = new DefaultHttpClientFactory())
+            {
+                var entryPointInjector = new EntryPointsInjector("http://localhost:65405/", clientFactory);
+                var entryPoint = await entryPointInjector.Load();
+                var result = await entryPoint.AddThingy(new ThingyView()
+                {
+                    Name = "Name",
+                });
+                Assert.Equal("Name", result.Data.Name);
+            }
+        }
+
+        [Fact]
         public async Task RawResultTest()
         {
             using (var clientFactory = new DefaultHttpClientFactory())

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net;
+using System.Text;
 
 namespace Threax.AspNetCore.Halcyon.Client
 {
@@ -310,7 +311,7 @@ namespace Threax.AspNetCore.Halcyon.Client
 
                 if (data != null)
                 {
-                    endpointResult.Request.Content = new StringContent(JsonConvert.SerializeObject(data));
+                    endpointResult.Request.Content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
                 }
 
                 endpointResult.Response = await httpClient.SendAsync(endpointResult.Request);
