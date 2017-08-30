@@ -17,6 +17,10 @@ namespace Threax.AspNetCore.Halcyon.Ext
     {
         private static readonly TypeInfo JsonSchema4TypeInfo = typeof(JsonSchema4).GetTypeInfo();
 
+        public override bool CanRead => false;
+
+        public override bool CanWrite => true;
+
         public override bool CanConvert(Type objectType)
         {
             return JsonSchema4TypeInfo.IsAssignableFrom(objectType);
@@ -30,11 +34,8 @@ namespace Threax.AspNetCore.Halcyon.Ext
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             var jsonSchema = value as JsonSchema4;
-            //Going with this line to generate schema json for now. In the past there were problems with this
-            //not generating the correct json, which are discussed below. For now the following seems to be working.
-            //It will make all the property names lowercase except the definitions, which will stay in their original
-            //case, which is what we need, or else the definitions cannot be resolved.
-            writer.WriteRawValue(jsonSchema.ToJson());
+            //This would be the ideal way to handle things, but njsonschema is really unpredictable
+            //writer.WriteRawValue(jsonSchema.ToJson());
 
             //-------------------------------------------------------------------------------
             //This is the same as the line above since in the actual NJsonSchema source code the settings passed in are ignored.
@@ -44,17 +45,61 @@ namespace Threax.AspNetCore.Halcyon.Ext
             //-------------------------------------------------------------------------------
 
             //-------------------------------------------------------------------------------
-            //This code will use the current json serializer settings, but will mess up the definitions by lower casing the property names there.
-            //No way could be found to avoid this before it was discovered that ToJson appears to be correct, but leaving this in as reference
-            //for when this inevitably breaks in the future.
-            //JsonSchemaReferenceUtilities.UpdateSchemaReferencePaths(jsonSchema);
-            //using (var sw = new StringWriter())
-            //{
-            //    serializer.Serialize(sw, jsonSchema);
-            //    var json = JsonSchemaReferenceUtilities.ConvertPropertyReferences(sw.ToString());
-            //    writer.WriteRawValue(json);
-            //}
+            //This method serializes the json schema to a jobject and then goes through all schemaReferencePath (njsonschema's name for $ref) jtokens
+            //and updates them to match the camel case definitions that are actually written. It will make sure the definition isn't resolvable in the
+            //document first before replacing it.
+            //
+            //This makes a pretty big assumption that the camel case definition is the same as the definition in the schemaReferencePath, since the 
+            //definitions are c# classes and enums, which should be PascalCase then this should hold true. However, this could be a source of problems
+            //potentially as well.
+            //
+            //This algo seems to run just as fast in the real world as the options above even though it does a lot of work.
             //-------------------------------------------------------------------------------
+            JsonSchemaReferenceUtilities.UpdateSchemaReferencePaths(jsonSchema);
+            var jObj = JObject.FromObject(jsonSchema, serializer);
+
+            //Repair definition paths, this has to be post processed due to the way we are serializing
+            foreach (var schemaReferencePath in jObj.SelectTokens("$..schemaReferencePath").OfType<JValue>())
+            {
+                //First make sure we can't actually find the definition
+                var refPath = schemaReferencePath.Value.ToString();
+                if (refPath[0] == '#') //If path starts with # it is in the document.
+                {
+                    var splitDef = refPath.Split('/');
+                    if (splitDef.Length > 0) //If there is nothing to split, do nothing
+                    {
+                        //Build a JPath from the ref path, (starts with $ and uses . instead of / to separate items
+                        var sb = new StringBuilder(refPath.Length);
+                        sb.Append("$");
+                        foreach (var item in splitDef.Skip(1))
+                        {
+                            sb.AppendFormat(".{0}", item);
+                        }
+
+                        //Check to see if we can find the definition on the original path, if so don't change it
+                        var definition = jObj.SelectToken(sb.ToString());
+                        if (definition == null)
+                        {
+                            //Didn't find definition, look for it with the last item in camelCase, to see if it got mangled
+                            var index = sb.Length - splitDef[splitDef.Length - 1].Length;
+                            var lowered = char.ToLowerInvariant(sb[index]); //Get the lowercase version of the first letter of the last path section.
+                            sb[index] = lowered;
+                            definition = jObj.SelectToken(sb.ToString());
+                            if (definition == null)
+                            {
+                                throw new InvalidOperationException($"Could not find definition {refPath} in json schema in either pascal or camel case.");
+                            }
+                            //Update the ref path to use camelCase for the final string, reuse the builder
+                            sb.Clear();
+                            sb.Append(refPath);
+                            sb[index] = lowered; //Replace the character again, in the original string
+                            schemaReferencePath.Value = sb.ToString(); //Set the camel cased value back on the schemaReferencePath
+                        }
+                    }
+                }
+            }
+            var json = JsonSchemaReferenceUtilities.ConvertPropertyReferences(jObj.ToString());
+            writer.WriteRawValue(json);
         }
     }
 }
