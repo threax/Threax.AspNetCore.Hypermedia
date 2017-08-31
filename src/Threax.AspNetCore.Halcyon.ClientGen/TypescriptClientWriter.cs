@@ -313,7 +313,11 @@ writer.WriteLine($@"
                 }
 
                 //Close class
-writer.WriteLine("}");
+writer.WriteLine(@"
+    get halClient(): hal.HalEndpointClient {
+        return this.client;
+    }
+}");
             }
         }
     }

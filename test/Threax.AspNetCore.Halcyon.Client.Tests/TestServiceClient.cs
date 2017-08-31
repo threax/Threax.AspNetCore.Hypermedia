@@ -316,6 +316,14 @@ namespace TestHalcyonApi.ServiceClient
         {
             return this.client.HasLinkDoc("ReturnActionResult");
         }
+
+        public HalEndpointClient HalClient
+        {
+            get
+            {
+                return this.client;
+            }
+        }
     }
 
     public class SubThingyCollectionViewResult
@@ -405,6 +413,14 @@ namespace TestHalcyonApi.ServiceClient
         public bool HasListSubThingiesDocs()
         {
             return this.client.HasLinkDoc("listSubThingies");
+        }
+
+        public HalEndpointClient HalClient
+        {
+            get
+            {
+                return this.client;
+            }
         }
     }
 
@@ -571,6 +587,14 @@ namespace TestHalcyonApi.ServiceClient
         public bool HasGetThingyDocs()
         {
             return this.client.HasLinkDoc("getThingy");
+        }
+
+        public HalEndpointClient HalClient
+        {
+            get
+            {
+                return this.client;
+            }
         }
     }
 
@@ -792,6 +816,14 @@ namespace TestHalcyonApi.ServiceClient
         {
             return this.client.HasLinkDoc("last");
         }
+
+        public HalEndpointClient HalClient
+        {
+            get
+            {
+                return this.client;
+            }
+        }
     }
 
     public class ThingyViewResult
@@ -1008,6 +1040,14 @@ namespace TestHalcyonApi.ServiceClient
         {
             return this.client.HasLinkDoc("testDeclareLinkToRel");
         }
+
+        public HalEndpointClient HalClient
+        {
+            get
+            {
+                return this.client;
+            }
+        }
     }
 
     public class MultipartInput1Result
@@ -1108,6 +1148,14 @@ namespace TestHalcyonApi.ServiceClient
         public bool HasSaveDocs()
         {
             return this.client.HasLinkDoc("save");
+        }
+
+        public HalEndpointClient HalClient
+        {
+            get
+            {
+                return this.client;
+            }
         }
     }
 
@@ -1210,6 +1258,14 @@ namespace TestHalcyonApi.ServiceClient
         {
             return this.client.HasLinkDoc("save");
         }
+
+        public HalEndpointClient HalClient
+        {
+            get
+            {
+                return this.client;
+            }
+        }
     }
 
     public class MultipartInput3Result
@@ -1310,6 +1366,14 @@ namespace TestHalcyonApi.ServiceClient
         public bool HasSaveDocs()
         {
             return this.client.HasLinkDoc("save");
+        }
+
+        public HalEndpointClient HalClient
+        {
+            get
+            {
+                return this.client;
+            }
         }
     }
 }

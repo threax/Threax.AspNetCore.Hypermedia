@@ -348,7 +348,16 @@ writer.WriteLine($@"
                 }
 
                 //Close class
-writer.WriteLine("}");
+                //Close class
+                writer.WriteLine(@"
+    public HalEndpointClient HalClient
+    {
+        get
+        {
+            return this.client;
+        }
+    }
+}");
             }
         }
     }
