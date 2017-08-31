@@ -72,6 +72,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForRefresh
+        {
+            get
+            {
+                return this.client.GetLink("self");
+            }
+        }
+
         public async Task<HalEndpointDoc> GetRefreshDocs()
         {
             var result = await this.client.LoadLinkDoc("self");
@@ -95,6 +103,14 @@ namespace TestHalcyonApi.ServiceClient
             get
             {
                 return this.client.HasLink("listThingies");
+            }
+        }
+
+        public HalLink LinkForListThingies
+        {
+            get
+            {
+                return this.client.GetLink("listThingies");
             }
         }
 
@@ -124,6 +140,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForAddThingy
+        {
+            get
+            {
+                return this.client.GetLink("addThingy");
+            }
+        }
+
         public async Task<HalEndpointDoc> GetAddThingyDocs()
         {
             var result = await this.client.LoadLinkDoc("addThingy");
@@ -147,6 +171,14 @@ namespace TestHalcyonApi.ServiceClient
             get
             {
                 return this.client.HasLink("BeginAddMultipart");
+            }
+        }
+
+        public HalLink LinkForBeginAddMultipart
+        {
+            get
+            {
+                return this.client.GetLink("BeginAddMultipart");
             }
         }
 
@@ -185,6 +217,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForTestTakeListInput
+        {
+            get
+            {
+                return this.client.GetLink("TestTakeListInput");
+            }
+        }
+
         public async Task<HalEndpointDoc> GetTestTakeListInputDocs()
         {
             var result = await this.client.LoadLinkDoc("TestTakeListInput");
@@ -206,6 +246,14 @@ namespace TestHalcyonApi.ServiceClient
             get
             {
                 return this.client.HasLink("FileInput");
+            }
+        }
+
+        public HalLink LinkForFileInput
+        {
+            get
+            {
+                return this.client.GetLink("FileInput");
             }
         }
 
@@ -233,6 +281,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForFileInputMultiple
+        {
+            get
+            {
+                return this.client.GetLink("FileInputMultiple");
+            }
+        }
+
         public async Task<HalEndpointDoc> GetFileInputMultipleDocs()
         {
             var result = await this.client.LoadLinkDoc("FileInputMultiple");
@@ -257,6 +313,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForFileInputQuery
+        {
+            get
+            {
+                return this.client.GetLink("FileInputQuery");
+            }
+        }
+
         public async Task<HalEndpointDoc> GetFileInputQueryDocs()
         {
             var result = await this.client.LoadLinkDoc("FileInputQuery");
@@ -278,6 +342,14 @@ namespace TestHalcyonApi.ServiceClient
             get
             {
                 return this.client.HasLink("FileInputMultipleQuery");
+            }
+        }
+
+        public HalLink LinkForFileInputMultipleQuery
+        {
+            get
+            {
+                return this.client.GetLink("FileInputMultipleQuery");
             }
         }
 
@@ -306,6 +378,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForReturnActionResult
+        {
+            get
+            {
+                return this.client.GetLink("ReturnActionResult");
+            }
+        }
+
         public async Task<HalEndpointDoc> GetReturnActionResultDocs()
         {
             var result = await this.client.LoadLinkDoc("ReturnActionResult");
@@ -315,14 +395,6 @@ namespace TestHalcyonApi.ServiceClient
         public bool HasReturnActionResultDocs()
         {
             return this.client.HasLinkDoc("ReturnActionResult");
-        }
-
-        public HalEndpointClient HalClient
-        {
-            get
-            {
-                return this.client;
-            }
         }
     }
 
@@ -378,6 +450,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForRefresh
+        {
+            get
+            {
+                return this.client.GetLink("self");
+            }
+        }
+
         public async Task<HalEndpointDoc> GetRefreshDocs()
         {
             var result = await this.client.LoadLinkDoc("self");
@@ -404,6 +484,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForListSubThingies
+        {
+            get
+            {
+                return this.client.GetLink("listSubThingies");
+            }
+        }
+
         public async Task<HalEndpointDoc> GetListSubThingiesDocs()
         {
             var result = await this.client.LoadLinkDoc("listSubThingies");
@@ -413,14 +501,6 @@ namespace TestHalcyonApi.ServiceClient
         public bool HasListSubThingiesDocs()
         {
             return this.client.HasLinkDoc("listSubThingies");
-        }
-
-        public HalEndpointClient HalClient
-        {
-            get
-            {
-                return this.client;
-            }
         }
     }
 
@@ -461,6 +541,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForRefresh
+        {
+            get
+            {
+                return this.client.GetLink("self");
+            }
+        }
+
         public async Task<HalEndpointDoc> GetRefreshDocs()
         {
             var result = await this.client.LoadLinkDoc("self");
@@ -484,6 +572,14 @@ namespace TestHalcyonApi.ServiceClient
             get
             {
                 return this.client.HasLink("listSubThingies");
+            }
+        }
+
+        public HalLink LinkForListSubThingies
+        {
+            get
+            {
+                return this.client.GetLink("listSubThingies");
             }
         }
 
@@ -513,6 +609,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForUpdateSubThingy
+        {
+            get
+            {
+                return this.client.GetLink("updateSubThingy");
+            }
+        }
+
         public async Task<HalEndpointDoc> GetUpdateSubThingyDocs()
         {
             var result = await this.client.LoadLinkDoc("updateSubThingy");
@@ -537,6 +641,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForDeleteSubThingy
+        {
+            get
+            {
+                return this.client.GetLink("deleteSubThingy");
+            }
+        }
+
         public async Task<SubThingyViewResult> GetSubThingy()
         {
             var result = await this.client.LoadLink("getSubThingy");
@@ -549,6 +661,14 @@ namespace TestHalcyonApi.ServiceClient
             get
             {
                 return this.client.HasLink("getSubThingy");
+            }
+        }
+
+        public HalLink LinkForGetSubThingy
+        {
+            get
+            {
+                return this.client.GetLink("getSubThingy");
             }
         }
 
@@ -578,6 +698,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForGetThingy
+        {
+            get
+            {
+                return this.client.GetLink("getThingy");
+            }
+        }
+
         public async Task<HalEndpointDoc> GetGetThingyDocs()
         {
             var result = await this.client.LoadLinkDoc("getThingy");
@@ -587,14 +715,6 @@ namespace TestHalcyonApi.ServiceClient
         public bool HasGetThingyDocs()
         {
             return this.client.HasLinkDoc("getThingy");
-        }
-
-        public HalEndpointClient HalClient
-        {
-            get
-            {
-                return this.client;
-            }
         }
     }
 
@@ -650,6 +770,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForRefresh
+        {
+            get
+            {
+                return this.client.GetLink("self");
+            }
+        }
+
         public async Task<HalEndpointDoc> GetRefreshDocs()
         {
             var result = await this.client.LoadLinkDoc("self");
@@ -673,6 +801,14 @@ namespace TestHalcyonApi.ServiceClient
             get
             {
                 return this.client.HasLink("listThingies");
+            }
+        }
+
+        public HalLink LinkForListThingies
+        {
+            get
+            {
+                return this.client.GetLink("listThingies");
             }
         }
 
@@ -702,6 +838,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForAddThingy
+        {
+            get
+            {
+                return this.client.GetLink("addThingy");
+            }
+        }
+
         public async Task<HalEndpointDoc> GetAddThingyDocs()
         {
             var result = await this.client.LoadLinkDoc("addThingy");
@@ -725,6 +869,14 @@ namespace TestHalcyonApi.ServiceClient
             get
             {
                 return this.client.HasLink("next");
+            }
+        }
+
+        public HalLink LinkForNext
+        {
+            get
+            {
+                return this.client.GetLink("next");
             }
         }
 
@@ -754,6 +906,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForPrevious
+        {
+            get
+            {
+                return this.client.GetLink("previous");
+            }
+        }
+
         public async Task<HalEndpointDoc> GetPreviousDocs()
         {
             var result = await this.client.LoadLinkDoc("previous");
@@ -777,6 +937,14 @@ namespace TestHalcyonApi.ServiceClient
             get
             {
                 return this.client.HasLink("first");
+            }
+        }
+
+        public HalLink LinkForFirst
+        {
+            get
+            {
+                return this.client.GetLink("first");
             }
         }
 
@@ -806,6 +974,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForLast
+        {
+            get
+            {
+                return this.client.GetLink("last");
+            }
+        }
+
         public async Task<HalEndpointDoc> GetLastDocs()
         {
             var result = await this.client.LoadLinkDoc("last");
@@ -815,14 +991,6 @@ namespace TestHalcyonApi.ServiceClient
         public bool HasLastDocs()
         {
             return this.client.HasLinkDoc("last");
-        }
-
-        public HalEndpointClient HalClient
-        {
-            get
-            {
-                return this.client;
-            }
         }
     }
 
@@ -863,6 +1031,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForRefresh
+        {
+            get
+            {
+                return this.client.GetLink("self");
+            }
+        }
+
         public async Task<HalEndpointDoc> GetRefreshDocs()
         {
             var result = await this.client.LoadLinkDoc("self");
@@ -886,6 +1062,14 @@ namespace TestHalcyonApi.ServiceClient
             get
             {
                 return this.client.HasLink("getThingy");
+            }
+        }
+
+        public HalLink LinkForGetThingy
+        {
+            get
+            {
+                return this.client.GetLink("getThingy");
             }
         }
 
@@ -915,6 +1099,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForUpdateThingy
+        {
+            get
+            {
+                return this.client.GetLink("updateThingy");
+            }
+        }
+
         public async Task<HalEndpointDoc> GetUpdateThingyDocs()
         {
             var result = await this.client.LoadLinkDoc("updateThingy");
@@ -939,6 +1131,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForDeleteThingy
+        {
+            get
+            {
+                return this.client.GetLink("deleteThingy");
+            }
+        }
+
         public async Task<SubThingyCollectionViewResult> ListThingySubThingies()
         {
             var result = await this.client.LoadLink("listThingySubThingies");
@@ -951,6 +1151,14 @@ namespace TestHalcyonApi.ServiceClient
             get
             {
                 return this.client.HasLink("listThingySubThingies");
+            }
+        }
+
+        public HalLink LinkForListThingySubThingies
+        {
+            get
+            {
+                return this.client.GetLink("listThingySubThingies");
             }
         }
 
@@ -980,6 +1188,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForAddSubThingy
+        {
+            get
+            {
+                return this.client.GetLink("addSubThingy");
+            }
+        }
+
         public async Task<HalEndpointDoc> GetAddSubThingyDocs()
         {
             var result = await this.client.LoadLinkDoc("addSubThingy");
@@ -1004,6 +1220,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForAuthorizedpropertiesThingies
+        {
+            get
+            {
+                return this.client.GetLink("authorizedpropertiesThingies");
+            }
+        }
+
         public async Task RolepropertiesThingies()
         {
             var result = await this.client.LoadLink("rolepropertiesThingies");
@@ -1014,6 +1238,14 @@ namespace TestHalcyonApi.ServiceClient
             get
             {
                 return this.client.HasLink("rolepropertiesThingies");
+            }
+        }
+
+        public HalLink LinkForRolepropertiesThingies
+        {
+            get
+            {
+                return this.client.GetLink("rolepropertiesThingies");
             }
         }
 
@@ -1030,6 +1262,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForTestDeclareLinkToRel
+        {
+            get
+            {
+                return this.client.GetLink("testDeclareLinkToRel");
+            }
+        }
+
         public async Task<HalEndpointDoc> GetTestDeclareLinkToRelDocs()
         {
             var result = await this.client.LoadLinkDoc("testDeclareLinkToRel");
@@ -1039,14 +1279,6 @@ namespace TestHalcyonApi.ServiceClient
         public bool HasTestDeclareLinkToRelDocs()
         {
             return this.client.HasLinkDoc("testDeclareLinkToRel");
-        }
-
-        public HalEndpointClient HalClient
-        {
-            get
-            {
-                return this.client;
-            }
         }
     }
 
@@ -1087,6 +1319,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForPrevious
+        {
+            get
+            {
+                return this.client.GetLink("previous");
+            }
+        }
+
         public async Task<HalEndpointDoc> GetPreviousDocs()
         {
             var result = await this.client.LoadLinkDoc("previous");
@@ -1110,6 +1350,14 @@ namespace TestHalcyonApi.ServiceClient
             get
             {
                 return this.client.HasLink("next");
+            }
+        }
+
+        public HalLink LinkForNext
+        {
+            get
+            {
+                return this.client.GetLink("next");
             }
         }
 
@@ -1139,6 +1387,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForSave
+        {
+            get
+            {
+                return this.client.GetLink("save");
+            }
+        }
+
         public async Task<HalEndpointDoc> GetSaveDocs()
         {
             var result = await this.client.LoadLinkDoc("save");
@@ -1148,14 +1404,6 @@ namespace TestHalcyonApi.ServiceClient
         public bool HasSaveDocs()
         {
             return this.client.HasLinkDoc("save");
-        }
-
-        public HalEndpointClient HalClient
-        {
-            get
-            {
-                return this.client;
-            }
         }
     }
 
@@ -1196,6 +1444,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForPrevious
+        {
+            get
+            {
+                return this.client.GetLink("previous");
+            }
+        }
+
         public async Task<HalEndpointDoc> GetPreviousDocs()
         {
             var result = await this.client.LoadLinkDoc("previous");
@@ -1219,6 +1475,14 @@ namespace TestHalcyonApi.ServiceClient
             get
             {
                 return this.client.HasLink("next");
+            }
+        }
+
+        public HalLink LinkForNext
+        {
+            get
+            {
+                return this.client.GetLink("next");
             }
         }
 
@@ -1248,6 +1512,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForSave
+        {
+            get
+            {
+                return this.client.GetLink("save");
+            }
+        }
+
         public async Task<HalEndpointDoc> GetSaveDocs()
         {
             var result = await this.client.LoadLinkDoc("save");
@@ -1257,14 +1529,6 @@ namespace TestHalcyonApi.ServiceClient
         public bool HasSaveDocs()
         {
             return this.client.HasLinkDoc("save");
-        }
-
-        public HalEndpointClient HalClient
-        {
-            get
-            {
-                return this.client;
-            }
         }
     }
 
@@ -1305,6 +1569,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForPrevious
+        {
+            get
+            {
+                return this.client.GetLink("previous");
+            }
+        }
+
         public async Task<HalEndpointDoc> GetPreviousDocs()
         {
             var result = await this.client.LoadLinkDoc("previous");
@@ -1328,6 +1600,14 @@ namespace TestHalcyonApi.ServiceClient
             get
             {
                 return this.client.HasLink("next");
+            }
+        }
+
+        public HalLink LinkForNext
+        {
+            get
+            {
+                return this.client.GetLink("next");
             }
         }
 
@@ -1357,6 +1637,14 @@ namespace TestHalcyonApi.ServiceClient
             }
         }
 
+        public HalLink LinkForSave
+        {
+            get
+            {
+                return this.client.GetLink("save");
+            }
+        }
+
         public async Task<HalEndpointDoc> GetSaveDocs()
         {
             var result = await this.client.LoadLinkDoc("save");
@@ -1366,14 +1654,6 @@ namespace TestHalcyonApi.ServiceClient
         public bool HasSaveDocs()
         {
             return this.client.HasLinkDoc("save");
-        }
-
-        public HalEndpointClient HalClient
-        {
-            get
-            {
-                return this.client;
-            }
         }
     }
 }

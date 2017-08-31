@@ -328,6 +328,14 @@ writer.WriteLine($@"
         {{
             return this.client.HasLink(""{link.Rel}"");
         }}
+    }}
+
+    public HalLink LinkFor{upperFuncName} 
+    {{
+        get 
+        {{
+            return this.client.GetLink(""{link.Rel}"");
+        }}
     }}");
                     }
 
@@ -349,15 +357,7 @@ writer.WriteLine($@"
 
                 //Close class
                 //Close class
-                writer.WriteLine(@"
-    public HalEndpointClient HalClient
-    {
-        get
-        {
-            return this.client;
-        }
-    }
-}");
+                writer.WriteLine("}");
             }
         }
     }

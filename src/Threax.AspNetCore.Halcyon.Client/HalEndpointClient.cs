@@ -46,6 +46,15 @@ namespace Threax.AspNetCore.Halcyon.Client
             return links[rel] != null;
         }
 
+        public HalLink GetLink(String rel)
+        {
+            if (links == null)
+            {
+                return null;
+            }
+            return links[rel].ToObject<HalLink>();
+        }
+
         public async Task<HalEndpointClient> LoadLink(String rel)
         {
             if (links != null)

@@ -292,6 +292,10 @@ writer.WriteLine($@"
 
     public can{upperFuncName}(): boolean {{
         return this.client.HasLink(""{link.Rel}"");
+    }}
+
+    public linkFor{upperFuncName}(): hal.HalLink {{
+        return this.client.GetLink(""{link.Rel}"");
     }}");
                     }
 
@@ -313,11 +317,7 @@ writer.WriteLine($@"
                 }
 
                 //Close class
-writer.WriteLine(@"
-    get halClient(): hal.HalEndpointClient {
-        return this.client;
-    }
-}");
+writer.WriteLine("}");
             }
         }
     }
