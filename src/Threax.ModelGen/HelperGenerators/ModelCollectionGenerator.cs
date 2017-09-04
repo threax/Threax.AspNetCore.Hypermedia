@@ -24,7 +24,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Threax.AspNetCore.Halcyon.Ext;
 
-namespace TestApi.ViewModels
+namespace {ns}.ViewModels
 {{
     [HalModel]
     [HalSelfActionLink(CrudRels.List, typeof({Model}sController))]
