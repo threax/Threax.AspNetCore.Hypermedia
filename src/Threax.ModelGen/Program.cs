@@ -12,9 +12,9 @@ namespace Threax.ModelGen
         {
             GenerateClasses(new GeneratorSettings()
             {
-                ServiceNamespace = args[0],
-                Source = args[1],
-                ServiceOutDir = args[2],
+                Source = args[0],
+                ServiceOutDir = args[1],
+                ServiceNamespace = args[2],
                 UiOutDir = args[3],
                 UiNamespace = args[4]
             });

@@ -2,7 +2,7 @@
   "profiles": {
     "Threax.ModelGen": {
       "commandName": "Project",
-      "commandLineArgs": "TestApi ValuesModel.json ..\\TestApi ..\\TestMvcApp TestMvcApp"
+      "commandLineArgs": "ValuesModel.json ..\\TestApi TestApi ..\\TestMvcApp TestMvcApp"
     }
   }
 }
