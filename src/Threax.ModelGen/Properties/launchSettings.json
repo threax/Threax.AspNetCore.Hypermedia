@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Threax.ModelGen": {
+      "commandName": "Project",
+      "commandLineArgs": "ValuesModel.json ..\\TestApi TestApi ..\\TestMvcApp TestMvcApp"
+    }
+  }
+}
