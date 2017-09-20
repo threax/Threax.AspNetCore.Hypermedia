@@ -52,11 +52,11 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
             if (args.IsNullable)
             {
                 //Include the null enum label since we can take null values
-                NullEnumLabelAttribute nullLabel = args.PropertyInfo.GetCustomAttribute<NullEnumLabelAttribute>();
+                NullValueLabelAttribute nullLabel = args.PropertyInfo.GetCustomAttribute<NullValueLabelAttribute>();
 
                 if (nullLabel == null)
                 {
-                    nullLabel = new NullEnumLabelAttribute();
+                    nullLabel = new NullValueLabelAttribute();
                 }
 
                 yield return new LabelValuePair()

@@ -44,16 +44,16 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
         {
             if (args.IsNullable)
             {
-                NullEnumLabelAttribute nullLabel = args.PropertyInfo.GetCustomAttribute<NullEnumLabelAttribute>();
+                NullValueLabelAttribute nullLabel = args.PropertyInfo.GetCustomAttribute<NullValueLabelAttribute>();
 
                 if (nullLabel == null)
                 {
-                    nullLabel = enumType.GetTypeInfo().GetCustomAttribute<NullEnumLabelAttribute>();
+                    nullLabel = enumType.GetTypeInfo().GetCustomAttribute<NullValueLabelAttribute>();
                 }
 
                 if (nullLabel == null)
                 {
-                    nullLabel = new NullEnumLabelAttribute();
+                    nullLabel = new NullValueLabelAttribute();
                 }
 
                 yield return new LabelValuePair()

@@ -5,14 +5,14 @@ using System.Text;
 namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
 {
     [AttributeUsage(AttributeTargets.Enum | AttributeTargets.Property)]
-    public class NullEnumLabelAttribute : Attribute
+    public class NullValueLabelAttribute : Attribute
     {
-        public NullEnumLabelAttribute()
+        public NullValueLabelAttribute()
         {
             this.Label = "None";
         }
 
-        public NullEnumLabelAttribute(String label)
+        public NullValueLabelAttribute(String label)
         {
             this.Label = label;
         }
