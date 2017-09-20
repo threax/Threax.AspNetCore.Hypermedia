@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NJsonSchema;
 using NJsonSchema.Generation;
+using System.Reflection;
 
 namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
 {
@@ -12,10 +13,12 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
     /// </summary>
     public class ValueProviderArgs
     {
-        public ValueProviderArgs(ValueProviderAttribute attr, JsonSchemaGenerator generator)
+        public ValueProviderArgs(ValueProviderAttribute attr, JsonSchemaGenerator generator, bool isNullable, PropertyInfo propertyInfo)
         {
             this.ValueProviderAttr = attr;
             this.SchemaGenerator = generator;
+            this.IsNullable = isNullable;
+            this.PropertyInfo = propertyInfo;
         }
 
         /// <summary>
@@ -27,6 +30,16 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
         /// The schema generator that the schema was serialized with.
         /// </summary>
         public JsonSchemaGenerator SchemaGenerator { get; private set; }
+
+        /// <summary>
+        /// If this is true the value can be null.
+        /// </summary>
+        public bool IsNullable { get; private set; }
+
+        /// <summary>
+        /// The property info for the property having values provided.
+        /// </summary>
+        public PropertyInfo PropertyInfo { get; private set; }
     }
 
     public interface IValueProvider

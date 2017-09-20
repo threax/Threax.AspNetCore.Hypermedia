@@ -12,30 +12,19 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
     public class EnumLabelValuePairProvider : IValueProvider
     {
         Type enumType;
-        bool nullable;
-        PropertyInfo propertyInfo;
 
-
-        public EnumLabelValuePairProvider(Type enumType, bool nullable)
-            :this(enumType, null, nullable)
-        {
-
-        }
-
-        public EnumLabelValuePairProvider(Type enumType, PropertyInfo propertyInfo, bool nullable)
+        public EnumLabelValuePairProvider(Type enumType)
         {
             this.enumType = enumType;
             if (!enumType.GetTypeInfo().IsEnum)
             {
                 throw new InvalidOperationException($"Cannot get enum values for type that is not an enum {enumType.FullName}");
             }
-            this.nullable = nullable;
-            this.propertyInfo = propertyInfo;
         }
 
         public Task AddExtensions(JsonProperty schemaProp, ValueProviderArgs args)
         {
-            var sources = GetSourcesSync();
+            var sources = GetSourcesSync(args);
 
             foreach(var source in sources)
             {
@@ -51,16 +40,11 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
             return Task.FromResult(0);
         }
 
-        protected virtual IEnumerable<LabelValuePair> GetSourcesSync()
+        protected virtual IEnumerable<LabelValuePair> GetSourcesSync(ValueProviderArgs args)
         {
-            if (nullable)
+            if (args.IsNullable)
             {
-                //Include the null enum label since we can take null values
-                NullEnumLabelAttribute nullLabel = null;
-                if (propertyInfo != null)
-                {
-                    nullLabel = propertyInfo.GetCustomAttribute<NullEnumLabelAttribute>();
-                }
+                NullEnumLabelAttribute nullLabel = args.PropertyInfo.GetCustomAttribute<NullEnumLabelAttribute>();
 
                 if (nullLabel == null)
                 {

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using NJsonSchema;
 using Newtonsoft.Json;
 using System.IO;
+using System.Reflection;
 
 namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
 {
@@ -29,7 +30,7 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
                 name = args.ValueProviderAttr.PropertyName;
             }
 
-            var sources = await GetSources();
+            var sources = GetNullSource(args).Concat(await GetSources());
 
             if (schemaProp.ExtensionData == null)
             {
@@ -45,6 +46,26 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
         /// </summary>
         /// <returns></returns>
         protected abstract Task<IEnumerable<ILabelValuePair>> GetSources();
+
+        private IEnumerable<ILabelValuePair> GetNullSource(ValueProviderArgs args)
+        {
+            if (args.IsNullable)
+            {
+                //Include the null enum label since we can take null values
+                NullEnumLabelAttribute nullLabel = args.PropertyInfo.GetCustomAttribute<NullEnumLabelAttribute>();
+
+                if (nullLabel == null)
+                {
+                    nullLabel = new NullEnumLabelAttribute();
+                }
+
+                yield return new LabelValuePair()
+                {
+                    Label = nullLabel.Label,
+                    Value = null
+                };
+            }
+        }
     }
 
     /// <summary>
