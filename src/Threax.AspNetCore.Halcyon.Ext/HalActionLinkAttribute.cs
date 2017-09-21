@@ -19,7 +19,8 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
         /// <summary>
         /// Create a new link based on a controller and a function. This will lookup the rel from the linked function. Use nameof to send
-        /// the funcName string to stay strongly typed.
+        /// the funcName string to stay strongly typed. This is the preferred way to create links since the compiler can keep track of them,
+        /// but it won't work with overloaded functions.
         /// </summary>
         /// <param name="controllerType">The controller type to lookup the rel on.</param>
         /// /// <param name="funcName">The function on the controller to lookup.</param>
@@ -38,6 +39,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// <summary>
         /// Create a new link based on a controller and a function. The rel used is specified by publicRel, but the rest of the info will
         /// be discovered from the controller function itself. Use nameof to send the name of the funciton you want to connect to.
+        /// This is the preferred way to create links since the compiler can keep track of them, but it won't work with overloaded functions.
         /// </summary>
         /// <param name="publicRel">The rel to use as the rel for this link. Will replace the rel defined on the function.</param>
         /// <param name="controllerType">The controller type to lookup the rel on.</param>
@@ -51,7 +53,8 @@ namespace Threax.AspNetCore.Halcyon.Ext
         }
 
         /// <summary>
-        /// Create a new link based on a controller and a function.
+        /// Create a new link based on a controller and a function that has a HalRelAttribute on it with the specified rel.
+        /// Useful if you have multiple functions with the same name and nameof will not give a unique address.
         /// </summary>
         /// <param name="rel">The rel on the controller to lookup.</param>
         /// <param name="controllerType">The controller type to lookup the rel on.</param>
@@ -64,7 +67,9 @@ namespace Threax.AspNetCore.Halcyon.Ext
         }
 
         /// <summary>
-        /// Remap a rel to a different name, useful for links that need a common name.
+        /// Create a new link based on a controller and a function that has a HalRelAttribute on it with the specified rel.
+        /// The link's rel will be renamed to realRel.
+        /// Useful if you have multiple functions with the same name and nameof will not give a unique address.
         /// </summary>
         /// <param name="realRel">The rel to display to the world.</param>
         /// <param name="lookupRel">The rel on the controller to lookup.</param>
