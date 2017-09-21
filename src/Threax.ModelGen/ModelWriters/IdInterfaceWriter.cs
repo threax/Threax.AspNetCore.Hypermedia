@@ -2,10 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace Threax.ModelGen
 {
     public class IdInterfaceWriter : InterfaceWriter

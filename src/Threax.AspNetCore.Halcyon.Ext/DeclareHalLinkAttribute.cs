@@ -27,6 +27,39 @@ namespace Threax.AspNetCore.Halcyon.Ext
         }
 
         /// <summary>
+        /// Declare a new link bound to a controller function.
+        /// </summary>
+        /// <param name="controllerType">The type of the controller.</param>
+        /// <param name="funcName">The name of the function on the controller</param>
+        /// <param name="routeArgs">The route args.</param>
+        public DeclareHalLinkAttribute(Type controllerType, string funcName, String[] routeArgs = null)
+        {
+            refInfo = new HalRelInfo(controllerType, funcName, routeArgs);
+            this.Rel = refInfo.HalRelAttr.Rel;
+            this.GroupName = Utils.GetControllerName(refInfo.ControllerType);
+            this.UriTemplate = refInfo.UrlTemplate;
+            this.Method = refInfo.HttpMethod;
+            LinkedToControllerRel = true;
+        }
+
+        /// <summary>
+        /// Declare a new link bound to a controller function with a differently named rel.
+        /// </summary>
+        /// <param name="controllerType">The type of the controller.</param>
+        /// <param name="funcName">The name of the function on the controller.</param>
+        /// <param name="publicRel">The rel to use that the client will see.</param>
+        /// <param name="routeArgs">The route args.</param>
+        public DeclareHalLinkAttribute(Type controllerType, String funcName, String publicRel, String[] routeArgs = null)
+        {
+            this.Rel = publicRel;
+            refInfo = new HalRelInfo(controllerType, funcName, routeArgs);
+            this.GroupName = Utils.GetControllerName(refInfo.ControllerType);
+            this.UriTemplate = refInfo.UrlTemplate;
+            this.Method = refInfo.HttpMethod;
+            LinkedToControllerRel = true;
+        }
+
+        /// <summary>
         /// Declare a new link bound to a controller rel.
         /// </summary>
         /// <param name="rel">The rel on the controller to bind to.</param>
@@ -36,13 +69,10 @@ namespace Threax.AspNetCore.Halcyon.Ext
         {
             this.Rel = rel;
             refInfo = new HalRelInfo(rel, controllerType, routeArgs);
-            if(refInfo != null)
-            {
-                this.GroupName = Utils.GetControllerName(refInfo.ControllerType);
-                this.UriTemplate = refInfo.UrlTemplate;
-                this.Method = refInfo.HttpMethod;
-                LinkedToControllerRel = true;
-            }
+            this.GroupName = Utils.GetControllerName(refInfo.ControllerType);
+            this.UriTemplate = refInfo.UrlTemplate;
+            this.Method = refInfo.HttpMethod;
+            LinkedToControllerRel = true;
         }
 
         /// <summary>
@@ -57,13 +87,10 @@ namespace Threax.AspNetCore.Halcyon.Ext
         {
             this.Rel = rel;
             refInfo = new HalRelInfo(shadowedRel, controllerType, routeArgs);
-            if (refInfo != null)
-            {
-                this.GroupName = Utils.GetControllerName(refInfo.ControllerType);
-                this.UriTemplate = refInfo.UrlTemplate;
-                this.Method = refInfo.HttpMethod;
-                LinkedToControllerRel = true;
-            }
+            this.GroupName = Utils.GetControllerName(refInfo.ControllerType);
+            this.UriTemplate = refInfo.UrlTemplate;
+            this.Method = refInfo.HttpMethod;
+            LinkedToControllerRel = true;
         }
 
         /// <summary>

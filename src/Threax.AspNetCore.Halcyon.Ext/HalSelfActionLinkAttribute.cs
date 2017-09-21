@@ -27,7 +27,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// <param name="routeArgs">Any additional route args.</param>
         /// <param name="title">The title.</param>
         public HalSelfActionLinkAttribute(Type controllerType, String funcName, String[] routeArgs = null, string title = null)
-            : base(SelfRelName, controllerType, funcName, routeArgs, title)
+            : base(controllerType, funcName, SelfRelName, routeArgs, title)
         {
             HasDocs = false;
         }

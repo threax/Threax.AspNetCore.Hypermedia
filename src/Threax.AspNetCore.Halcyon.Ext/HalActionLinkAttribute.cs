@@ -44,7 +44,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// <param name="funcName">The function on the controller to lookup.</param>
         /// <param name="routeArgs">Any additional route args.</param>
         /// <param name="title">Title for the link.</param>
-        public HalActionLinkAttribute(String publicRel, Type controllerType, String funcName, String[] routeArgs = null, string title = null)
+        public HalActionLinkAttribute(Type controllerType, String funcName, String publicRel, String[] routeArgs = null, string title = null)
             :this(controllerType, funcName, routeArgs, title)
         {
             this.Rel = publicRel; //Replace the discovered rel with the public rel the user provided.
