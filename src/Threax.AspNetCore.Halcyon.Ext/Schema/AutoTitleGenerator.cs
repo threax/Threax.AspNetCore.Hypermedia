@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
+namespace Threax.AspNetCore.Halcyon.Ext
 {
     /// <summary>
     /// This class will create pretty titles from a string. The default version will make sure the first character is

@@ -1,4 +1,4 @@
-﻿namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
+﻿namespace Threax.AspNetCore.Halcyon.Ext
 {
     /// <summary>
     /// This interface will generate a title from a given name.

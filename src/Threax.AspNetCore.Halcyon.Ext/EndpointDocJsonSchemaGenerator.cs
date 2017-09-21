@@ -9,17 +9,18 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Threax.AspNetCore.Halcyon.Ext.ValueProviders;
 
-namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
+namespace Threax.AspNetCore.Halcyon.Ext
 {
-    public class ValueProviderJsonSchemaGenerator : JsonSchemaGenerator
+    public class EndpointDocJsonSchemaGenerator : JsonSchemaGenerator
     {
         JsonSchemaGeneratorSettings settings;
         IValueProviderResolver valueProviders;
         ISchemaCustomizerResolver schemaCustomizers;
         IAutoTitleGenerator titleGenerator;
 
-        public ValueProviderJsonSchemaGenerator(JsonSchemaGeneratorSettings settings, IValueProviderResolver valueProviders, ISchemaCustomizerResolver schemaCustomizers, IAutoTitleGenerator titleGenerator)
+        public EndpointDocJsonSchemaGenerator(JsonSchemaGeneratorSettings settings, IValueProviderResolver valueProviders, ISchemaCustomizerResolver schemaCustomizers, IAutoTitleGenerator titleGenerator)
             : base(settings)
         {
             this.settings = settings;
@@ -65,7 +66,7 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
                     var valueProviderAttr = prop.GetCustomAttributes().FirstOrDefault(i => i.GetType() == typeof(ValueProviderAttribute)) as ValueProviderAttribute;
                     if (valueProviderAttr != null) //If the user gives a value provider, use it
                     {
-                        IValueProvider valueProvider;
+                        ValueProviders.IValueProvider valueProvider;
                         if (valueProviders.TryGetValueProvider(valueProviderAttr.ProviderType, out valueProvider))
                         {
                             await valueProvider.AddExtensions(schemaProp, new ValueProviderArgs(valueProviderAttr, this, isNullable, prop));
