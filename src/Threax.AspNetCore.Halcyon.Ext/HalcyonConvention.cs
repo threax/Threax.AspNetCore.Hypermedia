@@ -49,8 +49,9 @@ namespace Microsoft.Extensions.DependencyInjection
             });
             services.TryAddScoped<ISchemaBuilder>(s =>
             {
-                return new SchemaBuilder(new ValueProviderJsonSchemaGenerator(options.JsonSchemaGeneratorSettings, s.GetRequiredService<IValueProviderResolver>(), s.GetRequiredService<ISchemaCustomizerResolver>()), s.GetRequiredService<IValidSchemaTypeManager>());
+                return new SchemaBuilder(new ValueProviderJsonSchemaGenerator(options.JsonSchemaGeneratorSettings, s.GetRequiredService<IValueProviderResolver>(), s.GetRequiredService<ISchemaCustomizerResolver>(), s.GetRequiredService<IAutoTitleGenerator>()), s.GetRequiredService<IValidSchemaTypeManager>());
             });
+            services.TryAddSingleton<IAutoTitleGenerator, AutoTitleGenerator>();
 
             return services;
         }
