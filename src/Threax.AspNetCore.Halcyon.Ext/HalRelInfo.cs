@@ -13,17 +13,53 @@ namespace Threax.AspNetCore.Halcyon.Ext
     /// </summary>
     public class HalRelInfo
     {
+        /// <summary>
+        /// Lookup an action method based on a controller and function name. This will discover the rel from the HalRel attribute on the target function.
+        /// </summary>
+        /// <param name="controllerType">The type of the controller.</param>
+        /// <param name="funcName">The name of the function to lookup.</param>
+        /// <param name="routeArgs">Any additional route args.</param>
+        public HalRelInfo(Type controllerType, String funcName, String[] routeArgs)
+        {
+            this.ControllerType = controllerType;
+            var controllerTypeInfo = controllerType.GetTypeInfo();
+
+            //Look at the controller
+            foreach (var item in controllerTypeInfo.DeclaredMethods.Concat(controllerTypeInfo.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy)))
+            {
+                //This loop will search the DeclaredMethods first since we are most likely to find the method there, then all of them
+                if(item.Name == funcName)
+                {
+                    this.HalRelAttr = item.GetCustomAttribute<HalRelAttribute>();
+                    if(this.HalRelAttr == null)
+                    {
+                        throw new InvalidOperationException($"Cannot find HalRel attribute on {controllerType.Name}.{funcName}. Do you need to define a HalRel attribute on your target method?");
+                    }
+                    this.ActionMethodInfo = item;
+                    break;
+                }
+            }
+
+            if (this.ActionMethodInfo == null)
+            {
+                throw new InvalidOperationException($"Cannot find an action method named {funcName} on controller class {controllerType.Name}. Ideally use nameof to define the function names.");
+            }
+
+            Setup(this.HalRelAttr.Rel, controllerType, routeArgs, controllerTypeInfo);
+        }
+
+        /// <summary>
+        /// Lookup an action method based on the given rel on the given controller type
+        /// </summary>
+        /// <param name="rel"></param>
+        /// <param name="controllerType"></param>
+        /// <param name="routeArgs"></param>
         public HalRelInfo(String rel, Type controllerType, String[] routeArgs)
         {
             this.ControllerType = controllerType;
             var controllerTypeInfo = controllerType.GetTypeInfo();
-            //Look at the controller
-            var routeAttr = controllerTypeInfo.GetCustomAttribute<RouteAttribute>();
-            if (routeAttr != null)
-            {
-                this.UrlTemplate += routeAttr.Template;
-            }
 
+            //Look at the controller
             foreach (var item in controllerTypeInfo.DeclaredMethods.Concat(controllerTypeInfo.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy)))
             {
                 //This loop will search the DeclaredMethods first since we are most likely to find the method there, then all of them
@@ -40,8 +76,20 @@ namespace Threax.AspNetCore.Halcyon.Ext
             {
                 throw new InvalidOperationException($"Cannot find an action method with the rel {rel} on {controllerType.Name}. Do you need to define a HalRel attribute on your target method?");
             }
+
+            Setup(rel, controllerType, routeArgs, controllerTypeInfo);
+        }
+
+        private void Setup(string rel, Type controllerType, string[] routeArgs, TypeInfo controllerTypeInfo)
+        {
+            var routeAttr = controllerTypeInfo.GetCustomAttribute<RouteAttribute>();
+            if (routeAttr != null)
+            {
+                this.UrlTemplate += routeAttr.Template;
+            }
+
             routeAttr = this.ActionMethodInfo.GetCustomAttribute<RouteAttribute>();
-            if(routeAttr != null)
+            if (routeAttr != null)
             {
                 EnsureTrailingUrlTemplateSlash();
                 this.UrlTemplate += routeAttr.Template;

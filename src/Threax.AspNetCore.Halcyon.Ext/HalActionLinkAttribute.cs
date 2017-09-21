@@ -18,6 +18,39 @@ namespace Threax.AspNetCore.Halcyon.Ext
         private HalRelInfo halRefInfo;
 
         /// <summary>
+        /// Create a new link based on a controller and a function. This will lookup the rel from the linked function. Use nameof to send
+        /// the funcName string to stay strongly typed.
+        /// </summary>
+        /// <param name="controllerType">The controller type to lookup the rel on.</param>
+        /// /// <param name="funcName">The function on the controller to lookup.</param>
+        /// <param name="routeArgs">Any additional route args.</param>
+        /// <param name="title">Title for the link.</param>
+        public HalActionLinkAttribute(Type controllerType, String funcName, String[] routeArgs = null, string title = null)
+        {
+            this.halRefInfo = new HalRelInfo(controllerType, funcName, routeArgs);
+            this.Rel = this.halRefInfo.HalRelAttr.Rel;
+            this.Href = this.halRefInfo.UrlTemplate;
+            this.Title = title;
+            this.Method = this.halRefInfo.HttpMethod;
+            this.controllerType = controllerType;
+        }
+
+        /// <summary>
+        /// Create a new link based on a controller and a function. The rel used is specified by publicRel, but the rest of the info will
+        /// be discovered from the controller function itself. Use nameof to send the name of the funciton you want to connect to.
+        /// </summary>
+        /// <param name="publicRel">The rel to use as the rel for this link. Will replace the rel defined on the function.</param>
+        /// <param name="controllerType">The controller type to lookup the rel on.</param>
+        /// <param name="funcName">The function on the controller to lookup.</param>
+        /// <param name="routeArgs">Any additional route args.</param>
+        /// <param name="title">Title for the link.</param>
+        public HalActionLinkAttribute(String publicRel, Type controllerType, String funcName, String[] routeArgs = null, string title = null)
+            :this(controllerType, funcName, routeArgs, title)
+        {
+            this.Rel = publicRel; //Replace the discovered rel with the public rel the user provided.
+        }
+
+        /// <summary>
         /// Create a new link based on a controller and a function.
         /// </summary>
         /// <param name="rel">The rel on the controller to lookup.</param>
@@ -25,7 +58,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// <param name="routeArgs">Any additional route args.</param>
         /// <param name="title">Title for the link.</param>
         public HalActionLinkAttribute(string rel, Type controllerType, String[] routeArgs = null, string title = null)
-            : this(rel, rel, controllerType, routeArgs, title, null)
+            : this(rel, rel, controllerType, routeArgs, title)
         {
             //Everything done in other constructor
         }
@@ -39,19 +72,21 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// <param name="routeArgs">Any additional route args.</param>
         /// <param name="title">Title for the link.</param>
         public HalActionLinkAttribute(string realRel, string lookupRel, Type controllerType, String[] routeArgs = null, string title = null)
-            :this(realRel, lookupRel, controllerType, routeArgs, title, null)
         {
-            //Everything done in other constructor
+            this.ConstructFromRels(realRel, lookupRel, controllerType, routeArgs, title);
         }
 
         /// <summary>
         /// This constructor allows us to differentiate the real rel we pass to the base class from the one we lookup, useful for self links.
         /// </summary>
-        protected HalActionLinkAttribute(string realRel, string lookupRel, Type controllerType, String[] routeArgs = null, string title = null, Object refInfoDontProvide = null)
-            : base(realRel, CreateHref(lookupRel, controllerType, routeArgs, out refInfoDontProvide), title, ((HalRelInfo)refInfoDontProvide).HttpMethod)
+        private void ConstructFromRels(string realRel, string lookupRel, Type controllerType, String[] routeArgs = null, string title = null)
         {
+            this.halRefInfo = new HalRelInfo(lookupRel, controllerType, routeArgs);
+            this.Rel = realRel;
+            this.Href = this.halRefInfo.UrlTemplate;
+            this.Title = title;
+            this.Method = this.halRefInfo.HttpMethod;
             this.controllerType = controllerType;
-            halRefInfo = ((HalRelInfo)refInfoDontProvide);
         }
 
         public bool CanUserAccess(ClaimsPrincipal claims)
@@ -71,24 +106,14 @@ namespace Threax.AspNetCore.Halcyon.Ext
         public HalLinkAttribute GetDocLink(IHalDocEndpointInfo docEndpointInfo)
         {
             //Create a link to the endpoint info for this controller and action method.
-            Object halRefObj;
-            var href = CreateHref(docEndpointInfo.Rel, docEndpointInfo.ControllerType,
+            var docHalRefInfo = new HalRelInfo(docEndpointInfo.Rel, docEndpointInfo.ControllerType,
                 new String[] {
                     $"{docEndpointInfo.GroupArg}={GroupName}",
                     $"{docEndpointInfo.MethodArg}={Method}",
                     $"{docEndpointInfo.RelativePathArg}={UriTemplate.TrimStart('\\', '/')}"
-                }, out halRefObj);
+                });
 
-            var docHalRefInfo = ((HalRelInfo)halRefObj);
-
-            return new HalLinkAttribute($"{this.Rel}.Docs", href, null, docHalRefInfo.HttpMethod);
-        }
-
-        protected static String CreateHref(String rel, Type controllerType, String[] routeArgs, out Object refInfoObj)
-        {
-            var refInfo = new HalRelInfo(rel, controllerType, routeArgs);
-            refInfoObj = refInfo;
-            return refInfo.UrlTemplate;
+            return new HalLinkAttribute($"{this.Rel}.Docs", docHalRefInfo.UrlTemplate, null, docHalRefInfo.HttpMethod);
         }
 
         /// <summary>
