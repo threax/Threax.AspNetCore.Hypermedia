@@ -112,17 +112,21 @@ namespace Threax.AspNetCore.Halcyon.Ext
                     }
 
                     //Handle any schema customizations
-                    var schemaCustomizerAttr = prop.GetCustomAttributes().FirstOrDefault(i => i.GetType() == typeof(CustomizeSchemaAttribute)) as CustomizeSchemaAttribute;
+                    var schemaCustomizerAttr = prop.GetCustomAttributes().FirstOrDefault(i => typeof(CustomizeSchemaAttribute).IsAssignableFrom(i.GetType())) as CustomizeSchemaAttribute;
                     if (schemaCustomizerAttr != null)
                     {
-                        ISchemaCustomizer customizer;
-                        if (schemaCustomizers.TryGetValueProvider(schemaCustomizerAttr.CustomizerType, out customizer))
+                        ISchemaCustomizer customizer = schemaCustomizerAttr as ISchemaCustomizer; //Allow the customizer to also directly implement the ISchemaCustomizer interface, if so use it directly
+                        if (customizer == null) //Otherwise look up the customizer, which allows for dependency injection into the customizer
+                        {
+                            if (!schemaCustomizers.TryGetValueProvider(schemaCustomizerAttr.CustomizerType, out customizer))
+                            {
+                                throw new ValueProviderException($"Cannot find schema customizer {schemaCustomizerAttr.CustomizerType.Name}. It needs to be registered in the IValueProviderResolver or in services by default.");
+                            }
+                        }
+
+                        if(customizer != null)
                         {
                             await customizer.Customize(new SchemaCustomizerArgs(propName, prop, schemaProp, schema));
-                        }
-                        else
-                        {
-                            throw new ValueProviderException($"Cannot find schema customizer {schemaCustomizerAttr.CustomizerType.Name}. It needs to be registered in the IValueProviderResolver or in services by default.");
                         }
                     }
 
