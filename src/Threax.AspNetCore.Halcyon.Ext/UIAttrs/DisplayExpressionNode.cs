@@ -81,19 +81,31 @@ namespace Threax.AspNetCore.Halcyon.Ext.UIAttrs
             this.Operation = OperationMap[expression.NodeType];
         }
 
+        /// <summary>
+        /// The left side of the expression.
+        /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public DisplayExpressionNode Left { get; set; }
 
+        /// <summary>
+        /// The right side of the expression.
+        /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public DisplayExpressionNode Right { get; set; }
 
         /// <summary>
+        /// The test condition, the key is the property to lookup and the value is the value.
+        /// </summary>
+        /// <remarks>
         /// Use a dictionary to put out the test conditions so the property name is serialized correctly by the
         /// json serializer based on its current settings.
-        /// </summary>
+        /// </remarks>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public Dictionary<String, Object> Test { get; set; }
 
+        /// <summary>
+        /// The type of operation this node performes.
+        /// </summary>
         [JsonProperty]
         public OperationType Operation { get; set; }
     }
