@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 
 namespace Threax.AspNetCore.Halcyon.Ext.UIAttrs
@@ -10,6 +11,7 @@ namespace Threax.AspNetCore.Halcyon.Ext.UIAttrs
     {
         And,
         Or,
+        Not,
         Equal,
         NotEqual,
         GreaterThan,
@@ -29,7 +31,8 @@ namespace Threax.AspNetCore.Halcyon.Ext.UIAttrs
             { ExpressionType.GreaterThan, OperationType.GreaterThan },
             { ExpressionType.LessThan, OperationType.LessThan },
             { ExpressionType.GreaterThanOrEqual, OperationType.GreaterThanOrEqual },
-            { ExpressionType.LessThanOrEqual, OperationType.LessThanOrEqual }
+            { ExpressionType.LessThanOrEqual, OperationType.LessThanOrEqual },
+            { ExpressionType.Not, OperationType.Not }
         };
 
         public DisplayExpressionNode(Expression expression)
@@ -37,6 +40,7 @@ namespace Threax.AspNetCore.Halcyon.Ext.UIAttrs
             BinaryExpression binaryExpression;
             MemberExpression memberExpression;
             ConstantExpression constantExpression = null;
+            UnaryExpression unaryExpression = null;
 
             switch (expression.NodeType)
             {
@@ -45,7 +49,9 @@ namespace Threax.AspNetCore.Halcyon.Ext.UIAttrs
                     binaryExpression = expression as BinaryExpression;
                     Left = new DisplayExpressionNode(binaryExpression.Left);
                     Right = new DisplayExpressionNode(binaryExpression.Right);
+                    this.Operation = OperationMap[expression.NodeType];
                     break;
+
                 case ExpressionType.Equal:
                 case ExpressionType.NotEqual:
                 case ExpressionType.GreaterThan:
@@ -72,13 +78,38 @@ namespace Threax.AspNetCore.Halcyon.Ext.UIAttrs
                     }
 
                     Test = new Dictionary<String, Object>() { { memberExpression.Member.Name, constantExpression.Value } };
+                    this.Operation = OperationMap[expression.NodeType];
+                    break;
 
+                case ExpressionType.MemberAccess:
+                    memberExpression = expression as MemberExpression;
+                    if(memberExpression.Member.MemberType == MemberTypes.Property)
+                    {
+                        var propInfo = memberExpression.Member as PropertyInfo;
+                        if(propInfo.PropertyType == typeof(bool))
+                        {
+                            Test = new Dictionary<String, Object>() { { memberExpression.Member.Name, true } };
+                        }
+                        else
+                        {
+                            throw new NotSupportedException("Only boolean properties are supported for member expressions.");
+                        }
+                    }
+                    else
+                    {
+                        throw new NotSupportedException("The member expression must be a property.");
+                    }
+                    this.Operation = OperationType.Equal;
+                    break;
+
+                case ExpressionType.Not:
+                    unaryExpression = expression as UnaryExpression;
+                    Left = new DisplayExpressionNode(unaryExpression.Operand);
+                    this.Operation = OperationMap[expression.NodeType];
                     break;
                 default:
                     throw new NotSupportedException($"Display Expressions do not support Linq expression type {expression.NodeType}. Please modify your expression tree to only include supported operations.");
             }
-
-            this.Operation = OperationMap[expression.NodeType];
         }
 
         /// <summary>
