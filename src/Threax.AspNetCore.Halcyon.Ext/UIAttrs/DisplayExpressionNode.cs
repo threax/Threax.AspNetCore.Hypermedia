@@ -37,8 +37,8 @@ namespace Threax.AspNetCore.Halcyon.Ext.UIAttrs
 
         public DisplayExpressionNode(Expression expression)
         {
-            BinaryExpression binaryExpression;
-            MemberExpression memberExpression;
+            BinaryExpression binaryExpression = null;
+            MemberExpression memberExpression = null;
             ConstantExpression constantExpression = null;
             UnaryExpression unaryExpression = null;
 
@@ -69,6 +69,21 @@ namespace Threax.AspNetCore.Halcyon.Ext.UIAttrs
                     }
                     else
                     {
+                        //Enums come in as unary convert expressions over member expressions, so check for that also
+                        if((unaryExpression = binaryExpression.Left as UnaryExpression) != null)
+                        {
+                            memberExpression = unaryExpression.Operand as MemberExpression;
+                            constantExpression = binaryExpression.Right as ConstantExpression;
+                        }
+                        else if ((unaryExpression = binaryExpression.Right as UnaryExpression) != null)
+                        {
+                            memberExpression = unaryExpression.Operand as MemberExpression;
+                            constantExpression = binaryExpression.Left as ConstantExpression;
+                        }
+                    }
+
+                    if(memberExpression == null)
+                    {
                         throw new NotSupportedException($"Display expressions must have one member expression.");
                     }
 
@@ -77,7 +92,21 @@ namespace Threax.AspNetCore.Halcyon.Ext.UIAttrs
                         throw new NotSupportedException($"Display expressions only support a member expression on one side. You must use a constant on the other side.");
                     }
 
-                    Test = new Dictionary<String, Object>() { { memberExpression.Member.Name, constantExpression.Value } };
+                    //See if the value is an enum, and if so convert it back
+                    var memberTypeInfo = memberExpression.Type.GetTypeInfo();
+                    if (memberTypeInfo.IsEnum)
+                    {
+                        Test = new Dictionary<String, Object>() { {
+                                memberExpression.Member.Name,
+                                Enum.ToObject(memberExpression.Type, constantExpression.Value)
+                                //Enum.Parse(memberExpression.Type, Enum.GetName(memberExpression.Type, constantExpression.Value)) //Alternative method
+                            } };
+                    }
+                    else
+                    {
+                        Test = new Dictionary<String, Object>() { { memberExpression.Member.Name, constantExpression.Value } };
+                    }
+
                     this.Operation = OperationMap[expression.NodeType];
                     break;
 
