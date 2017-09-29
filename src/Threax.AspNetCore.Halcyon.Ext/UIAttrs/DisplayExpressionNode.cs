@@ -61,11 +61,11 @@ namespace Threax.AspNetCore.Halcyon.Ext.UIAttrs
                     binaryExpression = expression as BinaryExpression;
                     if((memberExpression = binaryExpression.Left as MemberExpression) != null)
                     {
-                        constantExpression = binaryExpression.Right as ConstantExpression;
+                        constantExpression = FindConstantExpression(binaryExpression.Right);
                     }
                     else if((memberExpression = binaryExpression.Right as MemberExpression) != null)
                     {
-                        constantExpression = binaryExpression.Left as ConstantExpression;
+                        constantExpression = FindConstantExpression(binaryExpression.Left);
                     }
                     else
                     {
@@ -73,12 +73,12 @@ namespace Threax.AspNetCore.Halcyon.Ext.UIAttrs
                         if((unaryExpression = binaryExpression.Left as UnaryExpression) != null)
                         {
                             memberExpression = unaryExpression.Operand as MemberExpression;
-                            constantExpression = binaryExpression.Right as ConstantExpression;
+                            constantExpression = FindConstantExpression(binaryExpression.Right);
                         }
                         else if ((unaryExpression = binaryExpression.Right as UnaryExpression) != null)
                         {
                             memberExpression = unaryExpression.Operand as MemberExpression;
-                            constantExpression = binaryExpression.Left as ConstantExpression;
+                            constantExpression = FindConstantExpression(binaryExpression.Left);
                         }
                     }
 
@@ -139,6 +139,21 @@ namespace Threax.AspNetCore.Halcyon.Ext.UIAttrs
                 default:
                     throw new NotSupportedException($"Display Expressions do not support Linq expression type {expression.NodeType}. Please modify your expression tree to only include supported operations.");
             }
+        }
+
+        private ConstantExpression FindConstantExpression(Expression source)
+        {
+            UnaryExpression unaryExpression = null;
+            var constantExpression = source as ConstantExpression;
+            if (constantExpression == null) //If the constant expression is null, there might be a nullable enum or value, try to get the real constant value out
+            {
+                unaryExpression = source as UnaryExpression;
+                if (unaryExpression != null)
+                {
+                    constantExpression = unaryExpression.Operand as ConstantExpression;
+                }
+            }
+            return constantExpression;
         }
 
         /// <summary>
