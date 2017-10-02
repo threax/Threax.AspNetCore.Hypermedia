@@ -74,7 +74,12 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 var links = linkProvider.CreateHalLinks(providerContext);
                 foreach (var linkAttribute in links)
                 {
-                    yield return new Link(linkAttribute.Rel, linkAttribute.Href, linkAttribute.Title, linkAttribute.Method);
+                    //If we are getting action link attributes, make sure the user can access them.
+                    var actionLinkAttribute = linkAttribute as HalActionLinkAttribute;
+                    if (actionLinkAttribute == null || actionLinkAttribute.CanUserAccess(context.User))
+                    {
+                        yield return new Link(linkAttribute.Rel, linkAttribute.Href, linkAttribute.Title, linkAttribute.Method);
+                    }
                 }
             }
         }
