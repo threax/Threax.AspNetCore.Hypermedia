@@ -119,6 +119,7 @@ namespace Microsoft.Extensions.DependencyInjection
             settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             settings.Converters.Add(new StringEnumConverter());
             settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            settings.DefaultValueHandling = DefaultValueHandling.Include; //Reccomended default to allow use of DefaultValue attribute, want to serialize the value no matter what, and not set the value when deserializing.
             return settings;
         }
     }
