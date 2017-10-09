@@ -6,6 +6,7 @@
     <PackageType>DotNetCliTool</PackageType>
     <AssemblyName>dotnet-threax-modelgen</AssemblyName>
     <PackageId>Threax.ModelGen</PackageId>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

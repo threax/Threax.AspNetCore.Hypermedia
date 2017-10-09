@@ -66,9 +66,6 @@ namespace Threax.ModelGen
 
             var prettyName = schema.Title;
 
-            String prettyNamePascal, prettyNameCamel;
-            NameGenerator.CreatePascalAndCamel(prettyName, out prettyNamePascal, out prettyNameCamel);
-
             foreach (var propPair in schema.Properties)
             {
                 sb.AppendLine();
@@ -77,12 +74,14 @@ namespace Threax.ModelGen
                 var propName = propPair.Key;
                 var prop = propPair.Value;
 
+                String propPrettyName = NameGenerator.CreatePretty(propName);
+
                 if (prop.MaxLength.HasValue)
                 {
                     string error = null; //Look this up somehow
                     if (String.IsNullOrWhiteSpace(error))
                     {
-                        error = $"{prettyNamePascal} must be less than {prop.MaxLength} characters.";
+                        error = $"{propPrettyName} must be less than {prop.MaxLength} characters.";
                     }
                     sb.AppendLineWithContent(typeWriter.AddMaxLength(prop.MaxLength.Value, error));
                 }
@@ -92,7 +91,7 @@ namespace Threax.ModelGen
                     string error = null; //Look this up somehow
                     if (String.IsNullOrWhiteSpace(error))
                     {
-                        error = $"{prettyNamePascal} must have a value.";
+                        error = $"{propPrettyName} must have a value.";
                     }
                     sb.AppendLineWithContent(typeWriter.AddRequired(error));
                 }

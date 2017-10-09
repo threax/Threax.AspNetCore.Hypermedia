@@ -1,16 +1,15 @@
 {
   "title": "HorribleBeast",
   "required": [
-    "name"
+    "name",
+    "numLegs"
   ],
   "properties": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "maxLength": 50
     },
     "numLegs": {
-      "type": "integer"
-    },
-    "numEyes": {
       "type": "integer"
     }
   }

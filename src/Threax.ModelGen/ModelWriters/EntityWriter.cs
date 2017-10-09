@@ -32,7 +32,7 @@ using {ns}.Models;";
 
         public override string AddMaxLength(int length, string errorMessage)
         {
-            return "";
+            return $@"        [MaxLength({length})]";
         }
 
         public override string AddRequired(string errorMessage)
