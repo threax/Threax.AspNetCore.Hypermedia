@@ -32,8 +32,8 @@ $@"@{{
     ViewData[""Title""] = ""{Model}s"";
 }}
 
-<h1 data-hr-run=""{outDir}/{Model}s"">{Model}s</h1>
 <div data-hr-controller=""mainTable"">
+    <h1>{Model}s</h1>
     <load visible=""true"">
         <p>Working...</p>
     </load>
@@ -46,7 +46,7 @@ $@"@{{
             sb.AppendLine();
             foreach(var name in propertyNames)
             {
-                sb.AppendLine($"<th>{NameGenerator.CreatePascal(name)}</th>");
+                sb.AppendLine($"                        <th>{NameGenerator.CreatePascal(name)}</th>");
             }
             sb.Append(
 
@@ -62,7 +62,7 @@ $@"                        <th>Edit</th>
             sb.AppendLine();
             foreach (var name in propertyNames)
             {
-                sb.AppendLine($"<td>{{{{{NameGenerator.CreateCamel(name)}}}}}</td>");
+                sb.AppendLine($"                        <td>{{{{{NameGenerator.CreateCamel(name)}}}}}</td>");
             }
             sb.Append(
 
