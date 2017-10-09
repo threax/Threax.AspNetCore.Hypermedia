@@ -6,14 +6,16 @@ namespace Threax.ModelGen
 {
     static class RepoGenerator
     {
-        public static String Get(String ns, String modelName)
+        public static String Get(String ns, String modelName, String modelPluralName)
         {
             String Model, model;
             NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
-            return Create(ns, Model, model);
+            String Models, models;
+            NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
+            return Create(ns, Model, model, Models, models);
         }
 
-        private static String Create(String ns, String Model, String model) {
+        private static String Create(String ns, String Model, String model, String Models, String models) {
             return
 $@"using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -88,15 +90,15 @@ namespace {ns}.Repository
             }}
         }}
 
-        public virtual async Task<bool> Has{Model}s()
+        public virtual async Task<bool> Has{Models}()
         {{
             return await Entities.CountAsync() > 0;
         }}
 
-        public virtual async Task AddRange(IEnumerable<{Model}Input> {model}s)
+        public virtual async Task AddRange(IEnumerable<{Model}Input> {models})
         {{
-            var entities = {model}s.Select(i => mapper.Map<{Model}Entity>(i));
-            this.dbContext.{Model}s.AddRange(entities);
+            var entities = {models}.Select(i => mapper.Map<{Model}Entity>(i));
+            this.dbContext.{Models}.AddRange(entities);
             await this.dbContext.SaveChangesAsync();
         }}
 
@@ -104,7 +106,7 @@ namespace {ns}.Repository
         {{
             get
             {{
-                return dbContext.{Model}s;
+                return dbContext.{Models};
             }}
         }}
 

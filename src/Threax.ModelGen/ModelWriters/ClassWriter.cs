@@ -18,13 +18,13 @@ using Threax.AspNetCore.Halcyon.Ext;
 using Threax.AspNetCore.Halcyon.Ext.UIAttrs;";
         }
 
-        public virtual String StartType(String name)
+        public virtual String StartType(String name, String pluralName)
         {
             return $@"    public class {name} 
     {{";
         }
 
-        public virtual String EndType(String name)
+        public virtual String EndType(String name, String pluralName)
         {
             return "    }";
         }

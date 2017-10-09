@@ -30,7 +30,7 @@ namespace Threax.ModelGen
             }
         }
 
-        public static String Create(String name, ITypeWriter typeWriter, String defaultNs, String ns, String prettyName = null)
+        public static String Create(String name, String pluralName, ITypeWriter typeWriter, String defaultNs, String ns, String prettyName = null)
         {
             lastPropertyNames.Clear();
 
@@ -43,15 +43,15 @@ namespace Threax.ModelGen
                 sb.AppendLineWithContent(typeWriter.AddTypeDisplay(NameGenerator.CreatePascal(prettyName)));
             }
 
-            sb.AppendLineWithContent(typeWriter.StartType(name));
+            sb.AppendLineWithContent(typeWriter.StartType(name, pluralName));
 
-            sb.AppendLineWithContent(typeWriter.EndType(name));
+            sb.AppendLineWithContent(typeWriter.EndType(name, pluralName));
             sb.Append(typeWriter.EndNamespace());
 
             return sb.ToString();
         }
 
-        public static String Create(JsonSchema4 schema, ITypeWriter typeWriter, JsonSchema4 rootSchema, String defaultNs, String ns)
+        public static String Create(JsonSchema4 schema, String pluralName, ITypeWriter typeWriter, JsonSchema4 rootSchema, String defaultNs, String ns)
         {
             lastPropertyNames.Clear();
 
@@ -62,7 +62,7 @@ namespace Threax.ModelGen
             {
                 sb.AppendLineWithContent(typeWriter.AddTypeDisplay(schema.Title)); //Probably not right
             }
-            sb.Append(typeWriter.StartType(schema.Title));
+            sb.Append(typeWriter.StartType(schema.Title, pluralName));
 
             var prettyName = schema.Title;
 
@@ -106,7 +106,7 @@ namespace Threax.ModelGen
                 sb.AppendLineWithContent(typeWriter.CreateProperty(GetType(prop), pascalPropName));
             }
 
-            sb.AppendLineWithContent(typeWriter.EndType(schema.Title));
+            sb.AppendLineWithContent(typeWriter.EndType(schema.Title, pluralName));
             sb.Append(typeWriter.EndNamespace());
 
             return sb.ToString();

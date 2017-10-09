@@ -6,14 +6,16 @@ namespace Threax.ModelGen
 {
     static class AppDbContextGenerator
     {
-        public static String Get(String ns, String modelName)
+        public static String Get(String ns, String modelName, String modelPluralName)
         {
             String Model, model;
             NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
-            return Create(ns, Model);
+            String Models, models;
+            NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
+            return Create(ns, Model, Models);
         }
 
-        private static String Create(String ns, String Model)
+        private static String Create(String ns, String Model, String Models)
         {
             return
 $@"using Microsoft.EntityFrameworkCore;
@@ -22,7 +24,7 @@ namespace {ns}.Database
 {{
     public partial class AppDbContext
     {{
-        public DbSet<{Model}Entity> {Model}s {{ get; set; }}
+        public DbSet<{Model}Entity> {Models} {{ get; set; }}
     }}
 }}
 ";

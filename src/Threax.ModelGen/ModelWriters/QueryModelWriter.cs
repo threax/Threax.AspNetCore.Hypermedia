@@ -6,14 +6,16 @@ namespace Threax.ModelGen
 {
     public static class QueryModelWriter
     {
-        public static String Get(String ns, String modelName)
+        public static String Get(String ns, String modelName, String modelPluralName)
         {
             String Model, model;
             NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
-            return Create(ns, Model, model);
+            String Models, models;
+            NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
+            return Create(ns, Model, model, Models, models);
         }
 
-        private static String Create(String ns, String Model, String model)
+        private static String Create(String ns, String Model, String model, String Models, String models)
         {
             return
 $@"using Halcyon.HAL.Attributes;
@@ -38,7 +40,7 @@ namespace {ns}.InputModels
         //Add any additional query parameters here
 
         /// <summary>
-        /// Populate an IQueryable for {model}s. Does not apply the skip or limit.
+        /// Populate an IQueryable for {models}. Does not apply the skip or limit.
         /// </summary>
         /// <param name=""query"">The query to populate.</param>
         /// <returns>The query passed in populated with additional conditions.</returns>

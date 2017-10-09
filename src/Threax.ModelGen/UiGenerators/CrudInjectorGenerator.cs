@@ -6,14 +6,16 @@ namespace Threax.ModelGen
 {
     static class CrudInjectorGenerator
     {
-        public static String Get(String modelName)
+        public static String Get(String modelName, String modelPluralName)
         {
             String Model, model;
             NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
-            return Create(Model, model);
+            String Models, models;
+            NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
+            return Create(Model, model, Models, models);
         }
 
-        private static String Create(String Model, String model) {
+        private static String Create(String Model, String model, String Models, String models) {
             return
 $@"import * as client from 'clientlibs.ServiceClient';
 import * as hyperCrud from 'hr.widgets.HypermediaCrudService';
@@ -30,12 +32,12 @@ import * as di from 'hr.di';
 //
 //    async list(query: any): Promise<hyperCrud.HypermediaCrudCollection> {{
 //        var entry = await this.injector.load();
-//        return entry.list{Model}s(query);
+//        return entry.list{Models}(query);
 //    }}
 //
 //    async canList(): Promise<boolean> {{
 //        var entry = await this.injector.load();
-//        return entry.canList{Model}s();
+//        return entry.canList{Models}();
 //    }}
 //
 //    public getDeletePrompt(item: client.{Model}Result): string {{

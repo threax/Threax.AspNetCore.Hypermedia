@@ -13,27 +13,29 @@ namespace Threax.ModelGen
         /// <param name="modelName">The name of the model.</param>
         /// <param name="outDir">The directory the view will be placed in.</param>
         /// <returns></returns>
-        public static String Get(String modelName, String outDir = "Views/Home", IEnumerable<String> propertyNames = null)
+        public static String Get(String modelName, String modelPluralName, IEnumerable<String> propertyNames = null)
         {
             String Model, model;
             NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
+            String Models, models;
+            NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
 
-            if(propertyNames == null)
+            if (propertyNames == null)
             {
                 propertyNames = new String[] { "Thing" };
             }
 
-            return Create(Model, model, outDir, propertyNames);
+            return Create(Model, model, Models, models, propertyNames);
         }
 
-        private static String Create(String Model, String model, String outDir, IEnumerable<String> propertyNames) {
+        private static String Create(String Model, String model, String Models, String models, IEnumerable<String> propertyNames) {
             var sb = new StringBuilder(
 $@"@{{
-    ViewData[""Title""] = ""{Model}s"";
+    ViewData[""Title""] = ""{Models}"";
 }}
 
 <div data-hr-controller=""mainTable"">
-    <h1>{Model}s</h1>
+    <h1>{Models}</h1>
     <load visible=""true"">
         <p>Working...</p>
     </load>
@@ -80,7 +82,7 @@ $@"                        <td>
     </main>
 
     <error>
-        An error occured loading the {model}s. Please try again later.
+        An error occured loading the {models}. Please try again later.
     </error>
 </div>
 

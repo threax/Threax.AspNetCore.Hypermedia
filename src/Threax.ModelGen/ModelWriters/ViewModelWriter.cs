@@ -13,13 +13,13 @@ using {ns}.Models;
 using {ns}.Controllers.Api;";
         }
 
-        public override String StartType(String name)
+        public override String StartType(String name, String pluralName)
         {
             return 
 $@"    [HalModel]
-    [HalSelfActionLink(typeof({name}sController), nameof({name}sController.Get))]
-    [HalActionLink(typeof({name}sController), nameof({name}sController.Update))]
-    [HalActionLink(typeof({name}sController), nameof({name}sController.Delete))]
+    [HalSelfActionLink(typeof({pluralName}Controller), nameof({pluralName}Controller.Get))]
+    [HalActionLink(typeof({pluralName}Controller), nameof({pluralName}Controller.Update))]
+    [HalActionLink(typeof({pluralName}Controller), nameof({pluralName}Controller.Delete))]
     public class {name} : I{name}, I{name}Id{AdditionalInterfacesText}
     {{
 {CreateProperty("Guid", $"{name}Id")}";

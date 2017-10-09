@@ -12,7 +12,7 @@ namespace Threax.ModelGen
 using {ns}.Models;";
         }
 
-        public override String StartType(String name)
+        public override String StartType(String name, String pluralName)
         {
             return 
 $@"    [HalModel]

@@ -6,14 +6,16 @@ namespace Threax.ModelGen
 {
     static class ControllerGenerator
     {
-        public static String Get(String ns, String modelName)
+        public static String Get(String ns, String modelName, String modelPluralName)
         {
             String Model, model;
             NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
-            return Create(ns, Model, model);
+            String Models, models;
+            NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
+            return Create(ns, Model, model, Models, models);
         }
 
-        private static String Create(String ns, String Model, String model)
+        private static String Create(String ns, String Model, String model, String Models, String models)
         {
             return
 $@"using System;
@@ -30,12 +32,12 @@ namespace {ns}.Controllers.Api
 {{
     [Route(""api/[controller]"")]
     [ResponseCache(NoStore = true)]
-    //[Authorize(Roles = Roles.Edit{Model}s, ActiveAuthenticationSchemes = AuthSchemes.Bearer)] //Uncomment this to secure the api, you will probably have to define the role
-    public partial class {Model}sController : Controller
+    //[Authorize(Roles = Roles.Edit{Models}, ActiveAuthenticationSchemes = AuthSchemes.Bearer)] //Uncomment this to secure the api, you will probably have to define the role
+    public partial class {Models}Controller : Controller
     {{
         private I{Model}Repository repo;
 
-        public {Model}sController(I{Model}Repository repo)
+        public {Models}Controller(I{Model}Repository repo)
         {{
             this.repo = repo;
         }}
