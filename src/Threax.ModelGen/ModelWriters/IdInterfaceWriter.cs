@@ -14,6 +14,11 @@ namespace Threax.ModelGen
     public interface I{name}Id
     {{
         Guid {name}Id {{ get; set; }}
+    }}    
+
+    public interface I{name}Query
+    {{
+        Guid? {name}Id {{ get; set; }}
     }}";
         }
     }

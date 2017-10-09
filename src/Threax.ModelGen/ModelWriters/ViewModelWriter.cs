@@ -10,16 +10,16 @@ namespace Threax.ModelGen
         {
             return $@"{base.AddUsings(ns)}
 using {ns}.Models;
-using {ns}.Controllers;";
+using {ns}.Controllers.Api;";
         }
 
         public override String StartType(String name)
         {
             return 
 $@"    [HalModel]
-    [HalSelfActionLink(CrudRels.Get, typeof(ValuesController))]
-    [HalActionLink(CrudRels.Update, typeof(ValuesController))]
-    [HalActionLink(CrudRels.Delete, typeof(ValuesController))]
+    [HalSelfActionLink(typeof({name}sController), nameof({name}sController.Get))]
+    [HalActionLink(typeof({name}sController), nameof({name}sController.Update))]
+    [HalActionLink(typeof({name}sController), nameof({name}sController.Delete))]
     public class {name} : I{name}, I{name}Id{AdditionalInterfacesText}
     {{
 {CreateProperty("Guid", $"{name}Id")}";

@@ -40,9 +40,9 @@ namespace {ns}.Repository
             this.mapper = mapper;
         }}
 
-        public async Task<{Model}Collection> List(PagedCollectionQuery query)
+        public async Task<{Model}Collection> List({Model}Query query)
         {{
-            IQueryable<{Model}Entity> dbQuery = this.Entities;
+            var dbQuery = query.Create(this.Entities);
 
             var total = await dbQuery.CountAsync();
             dbQuery = dbQuery.Skip(query.SkipTo(total)).Take(query.Limit);

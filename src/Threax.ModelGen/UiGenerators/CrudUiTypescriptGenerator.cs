@@ -13,14 +13,14 @@ namespace Threax.ModelGen
 
         private static String Create(String Model) {
             return
-$@"import {{ {Model}CrudInjector }} from 'clientlibs.{Model}CrudInjector';
-import * as standardCrudPage from 'hr.widgets.StandardCrudPage';
+$@"import * as standardCrudPage from 'hr.widgets.StandardCrudPage';
 import * as startup from 'clientlibs.startup';
+//import {{ {Model}CrudInjector }} from 'clientlibs.{Model}CrudInjector';
 
-var injector = {Model}CrudInjector;
-var builder = startup.createBuilder();
-standardCrudPage.addServices(builder, injector);
-standardCrudPage.createControllers(builder, new standardCrudPage.Settings());";
+//var injector = {Model}CrudInjector;
+//var builder = startup.createBuilder();
+//standardCrudPage.addServices(builder, injector);
+//standardCrudPage.createControllers(builder, new standardCrudPage.Settings());";
         }
     }
 }

@@ -31,7 +31,7 @@ namespace {ns}.Repository
         Task Delete(Guid id);
         Task<{Model}> Get(Guid {model}Id);
         Task<bool> Has{Model}s();
-        Task<{Model}Collection> List(PagedCollectionQuery query);
+        Task<{Model}Collection> List({Model}Query query);
         Task<{Model}> Update(Guid {model}Id, {Model}Input value);
     }}
 }}";

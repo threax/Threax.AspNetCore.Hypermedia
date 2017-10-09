@@ -95,6 +95,7 @@ namespace Threax.ModelGen
                 WriteFile(Path.Combine(settings.AppOutDir, $"Models/I{modelName}.cs"), model);
                 WriteFile(Path.Combine(settings.AppOutDir, $"Database/{modelName}Entity.cs"), entity);
                 WriteFile(Path.Combine(settings.AppOutDir, $"InputModels/{modelName}Input.cs"), inputModel);
+                WriteFile(Path.Combine(settings.AppOutDir, $"InputModels/{modelName}Query.cs"), QueryModelWriter.Get(settings.AppNamespace, modelName));
                 WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{modelName}.cs"), viewModel);
 
                 WriteFile(Path.Combine(settings.AppOutDir, $"Repository/{modelName}Repository.cs"), RepoGenerator.Get(settings.AppNamespace, modelName));

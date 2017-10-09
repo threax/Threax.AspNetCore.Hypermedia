@@ -26,7 +26,7 @@ using Threax.AspNetCore.Halcyon.Ext;
 using {ns}.ViewModels;
 using {ns}.InputModels;
 
-namespace {ns}.Controllers
+namespace {ns}.Controllers.Api
 {{
     [Route(""[controller]"")]
     [ResponseCache(NoStore = true)]
@@ -41,7 +41,7 @@ namespace {ns}.Controllers
 
         [HttpGet]
         [HalRel(CrudRels.List)]
-        public async Task<{Model}Collection> List([FromQuery] PagedCollectionQuery query)
+        public async Task<{Model}Collection> List([FromQuery] {Model}Query query)
         {{
             Task task = null;
             OnList(query, ref task);
@@ -52,7 +52,7 @@ namespace {ns}.Controllers
             return await repo.List(query);
         }}
 
-        partial void OnList(PagedCollectionQuery query, ref Task task);
+        partial void OnList({Model}Query query, ref Task task);
 
         [HttpGet(""{{{Model}Id}}"")]
         [HalRel(CrudRels.Get)]
