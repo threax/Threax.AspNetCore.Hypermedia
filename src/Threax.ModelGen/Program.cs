@@ -103,13 +103,14 @@ namespace Threax.ModelGen
                 WriteFile(Path.Combine(settings.AppOutDir, $"Repository/{modelName}RepoConfig.cs"), RepoConfigGenerator.Get(settings.AppNamespace, modelName));
                 WriteFile(Path.Combine(settings.AppOutDir, $"Controllers/Api/{modelName}sController.cs"), ControllerGenerator.Get(settings.AppNamespace, modelName));
                 WriteFile(Path.Combine(settings.AppOutDir, $"Mappers/{modelName}Mapper.cs"), MappingProfileGenerator.Get(settings.AppNamespace, modelName));
-                WriteFile(Path.Combine(settings.AppOutDir, $"Database/AppDbContext{modelName}.cs"), AppDbContextGenerator.Get(settings.AppNamespace, modelName));
+                WriteFile(Path.Combine(settings.AppOutDir, $"Database/AppDbContext.{modelName}.cs"), AppDbContextGenerator.Get(settings.AppNamespace, modelName));
                 WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{modelName}Collection.cs"), ModelCollectionGenerator.Get(settings.AppNamespace, modelName));
+                WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/EntryPoint.{modelName}.cs"), EntryPointGenerator.Get(settings.AppNamespace, modelName));
 
                 WriteFile(Path.Combine(settings.AppOutDir, $"Views/{settings.UiController}/{modelName}s.cshtml"), CrudCshtmlInjectorGenerator.Get(modelName, propertyNames: propertyNames));
                 WriteFile(Path.Combine(settings.AppOutDir, $"Client/Libs/{modelName}CrudInjector.ts"), CrudInjectorGenerator.Get(modelName));
                 WriteFile(Path.Combine(settings.AppOutDir, $"Views/{settings.UiController}/{modelName}s.ts"), CrudUiTypescriptGenerator.Get(modelName));
-                WriteFile(Path.Combine(settings.AppOutDir, $"Controllers/{settings.UiController}{modelName}s.cs"), UiControllerGenerator.Get(settings.AppNamespace, settings.UiController, modelName));
+                WriteFile(Path.Combine(settings.AppOutDir, $"Controllers/{settings.UiController}Controller.{modelName}s.cs"), UiControllerGenerator.Get(settings.AppNamespace, settings.UiController, modelName));
             }
         }
 
