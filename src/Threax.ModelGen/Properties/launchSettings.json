@@ -2,7 +2,7 @@
   "profiles": {
     "Threax.ModelGen": {
       "commandName": "Project",
-      "commandLineArgs": "ValuesModel.json C:\\Development\\ModelGenTestingGround ModelGenTestingGround"
+      "commandLineArgs": "ValuesModel.json SpcAppTemplate C:\\Development\\SpcHypermediaTemplate\\SpcAppTemplate"
     }
   }
 }
