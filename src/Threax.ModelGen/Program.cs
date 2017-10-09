@@ -10,12 +10,28 @@ namespace Threax.ModelGen
     {
         static void Main(string[] args)
         {
-            GenerateClasses(new GeneratorSettings()
+            try
             {
-                Source = args[0],
-                AppOutDir = args[1],
-                AppNamespace = args[2],
-            });
+                if (args.Length != 3 && args.Length != 2)
+                {
+                    throw new MessageException("You must provide the following arguments [Schema File Path], [App Namespace], {Output Directory}. [] is required {} is optional.");
+                }
+
+                GenerateClasses(new GeneratorSettings()
+                {
+                    Source = args[0],
+                    AppNamespace = args[1],
+                    AppOutDir = args.Length > 2 ? args[2] : Directory.GetCurrentDirectory(),
+                });
+            }
+            catch(MessageException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"A {ex.GetType().Name} occured. Message: {ex.Message}");
+            }
         }
 
         class GeneratorSettings
@@ -33,29 +49,14 @@ namespace Threax.ModelGen
         {
             String modelName, model, entity, inputModel, viewModel;
 
-            JsonSchema4 schema = null;
-            try
+            if (!File.Exists(settings.Source))
             {
-                var schemaTask = JsonSchema4.FromJsonAsync(settings.Source);
-                schemaTask.Wait();
-                schema = schemaTask.Result;
+                throw new MessageException($"Cannot find schema file {settings.Source}.");
             }
-            catch (Exception)
-            {
-                if (File.Exists(settings.Source))
-                {
-                    try
-                    {
-                        var schemaTask = JsonSchema4.FromFileAsync(settings.Source);
-                        schemaTask.Wait();
-                        schema = schemaTask.Result;
-                    }
-                    catch (Exception)
-                    {
 
-                    }
-                }
-            }
+            var schemaTask = JsonSchema4.FromFileAsync(settings.Source);
+            schemaTask.Wait();
+            var schema = schemaTask.Result;
 
             if (schema != null)
             {
