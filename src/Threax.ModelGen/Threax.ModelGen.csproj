@@ -5,6 +5,7 @@
     <TargetFramework>netcoreapp1.0</TargetFramework>
     <PackageType>DotNetCliTool</PackageType>
     <AssemblyName>dotnet-threax-modelgen</AssemblyName>
+    <PackageId>Threax.ModelGen</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
