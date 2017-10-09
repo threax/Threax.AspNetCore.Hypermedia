@@ -13,24 +13,18 @@ namespace Threax.ModelGen
             GenerateClasses(new GeneratorSettings()
             {
                 Source = args[0],
-                ServiceOutDir = args[1],
-                ServiceNamespace = args[2],
-                UiOutDir = args[3],
-                UiNamespace = args[4]
+                AppOutDir = args[1],
+                AppNamespace = args[2],
             });
         }
 
         class GeneratorSettings
         {
-            public String ServiceNamespace { get; set; }
+            public String AppNamespace { get; set; }
 
             public String Source { get; set; }
 
-            public String ServiceOutDir { get; set; }
-
-            public String UiOutDir { get; set; }
-
-            public String UiNamespace { get; set; }
+            public String AppOutDir { get; set; }
 
             public string UiController { get; set; } = "Home";
         }
@@ -79,46 +73,42 @@ namespace Threax.ModelGen
 
             List<String> propertyNames = null;
 
-            if (settings.ServiceOutDir != null && settings.ServiceNamespace != null)
+            if (settings.AppOutDir != null && settings.AppNamespace != null)
             {
-
                 if (schema != null)
                 {
-                    model = ModelTypeGenerator.Create(schema, new IdInterfaceWriter(), schema, settings.ServiceNamespace, settings.ServiceNamespace + ".Models");
-                    entity = ModelTypeGenerator.Create(schema, new EntityWriter(), schema, settings.ServiceNamespace, settings.ServiceNamespace + ".Database");
-                    inputModel = ModelTypeGenerator.Create(schema, new InputModelWriter(), schema, settings.ServiceNamespace, settings.ServiceNamespace + ".InputModels");
-                    viewModel = ModelTypeGenerator.Create(schema, new ViewModelWriter(), schema, settings.ServiceNamespace, settings.ServiceNamespace + ".ViewModels");
+                    model = ModelTypeGenerator.Create(schema, new IdInterfaceWriter(), schema, settings.AppNamespace, settings.AppNamespace + ".Models");
+                    entity = ModelTypeGenerator.Create(schema, new EntityWriter(), schema, settings.AppNamespace, settings.AppNamespace + ".Database");
+                    inputModel = ModelTypeGenerator.Create(schema, new InputModelWriter(), schema, settings.AppNamespace, settings.AppNamespace + ".InputModels");
+                    viewModel = ModelTypeGenerator.Create(schema, new ViewModelWriter(), schema, settings.AppNamespace, settings.AppNamespace + ".ViewModels");
                 }
                 else
                 {
-                    model = ModelTypeGenerator.Create(settings.Source, new IdInterfaceWriter(), settings.ServiceNamespace, settings.ServiceNamespace + ".Models");
-                    entity = ModelTypeGenerator.Create(settings.Source, new EntityWriter(), settings.ServiceNamespace, settings.ServiceNamespace + ".Database");
-                    inputModel = ModelTypeGenerator.Create(settings.Source, new InputModelWriter(), settings.ServiceNamespace, settings.ServiceNamespace + ".InputModels");
-                    viewModel = ModelTypeGenerator.Create(settings.Source, new ViewModelWriter(), settings.ServiceNamespace, settings.ServiceNamespace + ".ViewModels");
+                    model = ModelTypeGenerator.Create(settings.Source, new IdInterfaceWriter(), settings.AppNamespace, settings.AppNamespace + ".Models");
+                    entity = ModelTypeGenerator.Create(settings.Source, new EntityWriter(), settings.AppNamespace, settings.AppNamespace + ".Database");
+                    inputModel = ModelTypeGenerator.Create(settings.Source, new InputModelWriter(), settings.AppNamespace, settings.AppNamespace + ".InputModels");
+                    viewModel = ModelTypeGenerator.Create(settings.Source, new ViewModelWriter(), settings.AppNamespace, settings.AppNamespace + ".ViewModels");
                 }
 
                 propertyNames = ModelTypeGenerator.LastPropertyNames.ToList();
 
-                WriteFile(Path.Combine(settings.ServiceOutDir, $"Models/I{modelName}.cs"), model);
-                WriteFile(Path.Combine(settings.ServiceOutDir, $"Database/{modelName}Entity.cs"), entity);
-                WriteFile(Path.Combine(settings.ServiceOutDir, $"InputModels/{modelName}Input.cs"), inputModel);
-                WriteFile(Path.Combine(settings.ServiceOutDir, $"ViewModels/{modelName}.cs"), viewModel);
+                WriteFile(Path.Combine(settings.AppOutDir, $"Models/I{modelName}.cs"), model);
+                WriteFile(Path.Combine(settings.AppOutDir, $"Database/{modelName}Entity.cs"), entity);
+                WriteFile(Path.Combine(settings.AppOutDir, $"InputModels/{modelName}Input.cs"), inputModel);
+                WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{modelName}.cs"), viewModel);
 
-                WriteFile(Path.Combine(settings.ServiceOutDir, $"Repository/{modelName}Repository.cs"), RepoGenerator.Get(settings.ServiceNamespace, modelName));
-                WriteFile(Path.Combine(settings.ServiceOutDir, $"Repository/I{modelName}Repository.cs"), RepoInterfaceGenerator.Get(settings.ServiceNamespace, modelName));
-                WriteFile(Path.Combine(settings.ServiceOutDir, $"Repository/{modelName}RepoConfig.cs"), RepoConfigGenerator.Get(settings.ServiceNamespace, modelName));
-                WriteFile(Path.Combine(settings.ServiceOutDir, $"Controllers/{modelName}sController.cs"), ControllerGenerator.Get(settings.ServiceNamespace, modelName));
-                WriteFile(Path.Combine(settings.ServiceOutDir, $"Mappers/{modelName}Mapper.cs"), MappingProfileGenerator.Get(settings.ServiceNamespace, modelName));
-                WriteFile(Path.Combine(settings.ServiceOutDir, $"Database/AppDbContext{modelName}.cs"), AppDbContextGenerator.Get(settings.ServiceNamespace, modelName));
-                WriteFile(Path.Combine(settings.ServiceOutDir, $"ViewModels/{modelName}Collection.cs"), ModelCollectionGenerator.Get(settings.ServiceNamespace, modelName));
-            }
+                WriteFile(Path.Combine(settings.AppOutDir, $"Repository/{modelName}Repository.cs"), RepoGenerator.Get(settings.AppNamespace, modelName));
+                WriteFile(Path.Combine(settings.AppOutDir, $"Repository/I{modelName}Repository.cs"), RepoInterfaceGenerator.Get(settings.AppNamespace, modelName));
+                WriteFile(Path.Combine(settings.AppOutDir, $"Repository/{modelName}RepoConfig.cs"), RepoConfigGenerator.Get(settings.AppNamespace, modelName));
+                WriteFile(Path.Combine(settings.AppOutDir, $"Controllers/Api/{modelName}sController.cs"), ControllerGenerator.Get(settings.AppNamespace, modelName));
+                WriteFile(Path.Combine(settings.AppOutDir, $"Mappers/{modelName}Mapper.cs"), MappingProfileGenerator.Get(settings.AppNamespace, modelName));
+                WriteFile(Path.Combine(settings.AppOutDir, $"Database/AppDbContext{modelName}.cs"), AppDbContextGenerator.Get(settings.AppNamespace, modelName));
+                WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{modelName}Collection.cs"), ModelCollectionGenerator.Get(settings.AppNamespace, modelName));
 
-            if(settings.UiNamespace != null && settings.UiOutDir != null)
-            {
-                WriteFile(Path.Combine(settings.UiOutDir, $"Views/{settings.UiController}/{modelName}s.cshtml"), CrudCshtmlInjectorGenerator.Get(modelName, propertyNames: propertyNames));
-                WriteFile(Path.Combine(settings.UiOutDir, $"Client/Libs/{modelName}CrudInjector.ts"), CrudInjectorGenerator.Get(modelName));
-                WriteFile(Path.Combine(settings.UiOutDir, $"Views/{settings.UiController}/{modelName}s.ts"), CrudUiTypescriptGenerator.Get(modelName));
-                WriteFile(Path.Combine(settings.UiOutDir, $"Controllers/{settings.UiController}{modelName}s.cs"), UiControllerGenerator.Get(settings.UiNamespace, settings.UiController, modelName));
+                WriteFile(Path.Combine(settings.AppOutDir, $"Views/{settings.UiController}/{modelName}s.cshtml"), CrudCshtmlInjectorGenerator.Get(modelName, propertyNames: propertyNames));
+                WriteFile(Path.Combine(settings.AppOutDir, $"Client/Libs/{modelName}CrudInjector.ts"), CrudInjectorGenerator.Get(modelName));
+                WriteFile(Path.Combine(settings.AppOutDir, $"Views/{settings.UiController}/{modelName}s.ts"), CrudUiTypescriptGenerator.Get(modelName));
+                WriteFile(Path.Combine(settings.AppOutDir, $"Controllers/{settings.UiController}{modelName}s.cs"), UiControllerGenerator.Get(settings.AppNamespace, settings.UiController, modelName));
             }
         }
 
