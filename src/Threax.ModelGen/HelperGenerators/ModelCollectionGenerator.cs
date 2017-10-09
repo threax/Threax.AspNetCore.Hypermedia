@@ -29,14 +29,14 @@ using Threax.AspNetCore.Halcyon.Ext;
 namespace {ns}.ViewModels
 {{
     [HalModel]
-    [HalSelfActionLink(CrudRels.List, typeof({Model}sController))]
-    [HalActionLink(CrudRels.Get, typeof({Model}sController), DocsOnly = true)] //This provides access to docs for showing items
-    [HalActionLink(CrudRels.List, typeof({Model}sController), DocsOnly = true)] //This provides docs for searching the list
-    [HalActionLink(CrudRels.Add, typeof({Model}sController))]
-    [DeclareHalLink(PagedCollectionView<Object>.Rels.Next, CrudRels.List, typeof({Model}sController), ResponseOnly = true)]
-    [DeclareHalLink(PagedCollectionView<Object>.Rels.Previous, CrudRels.List, typeof({Model}sController), ResponseOnly = true)]
-    [DeclareHalLink(PagedCollectionView<Object>.Rels.First, CrudRels.List, typeof({Model}sController), ResponseOnly = true)]
-    [DeclareHalLink(PagedCollectionView<Object>.Rels.Last, CrudRels.List, typeof({Model}sController), ResponseOnly = true)]
+    [HalSelfActionLink(typeof({Model}sController), nameof({Model}sController.List))]
+    [HalActionLink(typeof({Model}sController), nameof({Model}sController.Get), DocsOnly = true)] //This provides access to docs for showing items
+    [HalActionLink(typeof({Model}sController), nameof({Model}sController.List), DocsOnly = true)] //This provides docs for searching the list
+    [HalActionLink(typeof({Model}sController), nameof({Model}sController.Add))]
+    [DeclareHalLink(typeof({Model}sController), nameof({Model}sController.List), PagedCollectionView<Object>.Rels.Next, ResponseOnly = true)]
+    [DeclareHalLink(typeof({Model}sController), nameof({Model}sController.List), PagedCollectionView<Object>.Rels.Previous, ResponseOnly = true)]
+    [DeclareHalLink(typeof({Model}sController), nameof({Model}sController.List), PagedCollectionView<Object>.Rels.First, ResponseOnly = true)]
+    [DeclareHalLink(typeof({Model}sController), nameof({Model}sController.List), PagedCollectionView<Object>.Rels.Last, ResponseOnly = true)]
     public partial class {Model}Collection : PagedCollectionView<{Model}>, I{Model}Query
     {{
         public {Model}Collection({Model}Query query, int total, IEnumerable<{Model}> items) : base(query, total, items)
