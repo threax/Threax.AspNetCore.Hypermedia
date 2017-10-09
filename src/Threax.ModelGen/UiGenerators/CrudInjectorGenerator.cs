@@ -41,6 +41,16 @@ import * as di from 'hr.di';
 //    public getDeletePrompt(item: client.{Model}Result): string {{
 //        return ""Are you sure you want to delete the {model}?"";
 //    }}
+//
+//    public getItemId(item: client.{Model}Result): string | null {{
+//        return String(item.data.{model}Id);
+//    }}
+//
+//    public createIdQuery(id: string): client.{Model}Query | null {{
+//        return {{
+//            {model}Id: id
+//        }};
+//    }}
 //}}";
         }
     }

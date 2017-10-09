@@ -25,6 +25,7 @@ namespace {ns}.Controllers
 {{
     public partial class {controller}Controller
     {{
+        //[Authorize(Roles = Roles.Edit{Model}s)] //Uncomment this to secure the view, you will probably have to define the role
         public IActionResult {Model}s()
         {{
             return View();

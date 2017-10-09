@@ -75,7 +75,7 @@ namespace {ns}.Repository
                 await this.dbContext.SaveChangesAsync();
                 return mapper.Map<{Model}>(entity);
             }}
-            throw new KeyNotFoundException($""Cannot find item {{{model}Id.ToString()}}"");
+            throw new KeyNotFoundException($""Cannot find {model} {{{model}Id.ToString()}}"");
         }}
 
         public async Task Delete(Guid id)
