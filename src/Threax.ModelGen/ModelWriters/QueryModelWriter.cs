@@ -25,7 +25,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Threax.AspNetCore.Halcyon.Ext;
 
-namespace {ns}.ViewModels
+namespace {ns}.InputModels
 {{
     [HalModel]
     public class {Model}Query : PagedCollectionQuery, I{Model}Query
