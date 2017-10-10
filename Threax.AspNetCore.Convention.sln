@@ -49,6 +49,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.ModelGen", "src\Thre
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.AspNetCore.RazorExt", "src\Threax.AspNetCore.RazorExt\Threax.AspNetCore.RazorExt.csproj", "{945424A9-8EF2-4C12-97B8-AE83C58FB370}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.AspNetCore.Halcyon.ClientGen.Tools", "src\Threax.AspNetCore.Halcyon.ClientGen.Tools\Threax.AspNetCore.Halcyon.ClientGen.Tools.csproj", "{A4B81F6D-D5B3-49BF-A894-A0370E83968D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -135,6 +137,10 @@ Global
 		{945424A9-8EF2-4C12-97B8-AE83C58FB370}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{945424A9-8EF2-4C12-97B8-AE83C58FB370}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{945424A9-8EF2-4C12-97B8-AE83C58FB370}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4B81F6D-D5B3-49BF-A894-A0370E83968D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4B81F6D-D5B3-49BF-A894-A0370E83968D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4B81F6D-D5B3-49BF-A894-A0370E83968D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4B81F6D-D5B3-49BF-A894-A0370E83968D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -160,6 +166,7 @@ Global
 		{0DC113C6-E07C-4190-9C47-8E563E30765B} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 		{57331298-EDF0-438D-B7AC-59F526FA591B} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 		{945424A9-8EF2-4C12-97B8-AE83C58FB370} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
+		{A4B81F6D-D5B3-49BF-A894-A0370E83968D} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {432C63C5-4BBE-4AE4-8963-48D7FCCBA395}

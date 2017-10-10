@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyName>Threax.AspNetCore.Halcyon.ClientGen.Tools</AssemblyName>
+    <PackageId>Threax.AspNetCore.Halcyon.ClientGen.Tools</PackageId>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Threax.AspNetCore.BuiltInTools\Threax.AspNetCore.BuiltInTools.csproj" />
+    <ProjectReference Include="..\Threax.AspNetCore.Halcyon.ClientGen\Threax.AspNetCore.Halcyon.ClientGen.csproj" />
+  </ItemGroup>
+
+</Project>
