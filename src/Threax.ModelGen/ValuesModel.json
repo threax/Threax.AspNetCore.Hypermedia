@@ -12,6 +12,9 @@
     },
     "numLegs": {
       "type": "integer"
+    },
+    "numEyes": {
+      "type": "integer"
     }
   }
 }
