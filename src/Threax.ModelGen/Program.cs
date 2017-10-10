@@ -104,7 +104,7 @@ namespace Threax.ModelGen
                 WriteFile(Path.Combine(settings.AppOutDir, $"Repository/I{modelName}Repository.cs"), RepoInterfaceGenerator.Get(settings.AppNamespace, modelName, pluralModelName));
                 WriteFile(Path.Combine(settings.AppOutDir, $"Repository/{modelName}RepoConfig.cs"), RepoConfigGenerator.Get(settings.AppNamespace, modelName));
                 WriteFile(Path.Combine(settings.AppOutDir, $"Controllers/Api/{pluralModelName}Controller.cs"), ControllerGenerator.Get(settings.AppNamespace, modelName, pluralModelName));
-                WriteFile(Path.Combine(settings.AppOutDir, $"Mappers/{modelName}Mapper.cs"), MappingProfileGenerator.Get(settings.AppNamespace, modelName));
+                WriteFile(Path.Combine(settings.AppOutDir, $"Mappers/{modelName}Profile.cs"), MappingProfileGenerator.Get(settings.AppNamespace, modelName));
                 WriteFile(Path.Combine(settings.AppOutDir, $"Database/AppDbContext.{modelName}.cs"), AppDbContextGenerator.Get(settings.AppNamespace, modelName, pluralModelName));
                 WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{modelName}Collection.cs"), ModelCollectionGenerator.Get(settings.AppNamespace, modelName, pluralModelName));
                 WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/EntryPoint.{modelName}.cs"), EntryPointGenerator.Get(settings.AppNamespace, modelName, pluralModelName));

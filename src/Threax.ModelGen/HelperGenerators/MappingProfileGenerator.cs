@@ -26,9 +26,9 @@ using {ns}.ViewModels;
 
 namespace {ns}.Mappers
 {{
-    public partial class {Model}Mapper : Profile
+    public partial class {Model}Profile : Profile
     {{
-        public {Model}Mapper()
+        public {Model}Profile()
         {{
             //Map the input model to the entity
             CreateMap<{Model}Input, {Model}Entity>()

@@ -126,9 +126,10 @@ namespace Threax.ModelGen
 
         private static string GetNonArrayType(JsonObjectType types, String format)
         {
-            if(format != null)
+            var loweredFormat = format;
+            if (loweredFormat != null)
             {
-                format = format.ToLowerInvariant();
+                loweredFormat = loweredFormat.ToLowerInvariant();
             }
 
             var type = "String";
@@ -139,7 +140,7 @@ namespace Threax.ModelGen
                 if (IsType(types, JsonObjectType.Integer))
                 {
                     simpleType = "int";
-                    switch (format)
+                    switch (loweredFormat)
                     {
                         case "int16":
                             simpleType = "short";
@@ -155,7 +156,7 @@ namespace Threax.ModelGen
                 if (IsType(types, JsonObjectType.Number))
                 {
                     simpleType = "decimal";
-                    switch (format)
+                    switch (loweredFormat)
                     {
                         case "int16":
                             simpleType = "short";
@@ -186,7 +187,7 @@ namespace Threax.ModelGen
             if (IsType(types, JsonObjectType.String) || IsType(types, JsonObjectType.File))
             {
                 type = "String";
-                switch (format)
+                switch (loweredFormat)
                 {
                     case "date":
                     case "time":
@@ -199,13 +200,9 @@ namespace Threax.ModelGen
             if (IsType(types, JsonObjectType.Object))
             {
                 type = "Object";
-                if (IsType(types, JsonObjectType.Array))
+                if(format != null) //Use format to specify the real object type
                 {
-
-                }
-                else
-                {
-
+                    type = format;
                 }
             }
 
