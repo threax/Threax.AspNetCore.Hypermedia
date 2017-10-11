@@ -31,6 +31,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         public static IServiceCollection AddConventionalHalcyon(this IServiceCollection services, HalcyonConventionOptions options)
         {
+            services.TryAddSingleton<ILabelCacheFactory, LabelCacheFactory>();
             services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.TryAddSingleton<IUrlHelperFactory, UrlHelperFactory>();
             services.TryAddSingleton<HalcyonConventionOptions>(options);
