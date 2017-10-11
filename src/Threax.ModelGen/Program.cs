@@ -131,7 +131,7 @@ remove [Schema File Path] {Output Directory}");
 
                 WriteFile(Path.Combine(settings.AppOutDir, $"Repository/{settings.ModelName}Repository.cs"), RepoGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
                 WriteFile(Path.Combine(settings.AppOutDir, $"Repository/I{settings.ModelName}Repository.cs"), RepoInterfaceGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
-                WriteFile(Path.Combine(settings.AppOutDir, $"Repository/{settings.ModelName}RepoConfig.cs"), RepoConfigGenerator.Get(settings.AppNamespace, settings.ModelName));
+                WriteFile(Path.Combine(settings.AppOutDir, $"Repository/{settings.ModelName}Repository.Config.cs"), RepoConfigGenerator.Get(settings.AppNamespace, settings.ModelName));
                 WriteFile(Path.Combine(settings.AppOutDir, $"Controllers/Api/{settings.PluralModelName}Controller.cs"), ControllerGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
                 WriteFile(Path.Combine(settings.AppOutDir, $"Mappers/{settings.ModelName}Profile.cs"), MappingProfileGenerator.Get(settings.AppNamespace, settings.ModelName));
                 WriteFile(Path.Combine(settings.AppOutDir, $"Database/AppDbContext.{settings.ModelName}.cs"), AppDbContextGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
@@ -155,7 +155,7 @@ remove [Schema File Path] {Output Directory}");
 
             DeleteFile(Path.Combine(settings.AppOutDir, $"Repository/{settings.ModelName}Repository.cs"));
             DeleteFile(Path.Combine(settings.AppOutDir, $"Repository/I{settings.ModelName}Repository.cs"));
-            DeleteFile(Path.Combine(settings.AppOutDir, $"Repository/{settings.ModelName}RepoConfig.cs"));
+            DeleteFile(Path.Combine(settings.AppOutDir, $"Repository/{settings.ModelName}Repository.Config.cs"));
             DeleteFile(Path.Combine(settings.AppOutDir, $"Controllers/Api/{settings.PluralModelName}Controller.cs"));
             DeleteFile(Path.Combine(settings.AppOutDir, $"Mappers/{settings.ModelName}Profile.cs"));
             DeleteFile(Path.Combine(settings.AppOutDir, $"Database/AppDbContext.{settings.ModelName}.cs"));

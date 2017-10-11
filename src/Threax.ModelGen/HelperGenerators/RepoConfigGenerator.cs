@@ -25,9 +25,9 @@ using Threax.AspNetCore.Models;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using {ns}.Repository;
 
-namespace {ns}.Mappers
+namespace {ns}.Repository.Config
 {{
-    public partial class {Model}RepoConfig : IServiceSetup
+    public partial class {Model}RepositoryConfig : IServiceSetup
     {{
         public void ConfigureServices(IServiceCollection services)
         {{
