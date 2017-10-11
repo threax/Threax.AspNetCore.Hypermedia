@@ -3,6 +3,13 @@
     "Threax.ModelGen": {
       "commandName": "Project",
       "commandLineArgs": "ValuesModel.json SpcAppTemplate C:\\Development\\SpcHypermediaTemplate\\SpcAppTemplate"
+    },
+    "Remove": {
+      "commandName": "Project",
+      "commandLineArgs": "remove ValuesModel.json C:\\Development\\SpcHypermediaTemplate\\SpcAppTemplate"
+    },
+    "Help Output": {
+      "commandName": "Project"
     }
   }
 }
