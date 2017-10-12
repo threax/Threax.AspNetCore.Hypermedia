@@ -74,9 +74,26 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 var links = linkProvider.CreateHalLinks(providerContext);
                 foreach (var linkAttribute in links)
                 {
-                    //If we are getting action link attributes, make sure the user can access them.
+                    //If we are getting action link attributes, do additional customization.
                     var actionLinkAttribute = linkAttribute as HalActionLinkAttribute;
-                    if (actionLinkAttribute == null || actionLinkAttribute.CanUserAccess(context.User))
+                    if (actionLinkAttribute != null)
+                    {
+                        if (actionLinkAttribute.CanUserAccess(context.User))
+                        {
+                            yield return new Link(linkAttribute.Rel, linkAttribute.Href, linkAttribute.Title, linkAttribute.Method);
+
+                            //Include doc links for link provider links
+                            if (endpointInfo != null && actionLinkAttribute.HasDocs)
+                            {
+                                var docLink = actionLinkAttribute.GetDocLink(endpointInfo);
+                                if (docLink != null)
+                                {
+                                    yield return new Link(docLink.Rel, docLink.Href, docLink.Title, docLink.Method, false); //Don't replace parameters for these, already done
+                                }
+                            }
+                        }
+                    }
+                    else //Otherwise just include the link
                     {
                         yield return new Link(linkAttribute.Rel, linkAttribute.Href, linkAttribute.Title, linkAttribute.Method);
                     }
