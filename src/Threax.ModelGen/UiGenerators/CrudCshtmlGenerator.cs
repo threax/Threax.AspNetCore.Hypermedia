@@ -55,7 +55,7 @@ $@"@{{
 $@"                        <th>Edit</th>
                     </tr>
                 </thead>
-                <tbody data-hr-model=""listing"" data-hr-model-component=""mainTableBody""></tbody>
+                <tbody data-hr-view=""listing"" data-hr-view-component=""mainTableBody""></tbody>
             </table>
             <template data-hr-component=""mainTableBody"">
                 <table>
