@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EBBC3E56-D59A-447E-8021-DA2D17B6AD50}"
 EndProject
@@ -50,6 +50,24 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.AspNetCore.RazorExt", "src\Threax.AspNetCore.RazorExt\Threax.AspNetCore.RazorExt.csproj", "{945424A9-8EF2-4C12-97B8-AE83C58FB370}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.AspNetCore.Halcyon.ClientGen.Tools", "src\Threax.AspNetCore.Halcyon.ClientGen.Tools\Threax.AspNetCore.Halcyon.ClientGen.Tools.csproj", "{A4B81F6D-D5B3-49BF-A894-A0370E83968D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.AspNetCore.AccessTokens", "src\Threax.AspNetCore.AccessTokens\Threax.AspNetCore.AccessTokens.csproj", "{07A002DC-2069-4EB9-9C7A-CD52988EA7E9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.AspNetCore.AuthCore", "src\Threax.AspNetCore.AuthCore\Threax.AspNetCore.AuthCore.csproj", "{D790892C-D130-4310-B036-3EDBECFDD943}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.AspNetCore.IdServerAuth", "src\Threax.AspNetCore.IdServerAuth\Threax.AspNetCore.IdServerAuth.csproj", "{A0025BB3-B13E-4A5E-8793-FE7E3C9A0FC3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.AspNetCore.IdServerMetadata", "src\Threax.AspNetCore.IdServerMetadata\Threax.AspNetCore.IdServerMetadata.csproj", "{CCC02639-22C8-4EBA-B6B2-0EFA872B0121}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.AspNetCore.JwtCookieAuth", "src\Threax.AspNetCore.JwtCookieAuth\Threax.AspNetCore.JwtCookieAuth.csproj", "{2EFC8077-7FCB-432D-A460-E0C2A71FC260}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.AspNetCore.UrlFix", "src\Threax.AspNetCore.UrlFix\Threax.AspNetCore.UrlFix.csproj", "{A2777A79-A56B-42CA-B455-F19C01FBDE90}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.AspNetCore.UserBuilder", "src\Threax.AspNetCore.UserBuilder\Threax.AspNetCore.UserBuilder.csproj", "{296311F9-941E-464E-B0BB-25DD9BA8E74D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.AspNetCore.UserBuilder.Entities", "src\Threax.AspNetCore.UserBuilder.Entities\Threax.AspNetCore.UserBuilder.Entities.csproj", "{89717A46-7BB6-4B4B-810C-4BA3211D02B1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.AspNetCore.UserBuilder.Entities.Mvc", "src\Threax.AspNetCore.UserBuilder.Entities.Mvc\Threax.AspNetCore.UserBuilder.Entities.Mvc.csproj", "{E823A0CF-822F-4D98-930B-3299A7FBBB26}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -141,6 +159,42 @@ Global
 		{A4B81F6D-D5B3-49BF-A894-A0370E83968D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4B81F6D-D5B3-49BF-A894-A0370E83968D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4B81F6D-D5B3-49BF-A894-A0370E83968D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07A002DC-2069-4EB9-9C7A-CD52988EA7E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07A002DC-2069-4EB9-9C7A-CD52988EA7E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07A002DC-2069-4EB9-9C7A-CD52988EA7E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07A002DC-2069-4EB9-9C7A-CD52988EA7E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D790892C-D130-4310-B036-3EDBECFDD943}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D790892C-D130-4310-B036-3EDBECFDD943}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D790892C-D130-4310-B036-3EDBECFDD943}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D790892C-D130-4310-B036-3EDBECFDD943}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0025BB3-B13E-4A5E-8793-FE7E3C9A0FC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0025BB3-B13E-4A5E-8793-FE7E3C9A0FC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0025BB3-B13E-4A5E-8793-FE7E3C9A0FC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0025BB3-B13E-4A5E-8793-FE7E3C9A0FC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCC02639-22C8-4EBA-B6B2-0EFA872B0121}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCC02639-22C8-4EBA-B6B2-0EFA872B0121}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCC02639-22C8-4EBA-B6B2-0EFA872B0121}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCC02639-22C8-4EBA-B6B2-0EFA872B0121}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EFC8077-7FCB-432D-A460-E0C2A71FC260}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EFC8077-7FCB-432D-A460-E0C2A71FC260}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EFC8077-7FCB-432D-A460-E0C2A71FC260}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EFC8077-7FCB-432D-A460-E0C2A71FC260}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2777A79-A56B-42CA-B455-F19C01FBDE90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2777A79-A56B-42CA-B455-F19C01FBDE90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2777A79-A56B-42CA-B455-F19C01FBDE90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2777A79-A56B-42CA-B455-F19C01FBDE90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{296311F9-941E-464E-B0BB-25DD9BA8E74D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{296311F9-941E-464E-B0BB-25DD9BA8E74D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{296311F9-941E-464E-B0BB-25DD9BA8E74D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{296311F9-941E-464E-B0BB-25DD9BA8E74D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89717A46-7BB6-4B4B-810C-4BA3211D02B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89717A46-7BB6-4B4B-810C-4BA3211D02B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89717A46-7BB6-4B4B-810C-4BA3211D02B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89717A46-7BB6-4B4B-810C-4BA3211D02B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E823A0CF-822F-4D98-930B-3299A7FBBB26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E823A0CF-822F-4D98-930B-3299A7FBBB26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E823A0CF-822F-4D98-930B-3299A7FBBB26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E823A0CF-822F-4D98-930B-3299A7FBBB26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -167,6 +221,15 @@ Global
 		{57331298-EDF0-438D-B7AC-59F526FA591B} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 		{945424A9-8EF2-4C12-97B8-AE83C58FB370} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 		{A4B81F6D-D5B3-49BF-A894-A0370E83968D} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
+		{07A002DC-2069-4EB9-9C7A-CD52988EA7E9} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
+		{D790892C-D130-4310-B036-3EDBECFDD943} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
+		{A0025BB3-B13E-4A5E-8793-FE7E3C9A0FC3} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
+		{CCC02639-22C8-4EBA-B6B2-0EFA872B0121} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
+		{2EFC8077-7FCB-432D-A460-E0C2A71FC260} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
+		{A2777A79-A56B-42CA-B455-F19C01FBDE90} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
+		{296311F9-941E-464E-B0BB-25DD9BA8E74D} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
+		{89717A46-7BB6-4B4B-810C-4BA3211D02B1} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
+		{E823A0CF-822F-4D98-930B-3299A7FBBB26} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {432C63C5-4BBE-4AE4-8963-48D7FCCBA395}
