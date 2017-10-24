@@ -22,12 +22,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace {ns}.Controllers
 {{
     public partial class {controller}Controller
     {{
-        //[Authorize(Roles = Roles.Edit{Models})] //Uncomment this to secure the view, you will probably have to define the role
+        //[Authorize(Roles = Roles.Edit{Models}, AuthenticationSchemes = AuthCoreSchemes.Cookies)] //Uncomment this to secure the view, you will probably have to define the role
         public IActionResult {Models}()
         {{
             return View();

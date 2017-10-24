@@ -27,12 +27,13 @@ using {ns}.Repository;
 using Threax.AspNetCore.Halcyon.Ext;
 using {ns}.ViewModels;
 using {ns}.InputModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace {ns}.Controllers.Api
 {{
     [Route(""api/[controller]"")]
     [ResponseCache(NoStore = true)]
-    //[Authorize(Roles = Roles.Edit{Models}, ActiveAuthenticationSchemes = AuthSchemes.Bearer)] //Uncomment this to secure the api, you will probably have to define the role
+    //[Authorize(Roles = Roles.Edit{Models})] //Uncomment this to secure the api, you will probably have to define the role
     public partial class {Models}Controller : Controller
     {{
         private I{Model}Repository repo;

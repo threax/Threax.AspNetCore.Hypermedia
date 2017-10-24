@@ -19,7 +19,6 @@ namespace Threax.ModelGen
         {
             return
 $@"using Halcyon.HAL.Attributes;
-using Spc.AspNetCore.Authorization.Entities.Mvc;
 using Threax.AspNetCore.Halcyon.Ext;
 using {ns}.Controllers.Api;
 
