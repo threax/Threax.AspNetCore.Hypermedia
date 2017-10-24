@@ -6,7 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Threax.AspNetCore.Halcyon.ClientGen</AssemblyName>
     <PackageId>Threax.AspNetCore.Halcyon.ClientGen</PackageId>
-    <Version>4.5.0</Version>
+    <Version>4.5.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="9.4.5" />
-    <PackageReference Include="NJsonSchema.CodeGeneration.TypeScript" Version="9.4.5" />
+    <PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="9.9.10" />
+    <PackageReference Include="NJsonSchema.CodeGeneration.TypeScript" Version="9.9.10" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">

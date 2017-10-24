@@ -15,6 +15,8 @@ namespace Threax.AspNetCore.Halcyon.Ext
 {
     public class EndpointDocJsonSchemaGenerator : JsonSchemaGenerator
     {
+        private static readonly Newtonsoft.Json.Serialization.JsonProperty DummyProperty = new Newtonsoft.Json.Serialization.JsonProperty();
+
         JsonSchemaGeneratorSettings settings;
         IValueProviderResolver valueProviders;
         ISchemaCustomizerResolver schemaCustomizers;
@@ -29,13 +31,13 @@ namespace Threax.AspNetCore.Halcyon.Ext
             this.titleGenerator = titleGenerator;
         }
 
-        protected override async Task GenerateObjectAsync<TSchemaType>(Type type, JsonContract contract, TSchemaType schema, JsonSchemaResolver schemaResolver)
+        protected override async Task GenerateObjectAsync<TSchemaType>(Type type, TSchemaType schema, JsonSchemaResolver schemaResolver)
         {
-            await base.GenerateObjectAsync<TSchemaType>(type, contract, schema, schemaResolver);
+            await base.GenerateObjectAsync<TSchemaType>(type, schema, schemaResolver);
 
             foreach (var prop in type.GetTypeInfo().GetProperties())
             {
-                var propName = JsonReflectionUtilities.GetPropertyName(prop, Settings.DefaultPropertyNameHandling);
+                var propName = GetPropertyName(DummyProperty, prop); //Using dummy property here, the call in the superclass will look at the member info first (v9.9.10)
                 var propType = prop.PropertyType;
                 var propTypeInfo = propType.GetTypeInfo();
                 var isEnum = propTypeInfo.IsEnum;
@@ -53,7 +55,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                         isEnum = propTypeInfo.IsEnum;
                         isNullable = true;
                     }
-                    else if(!isEnum) //Skip enum types, those should be nullable, otherwise they are required.
+                    else if (!isEnum) //Skip enum types, those should be nullable, otherwise they are required.
                     {
                         //Check for the Required attribute, if it is not there consider the property to be nullable
                         var requiredAttr = prop.GetCustomAttributes().FirstOrDefault(i => i.GetType() == typeof(RequiredAttribute)) as RequiredAttribute;
@@ -124,7 +126,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                             }
                         }
 
-                        if(customizer != null)
+                        if (customizer != null)
                         {
                             await customizer.Customize(new SchemaCustomizerArgs(propName, prop, schemaProp, schema));
                         }

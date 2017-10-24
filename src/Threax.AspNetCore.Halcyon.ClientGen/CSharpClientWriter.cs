@@ -51,13 +51,12 @@ writer.WriteLine("}");
                 ArrayType = "List" //This is imported in the using statements above (System.Collections.Generic.List)
             };
 
-            var root = new Object(); //Dunno why it needs this, but this does work
-            var resolver = new CSharpTypeResolver(settings, root);
-            resolver.AddGenerators(interfacesToWrite.Interfaces); //Add all discovered generators
+            var resolver = new CSharpTypeResolver(settings);
+            resolver.RegisterSchemaDefinitions(interfacesToWrite.Interfaces);
 
             var schema = interfacesToWrite.FirstSchema;
             if (schema != null) {
-                var generator = new CSharpGenerator(schema, settings, resolver, root);
+                var generator = new CSharpGenerator(schema, settings, resolver);
                 var classes = generator.GenerateFile();
                 writer.WriteLine(classes);
             }

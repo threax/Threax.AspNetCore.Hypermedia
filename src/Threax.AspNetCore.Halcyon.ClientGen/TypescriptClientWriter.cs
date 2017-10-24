@@ -38,13 +38,12 @@ writer.WriteLine(
                 EnumNameGenerator = new EnumValueEnumNameGenerator()
             };
 
-            var root = new Object(); //Dunno why it needs this, but this does work
-            var resolver = new TypeScriptTypeResolver(settings, root);
-            resolver.AddGenerators(interfacesToWrite.Interfaces); //Add all discovered generators
+            var resolver = new TypeScriptTypeResolver(settings);
+            resolver.RegisterSchemaDefinitions(interfacesToWrite.Interfaces); //Add all discovered generators
 
             var schema = interfacesToWrite.FirstSchema;
             if (schema != null) {
-                var generator = new TypeScriptGenerator(schema, settings, resolver, root);
+                var generator = new TypeScriptGenerator(schema, settings, resolver);
                 var classes = generator.GenerateFile();
                 writer.WriteLine(classes);
             }
