@@ -33,7 +33,7 @@ namespace {ns}.Controllers.Api
 {{
     [Route(""api/[controller]"")]
     [ResponseCache(NoStore = true)]
-    //[Authorize(Roles = Roles.Edit{Models})] //Uncomment this to secure the api, you will probably have to define the role
+    [Authorize(AuthenticationSchemes = AuthCoreSchemes.Bearer)]
     public partial class {Models}Controller : Controller
     {{
         private I{Model}Repository repo;

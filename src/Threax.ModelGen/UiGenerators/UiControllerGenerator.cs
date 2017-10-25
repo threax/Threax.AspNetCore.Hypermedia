@@ -28,9 +28,6 @@ namespace {ns}.Controllers
 {{
     public partial class {controller}Controller
     {{
-        //Uncomment the line below and remove the [AllowAnonymous] to secure the view, you will probably have to define or change the role
-        //[Authorize(Roles = Roles.Edit{Models}, AuthenticationSchemes = AuthCoreSchemes.Cookies)]
-        [AllowAnonymous]
         public IActionResult {Models}()
         {{
             return View();
