@@ -5,7 +5,7 @@ using System.Text;
 namespace Threax.AspNetCore.Halcyon.Client
 {
     /// <summary>
-    /// Options for the <see cref="ClientCredentialsAccessTokenFactory"/>
+    /// Options for the ClientCredentialsAccessTokenFactory
     /// </summary>
     public class ClientCredentailsAccessTokenFactoryOptions
     {
