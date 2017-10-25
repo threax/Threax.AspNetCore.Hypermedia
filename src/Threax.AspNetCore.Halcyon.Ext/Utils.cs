@@ -61,6 +61,20 @@ namespace Threax.AspNetCore.Halcyon.Ext
             return elementType;
         }
 
+        public static bool CanUserAccess(ClaimsPrincipal principal, MethodInfo methodInfo, TypeInfo controllerTypeInfo)
+        {
+            //Check for anon access attribute
+            var anonAttrs = methodInfo.GetCustomAttributes<AllowAnonymousAttribute>(true);
+            if (anonAttrs.Any())
+            {
+                return true;
+            }
+            //Otherwise check the action method and controller for authorize attributes.
+            var attributes = methodInfo.GetCustomAttributes<AuthorizeAttribute>(true);
+            attributes = attributes.Concat(controllerTypeInfo.GetCustomAttributes<AuthorizeAttribute>(true));
+            return Utils.CheckRoles(principal, attributes);
+        }
+
         public static bool CheckRoles(ClaimsPrincipal user, IEnumerable<AuthorizeAttribute> authorizeAttrs)
         {
             bool allowAccess = true;

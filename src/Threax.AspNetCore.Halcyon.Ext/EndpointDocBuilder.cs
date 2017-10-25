@@ -8,12 +8,22 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Claims;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
     public interface IEndpointDocBuilder
     {
-        EndpointDoc GetDoc(String groupName, String method, String relativePath);
+        /// <summary>
+        /// Get the EndpointDoc object for the specified endpoint, include a ClaimsPrincipal to throw an
+        /// UnauthorizedAccessException if the user cannot access the endpoint.
+        /// </summary>
+        /// <param name="groupName">The group name</param>
+        /// <param name="method">The method name</param>
+        /// <param name="relativePath">The relative path</param>
+        /// <param name="user">The user to check, can be null.</param>
+        /// <returns>The EndpointDoc object for the endpoint.</returns>
+        EndpointDoc GetDoc(String groupName, String method, String relativePath, ClaimsPrincipal user = null);
     }
 
     public class EndpointDocBuilder : IEndpointDocBuilder
@@ -29,7 +39,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
             this.validSchemaManager = validSchemaManager;
         }
 
-        public virtual EndpointDoc GetDoc(String groupName, String method, String relativePath)
+        public virtual EndpointDoc GetDoc(String groupName, String method, String relativePath, ClaimsPrincipal user = null)
         {
             if(relativePath == null)
             {
@@ -55,6 +65,24 @@ namespace Threax.AspNetCore.Halcyon.Ext
             var description = new EndpointDoc();
             Type queryModelType = null;
             bool handleFormData = true;
+
+            var controllerActionDesc = action.ActionDescriptor as ControllerActionDescriptor;
+            if (controllerActionDesc != null)
+            {
+                var methodInfo = controllerActionDesc.MethodInfo;
+
+                //Check to see if the user can actually access the endpoint we requested
+                if (user != null && !Utils.CanUserAccess(user, methodInfo, controllerActionDesc.ControllerTypeInfo))
+                {
+                    throw new UnauthorizedAccessException("User cannot access requested endpoint");
+                }
+
+                var returnType = methodInfo.ReturnType;
+                if (returnType != typeof(void))
+                {
+                    description.ResponseSchema = schemaBuilder.GetSchema(returnType);
+                }
+            }
 
             foreach (var param in action.ParameterDescriptions)
             {
@@ -106,17 +134,6 @@ namespace Threax.AspNetCore.Halcyon.Ext
             if (queryModelType != null)
             {
                 description.QuerySchema = schemaBuilder.GetSchema(queryModelType, true);
-            }
-
-            var controllerActionDesc = action.ActionDescriptor as ControllerActionDescriptor;
-            if (controllerActionDesc != null)
-            {
-                var methodInfo = controllerActionDesc.MethodInfo;
-                var returnType = methodInfo.ReturnType;
-                if (returnType != typeof(void))
-                {
-                    description.ResponseSchema = schemaBuilder.GetSchema(returnType);
-                }
             }
 
             return description;
