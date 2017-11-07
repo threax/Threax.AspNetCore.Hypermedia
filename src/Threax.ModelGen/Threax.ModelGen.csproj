@@ -6,15 +6,11 @@
     <PackageType>DotNetCliTool</PackageType>
     <AssemblyName>dotnet-threax-modelgen</AssemblyName>
     <PackageId>Threax.ModelGen</PackageId>
-    <Version>2.1.0</Version>
+    <Version>2.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="NJsonSchema" Version="9.9.10" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Threax.AspNetCore.Models\Threax.AspNetCore.Models.csproj" />
   </ItemGroup>
 
   <ItemGroup>

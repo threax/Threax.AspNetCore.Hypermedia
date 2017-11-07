@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
-using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen
 {

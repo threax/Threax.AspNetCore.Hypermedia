@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <NoWarn>$(NoWarn);1591</NoWarn>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Threax.AspNetCore.Halcyon.ClientGen</AssemblyName>
     <PackageId>Threax.AspNetCore.Halcyon.ClientGen</PackageId>
-    <Version>4.5.2</Version>
+    <Version>5.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,11 +16,6 @@
   <ItemGroup>
     <PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="9.9.10" />
     <PackageReference Include="NJsonSchema.CodeGeneration.TypeScript" Version="9.9.10" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
 </Project>
