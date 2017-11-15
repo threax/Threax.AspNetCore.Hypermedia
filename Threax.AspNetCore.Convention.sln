@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
+VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EBBC3E56-D59A-447E-8021-DA2D17B6AD50}"
 EndProject
@@ -73,7 +73,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevApp", "src\DevApp\DevApp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.AspNetCore.Xsrf", "src\Threax.AspNetCore.Xsrf\Threax.AspNetCore.Xsrf.csproj", "{449BA9CD-A20C-4420-BC55-B54DCE2B263C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevApp.Tests", "test\DevApp.Tests\DevApp.Tests.csproj", "{7EF8B819-23A4-4F0D-8F93-459EF7B5DDA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevApp.Tests", "test\DevApp.Tests\DevApp.Tests.csproj", "{7EF8B819-23A4-4F0D-8F93-459EF7B5DDA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Threax.AspNetCore.Tests", "src\Threax.AspNetCore.Tests\Threax.AspNetCore.Tests.csproj", "{588195BA-952A-47D0-863B-72C7667374F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -213,6 +215,10 @@ Global
 		{7EF8B819-23A4-4F0D-8F93-459EF7B5DDA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EF8B819-23A4-4F0D-8F93-459EF7B5DDA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EF8B819-23A4-4F0D-8F93-459EF7B5DDA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{588195BA-952A-47D0-863B-72C7667374F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{588195BA-952A-47D0-863B-72C7667374F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{588195BA-952A-47D0-863B-72C7667374F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{588195BA-952A-47D0-863B-72C7667374F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -251,6 +257,7 @@ Global
 		{852BB221-1CB8-4669-A715-238996F5E294} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 		{449BA9CD-A20C-4420-BC55-B54DCE2B263C} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 		{7EF8B819-23A4-4F0D-8F93-459EF7B5DDA1} = {7F53A428-36B0-4592-B3F6-7B63CCC40986}
+		{588195BA-952A-47D0-863B-72C7667374F9} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {432C63C5-4BBE-4AE4-8963-48D7FCCBA395}
