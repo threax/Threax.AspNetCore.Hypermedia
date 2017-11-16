@@ -44,7 +44,7 @@ namespace {ns}.Tests
             }};
         }}
 
-        public static {Model}Entity CreateEntity(String seed = "", Guid {model}Id = null)
+        public static {Model}Entity CreateEntity(String seed = """", Guid? {model}Id = null)
         {{
             return new {Model}Entity()
             {{
