@@ -2,11 +2,11 @@
   "profiles": {
     "Threax.ModelGen": {
       "commandName": "Project",
-      "commandLineArgs": "ValuesModel.json DevApp ..\\DevApp"
+      "commandLineArgs": "ValuesModel.json DevApp --AppOutDir ..\\DevApp --TestOutDir ..\\..\\test\\DevApp.Tests"
     },
     "Remove": {
       "commandName": "Project",
-      "commandLineArgs": "remove ValuesModel.json ..\\DevApp"
+      "commandLineArgs": "remove ValuesModel.json --AppOutDir ..\\DevApp --TestOutDir ..\\..\\test\\DevApp.Tests"
     },
     "Help Output": {
       "commandName": "Project"
