@@ -36,7 +36,7 @@ namespace {ns}.Tests
             return mockup;
         }}
 
-        public static {Model}Input CreateInput(String seed = "")
+        public static {Model}Input CreateInput(String seed = """")
         {{
             return new {Model}Input()
             {{
