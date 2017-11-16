@@ -9,7 +9,7 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
 {
     public class GeneratedCSharpTests
     {
-        [Fact]
+        [Fact(Skip = "Server Not Running")]
         public async Task EntryPoint()
         {
             using (var clientFactory = new DefaultHttpClientFactory())
@@ -20,7 +20,7 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
             }
         }
 
-        [Fact]
+        [Fact(Skip = "Server Not Running")]
         public async Task ListThingies()
         {
             using (var clientFactory = new DefaultHttpClientFactory())
@@ -39,7 +39,7 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
             }
         }
 
-        [Fact]
+        [Fact(Skip = "Server Not Running")]
         public async Task AddThingyDocs()
         {
             using (var clientFactory = new DefaultHttpClientFactory())
@@ -54,7 +54,7 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
             }
         }
 
-        [Fact]
+        [Fact(Skip = "Server Not Running")]
         public async Task AddThingy()
         {
             using (var clientFactory = new DefaultHttpClientFactory())
@@ -69,7 +69,7 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
             }
         }
 
-        [Fact]
+        [Fact(Skip = "Server Not Running")]
         public async Task RawResultTest()
         {
             using (var clientFactory = new DefaultHttpClientFactory())
