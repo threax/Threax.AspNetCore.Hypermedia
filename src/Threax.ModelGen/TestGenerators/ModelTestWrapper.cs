@@ -15,10 +15,14 @@ namespace Threax.ModelGen.TestGenerators
             NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
 
             var equalAssertFunc = ModelTypeGenerator.Create(schema, modelPluralName, new ModelEqualityAssert(), schema, ns, ns);
-            return Create(ns, Model, model, Models, models, equalAssertFunc);
+            var createArgs = ModelTypeGenerator.Create(schema, modelPluralName, new ModelCreateArgs(), schema, ns, ns);
+            var createInputFunc = ModelTypeGenerator.Create(schema, modelPluralName, new CreateInputModel(createArgs), schema, ns, ns);
+            var createEntityFunc = ModelTypeGenerator.Create(schema, modelPluralName, new CreateEntity(createArgs), schema, ns, ns);
+            var createViewFunc = ModelTypeGenerator.Create(schema, modelPluralName, new CreateViewModel(createArgs), schema, ns, ns);
+            return Create(ns, Model, model, Models, models, equalAssertFunc, createInputFunc, createEntityFunc, createViewFunc);
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models, String equalAssertFunc)
+        private static String Create(String ns, String Model, String model, String Models, String models, String equalAssertFunc, String createInputFunc, String createEntityFunc, String createViewFunc)
         {
             return
 $@"using AutoMapper;
@@ -26,6 +30,7 @@ using {ns}.Database;
 using {ns}.InputModels;
 using {ns}.Repository;
 using {ns}.Models;
+using {ns}.ViewModels;
 using System;
 using Threax.AspNetCore.Tests;
 using Xunit;
@@ -41,22 +46,11 @@ namespace {ns}.Tests
             return mockup;
         }}
 
-        public static {Model}Input CreateInput(String seed = """")
-        {{
-            return new {Model}Input()
-            {{
-                
-            }};
-        }}
+        {createInputFunc}
 
-        public static {Model}Entity CreateEntity(String seed = """", Guid? {model}Id = null)
-        {{
-            return new {Model}Entity()
-            {{
-                {Model}Id = {model}Id.HasValue ? {model}Id.Value : Guid.NewGuid(),
-                
-            }};
-        }}
+        {createEntityFunc}
+
+        {createViewFunc}
 
         {equalAssertFunc}
     }}
