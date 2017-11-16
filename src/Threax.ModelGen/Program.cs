@@ -24,8 +24,9 @@ remove [Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirect
                 }
 
                 var config = new ConfigurationBuilder().AddCommandLine(args.Skip(2).ToArray()).Build();
-                var currentDirectory = Directory.GetCurrentDirectory();
-                var directoryName = Path.GetFileName(currentDirectory);
+                var appDir = Directory.GetCurrentDirectory();
+                var directoryName = Path.GetFileName(appDir);
+                var testDir = Path.GetFullPath(Path.Combine(appDir, $"../{directoryName}.Tests"));
 
                 if (args[0] == "remove")
                 {
@@ -33,8 +34,8 @@ remove [Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirect
                     {
                         Source = args[1],
                         AppNamespace = "Doesn't Matter",
-                        AppOutDir = currentDirectory,
-                        TestOutDir = Path.Combine(currentDirectory, $"../{directoryName}.Tests")
+                        AppOutDir = appDir,
+                        TestOutDir = testDir
                     };
                     config.Bind(settings);
                     settings.Configure();
@@ -46,8 +47,8 @@ remove [Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirect
                     {
                         Source = args[0],
                         AppNamespace = args[1],
-                        AppOutDir = currentDirectory,
-                        TestOutDir = Path.Combine(currentDirectory, $"../{directoryName}.Tests")
+                        AppOutDir = appDir,
+                        TestOutDir = testDir
                     };
                     config.Bind(settings);
                     settings.Configure();
