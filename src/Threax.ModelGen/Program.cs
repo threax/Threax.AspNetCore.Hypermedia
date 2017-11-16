@@ -1,8 +1,10 @@
-﻿using NJsonSchema;
+﻿using Microsoft.Extensions.Configuration;
+using NJsonSchema;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Threax.ModelGen.TestGenerators;
 
 namespace Threax.ModelGen
 {
@@ -12,14 +14,18 @@ namespace Threax.ModelGen
         {
             try
             {
-                if (args.Length != 3 && args.Length != 2)
+                if (args.Length < 2)
                 {
                     throw new MessageException(@"You must provide the following arguments [] is required {} is optional. 
 To create a model pass:
-[Schema File Path] [App Namespace] {Output Directory}.
+[Schema File Path] [App Namespace] {--AppOutDir OutputDirectory} {--TestOutDir TestDirectory}.
 To remove a model pass:
-remove [Schema File Path] {Output Directory}");
+remove [Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirectory}");
                 }
+
+                var config = new ConfigurationBuilder().AddCommandLine(args.Skip(2).ToArray()).Build();
+                var currentDirectory = Directory.GetCurrentDirectory();
+                var directoryName = Path.GetFileName(currentDirectory);
 
                 if (args[0] == "remove")
                 {
@@ -27,8 +33,10 @@ remove [Schema File Path] {Output Directory}");
                     {
                         Source = args[1],
                         AppNamespace = "Doesn't Matter",
-                        AppOutDir = args.Length > 2 ? args[2] : Directory.GetCurrentDirectory(),
+                        AppOutDir = currentDirectory,
+                        TestOutDir = Path.Combine(currentDirectory, $"../{directoryName}.Tests")
                     };
+                    config.Bind(settings);
                     settings.Configure();
                     DeleteClasses(settings);
                 }
@@ -38,8 +46,10 @@ remove [Schema File Path] {Output Directory}");
                     {
                         Source = args[0],
                         AppNamespace = args[1],
-                        AppOutDir = args.Length > 2 ? args[2] : Directory.GetCurrentDirectory(),
+                        AppOutDir = currentDirectory,
+                        TestOutDir = Path.Combine(currentDirectory, $"../{directoryName}.Tests")
                     };
+                    config.Bind(settings);
                     settings.Configure();
                     GenerateClasses(settings);
                 }
@@ -52,50 +62,6 @@ remove [Schema File Path] {Output Directory}");
             {
                 Console.WriteLine($"A {ex.GetType().Name} occured. Message: {ex.Message}");
             }
-        }
-
-        class GeneratorSettings
-        {
-            public void Configure()
-            {
-                if (!File.Exists(Source))
-                {
-                    throw new MessageException($"Cannot find schema file {Source}.");
-                }
-
-                var schemaTask = JsonSchema4.FromFileAsync(Source);
-                schemaTask.Wait();
-                Schema = schemaTask.Result;
-                if (Schema.ExtensionData == null) //Make sure this exists
-                {
-                    Schema.ExtensionData = new Dictionary<String, Object>();
-                }
-
-                ModelName = Schema.Title;
-                Object pluralTitleObj;
-                if (Schema.ExtensionData.TryGetValue("x-plural-title", out pluralTitleObj))
-                {
-                    PluralModelName = pluralTitleObj.ToString();
-                }
-                else
-                {
-                    PluralModelName = ModelName + "s";
-                }
-            }
-
-            public String AppNamespace { get; set; }
-
-            public String Source { get; set; }
-
-            public String AppOutDir { get; set; }
-
-            public string UiController { get; set; } = "Home";
-
-            public String ModelName { get; set; }
-
-            public String PluralModelName { get; set; }
-
-            public JsonSchema4 Schema { get; set; }
         }
 
         private static void GenerateClasses(GeneratorSettings settings)
@@ -123,49 +89,71 @@ remove [Schema File Path] {Output Directory}");
 
                 propertyNames = ModelTypeGenerator.LastPropertyNames.ToList();
 
-                WriteFile(Path.Combine(settings.AppOutDir, $"Models/I{settings.ModelName}.cs"), modelInterface);
-                WriteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.ModelName}Entity.cs"), entity);
-                WriteFile(Path.Combine(settings.AppOutDir, $"InputModels/{settings.ModelName}Input.cs"), inputModel);
-                WriteFile(Path.Combine(settings.AppOutDir, $"InputModels/{settings.ModelName}Query.cs"), QueryModelWriter.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
-                WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{settings.ModelName}.cs"), viewModel);
+                if (settings.WriteApp)
+                {
+                    WriteFile(Path.Combine(settings.AppOutDir, $"Models/I{settings.ModelName}.cs"), modelInterface);
+                    WriteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.ModelName}Entity.cs"), entity);
+                    WriteFile(Path.Combine(settings.AppOutDir, $"InputModels/{settings.ModelName}Input.cs"), inputModel);
+                    WriteFile(Path.Combine(settings.AppOutDir, $"InputModels/{settings.ModelName}Query.cs"), QueryModelWriter.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
+                    WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{settings.ModelName}.cs"), viewModel);
 
-                WriteFile(Path.Combine(settings.AppOutDir, $"Repository/{settings.ModelName}Repository.cs"), RepoGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
-                WriteFile(Path.Combine(settings.AppOutDir, $"Repository/I{settings.ModelName}Repository.cs"), RepoInterfaceGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
-                WriteFile(Path.Combine(settings.AppOutDir, $"Repository/{settings.ModelName}Repository.Config.cs"), RepoConfigGenerator.Get(settings.AppNamespace, settings.ModelName));
-                WriteFile(Path.Combine(settings.AppOutDir, $"Controllers/Api/{settings.PluralModelName}Controller.cs"), ControllerGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
-                WriteFile(Path.Combine(settings.AppOutDir, $"Mappers/{settings.ModelName}Profile.cs"), MappingProfileGenerator.Get(settings.AppNamespace, settings.ModelName));
-                WriteFile(Path.Combine(settings.AppOutDir, $"Database/AppDbContext.{settings.ModelName}.cs"), AppDbContextGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
-                WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{settings.ModelName}Collection.cs"), ModelCollectionGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
-                WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/EntryPoint.{settings.ModelName}.cs"), EntryPointGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
+                    WriteFile(Path.Combine(settings.AppOutDir, $"Repository/{settings.ModelName}Repository.cs"), RepoGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
+                    WriteFile(Path.Combine(settings.AppOutDir, $"Repository/I{settings.ModelName}Repository.cs"), RepoInterfaceGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
+                    WriteFile(Path.Combine(settings.AppOutDir, $"Repository/{settings.ModelName}Repository.Config.cs"), RepoConfigGenerator.Get(settings.AppNamespace, settings.ModelName));
+                    WriteFile(Path.Combine(settings.AppOutDir, $"Controllers/Api/{settings.PluralModelName}Controller.cs"), ControllerGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
+                    WriteFile(Path.Combine(settings.AppOutDir, $"Mappers/{settings.ModelName}Profile.cs"), MappingProfileGenerator.Get(settings.AppNamespace, settings.ModelName));
+                    WriteFile(Path.Combine(settings.AppOutDir, $"Database/AppDbContext.{settings.ModelName}.cs"), AppDbContextGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
+                    WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{settings.ModelName}Collection.cs"), ModelCollectionGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
+                    WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/EntryPoint.{settings.ModelName}.cs"), EntryPointGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
 
-                WriteFile(Path.Combine(settings.AppOutDir, $"Views/{settings.UiController}/{settings.PluralModelName}.cshtml"), CrudCshtmlInjectorGenerator.Get(settings.ModelName, settings.PluralModelName, propertyNames: propertyNames));
-                WriteFile(Path.Combine(settings.AppOutDir, $"Client/Libs/{settings.ModelName}CrudInjector.ts"), CrudInjectorGenerator.Get(settings.ModelName, settings.PluralModelName));
-                WriteFile(Path.Combine(settings.AppOutDir, $"Views/{settings.UiController}/{settings.PluralModelName}.ts"), CrudUiTypescriptGenerator.Get(settings.ModelName));
-                WriteFile(Path.Combine(settings.AppOutDir, $"Controllers/{settings.UiController}Controller.{settings.PluralModelName}.cs"), UiControllerGenerator.Get(settings.AppNamespace, settings.UiController, settings.ModelName, settings.PluralModelName));
+                    WriteFile(Path.Combine(settings.AppOutDir, $"Views/{settings.UiController}/{settings.PluralModelName}.cshtml"), CrudCshtmlInjectorGenerator.Get(settings.ModelName, settings.PluralModelName, propertyNames: propertyNames));
+                    WriteFile(Path.Combine(settings.AppOutDir, $"Client/Libs/{settings.ModelName}CrudInjector.ts"), CrudInjectorGenerator.Get(settings.ModelName, settings.PluralModelName));
+                    WriteFile(Path.Combine(settings.AppOutDir, $"Views/{settings.UiController}/{settings.PluralModelName}.ts"), CrudUiTypescriptGenerator.Get(settings.ModelName));
+                    WriteFile(Path.Combine(settings.AppOutDir, $"Controllers/{settings.UiController}Controller.{settings.PluralModelName}.cs"), UiControllerGenerator.Get(settings.AppNamespace, settings.UiController, settings.ModelName, settings.PluralModelName));
+                }
+
+                if (settings.WriteTests)
+                {
+                    WriteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/{settings.ModelName}Tests.cs"), ModelTestWrapper.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
+                    WriteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/Controller.cs"), ControllerTests.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
+                    WriteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/Profile.cs"), ProfileTests.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
+                    WriteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/Repository.cs"), RepositoryTests.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
+                }
             }
         }
 
         private static void DeleteClasses(GeneratorSettings settings)
         {
-            DeleteFile(Path.Combine(settings.AppOutDir, $"Models/I{settings.ModelName}.cs"));
-            DeleteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.ModelName}Entity.cs"));
-            DeleteFile(Path.Combine(settings.AppOutDir, $"InputModels/{settings.ModelName}Input.cs"));
-            DeleteFile(Path.Combine(settings.AppOutDir, $"InputModels/{settings.ModelName}Query.cs"));
-            DeleteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{settings.ModelName}.cs"));
+            if (settings.WriteApp)
+            {
+                DeleteFile(Path.Combine(settings.AppOutDir, $"Models/I{settings.ModelName}.cs"));
+                DeleteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.ModelName}Entity.cs"));
+                DeleteFile(Path.Combine(settings.AppOutDir, $"InputModels/{settings.ModelName}Input.cs"));
+                DeleteFile(Path.Combine(settings.AppOutDir, $"InputModels/{settings.ModelName}Query.cs"));
+                DeleteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{settings.ModelName}.cs"));
 
-            DeleteFile(Path.Combine(settings.AppOutDir, $"Repository/{settings.ModelName}Repository.cs"));
-            DeleteFile(Path.Combine(settings.AppOutDir, $"Repository/I{settings.ModelName}Repository.cs"));
-            DeleteFile(Path.Combine(settings.AppOutDir, $"Repository/{settings.ModelName}Repository.Config.cs"));
-            DeleteFile(Path.Combine(settings.AppOutDir, $"Controllers/Api/{settings.PluralModelName}Controller.cs"));
-            DeleteFile(Path.Combine(settings.AppOutDir, $"Mappers/{settings.ModelName}Profile.cs"));
-            DeleteFile(Path.Combine(settings.AppOutDir, $"Database/AppDbContext.{settings.ModelName}.cs"));
-            DeleteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{settings.ModelName}Collection.cs"));
-            DeleteFile(Path.Combine(settings.AppOutDir, $"ViewModels/EntryPoint.{settings.ModelName}.cs"));
+                DeleteFile(Path.Combine(settings.AppOutDir, $"Repository/{settings.ModelName}Repository.cs"));
+                DeleteFile(Path.Combine(settings.AppOutDir, $"Repository/I{settings.ModelName}Repository.cs"));
+                DeleteFile(Path.Combine(settings.AppOutDir, $"Repository/{settings.ModelName}Repository.Config.cs"));
+                DeleteFile(Path.Combine(settings.AppOutDir, $"Controllers/Api/{settings.PluralModelName}Controller.cs"));
+                DeleteFile(Path.Combine(settings.AppOutDir, $"Mappers/{settings.ModelName}Profile.cs"));
+                DeleteFile(Path.Combine(settings.AppOutDir, $"Database/AppDbContext.{settings.ModelName}.cs"));
+                DeleteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{settings.ModelName}Collection.cs"));
+                DeleteFile(Path.Combine(settings.AppOutDir, $"ViewModels/EntryPoint.{settings.ModelName}.cs"));
 
-            DeleteFile(Path.Combine(settings.AppOutDir, $"Views/{settings.UiController}/{settings.PluralModelName}.cshtml"));
-            DeleteFile(Path.Combine(settings.AppOutDir, $"Client/Libs/{settings.ModelName}CrudInjector.ts"));
-            DeleteFile(Path.Combine(settings.AppOutDir, $"Views/{settings.UiController}/{settings.PluralModelName}.ts"));
-            DeleteFile(Path.Combine(settings.AppOutDir, $"Controllers/{settings.UiController}Controller.{settings.PluralModelName}.cs"));
+                DeleteFile(Path.Combine(settings.AppOutDir, $"Views/{settings.UiController}/{settings.PluralModelName}.cshtml"));
+                DeleteFile(Path.Combine(settings.AppOutDir, $"Client/Libs/{settings.ModelName}CrudInjector.ts"));
+                DeleteFile(Path.Combine(settings.AppOutDir, $"Views/{settings.UiController}/{settings.PluralModelName}.ts"));
+                DeleteFile(Path.Combine(settings.AppOutDir, $"Controllers/{settings.UiController}Controller.{settings.PluralModelName}.cs"));
+            }
+
+            if (settings.WriteTests)
+            {
+                DeleteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/{settings.ModelName}Tests.cs"));
+                DeleteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/Controller.cs"));
+                DeleteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/Profile.cs"));
+                DeleteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/Repository.cs"));
+            }
         }
 
         private static bool HasWhitespace(String test)
