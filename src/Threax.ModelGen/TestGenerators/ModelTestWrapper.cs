@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NJsonSchema;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,24 +7,28 @@ namespace Threax.ModelGen.TestGenerators
 {
     class ModelTestWrapper
     {
-        public static String Get(String ns, String modelName, String modelPluralName)
+        public static String Get(String ns, String modelName, String modelPluralName, JsonSchema4 schema)
         {
             String Model, model;
             NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
             String Models, models;
             NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
-            return Create(ns, Model, model, Models, models);
+
+            var equalAssertFunc = ModelTypeGenerator.Create(schema, modelPluralName, new ModelEqualityAssert(), schema, ns, ns);
+            return Create(ns, Model, model, Models, models, equalAssertFunc);
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models)
+        private static String Create(String ns, String Model, String model, String Models, String models, String equalAssertFunc)
         {
             return
 $@"using AutoMapper;
 using {ns}.Database;
 using {ns}.InputModels;
 using {ns}.Repository;
+using {ns}.Models;
 using System;
 using Threax.AspNetCore.Tests;
+using Xunit;
 
 namespace {ns}.Tests
 {{
@@ -52,6 +57,8 @@ namespace {ns}.Tests
                 
             }};
         }}
+
+        {equalAssertFunc}
     }}
 }}";
         }

@@ -52,9 +52,7 @@ namespace {ns}.Tests
 
                 //Make sure the id does not copy over
                 Assert.Equal(Guid.Empty, entity.{Model}Id);
-
-                //Data specific assertions
-                Assert.Equal(input.Name, entity.Name);
+                AssertEqual(input, entity);
             }}
 
             [Fact]
@@ -65,9 +63,7 @@ namespace {ns}.Tests
                 var view = mapper.Map<{Model}>(entity);
 
                 Assert.Equal(entity.{Model}Id, view.{Model}Id);
-
-                //Data specific assertions
-                Assert.Equal(entity.Name, view.Name);
+                AssertEqual(entity, view);
             }}
         }}
     }}
