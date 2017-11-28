@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.1" />
-    <PackageReference Include="NJsonSchema" Version="9.9.10" />
+    <PackageReference Include="NJsonSchema" Version="9.10.10" />
   </ItemGroup>
 
 </Project>

@@ -17,6 +17,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.0.1" />
     <PackageReference Include="IdentityModel" Version="2.16.0" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-    <PackageReference Include="NJsonSchema" Version="9.9.10" />
+    <PackageReference Include="NJsonSchema" Version="9.10.10" />
   </ItemGroup>
 </Project>
