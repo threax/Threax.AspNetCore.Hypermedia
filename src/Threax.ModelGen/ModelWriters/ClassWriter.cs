@@ -55,7 +55,7 @@ using Threax.AspNetCore.Tracking;";
                 sb.AppendLine(CreateProperty("DateTime", "Modified"));
             }
 
-            sb.AppendLine("    }");
+            sb.Append("    }");
             return sb.ToString();
         }
 
