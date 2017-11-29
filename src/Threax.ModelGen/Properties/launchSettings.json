@@ -13,7 +13,7 @@
     },
     "FromInterface": {
       "commandName": "Project",
-      "commandLineArgs": "Value.cs DevApp --AppOutDir ..\\DevApp --TestOutDir ..\\..\\test\\DevApp.Tests"
+      "commandLineArgs": "DevApp.ModelSchemas.Value DevApp --AppOutDir ..\\DevApp --TestOutDir ..\\..\\test\\DevApp.Tests"
     }
   }
 }

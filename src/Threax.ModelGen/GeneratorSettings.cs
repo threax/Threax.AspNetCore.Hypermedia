@@ -1,7 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Scripting;
-using Microsoft.CodeAnalysis.Scripting;
-using NJsonSchema;
+﻿using NJsonSchema;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,49 +9,26 @@ namespace Threax.ModelGen
     {
         public void Configure()
         {
-            if (!File.Exists(Source))
+            if (Path.GetExtension(Source) != ".json")
             {
-                throw new MessageException($"Cannot find schema file {Source}.");
-            }
-
-            if (Path.GetExtension(Source) == ".cs")
-            {
-                String code;
-
-                using(var stream = new StreamReader(File.Open(Source, FileMode.Open, FileAccess.Read, FileShare.Read)))
+                if (!Directory.Exists(AppOutDir))
                 {
-                    code = stream.ReadToEnd();
+                    throw new DirectoryNotFoundException($"Cannot find app out directory {AppOutDir}");
                 }
 
-                var scriptOptions = ScriptOptions.Default.WithReferences(
-                        typeof(System.ComponentModel.DataAnnotations.RequiredAttribute).Assembly,
-                        typeof(AspNetCore.Models.PluralNameAttribute).Assembly);
-
-                //If we have an app out dir, try to build and load the assembly the project creates
-                if (Directory.Exists(AppOutDir))
-                {
-                    scriptOptions.WithReferences(ProjectAssemblyLoader.LoadProjectAssembly(AppOutDir));
-                }
-
-                var script = CSharpScript.Create(code)
-                    .WithOptions(scriptOptions);
-
-                var runScriptTask = script.RunAsync();
-                runScriptTask.Wait();
-                var runScriptResult = runScriptTask.Result;
-
-                var typeName = Path.GetFileNameWithoutExtension(Path.GetFileName(Source));
-                var typeRecoverTask = runScriptResult.ContinueWithAsync<Type>($"return typeof(ModelDefs.{typeName});");
-                typeRecoverTask.Wait();
-                var typeRecoverResult = typeRecoverTask.Result;
-                var type = typeRecoverResult.ReturnValue;
-
+                var assembly = ProjectAssemblyLoader.LoadProjectAssembly(AppOutDir);
+                var type = assembly.GetType(Source);
                 var schemaTask = JsonSchema4.FromTypeAsync(type);
                 schemaTask.Wait();
                 Schema = schemaTask.Result;
             }
             else
             {
+                if (!File.Exists(Source))
+                {
+                    throw new MessageException($"Cannot find schema file {Source}.");
+                }
+
                 var schemaTask = JsonSchema4.FromFileAsync(Source);
                 schemaTask.Wait();
                 Schema = schemaTask.Result;
