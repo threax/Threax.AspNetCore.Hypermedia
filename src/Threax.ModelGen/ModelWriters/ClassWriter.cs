@@ -6,9 +6,18 @@ namespace Threax.ModelGen
 {
     public class ClassWriter : ITypeWriter
     {
+        private bool hasCreated = false;
+        private bool hasModified = false;
+
+        public ClassWriter(bool hasCreated, bool hasModified)
+        {
+            this.hasCreated = hasCreated;
+            this.hasModified = hasModified;
+        }
+
         public virtual String AddUsings(String ns)
         {
-            return @"using System;
+            var usings = @"using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,17 +25,38 @@ using System.Threading.Tasks;
 using Halcyon.HAL.Attributes;
 using Threax.AspNetCore.Halcyon.Ext;
 using Threax.AspNetCore.Halcyon.Ext.UIAttrs;";
+
+            if(hasCreated || hasModified)
+            {
+                usings += @"
+using Threax.AspNetCore.Tracking;";
+            }
+
+            return usings;
         }
 
         public virtual String StartType(String name, String pluralName)
         {
-            return $@"    public class {name} 
+            return $@"    public class {name} {GetAdditionalInterfaces()}
     {{";
         }
 
         public virtual String EndType(String name, String pluralName)
         {
-            return "    }";
+            var sb = new StringBuilder();
+
+            if (hasCreated)
+            {
+                sb.AppendLine(CreateProperty("DateTime", "Created"));
+            }
+
+            if (hasModified)
+            {
+                sb.AppendLine(CreateProperty("DateTime", "Modified"));
+            }
+
+            sb.AppendLine("    }");
+            return sb.ToString();
         }
 
         public virtual String AddMaxLength(int length, String errorMessage)
@@ -63,6 +93,28 @@ using Threax.AspNetCore.Halcyon.Ext.UIAttrs;";
         {
             return $@"namespace {name} 
 {{";
+        }
+
+        protected String GetAdditionalInterfaces()
+        {
+            String extraInterfaces = "";
+            if (hasCreated && hasModified)
+            {
+                extraInterfaces += ", ICreatedModified";
+            }
+            else
+            {
+                if (hasCreated)
+                {
+                    extraInterfaces += ", ICreated";
+                }
+
+                if (hasModified)
+                {
+                    extraInterfaces += ", IModified";
+                }
+            }
+            return extraInterfaces;
         }
     }
 }

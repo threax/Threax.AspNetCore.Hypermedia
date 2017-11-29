@@ -6,6 +6,10 @@ namespace Threax.ModelGen
 {
     class InputModelWriter : ClassWriter
     {
+        public InputModelWriter() : base(false, false)
+        {
+        }
+
         public override string AddUsings(string ns)
         {
             return $@"{base.AddUsings(ns)}

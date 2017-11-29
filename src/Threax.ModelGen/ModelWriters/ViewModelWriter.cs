@@ -6,6 +6,10 @@ namespace Threax.ModelGen
 {
     class ViewModelWriter : ClassWriter
     {
+        public ViewModelWriter(bool hasCreated, bool hasModified) : base(hasCreated, hasModified)
+        {
+        }
+
         public override string AddUsings(string ns)
         {
             return $@"{base.AddUsings(ns)}

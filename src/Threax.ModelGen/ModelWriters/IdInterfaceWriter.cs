@@ -6,6 +6,10 @@ namespace Threax.ModelGen
 {
     public class IdInterfaceWriter : InterfaceWriter
     {
+        public IdInterfaceWriter() : base(false, false)
+        {
+        }
+
         public override string EndType(String name, String pluralName)
         {
             return $@"

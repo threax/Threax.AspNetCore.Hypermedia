@@ -74,5 +74,9 @@ namespace Threax.ModelGen
         public String PluralModelName { get; set; }
 
         public JsonSchema4 Schema { get; set; }
+
+        public bool HasCreated { get; set; } = true;
+
+        public bool HasModified { get; set; } = true;
     }
 }

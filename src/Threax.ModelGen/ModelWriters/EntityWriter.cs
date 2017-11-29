@@ -6,6 +6,12 @@ namespace Threax.ModelGen
 {
     class EntityWriter : ClassWriter
     {
+        public EntityWriter(bool hasCreated, bool hasModified)
+            :base(hasCreated, hasModified)
+        {
+            
+        }
+
         public override string AddUsings(string ns)
         {
             return $@"{base.AddUsings(ns)}
@@ -14,7 +20,7 @@ using {ns}.Models;";
 
         public override String StartType(String name, String pluralName)
         {
-            return $@"    public class {name}Entity : I{name}, I{name}Id{AdditionalInterfacesText}
+            return $@"    public class {name}Entity : I{name}, I{name}Id{AdditionalInterfacesText} {GetAdditionalInterfaces()}
     {{
         [Key]
 {CreateProperty("Guid", $"{name}Id")}";

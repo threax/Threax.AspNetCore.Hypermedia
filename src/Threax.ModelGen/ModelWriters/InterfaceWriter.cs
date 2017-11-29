@@ -6,6 +6,10 @@ namespace Threax.ModelGen
 {
     public class InterfaceWriter : ClassWriter
     {
+        public InterfaceWriter(bool hasCreated, bool hasModified) : base(hasCreated, hasModified)
+        {
+        }
+
         public override String StartType(String name, String pluralName)
         {
             return $@"    public interface I{name} 
