@@ -10,6 +10,10 @@
     },
     "Help Output": {
       "commandName": "Project"
+    },
+    "FromInterface": {
+      "commandName": "Project",
+      "commandLineArgs": "Value.cs DevApp --AppOutDir ..\\DevApp --TestOutDir ..\\..\\test\\DevApp.Tests"
     }
   }
 }

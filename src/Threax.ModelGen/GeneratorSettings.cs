@@ -3,6 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Microsoft.CSharp;
+using System.CodeDom.Compiler;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Threax.ModelGen
 {
@@ -15,9 +21,36 @@ namespace Threax.ModelGen
                 throw new MessageException($"Cannot find schema file {Source}.");
             }
 
-            var schemaTask = JsonSchema4.FromFileAsync(Source);
-            schemaTask.Wait();
-            Schema = schemaTask.Result;
+            if (Path.GetExtension(Source) == ".cs")
+            {
+                String code;
+
+                using(var stream = new StreamReader(File.Open(Source, FileMode.Open, FileAccess.Read, FileShare.Read)))
+                {
+                    code = stream.ReadToEnd();
+                }
+
+                var script = CSharpScript.Create(code);
+                var runScriptTask = script.RunAsync();
+                runScriptTask.Wait();
+                var runScriptResult = runScriptTask.Result;
+
+                var typeRecoverTask = runScriptResult.ContinueWithAsync<Type>("return Recovery.GetType();");
+                typeRecoverTask.Wait();
+                var typeRecoverResult = typeRecoverTask.Result;
+                var type = typeRecoverResult.ReturnValue;
+
+                var schemaTask = JsonSchema4.FromTypeAsync(type);
+                schemaTask.Wait();
+                Schema = schemaTask.Result;
+            }
+            else
+            {
+                var schemaTask = JsonSchema4.FromFileAsync(Source);
+                schemaTask.Wait();
+                Schema = schemaTask.Result;
+            }
+
             if (Schema.ExtensionData == null) //Make sure this exists
             {
                 Schema.ExtensionData = new Dictionary<String, Object>();
