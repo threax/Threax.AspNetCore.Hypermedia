@@ -8,7 +8,9 @@ namespace Threax.AspNetCore.Models
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class PluralNameAttribute : JsonSchemaExtensionDataAttribute
     {
-        public PluralNameAttribute(String value) : base("x-plural-title", value)
+        public const String Name = "x-plural-title";
+
+        public PluralNameAttribute(String value) : base(Name, value)
         {
         }
     }
