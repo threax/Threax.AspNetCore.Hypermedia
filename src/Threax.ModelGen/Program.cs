@@ -101,7 +101,7 @@ remove [Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirect
                     WriteFile(Path.Combine(settings.AppOutDir, $"Repository/{settings.ModelName}Repository.cs"), RepoGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
                     WriteFile(Path.Combine(settings.AppOutDir, $"Repository/I{settings.ModelName}Repository.cs"), RepoInterfaceGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
                     WriteFile(Path.Combine(settings.AppOutDir, $"Repository/{settings.ModelName}Repository.Config.cs"), RepoConfigGenerator.Get(settings.AppNamespace, settings.ModelName));
-                    WriteFile(Path.Combine(settings.AppOutDir, $"Controllers/Api/{settings.PluralModelName}Controller.cs"), ControllerGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
+                    WriteFile(Path.Combine(settings.AppOutDir, $"Controllers/Api/{settings.PluralModelName}Controller.cs"), ControllerGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName, settings.Schema));
                     WriteFile(Path.Combine(settings.AppOutDir, $"Mappers/{settings.ModelName}Profile.cs"), MappingProfileGenerator.Get(settings.AppNamespace, settings.ModelName, settings.HasCreated, settings.HasModified));
                     WriteFile(Path.Combine(settings.AppOutDir, $"Database/AppDbContext.{settings.ModelName}.cs"), AppDbContextGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
                     WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{settings.ModelName}Collection.cs"), ModelCollectionGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName));
@@ -110,7 +110,7 @@ remove [Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirect
                     WriteFile(Path.Combine(settings.AppOutDir, $"Views/{settings.UiController}/{settings.PluralModelName}.cshtml"), CrudCshtmlInjectorGenerator.Get(settings.ModelName, settings.PluralModelName, propertyNames: propertyNames));
                     WriteFile(Path.Combine(settings.AppOutDir, $"Client/Libs/{settings.ModelName}CrudInjector.ts"), CrudInjectorGenerator.Get(settings.ModelName, settings.PluralModelName));
                     WriteFile(Path.Combine(settings.AppOutDir, $"Views/{settings.UiController}/{settings.PluralModelName}.ts"), CrudUiTypescriptGenerator.Get(settings.ModelName));
-                    WriteFile(Path.Combine(settings.AppOutDir, $"Controllers/{settings.UiController}Controller.{settings.PluralModelName}.cs"), UiControllerGenerator.Get(settings.AppNamespace, settings.UiController, settings.ModelName, settings.PluralModelName));
+                    WriteFile(Path.Combine(settings.AppOutDir, $"Controllers/{settings.UiController}Controller.{settings.PluralModelName}.cs"), UiControllerGenerator.Get(settings.AppNamespace, settings.UiController, settings.ModelName, settings.PluralModelName, settings.Schema));
                 }
 
                 if (settings.WriteTests)

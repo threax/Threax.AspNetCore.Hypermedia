@@ -1,21 +1,31 @@
-﻿using System;
+﻿using NJsonSchema;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen
 {
     static class UiControllerGenerator
     {
-        public static String Get(String ns, String controller, String modelName, String modelPluralName)
+        public static String Get(String ns, String controller, String modelName, String modelPluralName, JsonSchema4 schema)
         {
             String Model, model;
             NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
             String Models, models;
             NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
-            return Create(ns, NameGenerator.CreatePascal(controller), Model, model, Models, models);
+
+            var authAttribute = "";
+            Object authName;
+            if (schema.ExtensionData.TryGetValue(RequireAuthorizationAttribute.Name, out authName))
+            {
+                authAttribute = $@"[Authorize(Roles = {authName})]
+        ";
+            }
+            return Create(ns, NameGenerator.CreatePascal(controller), Model, model, Models, models, authAttribute);
         }
 
-        private static String Create(String ns, String controller, String Model, String model, String Models, String models) {
+        private static String Create(String ns, String controller, String Model, String model, String Models, String models, String authAttribute) {
             return
 $@"using System;
 using System.Collections.Generic;
@@ -28,7 +38,7 @@ namespace {ns}.Controllers
 {{
     public partial class {controller}Controller
     {{
-        public IActionResult {Models}()
+        {authAttribute}public IActionResult {Models}()
         {{
             return View();
         }}

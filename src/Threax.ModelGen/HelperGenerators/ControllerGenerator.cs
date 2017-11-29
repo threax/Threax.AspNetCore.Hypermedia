@@ -1,21 +1,30 @@
-﻿using System;
+﻿using NJsonSchema;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen
 {
     static class ControllerGenerator
     {
-        public static String Get(String ns, String modelName, String modelPluralName)
+        public static String Get(String ns, String modelName, String modelPluralName, JsonSchema4 schema)
         {
             String Model, model;
             NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
             String Models, models;
             NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
-            return Create(ns, Model, model, Models, models);
+
+            var additionalAuthorize = "";
+            Object authName;
+            if(schema.ExtensionData.TryGetValue(RequireAuthorizationAttribute.Name, out authName))
+            {
+                additionalAuthorize = $", Roles = {authName}";
+            }
+            return Create(ns, Model, model, Models, models, additionalAuthorize);
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models)
+        private static String Create(String ns, String Model, String model, String Models, String models, String additionalAuthorize)
         {
             return
 $@"using System;
@@ -33,7 +42,7 @@ namespace {ns}.Controllers.Api
 {{
     [Route(""api/[controller]"")]
     [ResponseCache(NoStore = true)]
-    [Authorize(AuthenticationSchemes = AuthCoreSchemes.Bearer)]
+    [Authorize(AuthenticationSchemes = AuthCoreSchemes.Bearer{additionalAuthorize})]
     public partial class {Models}Controller : Controller
     {{
         private I{Model}Repository repo;

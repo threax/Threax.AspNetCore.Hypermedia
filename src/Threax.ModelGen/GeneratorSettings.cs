@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen
 {
@@ -41,7 +42,7 @@ namespace Threax.ModelGen
 
             ModelName = Schema.Title;
             Object pluralTitleObj;
-            if (Schema.ExtensionData.TryGetValue("x-plural-title", out pluralTitleObj))
+            if (Schema.ExtensionData.TryGetValue(PluralNameAttribute.Name, out pluralTitleObj))
             {
                 PluralModelName = pluralTitleObj.ToString();
             }
