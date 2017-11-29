@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EBBC3E56-D59A-447E-8021-DA2D17B6AD50}"
 EndProject
@@ -75,7 +75,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.AspNetCore.Xsrf", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevApp.Tests", "test\DevApp.Tests\DevApp.Tests.csproj", "{7EF8B819-23A4-4F0D-8F93-459EF7B5DDA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Threax.AspNetCore.Tests", "src\Threax.AspNetCore.Tests\Threax.AspNetCore.Tests.csproj", "{588195BA-952A-47D0-863B-72C7667374F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.AspNetCore.Tests", "src\Threax.AspNetCore.Tests\Threax.AspNetCore.Tests.csproj", "{588195BA-952A-47D0-863B-72C7667374F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
