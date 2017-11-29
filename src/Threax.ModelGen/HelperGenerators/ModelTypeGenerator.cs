@@ -113,11 +113,21 @@ namespace Threax.ModelGen
 
         private static string GetType(JsonProperty prop)
         {
-            var type = GetNonArrayType(prop.Type, prop.Format);
-            
-            if (IsType(prop.Type, JsonObjectType.Array))
+            String type;
+
+            Object originalType;
+            if(prop.ExtensionData != null && prop.ExtensionData.TryGetValue(GeneratorSettings.OriginalTypeExtensionName, out originalType))
             {
-                type = $"List<{GetNonArrayType(prop.Item.Type, prop.Item.Format)}>";
+                type = originalType.ToString();
+            }
+            else
+            {
+                type = GetNonArrayType(prop.Type, prop.Format);
+
+                if (IsType(prop.Type, JsonObjectType.Array))
+                {
+                    type = $"List<{GetNonArrayType(prop.Item.Type, prop.Item.Format)}>";
+                }
             }
 
             return type;

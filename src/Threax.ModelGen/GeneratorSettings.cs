@@ -8,6 +8,8 @@ namespace Threax.ModelGen
 {
     class GeneratorSettings
     {
+        public const String OriginalTypeExtensionName = "x-original-type";
+
         public void Configure()
         {
             if (Path.GetExtension(Source) != ".json")
@@ -19,9 +21,28 @@ namespace Threax.ModelGen
 
                 var assembly = ProjectAssemblyLoader.LoadProjectAssembly(AppOutDir);
                 var type = assembly.GetType(Source);
-                var schemaTask = JsonSchema4.FromTypeAsync(type);
+                var schemaTask = JsonSchema4.FromTypeAsync(type, new NJsonSchema.Generation.JsonSchemaGeneratorSettings()
+                {
+                    DefaultEnumHandling = EnumHandling.String,
+                    FlattenInheritanceHierarchy = true,
+                });
                 schemaTask.Wait();
                 Schema = schemaTask.Result;
+
+                //Modify the schema to make each property aware of its original type
+                foreach(var prop in Schema.Properties.Values)
+                {
+                    var typeProp = type.GetProperty(prop.Name);
+                    if(typeProp != null)
+                    {
+                        if (prop.ExtensionData == null) //Make sure this exists
+                        {
+                            prop.ExtensionData = new Dictionary<String, Object>();
+                        }
+
+                        prop.ExtensionData.Add(OriginalTypeExtensionName, typeProp.PropertyType.Name);
+                    }
+                }
             }
             else
             {
