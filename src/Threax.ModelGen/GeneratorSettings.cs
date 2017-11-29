@@ -26,10 +26,18 @@ namespace Threax.ModelGen
                     code = stream.ReadToEnd();
                 }
 
+                var scriptOptions = ScriptOptions.Default.WithReferences(
+                        typeof(System.ComponentModel.DataAnnotations.RequiredAttribute).Assembly,
+                        typeof(AspNetCore.Models.PluralNameAttribute).Assembly);
+
+                //If we have an app out dir, try to build and load the assembly the project creates
+                if (Directory.Exists(AppOutDir))
+                {
+                    scriptOptions.WithReferences(ProjectAssemblyLoader.LoadProjectAssembly(AppOutDir));
+                }
+
                 var script = CSharpScript.Create(code)
-                    .WithOptions(ScriptOptions.Default.WithReferences(
-                        typeof(System.ComponentModel.DataAnnotations.RequiredAttribute).Assembly, 
-                        typeof(AspNetCore.Models.PluralNameAttribute).Assembly));
+                    .WithOptions(scriptOptions);
 
                 var runScriptTask = script.RunAsync();
                 runScriptTask.Wait();

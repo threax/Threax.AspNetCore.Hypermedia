@@ -9,8 +9,8 @@ public static partial class ModelDefs
     //[PluralName("ValueWoots")]
     public class Value
     {
-        //[Required]
-        //[MaxLength(450)]
+        [Required]
+        [MaxLength(450)]
         //[Display(Name = "WootName")]
         public String Name { get; set; }
     }
