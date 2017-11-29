@@ -1,14 +1,8 @@
-﻿using NJsonSchema;
+﻿using Microsoft.CodeAnalysis.CSharp.Scripting;
+using NJsonSchema;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using Microsoft.CSharp;
-using System.CodeDom.Compiler;
-using Microsoft.CodeAnalysis.CSharp.Scripting;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Threax.ModelGen
 {
