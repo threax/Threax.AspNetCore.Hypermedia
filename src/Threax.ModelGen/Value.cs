@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-public class Value
+public static partial class ModelDefs
 {
-    //[Required]
-    public String Name { get; set; }
+    public class Value
+    {
+        //[Required]
+        public String Name { get; set; }
+    }
 }

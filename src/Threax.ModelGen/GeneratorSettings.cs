@@ -30,7 +30,7 @@ namespace Threax.ModelGen
                 var runScriptResult = runScriptTask.Result;
 
                 var typeName = Path.GetFileNameWithoutExtension(Path.GetFileName(Source));
-                var typeRecoverTask = runScriptResult.ContinueWithAsync<Type>($"return typeof({typeName});");
+                var typeRecoverTask = runScriptResult.ContinueWithAsync<Type>($"return typeof(ModelDefs.{typeName});");
                 typeRecoverTask.Wait();
                 var typeRecoverResult = typeRecoverTask.Result;
                 var type = typeRecoverResult.ReturnValue;
