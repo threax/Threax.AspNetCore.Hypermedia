@@ -1,4 +1,6 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Scripting;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis.Scripting;
 using NJsonSchema;
 using System;
 using System.Collections.Generic;
@@ -24,7 +26,11 @@ namespace Threax.ModelGen
                     code = stream.ReadToEnd();
                 }
 
-                var script = CSharpScript.Create(code);
+                var script = CSharpScript.Create(code)
+                    .WithOptions(ScriptOptions.Default.WithReferences(
+                        typeof(System.ComponentModel.DataAnnotations.RequiredAttribute).Assembly, 
+                        typeof(AspNetCore.Models.PluralNameAttribute).Assembly));
+
                 var runScriptTask = script.RunAsync();
                 runScriptTask.Wait();
                 var runScriptResult = runScriptTask.Result;
