@@ -21,7 +21,7 @@ namespace Threax.ModelGen.ModelWriters
             return "";
         }
 
-        public virtual String CreateProperty(String type, String name, bool isValueType)
+        public virtual String CreateProperty(String name, IWriterPropertyInfo info)
         {
             return
 $@"                if ({name} != null)

@@ -29,9 +29,9 @@ $@"            }};
         }}";
         }
 
-        public string CreateProperty(string type, string name, bool isValueType)
+        public string CreateProperty(string name, IWriterPropertyInfo info)
         {
-            switch (type.ToLowerInvariant())
+            switch (info.ClrType.ToLowerInvariant())
             {
                 case "string":
                     return $"                {name} = {name} != null ? {name} : $\"{name} {{seed}}\",";

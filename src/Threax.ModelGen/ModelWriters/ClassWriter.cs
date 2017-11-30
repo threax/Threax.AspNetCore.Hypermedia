@@ -47,12 +47,12 @@ using Threax.AspNetCore.Tracking;";
 
             if (hasCreated)
             {
-                sb.AppendLine(CreateProperty("DateTime", "Created", true));
+                sb.AppendLine(CreateProperty("Created", new TypeWriterPropertyInfo<DateTime>()));
             }
 
             if (hasModified)
             {
-                sb.AppendLine(CreateProperty("DateTime", "Modified", true));
+                sb.AppendLine(CreateProperty("Modified", new TypeWriterPropertyInfo<DateTime>()));
             }
 
             sb.Append("    }");
@@ -79,9 +79,9 @@ using Threax.AspNetCore.Tracking;";
             return $@"        [Display(Name = ""{name}"")]";
         }
 
-        public virtual String CreateProperty(String type, String name, bool isValueType)
+        public virtual String CreateProperty(String name, IWriterPropertyInfo info)
         {
-            return $"        public {type} {name} {{ get; set; }}";
+            return $"        public {info.ClrType} {name} {{ get; set; }}";
         }
 
         public virtual string EndNamespace()

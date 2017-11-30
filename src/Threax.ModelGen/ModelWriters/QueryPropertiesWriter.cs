@@ -21,10 +21,10 @@ namespace Threax.ModelGen.ModelWriters
             return "";
         }
 
-        public virtual String CreateProperty(String type, String name, bool isValueType)
+        public virtual String CreateProperty(String name, IWriterPropertyInfo info)
         {
-            var question = isValueType ? "?" : String.Empty;
-            return $"        public {type}{question} {name} {{ get; set; }}";
+            var question = info.IsValueType ? "?" : String.Empty;
+            return $"        public {info.ClrType}{question} {name} {{ get; set; }}";
         }
 
         public string AddDisplay(string name)

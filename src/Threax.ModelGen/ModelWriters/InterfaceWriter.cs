@@ -16,9 +16,9 @@ namespace Threax.ModelGen
     {{";
         }
 
-        public override String CreateProperty(String type, String name, bool isValueType)
+        public override String CreateProperty(String name, IWriterPropertyInfo info)
         {
-            return $"        {type} {name} {{ get; set; }}";
+            return $"        {info.ClrType} {name} {{ get; set; }}";
         }
 
         public override string AddTypeDisplay(string name)

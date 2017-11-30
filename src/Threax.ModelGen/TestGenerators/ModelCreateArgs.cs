@@ -16,9 +16,9 @@ namespace Threax.ModelGen.TestGenerators
             return "";
         }
 
-        public string CreateProperty(string type, string name, bool isValueType)
+        public string CreateProperty(string name, IWriterPropertyInfo info)
         {
-            return $"                                         , {type} {name} = default({type})";
+            return $"                                         , {info.ClrType} {name} = default({info.ClrType})";
         }
 
         public string AddDisplay(string name)

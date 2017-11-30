@@ -26,7 +26,7 @@ $@"    [HalModel]
     [HalActionLink(typeof({pluralName}Controller), nameof({pluralName}Controller.Delete))]
     public class {name} : I{name}, I{name}Id {GetAdditionalInterfaces()}
     {{
-{CreateProperty("Guid", $"{name}Id", true)}";
+{CreateProperty($"{name}Id", new TypeWriterPropertyInfo<Guid>())}";
         }
 
         public override string AddMaxLength(int length, string errorMessage)
