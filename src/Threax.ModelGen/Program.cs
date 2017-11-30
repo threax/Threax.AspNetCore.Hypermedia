@@ -75,14 +75,14 @@ remove [Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirect
             {
                 if (settings.Schema != null)
                 {
-                    modelInterface = ModelTypeGenerator.Create(settings.Schema, settings.PluralModelName, new IdInterfaceWriter(), settings.Schema, settings.AppNamespace, settings.AppNamespace + ".Models");
+                    modelInterface = ModelTypeGenerator.Create(settings.Schema, settings.PluralModelName, new IdInterfaceWriter(settings.Schema), settings.Schema, settings.AppNamespace, settings.AppNamespace + ".Models");
                     entity = ModelTypeGenerator.Create(settings.Schema, settings.PluralModelName, new EntityWriter(settings.HasCreated, settings.HasModified), settings.Schema, settings.AppNamespace, settings.AppNamespace + ".Database");
                     inputModel = ModelTypeGenerator.Create(settings.Schema, settings.PluralModelName, new InputModelWriter(), settings.Schema, settings.AppNamespace, settings.AppNamespace + ".InputModels");
                     viewModel = ModelTypeGenerator.Create(settings.Schema, settings.PluralModelName, new ViewModelWriter(settings.HasCreated, settings.HasModified), settings.Schema, settings.AppNamespace, settings.AppNamespace + ".ViewModels");
                 }
                 else
                 {
-                    modelInterface = ModelTypeGenerator.Create(settings.Source, settings.PluralModelName, new IdInterfaceWriter(), settings.AppNamespace, settings.AppNamespace + ".Models");
+                    modelInterface = ModelTypeGenerator.Create(settings.Source, settings.PluralModelName, new IdInterfaceWriter(settings.Schema), settings.AppNamespace, settings.AppNamespace + ".Models");
                     entity = ModelTypeGenerator.Create(settings.Source, settings.PluralModelName, new EntityWriter(settings.HasCreated, settings.HasModified), settings.AppNamespace, settings.AppNamespace + ".Database");
                     inputModel = ModelTypeGenerator.Create(settings.Source, settings.PluralModelName, new InputModelWriter(), settings.AppNamespace, settings.AppNamespace + ".InputModels");
                     viewModel = ModelTypeGenerator.Create(settings.Source, settings.PluralModelName, new ViewModelWriter(settings.HasCreated, settings.HasModified), settings.AppNamespace, settings.AppNamespace + ".ViewModels");
