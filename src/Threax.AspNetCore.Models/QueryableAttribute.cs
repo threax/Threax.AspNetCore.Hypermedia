@@ -11,15 +11,27 @@ namespace Threax.AspNetCore.Models
     {
         private const String Name = "x-queryable";
 
-        public QueryableAttribute(bool value = true) : base(Name, value)
+        public QueryableAttribute(bool required = false) : base(Name, required)
         {
         }
 
-        public static bool? GetValue(JsonSchema4 schema)
+        public static bool IsQueryable(JsonSchema4 schema)
+        {
+            return schema.ExtensionData?.ContainsKey(Name) == true;
+        }
+
+        public static bool IsRequired(JsonSchema4 schema)
         {
             Object val = null;
-            schema.ExtensionData?.TryGetValue(Name, out val);
-            return (bool?)val;
+            if (schema.ExtensionData?.TryGetValue(Name, out val) == true)
+            {
+                bool? boolVal = val as bool?;
+                if (boolVal != null)
+                {
+                    return boolVal == true;
+                }
+            }
+            return false;
         }
     }
 }
