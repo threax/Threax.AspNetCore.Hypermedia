@@ -1,4 +1,5 @@
 ﻿using NJsonSchema;
+using NJsonSchema.Annotations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -60,6 +61,18 @@ namespace Threax.ModelGen
                             schemaProp.ExtensionData = new Dictionary<String, Object>();
                         }
                         schemaProp.ExtensionData.Add(ClrFullTypeName, propType.FullName);
+
+                        //For some reason enums do not get the custom attributes, so do it here
+                        if (propType.IsEnum)
+                        {
+                            foreach (var attr in prop.GetCustomAttributes().Select(i => i as JsonSchemaExtensionDataAttribute).Where(i => i != null))
+                            {
+                                if (!schemaProp.ExtensionData.ContainsKey(attr.Property))
+                                {
+                                    schemaProp.ExtensionData.Add(attr.Property, attr.Value);
+                                }
+                            }
+                        }
                     }
                 }
             }
