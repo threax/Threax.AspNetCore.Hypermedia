@@ -15,12 +15,12 @@ namespace Threax.ModelGen
             return $@"
 {base.EndType(name, pluralName)}
 
-    public interface I{name}Id
+    public partial interface I{name}Id
     {{
         Guid {name}Id {{ get; set; }}
     }}    
 
-    public interface I{name}Query
+    public partial interface I{name}Query
     {{
         Guid? {name}Id {{ get; set; }}
     }}";

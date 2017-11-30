@@ -12,7 +12,7 @@ namespace Threax.ModelGen
 
         public override String StartType(String name, String pluralName)
         {
-            return $@"    public interface I{name} 
+            return $@"    public partial interface I{name} 
     {{";
         }
 

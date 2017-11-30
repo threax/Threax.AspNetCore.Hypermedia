@@ -20,7 +20,7 @@ using {ns}.Models;";
         {
             return 
 $@"    [HalModel]
-    public class {name}Input : I{name}
+    public partial class {name}Input : I{name}
     {{";
         }
     }

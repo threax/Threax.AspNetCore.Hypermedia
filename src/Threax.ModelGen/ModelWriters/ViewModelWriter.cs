@@ -24,7 +24,7 @@ $@"    [HalModel]
     [HalSelfActionLink(typeof({pluralName}Controller), nameof({pluralName}Controller.Get))]
     [HalActionLink(typeof({pluralName}Controller), nameof({pluralName}Controller.Update))]
     [HalActionLink(typeof({pluralName}Controller), nameof({pluralName}Controller.Delete))]
-    public class {name} : I{name}, I{name}Id {GetAdditionalInterfaces()}
+    public partial class {name} : I{name}, I{name}Id {GetAdditionalInterfaces()}
     {{
 {CreateProperty($"{name}Id", new TypeWriterPropertyInfo<Guid>())}";
         }

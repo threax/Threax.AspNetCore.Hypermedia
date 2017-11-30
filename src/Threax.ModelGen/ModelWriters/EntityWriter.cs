@@ -20,7 +20,7 @@ using {ns}.Models;";
 
         public override String StartType(String name, String pluralName)
         {
-            return $@"    public class {name}Entity : I{name}, I{name}Id{AdditionalInterfacesText} {GetAdditionalInterfaces()}
+            return $@"    public partial class {name}Entity : I{name}, I{name}Id{AdditionalInterfacesText} {GetAdditionalInterfaces()}
     {{
         [Key]
 {CreateProperty($"{name}Id", new TypeWriterPropertyInfo<Guid>())}";

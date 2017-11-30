@@ -41,7 +41,7 @@ using Threax.AspNetCore.Halcyon.Ext;
 namespace {ns}.InputModels
 {{
     [HalModel]
-    public class {Model}Query : PagedCollectionQuery, I{Model}Query
+    public partial class {Model}Query : PagedCollectionQuery, I{Model}Query
     {{
         /// <summary>
         /// Lookup a {model} by id.
