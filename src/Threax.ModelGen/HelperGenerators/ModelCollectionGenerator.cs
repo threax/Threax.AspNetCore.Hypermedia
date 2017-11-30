@@ -1,21 +1,58 @@
-﻿using System;
+﻿using NJsonSchema;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen
 {
     static class ModelCollectionGenerator
     {
-        public static String Get(String ns, String modelName, String modelPluralName)
+        class QueryPropWriter : AbstractTypeWriter
+        {
+            public override String CreateProperty(String name, IWriterPropertyInfo info)
+            {
+                var question = info.IsValueType ? "?" : "";
+                return
+$@"        public {info.ClrType}{question} {name}
+        {{
+            get {{ return query.{name}; }}
+            set {{ query.{name} = value; }}
+        }}";
+            }
+        }
+
+        class QueryCustomizerWriter : AbstractTypeWriter
+        {
+            public override String CreateProperty(String name, IWriterPropertyInfo info)
+            {
+                var question = info.IsValueType ? "?" : "";
+                return
+$@"            if ({name} != null)
+            {{
+                queryString.AppendItem(""{NameGenerator.CreateCamel(name)}"", {name}.ToString());
+            }}";
+            }
+        }
+
+        public static String Get(String ns, String modelName, String modelPluralName, JsonSchema4 schema)
         {
             String Model, model;
             NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
             String Models, models;
             NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
-            return Create(ns, Model, model, Models, models);
+            String queryProps = ModelTypeGenerator.Create(schema, modelPluralName, new QueryPropWriter(), schema, ns, ns, allowPropertyCallback: p =>
+            {
+                return QueryableAttribute.GetValue(p) == true;
+            });
+            String customizer = ModelTypeGenerator.Create(schema, modelPluralName, new QueryCustomizerWriter(), schema, ns, ns, allowPropertyCallback: p =>
+            {
+                return QueryableAttribute.GetValue(p) == true;
+            });
+            return Create(ns, Model, model, Models, models, queryProps, customizer);
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models)
+        private static String Create(String ns, String Model, String model, String Models, String models, String queryProps, String customizer)
         {
             return
 $@"using Halcyon.HAL.Attributes;
@@ -41,22 +78,36 @@ namespace {ns}.ViewModels
     [DeclareHalLink(typeof({Models}Controller), nameof({Models}Controller.List), PagedCollectionView<Object>.Rels.Last, ResponseOnly = true)]
     public partial class {Model}Collection : PagedCollectionView<{Model}>, I{Model}Query
     {{
+        private {Model}Query query;
+
         public {Model}Collection({Model}Query query, int total, IEnumerable<{Model}> items) : base(query, total, items)
         {{
-            this.{Model}Id = query.{Model}Id;
+            this.query = query;
         }}
 
-        public Guid? {Model}Id {{ get; set; }}
+        public Guid? {Model}Id
+        {{
+            get {{ return query.{Model}Id; }}
+            set {{ query.{Model}Id = value; }}
+        }}
+
+        {queryProps}
 
         protected override void AddCustomQuery(string rel, QueryStringBuilder queryString)
         {{
-            if ({Model}Id.HasValue)
+            if ({Model}Id != null)
             {{
                 queryString.AppendItem(""{model}Id"", {Model}Id.Value.ToString());
             }}
 
+            {customizer}
+
+            OnAddCustomQuery(rel, queryString);
+
             base.AddCustomQuery(rel, queryString);
         }}
+
+        partial void OnAddCustomQuery(String rel, QueryStringBuilder queryString);
     }}
 }}";
         }

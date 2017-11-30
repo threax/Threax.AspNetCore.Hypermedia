@@ -4,62 +4,17 @@ using System.Text;
 
 namespace Threax.ModelGen.ModelWriters
 {
-    class QueryPropertiesWriter : ITypeWriter
+    class QueryPropertiesWriter : AbstractTypeWriter
     {
         public QueryPropertiesWriter()
         {
             
         }
 
-        public virtual string StartType(string name, string pluralName)
-        {
-            return "";
-        }
-
-        public string EndType(string name, string pluralName)
-        {
-            return "";
-        }
-
-        public virtual String CreateProperty(String name, IWriterPropertyInfo info)
+        public override String CreateProperty(String name, IWriterPropertyInfo info)
         {
             var question = info.IsValueType ? "?" : String.Empty;
             return $"        public {info.ClrType}{question} {name} {{ get; set; }}";
-        }
-
-        public string AddDisplay(string name)
-        {
-            return "";
-        }
-
-        public string AddMaxLength(int length, string errorMessage)
-        {
-            return "";
-        }
-
-        public string AddRequired(string errorMessage)
-        {
-            return "";
-        }
-
-        public string AddTypeDisplay(string name)
-        {
-            return "";
-        }
-
-        public string AddUsings(string ns)
-        {
-            return "";
-        }
-
-        public string EndNamespace()
-        {
-            return "";
-        }
-
-        public string StartNamespace(string name)
-        {
-            return "";
         }
     }
 }
