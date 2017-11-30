@@ -26,11 +26,18 @@ $@"        public {info.ClrType}{QueryPropertiesWriter.CreateQueryNullable(info)
         {
             public override String CreateProperty(String name, IWriterPropertyInfo info)
             {
-                return
-$@"            if ({name} != null)
+                if (info.IsRequiredInQuery)
+                {
+                    return $@"            queryString.AppendItem(""{NameGenerator.CreateCamel(name)}"", {name}.ToString());";
+                }
+                else
+                {
+                    return
+    $@"            if ({name} != null)
             {{
                 queryString.AppendItem(""{NameGenerator.CreateCamel(name)}"", {name}.ToString());
             }}";
+                }
             }
         }
 
