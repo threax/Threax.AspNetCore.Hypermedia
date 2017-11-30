@@ -23,7 +23,7 @@ using {ns}.Models;";
             return $@"    public class {name}Entity : I{name}, I{name}Id{AdditionalInterfacesText} {GetAdditionalInterfaces()}
     {{
         [Key]
-{CreateProperty("Guid", $"{name}Id")}";
+{CreateProperty("Guid", $"{name}Id", true)}";
         }
 
         public override string AddTypeDisplay(string name)

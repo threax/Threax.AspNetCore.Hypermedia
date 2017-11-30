@@ -18,7 +18,7 @@ $@"        public static void AssertEqual(I{name} expected, I{name} actual)
             return "        }";
         }
 
-        public string CreateProperty(string type, string name)
+        public string CreateProperty(string type, string name, bool isValueType)
         {
             return $"           Assert.Equal(expected.{name}, actual.{name});";
         }

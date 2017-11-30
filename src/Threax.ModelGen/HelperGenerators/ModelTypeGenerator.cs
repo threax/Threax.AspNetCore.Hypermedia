@@ -102,7 +102,7 @@ namespace Threax.ModelGen
 
                 var pascalPropName = NameGenerator.CreatePascal(propName);
                 lastPropertyNames.Add(pascalPropName);
-                sb.AppendLineWithContent(typeWriter.CreateProperty(prop.GetClrType(), pascalPropName));
+                sb.AppendLineWithContent(typeWriter.CreateProperty(prop.GetClrType(), pascalPropName, prop.IsClrValueType()));
             }
 
             sb.AppendLineWithContent(typeWriter.EndType(schema.Title, pluralName));

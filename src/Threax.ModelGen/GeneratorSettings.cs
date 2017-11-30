@@ -11,6 +11,8 @@ namespace Threax.ModelGen
 {
     class GeneratorSettings
     {
+        public const String ClrFullTypeName = "x-clr-fullname";
+
         public void Configure()
         {
             if (Path.GetExtension(Source) != ".json")
@@ -51,6 +53,13 @@ namespace Threax.ModelGen
                                 Format = enumerableType.Name
                             };
                         }
+
+                        //Record the full clr type also
+                        if (schemaProp.ExtensionData == null)
+                        {
+                            schemaProp.ExtensionData = new Dictionary<String, Object>();
+                        }
+                        schemaProp.ExtensionData.Add(ClrFullTypeName, propType.FullName);
                     }
                 }
             }

@@ -34,22 +34,17 @@ namespace Threax.ModelGen
                 case JsonObjectType.Number:
                     return true;
                 case JsonObjectType.Object:
-                    //Try to search for the type directly, usually not going to work
-                    foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies())
+                    Object fullClrType = null;
+                    if(prop.ExtensionData != null && prop.ExtensionData.TryGetValue(GeneratorSettings.ClrFullTypeName, out fullClrType))
                     {
-                        var type = assembly.GetType(prop.Format);
-                        if (type != null)
+                        //Look for type in all loaded assemblies
+                        foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
                         {
-                            return type.IsValueType;
-                        }
-                    }
-                    //Now search by each type's name, this will potentially have problems with collisions since it ignores namespaces
-                    foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-                    {
-                        var type = assembly.GetTypes().Where(i => i.Name == prop.Format).FirstOrDefault();
-                        if(type != null)
-                        {
-                            return type.IsValueType;
+                            var type = assembly.GetType(fullClrType.ToString());
+                            if (type != null)
+                            {
+                                return type.IsValueType;
+                            }
                         }
                     }
                     //Could not find anything, assume ref type

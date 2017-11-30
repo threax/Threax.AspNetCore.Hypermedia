@@ -47,12 +47,12 @@ using Threax.AspNetCore.Tracking;";
 
             if (hasCreated)
             {
-                sb.AppendLine(CreateProperty("DateTime", "Created"));
+                sb.AppendLine(CreateProperty("DateTime", "Created", true));
             }
 
             if (hasModified)
             {
-                sb.AppendLine(CreateProperty("DateTime", "Modified"));
+                sb.AppendLine(CreateProperty("DateTime", "Modified", true));
             }
 
             sb.Append("    }");
@@ -79,7 +79,7 @@ using Threax.AspNetCore.Tracking;";
             return $@"        [Display(Name = ""{name}"")]";
         }
 
-        public virtual String CreateProperty(String type, String name)
+        public virtual String CreateProperty(String type, String name, bool isValueType)
         {
             return $"        public {type} {name} {{ get; set; }}";
         }

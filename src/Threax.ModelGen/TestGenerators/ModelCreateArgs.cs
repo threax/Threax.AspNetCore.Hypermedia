@@ -16,7 +16,7 @@ namespace Threax.ModelGen.TestGenerators
             return "";
         }
 
-        public string CreateProperty(string type, string name)
+        public string CreateProperty(string type, string name, bool isValueType)
         {
             return $"                                         , {type} {name} = default({type})";
         }

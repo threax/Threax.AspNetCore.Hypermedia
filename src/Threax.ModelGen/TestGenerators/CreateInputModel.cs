@@ -29,7 +29,7 @@ $@"            }};
         }}";
         }
 
-        public string CreateProperty(string type, string name)
+        public string CreateProperty(string type, string name, bool isValueType)
         {
             switch (type.ToLowerInvariant())
             {

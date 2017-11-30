@@ -16,7 +16,7 @@ namespace Threax.ModelGen
     {{";
         }
 
-        public override String CreateProperty(String type, String name)
+        public override String CreateProperty(String type, String name, bool isValueType)
         {
             return $"        {type} {name} {{ get; set; }}";
         }
