@@ -30,7 +30,7 @@ namespace Threax.ModelGen
 
         public override string EndType(String name, String pluralName)
         {
-            String queryProps = ModelTypeGenerator.Create(schema, pluralName, new QueryPropertiesWriter(""), schema, ns, ns, allowPropertyCallback: p =>
+            String queryProps = ModelTypeGenerator.Create(schema, pluralName, new QueryPropertiesWriter(visibility: "", allowAttributes: false), schema, ns, ns, allowPropertyCallback: p =>
             {
                 return QueryableAttribute.IsQueryable(p) == true;
             });

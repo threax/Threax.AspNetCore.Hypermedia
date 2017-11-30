@@ -13,6 +13,8 @@ namespace Threax.ModelGen
         String ClrType { get; }
 
         bool IsRequiredInQuery { get; }
+
+        bool ShowOnQueryUi { get; }
     }
 
     public class TypeWriterPropertyInfo<T> : IWriterPropertyInfo
@@ -29,6 +31,8 @@ namespace Threax.ModelGen
         public string ClrType => type.Name;
 
         public bool IsRequiredInQuery => false;
+
+        public bool ShowOnQueryUi => false;
     }
 
     public class SchemaWriterPropertyInfo : IWriterPropertyInfo
@@ -45,5 +49,7 @@ namespace Threax.ModelGen
         public string ClrType => prop.GetClrType();
 
         public bool IsRequiredInQuery => QueryableAttribute.IsRequired(prop);
+
+        public bool ShowOnQueryUi => QueryableAttribute.ShowOnUi(prop);
     }
 }

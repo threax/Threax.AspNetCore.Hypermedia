@@ -9,9 +9,16 @@ namespace Threax.AspNetCore.Models
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class QueryableAttribute : JsonSchemaExtensionDataAttribute
     {
+        private class Settings
+        {
+            public bool Required { get; set; }
+
+            public bool ShowOnUi { get; set; }
+        }
+
         private const String Name = "x-queryable";
 
-        public QueryableAttribute(bool required = false) : base(Name, required)
+        public QueryableAttribute(bool required = false, bool showOnUi = true) : base(Name, new Settings() { Required = required, ShowOnUi = showOnUi })
         {
         }
 
@@ -25,10 +32,24 @@ namespace Threax.AspNetCore.Models
             Object val = null;
             if (schema.ExtensionData?.TryGetValue(Name, out val) == true)
             {
-                bool? boolVal = val as bool?;
-                if (boolVal != null)
+                Settings settings = val as Settings;
+                if (settings != null)
                 {
-                    return boolVal == true;
+                    return settings.Required;
+                }
+            }
+            return false;
+        }
+
+        public static bool ShowOnUi(JsonSchema4 schema)
+        {
+            Object val = null;
+            if (schema.ExtensionData?.TryGetValue(Name, out val) == true)
+            {
+                Settings settings = val as Settings;
+                if (settings != null)
+                {
+                    return settings.ShowOnUi;
                 }
             }
             return false;
