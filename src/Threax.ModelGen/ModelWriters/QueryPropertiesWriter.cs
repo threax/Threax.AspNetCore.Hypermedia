@@ -23,7 +23,8 @@ namespace Threax.ModelGen.ModelWriters
 
         public virtual String CreateProperty(String type, String name, bool isValueType)
         {
-            return $"        public {type} {name} {{ get; set; }}";
+            var question = isValueType ? "?" : String.Empty;
+            return $"        public {type}{question} {name} {{ get; set; }}";
         }
 
         public string AddDisplay(string name)

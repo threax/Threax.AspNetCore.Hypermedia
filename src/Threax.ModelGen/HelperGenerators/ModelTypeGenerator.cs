@@ -50,7 +50,7 @@ namespace Threax.ModelGen
             return sb.ToString();
         }
 
-        public static String Create(JsonSchema4 schema, String pluralName, ITypeWriter typeWriter, JsonSchema4 rootSchema, String defaultNs, String ns)
+        public static String Create(JsonSchema4 schema, String pluralName, ITypeWriter typeWriter, JsonSchema4 rootSchema, String defaultNs, String ns, Func<JsonProperty, bool> allowPropertyCallback = null)
         {
             lastPropertyNames.Clear();
 
@@ -67,42 +67,45 @@ namespace Threax.ModelGen
 
             foreach (var propPair in schema.Properties)
             {
-                sb.AppendLine();
-                sb.AppendLine();
-
-                var propName = propPair.Key;
-                var prop = propPair.Value;
-
-                String propPrettyName = NameGenerator.CreatePretty(propName);
-
-                if (prop.MaxLength.HasValue)
+                if (allowPropertyCallback == null || allowPropertyCallback.Invoke(propPair.Value))
                 {
-                    string error = null; //Look this up somehow
-                    if (String.IsNullOrWhiteSpace(error))
+                    sb.AppendLine();
+                    sb.AppendLine();
+
+                    var propName = propPair.Key;
+                    var prop = propPair.Value;
+
+                    String propPrettyName = NameGenerator.CreatePretty(propName);
+
+                    if (prop.MaxLength.HasValue)
                     {
-                        error = $"{propPrettyName} must be less than {prop.MaxLength} characters.";
+                        string error = null; //Look this up somehow
+                        if (String.IsNullOrWhiteSpace(error))
+                        {
+                            error = $"{propPrettyName} must be less than {prop.MaxLength} characters.";
+                        }
+                        sb.AppendLineWithContent(typeWriter.AddMaxLength(prop.MaxLength.Value, error));
                     }
-                    sb.AppendLineWithContent(typeWriter.AddMaxLength(prop.MaxLength.Value, error));
-                }
 
-                if (prop.IsRequired)
-                {
-                    string error = null; //Look this up somehow
-                    if (String.IsNullOrWhiteSpace(error))
+                    if (prop.IsRequired)
                     {
-                        error = $"{propPrettyName} must have a value.";
+                        string error = null; //Look this up somehow
+                        if (String.IsNullOrWhiteSpace(error))
+                        {
+                            error = $"{propPrettyName} must have a value.";
+                        }
+                        sb.AppendLineWithContent(typeWriter.AddRequired(error));
                     }
-                    sb.AppendLineWithContent(typeWriter.AddRequired(error));
-                }
 
-                if (!String.IsNullOrWhiteSpace(prop.Title))
-                {
-                    sb.AppendLineWithContent(typeWriter.AddDisplay(prop.Title));
-                }
+                    if (!String.IsNullOrWhiteSpace(prop.Title))
+                    {
+                        sb.AppendLineWithContent(typeWriter.AddDisplay(prop.Title));
+                    }
 
-                var pascalPropName = NameGenerator.CreatePascal(propName);
-                lastPropertyNames.Add(pascalPropName);
-                sb.AppendLineWithContent(typeWriter.CreateProperty(prop.GetClrType(), pascalPropName, prop.IsClrValueType()));
+                    var pascalPropName = NameGenerator.CreatePascal(propName);
+                    lastPropertyNames.Add(pascalPropName);
+                    sb.AppendLineWithContent(typeWriter.CreateProperty(prop.GetClrType(), pascalPropName, prop.IsClrValueType()));
+                }
             }
 
             sb.AppendLineWithContent(typeWriter.EndType(schema.Title, pluralName));

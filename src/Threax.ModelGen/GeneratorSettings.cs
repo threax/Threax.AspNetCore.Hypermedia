@@ -81,12 +81,8 @@ namespace Threax.ModelGen
             }
 
             ModelName = Schema.Title;
-            Object pluralTitleObj;
-            if (Schema.ExtensionData.TryGetValue(PluralNameAttribute.Name, out pluralTitleObj))
-            {
-                PluralModelName = pluralTitleObj.ToString();
-            }
-            else
+            PluralModelName = PluralNameAttribute.GetValue(Schema);
+            if (String.IsNullOrEmpty(PluralModelName))
             {
                 PluralModelName = ModelName + "s";
             }

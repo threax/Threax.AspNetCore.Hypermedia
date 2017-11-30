@@ -1,21 +1,32 @@
-﻿using System;
+﻿using NJsonSchema;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using Threax.AspNetCore.Models;
+using Threax.ModelGen.ModelWriters;
 
 namespace Threax.ModelGen
 {
     public static class QueryModelWriter
     {
-        public static String Get(String ns, String modelName, String modelPluralName)
+        public static String Get(String ns, String modelName, String modelPluralName, JsonSchema4 schema)
         {
             String Model, model;
             NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
             String Models, models;
             NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
-            return Create(ns, Model, model, Models, models);
+            String queryProps = ModelTypeGenerator.Create(schema, modelPluralName, new QueryPropertiesWriter(), schema, ns, ns, allowPropertyCallback: p =>
+            {
+                return QueryableAttribute.GetValue(p) == true;
+            });
+            String queryCreate = ModelTypeGenerator.Create(schema, modelPluralName, new QueryCreateWriter(), schema, ns, ns, allowPropertyCallback: p =>
+            {
+                return QueryableAttribute.GetValue(p) == true;
+            });
+            return Create(ns, Model, model, Models, models, queryProps, queryCreate);
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models)
+        private static String Create(String ns, String Model, String model, String Models, String models, String queryProps, String queryCreate)
         {
             return
 $@"using Halcyon.HAL.Attributes;
@@ -38,6 +49,7 @@ namespace {ns}.InputModels
         public Guid? {Model}Id {{ get; set; }}
 
         //Add any additional query parameters here
+        {queryProps}
 
         /// <summary>
         /// Populate an IQueryable for {models}. Does not apply the skip or limit.
@@ -53,6 +65,7 @@ namespace {ns}.InputModels
             else
             {{
                 //Put additional model query conditions here, this way id lookup always works
+                {queryCreate}
             }}
 
             return query;

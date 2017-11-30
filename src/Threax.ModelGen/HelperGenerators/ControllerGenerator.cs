@@ -16,8 +16,8 @@ namespace Threax.ModelGen
             NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
 
             var additionalAuthorize = "";
-            Object authName;
-            if(schema.ExtensionData.TryGetValue(RequireAuthorizationAttribute.Name, out authName))
+            String authName = RequireAuthorizationAttribute.GetValue(schema);
+            if(authName != null)
             {
                 additionalAuthorize = $", Roles = {authName}";
             }
