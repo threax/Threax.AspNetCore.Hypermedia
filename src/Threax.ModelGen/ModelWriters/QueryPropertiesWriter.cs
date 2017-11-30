@@ -4,13 +4,11 @@ using System.Text;
 
 namespace Threax.ModelGen.ModelWriters
 {
-    class QueryArgsWriter : ITypeWriter
+    class QueryPropertiesWriter : ITypeWriter
     {
-        protected String args;
-
-        public QueryArgsWriter(String args)
+        public QueryPropertiesWriter()
         {
-            this.args = args;
+            
         }
 
         public virtual string StartType(string name, string pluralName)
@@ -26,11 +24,6 @@ namespace Threax.ModelGen.ModelWriters
         public virtual String CreateProperty(String type, String name)
         {
             return $"        public {type} {name} {{ get; set; }}";
-        }
-
-        public virtual String CreateNullableProperty(String type, String name)
-        {
-            return $"        public {type}? {name} {{ get; set; }}";
         }
 
         public string AddDisplay(string name)

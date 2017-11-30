@@ -34,6 +34,7 @@ using {ns}.ViewModels;
 using System;
 using Threax.AspNetCore.Tests;
 using Xunit;
+using System.Collections.Generic;
 
 namespace {ns}.Tests
 {{

@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Threax.ModelGen.ModelWriters
 {
-    class QueryPropertiesWriter : ITypeWriter
+    class QueryArgsWriter : ITypeWriter
     {
         protected String args;
 
-        public QueryPropertiesWriter(String args)
+        public QueryArgsWriter(String args)
         {
             this.args = args;
         }

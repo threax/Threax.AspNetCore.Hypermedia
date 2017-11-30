@@ -30,11 +30,11 @@ namespace Threax.ModelGen
                 schemaTask.Wait();
                 Schema = schemaTask.Result;
 
-                //Modify the schema to make each property aware of its original type
-                foreach(var schemaProp in Schema.Properties.Values)
+                //Modify the schema to make each none or object property aware of its original type
+                foreach (var schemaProp in Schema.Properties.Values)
                 {
                     var prop = type.GetProperty(schemaProp.Name);
-                    if(prop != null)
+                    if (prop != null && (schemaProp.IsType(JsonObjectType.None) || schemaProp.IsType(JsonObjectType.Object)))
                     {
                         var propType = prop.PropertyType;
                         schemaProp.Type = JsonObjectType.Object;
