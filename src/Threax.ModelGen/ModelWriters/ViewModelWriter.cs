@@ -38,5 +38,12 @@ $@"    [HalModel]
         {
             return "";
         }
+
+        public override string CreateProperty(string name, IWriterPropertyInfo info)
+        {
+            return
+                $@"        [UiOrder]
+{base.CreateProperty(name, info)}";
+        }
     }
 }

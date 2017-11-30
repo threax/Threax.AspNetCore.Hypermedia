@@ -23,5 +23,12 @@ $@"    [HalModel]
     public partial class {name}Input : I{name}
     {{";
         }
+
+        public override string CreateProperty(string name, IWriterPropertyInfo info)
+        {
+            return 
+                $@"        [UiOrder]
+{base.CreateProperty(name, info)}";
+        }
     }
 }
