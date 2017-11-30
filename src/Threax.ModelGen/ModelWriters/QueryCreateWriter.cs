@@ -13,11 +13,18 @@ namespace Threax.ModelGen.ModelWriters
 
         public override String CreateProperty(String name, IWriterPropertyInfo info)
         {
-            return
-$@"                if ({name} != null)
+            if (info.IsRequiredInQuery)
+            {
+                return $"                query = query.Where(i => i.{name} == {name});";
+            }
+            else
+            {
+                return
+    $@"                if ({name} != null)
                 {{
                     query = query.Where(i => i.{name} == {name});
                 }}";
+            }
         }
     }
 }

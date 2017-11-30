@@ -15,8 +15,18 @@ namespace Threax.ModelGen.ModelWriters
 
         public override String CreateProperty(String name, IWriterPropertyInfo info)
         {
-            var question = info.IsValueType ? "?" : String.Empty;
-            return $"        {visibility}{info.ClrType}{question} {name} {{ get; set; }}";
+            return $"        {CreateQueryRequired(info, name)}{visibility}{info.ClrType}{CreateQueryNullable(info)} {name} {{ get; set; }}";
+        }
+
+        public static String CreateQueryRequired(IWriterPropertyInfo info, String name)
+        {
+            return !info.IsValueType && info.IsRequiredInQuery ? $@"[Required(ErrorMessage = ""You must provide a {name}."")]
+        " : String.Empty;
+        }
+
+        public static String CreateQueryNullable(IWriterPropertyInfo info)
+        {
+            return info.IsValueType && !info.IsRequiredInQuery ? "?" : String.Empty;
         }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen
 {
@@ -10,6 +11,8 @@ namespace Threax.ModelGen
         bool IsValueType { get; }
 
         String ClrType { get; }
+
+        bool IsRequiredInQuery { get; }
     }
 
     public class TypeWriterPropertyInfo<T> : IWriterPropertyInfo
@@ -24,6 +27,8 @@ namespace Threax.ModelGen
         public bool IsValueType => type.IsValueType;
 
         public string ClrType => type.Name;
+
+        public bool IsRequiredInQuery => false;
     }
 
     public class SchemaWriterPropertyInfo : IWriterPropertyInfo
@@ -38,5 +43,7 @@ namespace Threax.ModelGen
         public bool IsValueType => prop.IsClrValueType();
 
         public string ClrType => prop.GetClrType();
+
+        public bool IsRequiredInQuery => QueryableAttribute.IsRequired(prop);
     }
 }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Threax.AspNetCore.Models;
+using Threax.ModelGen.ModelWriters;
 
 namespace Threax.ModelGen
 {
@@ -12,9 +13,8 @@ namespace Threax.ModelGen
         {
             public override String CreateProperty(String name, IWriterPropertyInfo info)
             {
-                var question = info.IsValueType ? "?" : "";
                 return
-$@"        public {info.ClrType}{question} {name}
+$@"        public {info.ClrType}{QueryPropertiesWriter.CreateQueryNullable(info)} {name}
         {{
             get {{ return query.{name}; }}
             set {{ query.{name} = value; }}
@@ -26,7 +26,6 @@ $@"        public {info.ClrType}{question} {name}
         {
             public override String CreateProperty(String name, IWriterPropertyInfo info)
             {
-                var question = info.IsValueType ? "?" : "";
                 return
 $@"            if ({name} != null)
             {{
@@ -43,11 +42,11 @@ $@"            if ({name} != null)
             NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
             String queryProps = ModelTypeGenerator.Create(schema, modelPluralName, new QueryPropWriter(), schema, ns, ns, allowPropertyCallback: p =>
             {
-                return QueryableAttribute.GetValue(p) == true;
+                return QueryableAttribute.IsQueryable(p) == true;
             });
             String customizer = ModelTypeGenerator.Create(schema, modelPluralName, new QueryCustomizerWriter(), schema, ns, ns, allowPropertyCallback: p =>
             {
-                return QueryableAttribute.GetValue(p) == true;
+                return QueryableAttribute.IsQueryable(p) == true;
             });
             return Create(ns, Model, model, Models, models, queryProps, customizer);
         }

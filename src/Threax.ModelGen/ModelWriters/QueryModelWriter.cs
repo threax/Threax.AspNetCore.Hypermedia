@@ -17,11 +17,11 @@ namespace Threax.ModelGen
             NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
             String queryProps = ModelTypeGenerator.Create(schema, modelPluralName, new QueryPropertiesWriter(), schema, ns, ns, allowPropertyCallback: p =>
             {
-                return QueryableAttribute.GetValue(p) == true;
+                return QueryableAttribute.IsQueryable(p) == true;
             });
             String queryCreate = ModelTypeGenerator.Create(schema, modelPluralName, new QueryCreateWriter(), schema, ns, ns, allowPropertyCallback: p =>
             {
-                return QueryableAttribute.GetValue(p) == true;
+                return QueryableAttribute.IsQueryable(p) == true;
             });
             return Create(ns, Model, model, Models, models, queryProps, queryCreate);
         }
@@ -37,6 +37,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Threax.AspNetCore.Halcyon.Ext;
+using System.ComponentModel.DataAnnotations;
 
 namespace {ns}.InputModels
 {{
