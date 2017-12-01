@@ -128,5 +128,20 @@ namespace Threax.ModelGen
         public bool HasCreated { get; set; } = true;
 
         public bool HasModified { get; set; } = true;
+
+        /// <summary>
+        /// Set this to true to force the ui classes to write.
+        /// </summary>
+        public bool ForceWriteUi { get; set; } = false;
+
+        /// <summary>
+        /// Set this to true to force write the app, which will override all files.
+        /// </summary>
+        public bool ForceWriteApi { get; set; } = false;
+
+        /// <summary>
+        /// Set this to true to force write the tests, which will override all files.
+        /// </summary>
+        public bool ForceWriteTests { get; set; } = false;
     }
 }
