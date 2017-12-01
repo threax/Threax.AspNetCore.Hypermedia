@@ -6,7 +6,7 @@
     },
     "Remove": {
       "commandName": "Project",
-      "commandLineArgs": "remove ValuesModel.json --AppOutDir ..\\DevApp --TestOutDir ..\\..\\test\\DevApp.Tests"
+      "commandLineArgs": "remove DevApp.ModelSchemas.Value --AppOutDir ..\\DevApp --TestOutDir ..\\..\\test\\DevApp.Tests"
     },
     "Help Output": {
       "commandName": "Project"
