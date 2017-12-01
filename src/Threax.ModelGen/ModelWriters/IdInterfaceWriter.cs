@@ -38,7 +38,8 @@ namespace Threax.ModelGen
             });
 
             sb.AppendLine(
-$@"    public partial interface I{name}Id
+$@"
+    public partial interface I{name}Id
     {{
         Guid {name}Id {{ get; set; }}
     }}    
@@ -46,7 +47,6 @@ $@"    public partial interface I{name}Id
     public partial interface I{name}Query
     {{
         Guid? {name}Id {{ get; set; }}
-
         {queryProps}
     }}"
             );
