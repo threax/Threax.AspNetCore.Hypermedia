@@ -13,6 +13,7 @@ namespace Threax.ModelGen.ModelWriters
 
         public override void CreateProperty(StringBuilder sb, String name, IWriterPropertyInfo info)
         {
+            sb.AppendLine();
             if (info.IsRequiredInQuery)
             {
                 sb.AppendLine($"                query = query.Where(i => i.{name} == {name});");

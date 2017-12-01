@@ -64,6 +64,7 @@ $@"    public class {name} {GetAdditionalInterfaces()}
         {
             AttributeBuilder.BuildAttributes(sb, name, info, "        ");
             sb.AppendLine($"        public {info.ClrType} {name} {{ get; set; }}");
+            sb.AppendLine();
         }
 
         public virtual void EndNamespace(StringBuilder sb)

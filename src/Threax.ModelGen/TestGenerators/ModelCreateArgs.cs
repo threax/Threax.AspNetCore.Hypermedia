@@ -8,7 +8,7 @@ namespace Threax.ModelGen.TestGenerators
     {
         public override void CreateProperty(StringBuilder sb, string name, IWriterPropertyInfo info)
         {
-            sb.AppendLine($"                                         , {info.ClrType} {name} = default({info.ClrType})");
+            sb.Append($", {info.ClrType} {name} = default({info.ClrType})");
         }
     }
 }

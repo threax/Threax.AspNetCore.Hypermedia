@@ -21,7 +21,8 @@ $@"    public partial interface I{name}
 
         public override void CreateProperty(StringBuilder sb, String name, IWriterPropertyInfo info)
         {
-             sb.AppendLine($"        {info.ClrType} {name} {{ get; set; }}");
+            sb.AppendLine($"        {info.ClrType} {name} {{ get; set; }}");
+            sb.AppendLine();
         }
     }
 }

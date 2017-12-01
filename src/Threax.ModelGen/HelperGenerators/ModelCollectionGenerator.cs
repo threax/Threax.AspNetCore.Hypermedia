@@ -27,6 +27,7 @@ $@"        public {info.ClrType}{QueryPropertiesWriter.CreateQueryNullable(info)
         {
             public override void CreateProperty(StringBuilder sb, String name, IWriterPropertyInfo info)
             {
+                sb.AppendLine();
                 if (info.IsRequiredInQuery)
                 {
                     sb.AppendLine($@"            queryString.AppendItem(""{NameGenerator.CreateCamel(name)}"", {name}.ToString());");

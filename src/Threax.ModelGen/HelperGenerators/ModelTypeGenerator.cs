@@ -51,9 +51,6 @@ namespace Threax.ModelGen
             {
                 if (allowPropertyCallback == null || allowPropertyCallback.Invoke(propPair.Value))
                 {
-                    sb.AppendLine();
-                    sb.AppendLine();
-
                     var propName = propPair.Key;
                     var prop = propPair.Value;
 

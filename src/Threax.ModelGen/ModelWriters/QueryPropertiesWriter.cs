@@ -38,7 +38,7 @@ namespace Threax.ModelGen.ModelWriters
 
         public static String CreateQueryUiSearch(IWriterPropertyInfo info, String name)
         {
-            return info.ShowOnQueryUi ? $@"[UiSearch]
+            return info.ShowOnQueryUi ? $@"        [UiSearch]
         [UiOrder]
         " : String.Empty;
         }
