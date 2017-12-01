@@ -11,32 +11,34 @@ namespace Threax.ModelGen
     {
         class QueryPropWriter : AbstractTypeWriter
         {
-            public override String CreateProperty(String name, IWriterPropertyInfo info)
+            public override void CreateProperty(StringBuilder sb, String name, IWriterPropertyInfo info)
             {
-                return
+                sb.AppendLine(
 $@"        public {info.ClrType}{QueryPropertiesWriter.CreateQueryNullable(info)} {name}
         {{
             get {{ return query.{name}; }}
             set {{ query.{name} = value; }}
-        }}";
+        }}"
+                );
             }
         }
 
         class QueryCustomizerWriter : AbstractTypeWriter
         {
-            public override String CreateProperty(String name, IWriterPropertyInfo info)
+            public override void CreateProperty(StringBuilder sb, String name, IWriterPropertyInfo info)
             {
                 if (info.IsRequiredInQuery)
                 {
-                    return $@"            queryString.AppendItem(""{NameGenerator.CreateCamel(name)}"", {name}.ToString());";
+                    sb.AppendLine($@"            queryString.AppendItem(""{NameGenerator.CreateCamel(name)}"", {name}.ToString());");
                 }
                 else
                 {
-                    return
+                    sb.AppendLine(
     $@"            if ({name} != null)
             {{
                 queryString.AppendItem(""{NameGenerator.CreateCamel(name)}"", {name}.ToString());
-            }}";
+            }}"
+                    );
                 }
             }
         }

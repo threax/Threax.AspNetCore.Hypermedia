@@ -1,71 +1,48 @@
 ﻿using System;
+using System.Text;
 
 namespace Threax.ModelGen
 {
     public interface ITypeWriter
     {
-        string AddUsings(String ns);
-        string AddDisplay(string name);
-        string AddMaxLength(int length, string errorMessage);
-        string AddRequired(string errorMessage);
-        string CreateProperty(string name, IWriterPropertyInfo info);
-        string EndType(String name, String pluralName);
-        string StartType(String name, String pluralName);
-        String AddTypeDisplay(String name);
-        string EndNamespace();
-        string StartNamespace(string name);
+        void AddUsings(StringBuilder sb, String ns);
+        void CreateProperty(StringBuilder sb, string name, IWriterPropertyInfo info);
+        void EndType(StringBuilder sb, String name, String pluralName);
+        void StartType(StringBuilder sb, String name, String pluralName);
+        void EndNamespace(StringBuilder sb);
+        void StartNamespace(StringBuilder sb, string name);
     }
 
     public abstract class AbstractTypeWriter : ITypeWriter
     {
-        public virtual string AddDisplay(string name)
+        public virtual void AddUsings(StringBuilder sb, string ns)
         {
-            return "";
+            
         }
 
-        public virtual string AddMaxLength(int length, string errorMessage)
+        public virtual void CreateProperty(StringBuilder sb, string name, IWriterPropertyInfo info)
         {
-            return "";
+            
         }
 
-        public virtual string AddRequired(string errorMessage)
+        public virtual void EndNamespace(StringBuilder sb)
         {
-            return "";
+            
         }
 
-        public virtual string AddTypeDisplay(string name)
+        public virtual void EndType(StringBuilder sb, string name, string pluralName)
         {
-            return "";
+            
         }
 
-        public virtual string AddUsings(string ns)
+        public virtual void StartNamespace(StringBuilder sb, string name)
         {
-            return "";
+            
         }
 
-        public virtual string CreateProperty(string name, IWriterPropertyInfo info)
+        public virtual void StartType(StringBuilder sb, string name, string pluralName)
         {
-            return "";
-        }
-
-        public virtual string EndNamespace()
-        {
-            return "";
-        }
-
-        public virtual string EndType(string name, string pluralName)
-        {
-            return "";
-        }
-
-        public virtual string StartNamespace(string name)
-        {
-            return "";
-        }
-
-        public virtual string StartType(string name, string pluralName)
-        {
-            return "";
+            
         }
     }
 }

@@ -15,16 +15,19 @@ namespace Threax.ModelGen.ModelWriters
             this.allowAttributes = allowAttributes;
         }
 
-        public override String CreateProperty(String name, IWriterPropertyInfo info)
+        public override void CreateProperty(StringBuilder sb, String name, IWriterPropertyInfo info)
         {
-            var required = allowAttributes ? CreateQueryRequired(info, name) : String.Empty;
-            var uiSearch = allowAttributes ? CreateQueryUiSearch(info, name) : String.Empty;
-            return $"        {required}{uiSearch}{visibility}{info.ClrType}{CreateQueryNullable(info)} {name} {{ get; set; }}";
-        }
+            if (allowAttributes)
+            {
+                sb.AppendLineWithContent(CreateQueryRequired(info, name));
+                sb.AppendLineWithContent(CreateQueryUiSearch(info, name));
+            }
 
-        public override String AddDisplay(String name)
-        {
-            return $@"        [Display(Name = ""{name}"")]";
+            if (!String.IsNullOrEmpty(info.DisplayName))
+            {
+                sb.AppendLine(AttributeBuilder.GetDisplay(info.DisplayName, "        "));
+            }
+            sb.AppendLine($"        {visibility}{info.ClrType}{CreateQueryNullable(info)} {name} {{ get; set; }}");
         }
 
         public static String CreateQueryRequired(IWriterPropertyInfo info, String name)

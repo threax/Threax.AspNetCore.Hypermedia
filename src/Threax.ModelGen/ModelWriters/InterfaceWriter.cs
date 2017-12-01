@@ -1,44 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Threax.ModelGen.ModelWriters;
 
 namespace Threax.ModelGen
 {
     public class InterfaceWriter : ClassWriter
     {
-        public InterfaceWriter(bool hasCreated, bool hasModified) : base(hasCreated, hasModified)
+        public InterfaceWriter(bool hasCreated, bool hasModified) : base(hasCreated, hasModified, new NoAttributeBuilder())
         {
         }
 
-        public override String StartType(String name, String pluralName)
+        public override void StartType(StringBuilder sb, String name, String pluralName)
         {
-            return $@"    public partial interface I{name} 
-    {{";
+            sb.AppendLine(
+$@"    public partial interface I{name} 
+    {{"
+            );
         }
 
-        public override String CreateProperty(String name, IWriterPropertyInfo info)
+        public override void CreateProperty(StringBuilder sb, String name, IWriterPropertyInfo info)
         {
-            return $"        {info.ClrType} {name} {{ get; set; }}";
-        }
-
-        public override string AddTypeDisplay(string name)
-        {
-            return "";
-        }
-
-        public override string AddDisplay(string name)
-        {
-            return "";
-        }
-
-        public override string AddMaxLength(int length, string errorMessage)
-        {
-            return "";
-        }
-
-        public override string AddRequired(string errorMessage)
-        {
-            return "";
+             sb.AppendLine($"        {info.ClrType} {name} {{ get; set; }}");
         }
     }
 }

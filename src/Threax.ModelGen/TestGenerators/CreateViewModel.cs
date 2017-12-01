@@ -12,14 +12,15 @@ namespace Threax.ModelGen.TestGenerators
             
         }
 
-        public override string StartType(string name, string pluralName)
+        public override void StartType(StringBuilder sb, string name, string pluralName)
         {
-            return 
+            sb.AppendLine( 
 $@"        public static {name} CreateView(String seed = """", Guid? {name}Id = null{args})
         {{
             return new {name}()
             {{
-                {name}Id = {name}Id.HasValue ? {name}Id.Value : Guid.NewGuid(),";
+                {name}Id = {name}Id.HasValue ? {name}Id.Value : Guid.NewGuid(),"
+            );
         }
     }
 }

@@ -13,66 +13,50 @@ namespace Threax.ModelGen.TestGenerators
             this.args = args;
         }
 
-        public virtual string StartType(string name, string pluralName)
+        public virtual void StartType(StringBuilder sb, string name, string pluralName)
         {
-            return 
+            sb.AppendLine(
 $@"        public static {name}Input CreateInput(String seed = """"{args})
         {{
             return new {name}Input()
-            {{";
+            {{"
+            );
         }
 
-        public string EndType(string name, string pluralName)
+        public void EndType(StringBuilder sb, string name, string pluralName)
         {
-            return 
+            sb.AppendLine(
 $@"            }};
-        }}";
+        }}"
+            );
         }
 
-        public string CreateProperty(string name, IWriterPropertyInfo info)
+        public void CreateProperty(StringBuilder sb, string name, IWriterPropertyInfo info)
         {
             switch (info.ClrType.ToLowerInvariant())
             {
                 case "string":
-                    return $"                {name} = {name} != null ? {name} : $\"{name} {{seed}}\",";
+                    sb.AppendLine($"                {name} = {name} != null ? {name} : $\"{name} {{seed}}\",");
+                    break;
                 default:
-                    return $"                {name} = {name},";
+                    sb.AppendLine($"                {name} = {name},");
+                    break;
             }
         }
 
-        public string AddDisplay(string name)
+        public void AddUsings(StringBuilder sb, string ns)
         {
-            return "";
+            
         }
 
-        public string AddMaxLength(int length, string errorMessage)
+        public void EndNamespace(StringBuilder sb)
         {
-            return "";
+            
         }
 
-        public string AddRequired(string errorMessage)
+        public void StartNamespace(StringBuilder sb, string name)
         {
-            return "";
-        }
-
-        public string AddTypeDisplay(string name)
-        {
-            return "";
-        }
-
-        public string AddUsings(string ns)
-        {
-            return "";
-        }
-
-        public string EndNamespace()
-        {
-            return "";
-        }
-
-        public string StartNamespace(string name)
-        {
-            return "";
+            
         }
     }
 }

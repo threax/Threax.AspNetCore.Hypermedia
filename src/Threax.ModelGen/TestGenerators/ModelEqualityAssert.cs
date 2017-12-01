@@ -6,56 +6,37 @@ namespace Threax.ModelGen.TestGenerators
 {
     class ModelEqualityAssert : ITypeWriter
     {
-        public string StartType(string name, string pluralName)
+        public void StartType(StringBuilder sb, string name, string pluralName)
         {
-            return 
+            sb.AppendLine( 
 $@"        public static void AssertEqual(I{name} expected, I{name} actual)
-        {{";
+        {{"
+            );
         }
 
-        public string EndType(string name, string pluralName)
+        public void EndType(StringBuilder sb, string name, string pluralName)
         {
-            return "        }";
+            sb.AppendLine("        }");
         }
 
-        public string CreateProperty(string name, IWriterPropertyInfo info)
+        public void CreateProperty(StringBuilder sb, string name, IWriterPropertyInfo info)
         {
-            return $"           Assert.Equal(expected.{name}, actual.{name});";
+            sb.AppendLine($"           Assert.Equal(expected.{name}, actual.{name});");
         }
 
-        public string AddDisplay(string name)
+        public void AddUsings(StringBuilder sb, string ns)
         {
-            return "";
+            
         }
 
-        public string AddMaxLength(int length, string errorMessage)
+        public void EndNamespace(StringBuilder sb)
         {
-            return "";
+            
         }
 
-        public string AddRequired(string errorMessage)
+        public void StartNamespace(StringBuilder sb, string name)
         {
-            return "";
-        }
-
-        public string AddTypeDisplay(string name)
-        {
-            return "";
-        }
-
-        public string AddUsings(string ns)
-        {
-            return "";
-        }
-
-        public string EndNamespace()
-        {
-            return "";
-        }
-
-        public string StartNamespace(string name)
-        {
-            return "";
+            
         }
     }
 }

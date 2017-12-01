@@ -1,49 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Threax.ModelGen.ModelWriters;
 
 namespace Threax.ModelGen
 {
     class EntityWriter : ClassWriter
     {
         public EntityWriter(bool hasCreated, bool hasModified)
-            :base(hasCreated, hasModified)
+            :base(hasCreated, hasModified, new AttributeBuilder() { BuildDisplay = false, BuildRequired = false })
         {
             
         }
 
-        public override string AddUsings(string ns)
+        public override void AddUsings(StringBuilder sb, string ns)
         {
-            return $@"{base.AddUsings(ns)}
-using {ns}.Models;";
+            base.AddUsings(sb, ns);
+            sb.AppendLine($"using {ns}.Models;");
         }
 
-        public override String StartType(String name, String pluralName)
+        public override void StartType(StringBuilder sb, String name, String pluralName)
         {
-            return $@"    public partial class {name}Entity : I{name}, I{name}Id{AdditionalInterfacesText} {GetAdditionalInterfaces()}
+            sb.AppendLine(
+$@"    public partial class {name}Entity : I{name}, I{name}Id{AdditionalInterfacesText} {GetAdditionalInterfaces()}
     {{
-        [Key]
-{CreateProperty($"{name}Id", new TypeWriterPropertyInfo<Guid>())}";
-        }
+        [Key]"
+            );
 
-        public override string AddTypeDisplay(string name)
-        {
-            return "";
-        }
-
-        public override string AddDisplay(string name)
-        {
-            return "";
-        }
-
-        public override string AddMaxLength(int length, string errorMessage)
-        {
-            return $@"        [MaxLength({length})]";
-        }
-
-        public override string AddRequired(string errorMessage)
-        {
-            return "";
+            CreateProperty(sb, $"{name}Id", new TypeWriterPropertyInfo<Guid>());
         }
 
         public String AdditionalInterfaces { get; set; }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Threax.ModelGen.ModelWriters;
 
 namespace Threax.ModelGen
 {
@@ -8,91 +9,74 @@ namespace Threax.ModelGen
     {
         private bool hasCreated = false;
         private bool hasModified = false;
+        protected IAttributeBuilder AttributeBuilder { get; private set; }
 
-        public ClassWriter(bool hasCreated, bool hasModified)
+        public ClassWriter(bool hasCreated, bool hasModified, IAttributeBuilder attributeBuilder)
         {
             this.hasCreated = hasCreated;
             this.hasModified = hasModified;
+            this.AttributeBuilder = attributeBuilder;
         }
 
-        public virtual String AddUsings(String ns)
+        public virtual void AddUsings(StringBuilder sb, String ns)
         {
-            var usings = @"using System;
+            sb.AppendLine(
+@"using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Halcyon.HAL.Attributes;
 using Threax.AspNetCore.Halcyon.Ext;
-using Threax.AspNetCore.Halcyon.Ext.UIAttrs;";
+using Threax.AspNetCore.Halcyon.Ext.UIAttrs;"
+            );
 
             if(hasCreated || hasModified)
             {
-                usings += @"
-using Threax.AspNetCore.Tracking;";
+                sb.AppendLine("using Threax.AspNetCore.Tracking;");
             }
-
-            return usings;
         }
 
-        public virtual String StartType(String name, String pluralName)
+        public virtual void StartType(StringBuilder sb, String name, String pluralName)
         {
-            return $@"    public class {name} {GetAdditionalInterfaces()}
-    {{";
+            sb.AppendLine(
+$@"    public class {name} {GetAdditionalInterfaces()}
+    {{"
+            );
         }
 
-        public virtual String EndType(String name, String pluralName)
+        public virtual void EndType(StringBuilder sb, String name, String pluralName)
         {
-            var sb = new StringBuilder();
-
             if (hasCreated)
             {
-                sb.AppendLine(CreateProperty("Created", new TypeWriterPropertyInfo<DateTime>()));
+                CreateProperty(sb, "Created", new TypeWriterPropertyInfo<DateTime>());
             }
 
             if (hasModified)
             {
-                sb.AppendLine(CreateProperty("Modified", new TypeWriterPropertyInfo<DateTime>()));
+                CreateProperty(sb, "Modified", new TypeWriterPropertyInfo<DateTime>());
             }
 
-            sb.Append("    }");
-            return sb.ToString();
+            sb.AppendLine("    }");
         }
 
-        public virtual String AddMaxLength(int length, String errorMessage)
+        public virtual void CreateProperty(StringBuilder sb, String name, IWriterPropertyInfo info)
         {
-            return $@"        [MaxLength({length}, ErrorMessage = ""{errorMessage}"")]";
+            AttributeBuilder.BuildAttributes(sb, name, info, "        ");
+            sb.AppendLine($"        public {info.ClrType} {name} {{ get; set; }}");
         }
 
-        public virtual String AddRequired(String errorMessage)
+        public virtual void EndNamespace(StringBuilder sb)
         {
-            return $@"        [Required(ErrorMessage = ""{errorMessage}"")]";
+            sb.AppendLine("}");
         }
 
-        public virtual String AddTypeDisplay(String name)
+        public virtual void StartNamespace(StringBuilder sb, string name)
         {
-            return $@"    [UiTitle(""{name}"")]";
-        }
-
-        public virtual String AddDisplay(String name)
-        {
-            return $@"        [Display(Name = ""{name}"")]";
-        }
-
-        public virtual String CreateProperty(String name, IWriterPropertyInfo info)
-        {
-            return $"        public {info.ClrType} {name} {{ get; set; }}";
-        }
-
-        public virtual string EndNamespace()
-        {
-            return "}";
-        }
-
-        public virtual string StartNamespace(string name)
-        {
-            return $@"namespace {name} 
-{{";
+            sb.AppendLine(
+$@"namespace {name} 
+{{"
+            );
         }
 
         protected String GetAdditionalInterfaces()

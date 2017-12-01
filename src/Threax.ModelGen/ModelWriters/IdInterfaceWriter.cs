@@ -22,23 +22,23 @@ namespace Threax.ModelGen
         {
         }
 
-        public override string StartNamespace(string name)
+        public override void StartNamespace(StringBuilder sb, string name)
         {
             this.ns = name;
-            return base.StartNamespace(name);
+            base.StartNamespace(sb, name);
         }
 
-        public override string EndType(String name, String pluralName)
+        public override void EndType(StringBuilder sb, String name, String pluralName)
         {
+            base.EndType(sb, name, pluralName);
+
             String queryProps = ModelTypeGenerator.Create(schema, pluralName, new QueryPropertiesWriter(visibility: "", allowAttributes: false), schema, ns, ns, allowPropertyCallback: p =>
             {
                 return QueryableAttribute.IsQueryable(p) == true;
             });
 
-            return $@"
-{base.EndType(name, pluralName)}
-
-    public partial interface I{name}Id
+            sb.AppendLine(
+$@"    public partial interface I{name}Id
     {{
         Guid {name}Id {{ get; set; }}
     }}    
@@ -48,7 +48,8 @@ namespace Threax.ModelGen
         Guid? {name}Id {{ get; set; }}
 
         {queryProps}
-    }}";
+    }}"
+            );
         }
     }
 }

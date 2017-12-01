@@ -15,6 +15,12 @@ namespace Threax.ModelGen
         bool IsRequiredInQuery { get; }
 
         bool ShowOnQueryUi { get; }
+
+        String DisplayName { get; }
+
+        bool HasRequiredAttribute { get; }
+
+        int? MaxLength { get; }
     }
 
     public class TypeWriterPropertyInfo<T> : IWriterPropertyInfo
@@ -33,6 +39,12 @@ namespace Threax.ModelGen
         public bool IsRequiredInQuery => false;
 
         public bool ShowOnQueryUi => false;
+
+        public String DisplayName => null;
+
+        public bool HasRequiredAttribute => false;
+
+        public int? MaxLength => null;
     }
 
     public class SchemaWriterPropertyInfo : IWriterPropertyInfo
@@ -51,5 +63,11 @@ namespace Threax.ModelGen
         public bool IsRequiredInQuery => QueryableAttribute.IsRequired(prop);
 
         public bool ShowOnQueryUi => QueryableAttribute.ShowOnUi(prop);
+
+        public String DisplayName => prop.Title;
+
+        public bool HasRequiredAttribute => prop.IsRequired;
+
+        public int? MaxLength => prop.MaxLength;
     }
 }
