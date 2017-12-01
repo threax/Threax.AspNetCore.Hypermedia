@@ -24,7 +24,6 @@ namespace Threax.ModelGen
 
             var sb = new StringBuilder();
             typeWriter.AddUsings(sb, defaultNs);
-            sb.AppendLine();
             typeWriter.StartNamespace(sb, ns);
 
             typeWriter.StartType(sb, name, pluralName);
@@ -41,7 +40,6 @@ namespace Threax.ModelGen
 
             var sb = new StringBuilder();
             typeWriter.AddUsings(sb, defaultNs);
-            sb.AppendLine();
             typeWriter.StartNamespace(sb, ns);
             typeWriter.StartType(sb, schema.Title, pluralName);
 

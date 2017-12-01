@@ -50,8 +50,7 @@ namespace {ns}.InputModels
         /// </summary>
         public Guid? {Model}Id {{ get; set; }}
 
-        //Add any additional query parameters here
-        {queryProps}
+{queryProps}
 
         /// <summary>
         /// Populate an IQueryable for {models}. Does not apply the skip or limit.
@@ -66,8 +65,7 @@ namespace {ns}.InputModels
             }}
             else
             {{
-                //Put additional model query conditions here, this way id lookup always works
-                {queryCreate}
+{queryCreate}
             }}
 
             return query;

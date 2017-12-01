@@ -74,6 +74,7 @@ $@"    public class {name} {GetAdditionalInterfaces()}
 
         public virtual void StartNamespace(StringBuilder sb, string name)
         {
+            sb.AppendLine();
             sb.AppendLine(
 $@"namespace {name} 
 {{"

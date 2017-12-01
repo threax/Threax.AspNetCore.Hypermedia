@@ -20,6 +20,7 @@ $@"        public {info.ClrType}{QueryPropertiesWriter.CreateQueryNullable(info)
             set {{ query.{name} = value; }}
         }}"
                 );
+                sb.AppendLine();
             }
         }
 
@@ -27,7 +28,6 @@ $@"        public {info.ClrType}{QueryPropertiesWriter.CreateQueryNullable(info)
         {
             public override void CreateProperty(StringBuilder sb, String name, IWriterPropertyInfo info)
             {
-                sb.AppendLine();
                 if (info.IsRequiredInQuery)
                 {
                     sb.AppendLine($@"            queryString.AppendItem(""{NameGenerator.CreateCamel(name)}"", {name}.ToString());");
@@ -41,6 +41,7 @@ $@"        public {info.ClrType}{QueryPropertiesWriter.CreateQueryNullable(info)
             }}"
                     );
                 }
+                sb.AppendLine();
             }
         }
 
@@ -100,17 +101,13 @@ namespace {ns}.ViewModels
             set {{ query.{Model}Id = value; }}
         }}
 
-        {queryProps}
-
-        protected override void AddCustomQuery(string rel, QueryStringBuilder queryString)
+{queryProps}        protected override void AddCustomQuery(string rel, QueryStringBuilder queryString)
         {{
             if ({Model}Id != null)
             {{
                 queryString.AppendItem(""{model}Id"", {Model}Id.Value.ToString());
             }}
-
             {customizer}
-
             OnAddCustomQuery(rel, queryString);
 
             base.AddCustomQuery(rel, queryString);

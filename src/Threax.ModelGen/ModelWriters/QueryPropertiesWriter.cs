@@ -19,8 +19,12 @@ namespace Threax.ModelGen.ModelWriters
         {
             if (allowAttributes)
             {
-                sb.AppendLineWithContent(CreateQueryRequired(info, name));
-                sb.AppendLineWithContent(CreateQueryUiSearch(info, name));
+                sb.AppendLine("        [UiSearch]");
+                sb.AppendLine("        [UiOrder]");
+                if(!info.IsValueType && info.IsRequiredInQuery)
+                {
+                    sb.AppendLine($@"        [Required(ErrorMessage = ""You must provide a {name}."")]");
+                }
             }
 
             if (!String.IsNullOrEmpty(info.DisplayName))
@@ -28,19 +32,7 @@ namespace Threax.ModelGen.ModelWriters
                 sb.AppendLine(AttributeBuilder.GetDisplay(info.DisplayName, "        "));
             }
             sb.AppendLine($"        {visibility}{info.ClrType}{CreateQueryNullable(info)} {name} {{ get; set; }}");
-        }
-
-        public static String CreateQueryRequired(IWriterPropertyInfo info, String name)
-        {
-            return !info.IsValueType && info.IsRequiredInQuery ? $@"[Required(ErrorMessage = ""You must provide a {name}."")]
-        " : String.Empty;
-        }
-
-        public static String CreateQueryUiSearch(IWriterPropertyInfo info, String name)
-        {
-            return info.ShowOnQueryUi ? $@"        [UiSearch]
-        [UiOrder]
-        " : String.Empty;
+            sb.AppendLine();
         }
 
         public static String CreateQueryNullable(IWriterPropertyInfo info)
