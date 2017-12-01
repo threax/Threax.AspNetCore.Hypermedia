@@ -107,7 +107,8 @@ namespace {ns}.ViewModels
             {{
                 queryString.AppendItem(""{model}Id"", {Model}Id.Value.ToString());
             }}
-            {customizer}
+
+{customizer}
             OnAddCustomQuery(rel, queryString);
 
             base.AddCustomQuery(rel, queryString);

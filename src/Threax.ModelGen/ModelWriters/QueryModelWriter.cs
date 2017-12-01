@@ -51,7 +51,6 @@ namespace {ns}.InputModels
         public Guid? {Model}Id {{ get; set; }}
 
 {queryProps}
-
         /// <summary>
         /// Populate an IQueryable for {models}. Does not apply the skip or limit.
         /// </summary>
@@ -65,11 +64,13 @@ namespace {ns}.InputModels
             }}
             else
             {{
-{queryCreate}
+{queryCreate}                OnCreate(ref query);
             }}
 
             return query;
         }}
+
+        partial void OnCreate<T>(ref IQueryable<T> query);
     }}
 }}";
         }
