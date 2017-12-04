@@ -68,23 +68,15 @@ remove [Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirect
 
         private static void GenerateClasses(GeneratorSettings settings)
         {
-            String modelInterface, entity;
-
-            List<String> propertyNames = null;
-
             if (settings.AppOutDir != null && settings.AppNamespace != null)
             {
-                    modelInterface = ModelTypeGenerator.Create(settings.Schema, settings.PluralModelName, new IdInterfaceWriter(settings.Schema), settings.Schema, settings.AppNamespace, settings.AppNamespace + ".Models");
-                    entity = ModelTypeGenerator.Create(settings.Schema, settings.PluralModelName, new EntityWriter(settings.Schema), settings.Schema, settings.AppNamespace, settings.AppNamespace + ".Database");
-
-                propertyNames = ModelTypeGenerator.LastPropertyNames.ToList();
-
                 if (settings.WriteApp)
                 {
                     WriteFile(Path.Combine(settings.AppOutDir, $"Models/I{settings.ModelName}.cs"), PartialModelInterfaceGenerator.GetUserPartial(settings.ModelName, settings.AppNamespace + ".Model"), false);
+                    var modelInterface = ModelTypeGenerator.Create(settings.Schema, settings.PluralModelName, new IdInterfaceWriter(settings.Schema), settings.Schema, settings.AppNamespace, settings.AppNamespace + ".Models");
                     WriteFile(Path.Combine(settings.AppOutDir, $"Models/I{settings.ModelName}.Generated.cs"), modelInterface, true);
                     WriteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.ModelName}Entity.cs"), PartialTypeGenerator.GetUserPartial(settings.ModelName, settings.AppNamespace + ".Database", "Entity"), false);
-                    WriteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.ModelName}Entity.Generated.cs"), entity, true);
+                    WriteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.ModelName}Entity.Generated.cs"), EntityWriter.Create(settings.Schema, settings.AppNamespace), true);
                     WriteFile(Path.Combine(settings.AppOutDir, $"InputModels/{settings.ModelName}Input.cs"), PartialTypeGenerator.GetUserPartial(settings.ModelName, settings.AppNamespace + ".InputModels", "Input"), false);
                     WriteFile(Path.Combine(settings.AppOutDir, $"InputModels/{settings.ModelName}Input.Generated.cs"), InputModelWriter.Create(settings.Schema, settings.AppNamespace), true);
                     WriteFile(Path.Combine(settings.AppOutDir, $"InputModels/{settings.ModelName}Query.cs"), PartialTypeGenerator.GetUserPartial(settings.ModelName, settings.AppNamespace + ".InputModels", "Query"), false);
@@ -102,6 +94,7 @@ remove [Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirect
                     WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{settings.ModelName}Collection.Generated.cs"), ModelCollectionGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName, settings.Schema), true);
                     WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/EntryPoint.{settings.ModelName}.cs"), EntryPointGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName), settings.ForceWriteApi);
 
+                    var propertyNames = settings.Schema.Properties.Values.Select(i => NameGenerator.CreatePascal(i.Name));
                     WriteFile(Path.Combine(settings.AppOutDir, $"Views/{settings.UiController}/{settings.PluralModelName}.cshtml"), CrudCshtmlInjectorGenerator.Get(settings.ModelName, settings.PluralModelName, propertyNames: propertyNames), settings.ForceWriteUi);
                     WriteFile(Path.Combine(settings.AppOutDir, $"Client/Libs/{settings.ModelName}CrudInjector.ts"), CrudInjectorGenerator.Get(settings.ModelName, settings.PluralModelName), settings.ForceWriteUi);
                     WriteFile(Path.Combine(settings.AppOutDir, $"Views/{settings.UiController}/{settings.PluralModelName}.ts"), CrudUiTypescriptGenerator.Get(settings.ModelName), settings.ForceWriteUi);

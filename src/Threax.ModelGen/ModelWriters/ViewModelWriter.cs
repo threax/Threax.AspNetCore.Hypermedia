@@ -14,7 +14,6 @@ namespace Threax.ModelGen
         {
             var sb = new StringBuilder();
             bool hasBase = false;
-            //Names and namespaces don't matter, just generating properties.
             var baseClass = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new BaseModelWriter("", CreateAttributeBuilder()), ns, ns + ".ViewModels", allowPropertyCallback: p =>
             {
                 hasBase = hasBase | p.IsVirtual();

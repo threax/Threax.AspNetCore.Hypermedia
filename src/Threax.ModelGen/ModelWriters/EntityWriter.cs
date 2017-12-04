@@ -7,46 +7,37 @@ using Threax.ModelGen.ModelWriters;
 
 namespace Threax.ModelGen
 {
-    class EntityWriter : ClassWriter
+    static class EntityWriter
     {
-        public EntityWriter(JsonSchema4 schema)
-            :base(schema.AllowCreated(), schema.AllowModified(), new MaxLengthAttributeBuilder())
+        public static String Create(JsonSchema4 schema, String ns)
         {
-            
-        }
-
-        public override void AddUsings(StringBuilder sb, string ns)
-        {
-            base.AddUsings(sb, ns);
-            sb.AppendLine($"using {ns}.Models;");
-        }
-
-        public override void StartType(StringBuilder sb, String name, String pluralName)
-        {
-            sb.AppendLine(
-$@"    public partial class {name}Entity : I{name}, I{name}Id{AdditionalInterfacesText} {GetAdditionalInterfaces()}
+            var sb = new StringBuilder();
+            bool hasBase = false;
+            var baseClass = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new BaseModelWriter("Entity", CreateAttributeBuilder()), ns, ns + ".Database", allowPropertyCallback: p =>
+            {
+                hasBase = hasBase | p.IsVirtual();
+                return p.IsVirtual();
+            });
+            return ModelTypeGenerator.Create(schema, schema.GetPluralName(), new MainModelWriter(hasBase ? baseClass : null, "Entity", CreateAttributeBuilder(), new NoAttributeBuilder(), schema.AllowCreated(), schema.AllowModified(),
+                a =>
+                {
+                    a.Builder.AppendLine(
+$@"    public partial class {a.Name}Entity : {a.BaseClassName}I{a.Name}, I{a.Name}Id {a.Writer.GetAdditionalInterfaces()}
     {{
         [Key]"
             );
 
-            CreateProperty(sb, $"{name}Id", new TypeWriterPropertyInfo<Guid>());
+                    a.Writer.CreateProperty(a.Builder, $"{a.Name}Id", new TypeWriterPropertyInfo<Guid>());
+                }
+                )
+            {
+                AdditionalUsings = $"using {ns}.Models;"
+            }, ns, ns + ".Database", allowPropertyCallback: p => !p.IsVirtual());
         }
 
-        public String AdditionalInterfaces { get; set; }
-
-        private String AdditionalInterfacesText
+        private static IAttributeBuilder CreateAttributeBuilder()
         {
-            get
-            {
-                if (String.IsNullOrWhiteSpace(AdditionalInterfaces))
-                {
-                    return "";
-                }
-                else
-                {
-                    return ", " + AdditionalInterfaces;
-                }
-            }
+            return new MaxLengthAttributeBuilder();
         }
     }
 }
