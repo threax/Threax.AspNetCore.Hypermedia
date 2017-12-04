@@ -19,7 +19,7 @@ namespace Threax.ModelGen
                 return p.IsVirtual();
             });
             return ModelTypeGenerator.Create(schema, schema.GetPluralName(), new MainModelWriter(hasBase ? baseClass : null, "Input", CreatePropertyAttributes(), CreateClassAttributes(), false, false,
-                (b, a) => b.AppendLine(
+                a => a.Builder.AppendLine(
 $@"    public partial class {a.Name}{a.ModelSuffix} : {a.BaseClassName}I{a.Name}
     {{"))
             {

@@ -125,7 +125,7 @@ $@"namespace {name}
 
         public bool WriteNamespace { get; set; } = true;
 
-        protected String GetAdditionalInterfaces()
+        public String GetAdditionalInterfaces()
         {
             String extraInterfaces = "";
             if (hasCreated && hasModified)

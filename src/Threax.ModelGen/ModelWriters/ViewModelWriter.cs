@@ -15,66 +15,26 @@ namespace Threax.ModelGen
             var sb = new StringBuilder();
             bool hasBase = false;
             //Names and namespaces don't matter, just generating properties.
-            var baseClass = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new BaseModelWriter(), ns, ns + ".ViewModels", allowPropertyCallback: p =>
+            var baseClass = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new BaseModelWriter("", CreateAttributeBuilder()), ns, ns + ".ViewModels", allowPropertyCallback: p =>
             {
                 hasBase = hasBase | p.IsVirtual();
                 return p.IsVirtual();
             });
-            return ModelTypeGenerator.Create(schema, schema.GetPluralName(), new MainModelWriter(schema, hasBase ? baseClass : null), ns, ns + ".ViewModels", allowPropertyCallback: p => !p.IsVirtual());
-        }
+            return ModelTypeGenerator.Create(schema, schema.GetPluralName(), new MainModelWriter(hasBase ? baseClass : null, "", CreateAttributeBuilder(), new NoAttributeBuilder(), schema.AllowCreated(), schema.AllowModified(),
+                a =>
+                {
+                    a.Builder.AppendLine(
+$@"       public partial class {a.Name} : {a.BaseClassName}I{a.Name}, I{a.Name}Id {a.Writer.GetAdditionalInterfaces()}
+       {{");
 
-        class BaseModelWriter : ClassWriter
-        {
-            public BaseModelWriter() : base(false, false, CreateAttributeBuilder())
+                    a.Writer.CreateProperty(a.Builder, $"{a.Name}Id", new TypeWriterPropertyInfo<Guid>());
+                }
+                )
             {
-                this.WriteUsings = false;
-                this.WriteNamespace = false;
-                this.WritePropertiesVirtual = true;
-            }
-
-            public override void StartType(StringBuilder sb, string name, string pluralName)
-            {
-                sb.AppendLine(
-$@"    public class {name}Base
-    {{"
-);
-            }
-        }
-
-        class MainModelWriter : ClassWriter
-        {
-            private String baseClass;
-
-            public MainModelWriter(JsonSchema4 schema, String baseClass) : base(schema.AllowCreated(), schema.AllowModified(), CreateAttributeBuilder())
-            {
-                this.baseClass = baseClass;
-            }
-
-            public override void AddUsings(StringBuilder sb, string ns)
-            {
-                base.AddUsings(sb, ns);
-                sb.AppendLine(
+                AdditionalUsings = 
 $@"using {ns}.Models;
 using {ns}.Controllers.Api;"
-                );
-            }
-
-            public override void StartType(StringBuilder sb, String name, String pluralName)
-            {
-                var baseClassName = "";
-                if (baseClass != null)
-                {
-                    baseClassName = $"{name}Base, ";
-                    sb.AppendLine(baseClass);
-                }
-
-                sb.AppendLine(
-$@"    public partial class {name} : {baseClassName}I{name}, I{name}Id {GetAdditionalInterfaces()}
-    {{"
-                );
-
-                CreateProperty(sb, $"{name}Id", new TypeWriterPropertyInfo<Guid>());
-            }
+            }, ns, ns + ".ViewModels", allowPropertyCallback: p => !p.IsVirtual());
         }
 
         private static IAttributeBuilder CreateAttributeBuilder()
