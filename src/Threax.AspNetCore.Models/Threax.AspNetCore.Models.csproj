@@ -14,4 +14,8 @@
     <PackageReference Include="NJsonSchema" Version="9.10.10" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Attributes\" />
+  </ItemGroup>
+
 </Project>

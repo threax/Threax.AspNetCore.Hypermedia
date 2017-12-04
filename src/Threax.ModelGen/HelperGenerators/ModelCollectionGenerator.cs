@@ -53,11 +53,11 @@ $@"        public {info.ClrType}{QueryPropertiesWriter.CreateQueryNullable(info)
             NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
             String queryProps = ModelTypeGenerator.Create(schema, modelPluralName, new QueryPropWriter(), schema, ns, ns, allowPropertyCallback: p =>
             {
-                return QueryableAttribute.IsQueryable(p) == true;
+                return p.IsQueryable();
             });
             String customizer = ModelTypeGenerator.Create(schema, modelPluralName, new QueryCustomizerWriter(), schema, ns, ns, allowPropertyCallback: p =>
             {
-                return QueryableAttribute.IsQueryable(p) == true;
+                return p.IsQueryable();
             });
             return Create(ns, Model, model, Models, models, queryProps, customizer);
         }

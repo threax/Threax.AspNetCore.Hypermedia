@@ -64,9 +64,9 @@ namespace Threax.ModelGen
 
         public string ClrType => prop.GetClrType();
 
-        public bool IsRequiredInQuery => QueryableAttribute.IsRequired(prop);
+        public bool IsRequiredInQuery => prop.IsQueryableRequired();
 
-        public bool ShowOnQueryUi => QueryableAttribute.ShowOnUi(prop);
+        public bool ShowOnQueryUi => prop.IsQueryableShowOnUi();
 
         public String DisplayName => prop.Title;
 

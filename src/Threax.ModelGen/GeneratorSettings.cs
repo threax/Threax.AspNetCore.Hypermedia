@@ -90,7 +90,7 @@ namespace Threax.ModelGen
             }
 
             ModelName = Schema.Title;
-            PluralModelName = PluralNameAttribute.GetValue(Schema);
+            PluralModelName = Schema.GetPluralName();
             if (String.IsNullOrEmpty(PluralModelName))
             {
                 PluralModelName = ModelName + "s";

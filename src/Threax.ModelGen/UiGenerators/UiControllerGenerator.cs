@@ -16,7 +16,7 @@ namespace Threax.ModelGen
             NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
 
             var authAttribute = "";
-            String authName = RequireAuthorizationAttribute.GetValue(schema);
+            String authName = schema.GetAuthorizationRoleString();
             if (authName != null)
             {
                 authAttribute = $@"[Authorize(Roles = {authName})]

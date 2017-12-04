@@ -34,7 +34,7 @@ namespace Threax.ModelGen
 
             String queryProps = ModelTypeGenerator.Create(schema, pluralName, new QueryPropertiesWriter(visibility: "", allowAttributes: false), schema, ns, ns, allowPropertyCallback: p =>
             {
-                return QueryableAttribute.IsQueryable(p) == true;
+                return p.IsQueryable();
             });
 
             sb.AppendLine(

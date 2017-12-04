@@ -17,11 +17,11 @@ namespace Threax.ModelGen
             NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
             String queryProps = ModelTypeGenerator.Create(schema, modelPluralName, new QueryPropertiesWriter(), schema, ns, ns, allowPropertyCallback: p =>
             {
-                return QueryableAttribute.IsQueryable(p) == true;
+                return p.IsQueryable();
             });
             String queryCreate = ModelTypeGenerator.Create(schema, modelPluralName, new QueryCreateWriter(), schema, ns, ns, allowPropertyCallback: p =>
             {
-                return QueryableAttribute.IsQueryable(p) == true;
+                return p.IsQueryable();
             });
             return Create(ns, Model, model, Models, models, queryProps, queryCreate);
         }
