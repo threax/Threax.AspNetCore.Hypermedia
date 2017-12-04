@@ -91,10 +91,6 @@ namespace Threax.ModelGen
 
             ModelName = Schema.Title;
             PluralModelName = Schema.GetPluralName();
-            if (String.IsNullOrEmpty(PluralModelName))
-            {
-                PluralModelName = ModelName + "s";
-            }
 
             //Make sure directories exist before trying to write files
             WriteApp = WriteApp && Directory.Exists(AppOutDir);
