@@ -21,6 +21,8 @@ namespace Threax.ModelGen
         bool HasRequiredAttribute { get; }
 
         int? MaxLength { get; }
+
+        bool IsVirtual { get; }
     }
 
     public class TypeWriterPropertyInfo<T> : IWriterPropertyInfo
@@ -45,6 +47,8 @@ namespace Threax.ModelGen
         public bool HasRequiredAttribute => false;
 
         public int? MaxLength => null;
+
+        public bool IsVirtual => false;
     }
 
     public class SchemaWriterPropertyInfo : IWriterPropertyInfo
@@ -69,5 +73,7 @@ namespace Threax.ModelGen
         public bool HasRequiredAttribute => prop.IsRequired;
 
         public int? MaxLength => prop.MaxLength;
+
+        public bool IsVirtual => prop.IsVirtual();
     }
 }

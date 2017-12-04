@@ -6,14 +6,14 @@
     },
     "Remove": {
       "commandName": "Project",
-      "commandLineArgs": "remove DevApp.ModelSchemas.Value --AppOutDir ..\\DevApp --TestOutDir ..\\..\\test\\DevApp.Tests"
+      "commandLineArgs": "remove DevApp.ModelSchemas.HorribleBeast --AppOutDir ..\\DevApp --TestOutDir ..\\..\\test\\DevApp.Tests"
     },
     "Help Output": {
       "commandName": "Project"
     },
     "FromInterface": {
       "commandName": "Project",
-      "commandLineArgs": "DevApp.ModelSchemas.Value DevApp --AppOutDir ..\\DevApp --TestOutDir ..\\..\\test\\DevApp.Tests"
+      "commandLineArgs": "DevApp.ModelSchemas.HorribleBeast DevApp --AppOutDir ..\\DevApp --TestOutDir ..\\..\\test\\DevApp.Tests"
     }
   }
 }

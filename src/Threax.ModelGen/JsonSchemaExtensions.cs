@@ -34,8 +34,8 @@ namespace Threax.ModelGen
                 case JsonObjectType.Number:
                     return true;
                 case JsonObjectType.Object:
-                    Object fullClrType = null;
-                    if(prop.ExtensionData != null && prop.ExtensionData.TryGetValue(GeneratorSettings.ClrFullTypeName, out fullClrType))
+                    Object fullClrType = prop.GetClrFullTypeName();
+                    if(fullClrType != null)
                     {
                         //Look for type in all loaded assemblies
                         foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
@@ -162,6 +162,50 @@ namespace Threax.ModelGen
                 return types == JsonObjectType.None;
             }
             return (types & type) == type;
+        }
+
+        private const String IsVirtualExtension = "x-clr-virtual";
+
+        public static bool IsVirtual(this JsonProperty prop)
+        {
+            Object data = null;
+            if(prop.ExtensionData?.TryGetValue(IsVirtualExtension, out data) == true)
+            {
+                return data as bool? == true;
+            }
+            return false; //Not found, false
+        }
+
+        public static void SetVirtual(this JsonProperty prop, bool isVirtual)
+        {
+            prop.EnsureExtensions();
+            prop.ExtensionData[IsVirtualExtension] = isVirtual;
+        }
+
+        public const String ClrFullTypeName = "x-clr-fullname";
+
+        public static String GetClrFullTypeName(this JsonProperty prop)
+        {
+            Object data = null;
+            if (prop.ExtensionData?.TryGetValue(ClrFullTypeName, out data) == true)
+            {
+                return data?.ToString();
+            }
+            return null;
+        }
+
+        public static void SetClrFullTypeName(this JsonProperty prop, String fullName)
+        {
+            prop.EnsureExtensions();
+            prop.ExtensionData[ClrFullTypeName] = fullName;
+        }
+
+        public static void EnsureExtensions(this JsonSchema4 schema)
+        {
+            if(schema.ExtensionData == null)
+            {
+                schema.ExtensionData = new Dictionary<String, Object>();
+            }
         }
     }
 }

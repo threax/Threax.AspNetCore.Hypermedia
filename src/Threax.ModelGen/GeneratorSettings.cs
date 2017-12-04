@@ -12,8 +12,6 @@ namespace Threax.ModelGen
 {
     class GeneratorSettings
     {
-        public const String ClrFullTypeName = "x-clr-fullname";
-
         public void Configure()
         {
             if (Path.GetExtension(Source) != ".json")
@@ -56,11 +54,7 @@ namespace Threax.ModelGen
                         }
 
                         //Record the full clr type also
-                        if (schemaProp.ExtensionData == null)
-                        {
-                            schemaProp.ExtensionData = new Dictionary<String, Object>();
-                        }
-                        schemaProp.ExtensionData.Add(ClrFullTypeName, propType.FullName);
+                        schemaProp.SetClrFullTypeName(propType.FullName);
 
                         //For some reason enums do not get the custom attributes, so do it here
                         if (propType.IsEnum)
@@ -74,6 +68,8 @@ namespace Threax.ModelGen
                             }
                         }
                     }
+
+                    schemaProp.SetVirtual(prop.GetMethod?.IsVirtual == true && prop.SetMethod?.IsVirtual == true);
                 }
             }
             else

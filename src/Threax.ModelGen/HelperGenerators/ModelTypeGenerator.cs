@@ -52,8 +52,7 @@ namespace Threax.ModelGen
                     var propName = propPair.Key;
                     var prop = propPair.Value;
 
-                    String propPrettyName = NameGenerator.CreatePretty(propName);
-
+                    var propPrettyName = NameGenerator.CreatePretty(propName);
                     var pascalPropName = NameGenerator.CreatePascal(propName);
                     lastPropertyNames.Add(pascalPropName);
                     typeWriter.CreateProperty(sb, pascalPropName, new SchemaWriterPropertyInfo(prop));
