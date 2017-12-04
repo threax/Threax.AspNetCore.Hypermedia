@@ -1,14 +1,16 @@
-﻿using System;
+﻿using NJsonSchema;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using Threax.AspNetCore.Models;
 using Threax.ModelGen.ModelWriters;
 
 namespace Threax.ModelGen
 {
     class EntityWriter : ClassWriter
     {
-        public EntityWriter(bool hasCreated, bool hasModified)
-            :base(hasCreated, hasModified, new AttributeBuilder() { BuildDisplay = false, BuildRequired = false })
+        public EntityWriter(JsonSchema4 schema)
+            :base(schema.AllowCreated(), schema.AllowModified(), new AttributeBuilder() { BuildDisplay = false, BuildRequired = false })
         {
             
         }

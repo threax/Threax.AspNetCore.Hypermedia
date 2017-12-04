@@ -1,13 +1,15 @@
-﻿using System;
+﻿using NJsonSchema;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using Threax.AspNetCore.Models;
 using Threax.ModelGen.ModelWriters;
 
 namespace Threax.ModelGen
 {
     class ViewModelWriter : ClassWriter
     {
-        public ViewModelWriter(bool hasCreated, bool hasModified) : base(hasCreated, hasModified, new AttributeBuilder() { BuildRequired = false, BuildMaxLength = false })
+        public ViewModelWriter(JsonSchema4 schema) : base(schema.AllowCreated(), schema.AllowModified(), new AttributeBuilder() { BuildRequired = false, BuildMaxLength = false })
         {
         }
 

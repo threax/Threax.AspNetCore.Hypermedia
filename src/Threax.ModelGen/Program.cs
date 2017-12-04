@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Threax.AspNetCore.Models;
 using Threax.ModelGen.TestGenerators;
 
 namespace Threax.ModelGen
@@ -76,16 +77,16 @@ remove [Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirect
                 if (settings.Schema != null)
                 {
                     modelInterface = ModelTypeGenerator.Create(settings.Schema, settings.PluralModelName, new IdInterfaceWriter(settings.Schema), settings.Schema, settings.AppNamespace, settings.AppNamespace + ".Models");
-                    entity = ModelTypeGenerator.Create(settings.Schema, settings.PluralModelName, new EntityWriter(settings.HasCreated, settings.HasModified), settings.Schema, settings.AppNamespace, settings.AppNamespace + ".Database");
+                    entity = ModelTypeGenerator.Create(settings.Schema, settings.PluralModelName, new EntityWriter(settings.Schema), settings.Schema, settings.AppNamespace, settings.AppNamespace + ".Database");
                     inputModel = ModelTypeGenerator.Create(settings.Schema, settings.PluralModelName, new InputModelWriter(), settings.Schema, settings.AppNamespace, settings.AppNamespace + ".InputModels");
-                    viewModel = ModelTypeGenerator.Create(settings.Schema, settings.PluralModelName, new ViewModelWriter(settings.HasCreated, settings.HasModified), settings.Schema, settings.AppNamespace, settings.AppNamespace + ".ViewModels");
+                    viewModel = ModelTypeGenerator.Create(settings.Schema, settings.PluralModelName, new ViewModelWriter(settings.Schema), settings.Schema, settings.AppNamespace, settings.AppNamespace + ".ViewModels");
                 }
                 else
                 {
                     modelInterface = ModelTypeGenerator.Create(settings.Source, settings.PluralModelName, new IdInterfaceWriter(settings.Schema), settings.AppNamespace, settings.AppNamespace + ".Models");
-                    entity = ModelTypeGenerator.Create(settings.Source, settings.PluralModelName, new EntityWriter(settings.HasCreated, settings.HasModified), settings.AppNamespace, settings.AppNamespace + ".Database");
+                    entity = ModelTypeGenerator.Create(settings.Source, settings.PluralModelName, new EntityWriter(settings.Schema), settings.AppNamespace, settings.AppNamespace + ".Database");
                     inputModel = ModelTypeGenerator.Create(settings.Source, settings.PluralModelName, new InputModelWriter(), settings.AppNamespace, settings.AppNamespace + ".InputModels");
-                    viewModel = ModelTypeGenerator.Create(settings.Source, settings.PluralModelName, new ViewModelWriter(settings.HasCreated, settings.HasModified), settings.AppNamespace, settings.AppNamespace + ".ViewModels");
+                    viewModel = ModelTypeGenerator.Create(settings.Source, settings.PluralModelName, new ViewModelWriter(settings.Schema), settings.AppNamespace, settings.AppNamespace + ".ViewModels");
                 }
 
                 propertyNames = ModelTypeGenerator.LastPropertyNames.ToList();
@@ -107,7 +108,7 @@ remove [Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirect
                     WriteFile(Path.Combine(settings.AppOutDir, $"Repository/I{settings.ModelName}Repository.cs"), RepoInterfaceGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName), settings.ForceWriteApi);
                     WriteFile(Path.Combine(settings.AppOutDir, $"Repository/{settings.ModelName}Repository.Config.cs"), RepoConfigGenerator.Get(settings.AppNamespace, settings.ModelName), settings.ForceWriteApi);
                     WriteFile(Path.Combine(settings.AppOutDir, $"Controllers/Api/{settings.PluralModelName}Controller.cs"), ControllerGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName, settings.Schema), settings.ForceWriteApi);
-                    WriteFile(Path.Combine(settings.AppOutDir, $"Mappers/{settings.ModelName}Profile.cs"), MappingProfileGenerator.Get(settings.AppNamespace, settings.ModelName, settings.HasCreated, settings.HasModified), settings.ForceWriteApi);
+                    WriteFile(Path.Combine(settings.AppOutDir, $"Mappers/{settings.ModelName}Profile.cs"), MappingProfileGenerator.Get(settings.AppNamespace, settings.ModelName, settings.Schema.AllowCreated(), settings.Schema.AllowModified()), settings.ForceWriteApi);
                     WriteFile(Path.Combine(settings.AppOutDir, $"Database/AppDbContext.{settings.ModelName}.cs"), AppDbContextGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName), settings.ForceWriteApi);
                     WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{settings.ModelName}Collection.cs"), ModelCollectionGenerator.GetUserPartial(settings.AppNamespace, settings.ModelName, settings.PluralModelName), false);
                     WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{settings.ModelName}Collection.Generated.cs"), ModelCollectionGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName, settings.Schema), true);

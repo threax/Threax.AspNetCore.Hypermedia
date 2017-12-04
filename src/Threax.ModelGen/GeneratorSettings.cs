@@ -121,10 +121,6 @@ namespace Threax.ModelGen
 
         public JsonSchema4 Schema { get; set; }
 
-        public bool HasCreated { get; set; } = true;
-
-        public bool HasModified { get; set; } = true;
-
         /// <summary>
         /// Set this to true to force the ui classes to write.
         /// </summary>
