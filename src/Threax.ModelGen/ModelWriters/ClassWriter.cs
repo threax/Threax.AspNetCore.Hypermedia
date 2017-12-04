@@ -9,13 +9,15 @@ namespace Threax.ModelGen
     {
         private bool hasCreated = false;
         private bool hasModified = false;
-        protected IAttributeBuilder attributeBuilder { get; private set; }
+        protected IAttributeBuilder PropAttrBuilder { get; private set; }
+        protected IAttributeBuilder ClassAttrBuilder { get; private set; }
 
-        public ClassWriter(bool hasCreated, bool hasModified, IAttributeBuilder attributeBuilder)
+        public ClassWriter(bool hasCreated, bool hasModified, IAttributeBuilder propAttrBuilder, IAttributeBuilder classAttrBuilder = null)
         {
             this.hasCreated = hasCreated;
             this.hasModified = hasModified;
-            this.attributeBuilder = attributeBuilder;
+            this.PropAttrBuilder = propAttrBuilder;
+            this.ClassAttrBuilder = classAttrBuilder;
         }
 
         public virtual void AddUsings(StringBuilder sb, String ns)
@@ -53,6 +55,8 @@ using Threax.AspNetCore.Halcyon.Ext.UIAttrs;"
         {
             if (WriteType)
             {
+                ClassAttrBuilder?.BuildAttributes(sb, name, new NoWriterInfo(), "    ");
+
                 sb.AppendLine(
     $@"    public class {name} {GetAdditionalInterfaces()}
     {{"
@@ -89,7 +93,7 @@ using Threax.AspNetCore.Halcyon.Ext.UIAttrs;"
                 {
                     @virtual = "virtual ";
                 }
-                attributeBuilder.BuildAttributes(sb, name, info, "        ");
+                PropAttrBuilder.BuildAttributes(sb, name, info, "        ");
                 sb.AppendLine($"        public {@virtual}{info.ClrType} {name} {{ get; set; }}");
                 sb.AppendLine();
             }

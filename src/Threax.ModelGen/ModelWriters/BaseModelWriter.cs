@@ -8,7 +8,7 @@ namespace Threax.ModelGen.ModelWriters
     {
         private String classSuffix;
 
-        public BaseModelWriter(String classSuffix, IAttributeBuilder attributeBuilder) : base(false, false, attributeBuilder)
+        public BaseModelWriter(String classSuffix, IAttributeBuilder propAttributeBuilder, IAttributeBuilder classAttrBuilder = null) : base(false, false, propAttributeBuilder, classAttrBuilder)
         {
             this.classSuffix = classSuffix;
             WriteUsings = false;
@@ -18,6 +18,8 @@ namespace Threax.ModelGen.ModelWriters
 
         public override void StartType(StringBuilder sb, String name, String pluralName)
         {
+            ClassAttrBuilder?.BuildAttributes(sb, name, new NoWriterInfo(), "    ");
+
             sb.AppendLine(
 $@"    public partial class {name}{classSuffix}Base
     {{"

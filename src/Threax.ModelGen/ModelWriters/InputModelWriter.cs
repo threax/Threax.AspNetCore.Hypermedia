@@ -18,7 +18,10 @@ namespace Threax.ModelGen
                 hasBase = hasBase | p.IsVirtual();
                 return p.IsVirtual();
             });
-            return ModelTypeGenerator.Create(schema, schema.GetPluralName(), new MainModelWriter(hasBase ? baseClass : null, "Input", CreatePropertyAttributes(), CreateClassAttributes(), false, false)
+            return ModelTypeGenerator.Create(schema, schema.GetPluralName(), new MainModelWriter(hasBase ? baseClass : null, "Input", CreatePropertyAttributes(), CreateClassAttributes(), false, false,
+                (b, a) => b.AppendLine(
+$@"    public partial class {a.Name}{a.ModelSuffix} : {a.BaseClassName}I{a.Name}
+    {{"))
             {
                 AdditionalUsings = $"using {ns}.Models;"
             }, ns, ns + ".InputModels", allowPropertyCallback: p => !p.IsVirtual());
