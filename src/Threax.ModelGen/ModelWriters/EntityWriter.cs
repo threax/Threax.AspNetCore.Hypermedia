@@ -10,7 +10,7 @@ namespace Threax.ModelGen
     class EntityWriter : ClassWriter
     {
         public EntityWriter(JsonSchema4 schema)
-            :base(schema.AllowCreated(), schema.AllowModified(), new AttributeBuilder() { BuildDisplay = false, BuildRequired = false })
+            :base(schema.AllowCreated(), schema.AllowModified(), new MaxLengthAttributeBuilder())
         {
             
         }

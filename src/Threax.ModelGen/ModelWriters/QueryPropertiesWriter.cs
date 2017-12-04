@@ -29,7 +29,7 @@ namespace Threax.ModelGen.ModelWriters
 
             if (!String.IsNullOrEmpty(info.DisplayName))
             {
-                sb.AppendLine(AttributeBuilder.GetDisplay(info.DisplayName, "        "));
+                sb.AppendLine(DisplayAttributeBuilder.GetDisplay(info.DisplayName, "        "));
             }
             sb.AppendLine($"        {visibility}{info.ClrType}{CreateQueryNullable(info)} {name} {{ get; set; }}");
             sb.AppendLine();

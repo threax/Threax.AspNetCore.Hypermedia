@@ -39,12 +39,6 @@ $@"    public class {name}Base
     {{"
 );
             }
-
-            public override void CreateProperty(StringBuilder sb, string name, IWriterPropertyInfo info)
-            {
-                sb.AppendLine("        [UiOrder]");
-                base.CreateProperty(sb, name, info);
-            }
         }
 
         class MainViewModelWriter : ClassWriter
@@ -81,17 +75,11 @@ $@"    public partial class {name} : {baseClassName}I{name}, I{name}Id {GetAddit
 
                 CreateProperty(sb, $"{name}Id", new TypeWriterPropertyInfo<Guid>());
             }
-
-            public override void CreateProperty(StringBuilder sb, string name, IWriterPropertyInfo info)
-            {
-                sb.AppendLine("        [UiOrder]");
-                base.CreateProperty(sb, name, info);
-            }
         }
 
-        private static AttributeBuilder CreateAttributeBuilder()
+        private static IAttributeBuilder CreateAttributeBuilder()
         {
-            return new AttributeBuilder() { BuildRequired = false, BuildMaxLength = false };
+            return new UiOrderAttributeBuilder(new DisplayAttributeBuilder());
         }
 
         public static String GetUserPartial(String ns, String modelName, String modelPluralName, String generatedSuffix = ".Generated")

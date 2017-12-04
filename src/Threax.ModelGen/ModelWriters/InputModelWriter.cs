@@ -7,7 +7,7 @@ namespace Threax.ModelGen
 {
     class InputModelWriter : ClassWriter
     {
-        public InputModelWriter() : base(false, false, new AttributeBuilder())
+        public InputModelWriter() : base(false, false, new DisplayAttributeBuilder(new RequiredAttributeBuilder(new MaxLengthAttributeBuilder())))
         {
         }
 

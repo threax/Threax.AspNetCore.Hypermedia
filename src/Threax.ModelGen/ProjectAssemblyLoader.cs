@@ -70,11 +70,45 @@ namespace Threax.ModelGen
             }
 
             var targetAssembly = Path.GetFullPath(Path.Combine(appDir, properties["OutputPath"], properties["TargetFileName"]));
+            var additionalSearchPath = Path.GetDirectoryName(targetAssembly);
 
             if (!File.Exists(targetAssembly))
             {
                 throw new FileNotFoundException($"Cannot find project assembly {targetAssembly}.");
             }
+
+            //Try to resolve any other assemblies from the loaded path, this keeps the editor working when it uses something from another dll.
+            AppDomain.CurrentDomain.AssemblyResolve += (s, a) =>
+            {
+                try
+                {
+                    var assemblyName = a.Name;
+                    var commaIndex = assemblyName.IndexOf(',');
+                    if (commaIndex != -1)
+                    {
+                        assemblyName = assemblyName.Substring(0, commaIndex);
+                    }
+                    assemblyName += ".dll";
+
+                    if (a.RequestingAssembly != null)
+                    {
+                        var sameDirSearch = Path.Combine(Path.GetDirectoryName(a.RequestingAssembly.Location), assemblyName);
+                        if (File.Exists(sameDirSearch))
+                        {
+                            return Assembly.LoadFile(sameDirSearch);
+                        }
+                    }
+
+                    var additionalSearch = Path.Combine(additionalSearchPath, assemblyName);
+                    if (File.Exists(additionalSearch))
+                    {
+                        return Assembly.LoadFile(additionalSearch);
+                    }
+                }
+                catch (Exception) { }
+
+                return null;
+            };
 
             return Assembly.LoadFile(targetAssembly);
         }

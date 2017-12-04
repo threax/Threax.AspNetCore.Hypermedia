@@ -23,6 +23,8 @@ namespace Threax.ModelGen
         int? MaxLength { get; }
 
         bool IsVirtual { get; }
+
+        int? Order { get; }
     }
 
     public class TypeWriterPropertyInfo<T> : IWriterPropertyInfo
@@ -49,6 +51,8 @@ namespace Threax.ModelGen
         public int? MaxLength => null;
 
         public bool IsVirtual => false;
+
+        public int? Order => null;
     }
 
     public class SchemaWriterPropertyInfo : IWriterPropertyInfo
@@ -75,5 +79,7 @@ namespace Threax.ModelGen
         public int? MaxLength => prop.MaxLength;
 
         public bool IsVirtual => prop.IsVirtual();
+
+        public int? Order => prop.GetOrder();
     }
 }
