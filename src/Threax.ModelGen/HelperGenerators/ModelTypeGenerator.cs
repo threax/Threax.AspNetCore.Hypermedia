@@ -18,23 +18,28 @@ namespace Threax.ModelGen
             }
         }
 
-        public static String Create(String name, String pluralName, ITypeWriter typeWriter, String defaultNs, String ns)
-        {
-            lastPropertyNames.Clear();
+        //public static String Create(String name, String pluralName, ITypeWriter typeWriter, String defaultNs, String ns)
+        //{
+        //    lastPropertyNames.Clear();
 
-            var sb = new StringBuilder();
-            typeWriter.AddUsings(sb, defaultNs);
-            typeWriter.StartNamespace(sb, ns);
+        //    var sb = new StringBuilder();
+        //    typeWriter.AddUsings(sb, defaultNs);
+        //    typeWriter.StartNamespace(sb, ns);
 
-            typeWriter.StartType(sb, name, pluralName);
+        //    typeWriter.StartType(sb, name, pluralName);
 
-            typeWriter.EndType(sb, name, pluralName);
-            typeWriter.EndNamespace(sb);
+        //    typeWriter.EndType(sb, name, pluralName);
+        //    typeWriter.EndNamespace(sb);
 
-            return sb.ToString();
-        }
+        //    return sb.ToString();
+        //}
 
         public static String Create(JsonSchema4 schema, String pluralName, ITypeWriter typeWriter, JsonSchema4 rootSchema, String defaultNs, String ns, Func<JsonProperty, bool> allowPropertyCallback = null)
+        {
+            return Create(schema, pluralName, typeWriter, defaultNs, ns, allowPropertyCallback);
+        }
+
+        public static String Create(JsonSchema4 schema, String pluralName, ITypeWriter typeWriter, String defaultNs, String ns, Func<JsonProperty, bool> allowPropertyCallback = null)
         {
             lastPropertyNames.Clear();
 

@@ -9,19 +9,21 @@ namespace Threax.ModelGen
     {
         private bool hasCreated = false;
         private bool hasModified = false;
-        protected IAttributeBuilder AttributeBuilder { get; private set; }
+        protected IAttributeBuilder attributeBuilder { get; private set; }
 
         public ClassWriter(bool hasCreated, bool hasModified, IAttributeBuilder attributeBuilder)
         {
             this.hasCreated = hasCreated;
             this.hasModified = hasModified;
-            this.AttributeBuilder = attributeBuilder;
+            this.attributeBuilder = attributeBuilder;
         }
 
         public virtual void AddUsings(StringBuilder sb, String ns)
         {
-            sb.AppendLine(
-@"using System;
+            if (WriteUsings)
+            {
+                sb.AppendLine(
+    @"using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -29,57 +31,88 @@ using System.Threading.Tasks;
 using Halcyon.HAL.Attributes;
 using Threax.AspNetCore.Halcyon.Ext;
 using Threax.AspNetCore.Halcyon.Ext.UIAttrs;"
-            );
+                );
 
-            if(hasCreated || hasModified)
-            {
-                sb.AppendLine("using Threax.AspNetCore.Tracking;");
+                if (hasCreated || hasModified)
+                {
+                    sb.AppendLine("using Threax.AspNetCore.Tracking;");
+                }
             }
         }
 
+        public bool WriteUsings { get; set; } = true;
+
         public virtual void StartType(StringBuilder sb, String name, String pluralName)
         {
-            sb.AppendLine(
-$@"    public class {name} {GetAdditionalInterfaces()}
+            if (WriteType)
+            {
+                sb.AppendLine(
+    $@"    public class {name} {GetAdditionalInterfaces()}
     {{"
-            );
+                );
+            }
         }
 
         public virtual void EndType(StringBuilder sb, String name, String pluralName)
         {
-            if (hasCreated)
+            if (WriteType)
             {
-                CreateProperty(sb, "Created", new TypeWriterPropertyInfo<DateTime>());
-            }
+                if (hasCreated)
+                {
+                    CreateProperty(sb, "Created", new TypeWriterPropertyInfo<DateTime>());
+                }
 
-            if (hasModified)
-            {
-                CreateProperty(sb, "Modified", new TypeWriterPropertyInfo<DateTime>());
-            }
+                if (hasModified)
+                {
+                    CreateProperty(sb, "Modified", new TypeWriterPropertyInfo<DateTime>());
+                }
 
-            sb.AppendLine("    }");
+                sb.AppendLine("    }");
+            }
         }
+
+        public bool WriteType { get; set; } = true;
 
         public virtual void CreateProperty(StringBuilder sb, String name, IWriterPropertyInfo info)
         {
-            AttributeBuilder.BuildAttributes(sb, name, info, "        ");
-            sb.AppendLine($"        public {info.ClrType} {name} {{ get; set; }}");
-            sb.AppendLine();
+            if (WriteProperties)
+            {
+                String @virtual = "";
+                if (WritePropertiesVirtual)
+                {
+                    @virtual = "virtual ";
+                }
+                attributeBuilder.BuildAttributes(sb, name, info, "        ");
+                sb.AppendLine($"        public {@virtual}{info.ClrType} {name} {{ get; set; }}");
+                sb.AppendLine();
+            }
         }
+
+        public bool WriteProperties { get; set; } = true;
+
+        public bool WritePropertiesVirtual { get; set; } = false;
 
         public virtual void EndNamespace(StringBuilder sb)
         {
-            sb.AppendLine("}");
+            if (WriteNamespace)
+            {
+                sb.AppendLine("}");
+            }
         }
 
         public virtual void StartNamespace(StringBuilder sb, string name)
         {
-            sb.AppendLine();
-            sb.AppendLine(
+            if (WriteNamespace)
+            {
+                sb.AppendLine();
+                sb.AppendLine(
 $@"namespace {name} 
 {{"
-            );
+                );
+            }
         }
+
+        public bool WriteNamespace { get; set; } = true;
 
         protected String GetAdditionalInterfaces()
         {

@@ -1,41 +1,97 @@
 ﻿using NJsonSchema;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Threax.AspNetCore.Models;
 using Threax.ModelGen.ModelWriters;
 
 namespace Threax.ModelGen
 {
-    class ViewModelWriter : ClassWriter
+    static class ViewModelWriter
     {
-        public ViewModelWriter(JsonSchema4 schema) : base(schema.AllowCreated(), schema.AllowModified(), new AttributeBuilder() { BuildRequired = false, BuildMaxLength = false })
+        public static String Create(JsonSchema4 schema, String ns)
         {
+            var sb = new StringBuilder();
+            bool hasBase = false;
+            //Names and namespaces don't matter, just generating properties.
+            var baseClass = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new BaseModelWriter(schema), ns, ns + ".ViewModels", allowPropertyCallback: p =>
+            {
+                hasBase = hasBase | p.IsVirtual();
+                return p.IsVirtual();
+            });
+            return ModelTypeGenerator.Create(schema, schema.GetPluralName(), new MainViewModelWriter(schema, hasBase ? baseClass : null), ns, ns + ".ViewModels", allowPropertyCallback: p => !p.IsVirtual());
         }
 
-        public override void AddUsings(StringBuilder sb, string ns)
+        class BaseModelWriter : ClassWriter
         {
-            base.AddUsings(sb, ns);
-            sb.AppendLine(
+            public BaseModelWriter(JsonSchema4 schema) : base(false, false, CreateAttributeBuilder())
+            {
+                this.WriteUsings = false;
+                this.WriteNamespace = false;
+                this.WritePropertiesVirtual = true;
+            }
+
+            public override void StartType(StringBuilder sb, string name, string pluralName)
+            {
+                sb.AppendLine(
+$@"    public class {name}Base
+    {{"
+);
+            }
+
+            public override void CreateProperty(StringBuilder sb, string name, IWriterPropertyInfo info)
+            {
+                sb.AppendLine("        [UiOrder]");
+                base.CreateProperty(sb, name, info);
+            }
+        }
+
+        class MainViewModelWriter : ClassWriter
+        {
+            private String baseClass;
+
+            public MainViewModelWriter(JsonSchema4 schema, String baseClass) : base(schema.AllowCreated(), schema.AllowModified(), CreateAttributeBuilder())
+            {
+                this.baseClass = baseClass;
+            }
+
+            public override void AddUsings(StringBuilder sb, string ns)
+            {
+                base.AddUsings(sb, ns);
+                sb.AppendLine(
 $@"using {ns}.Models;
 using {ns}.Controllers.Api;"
-            );
-        }
+                );
+            }
 
-        public override void StartType(StringBuilder sb, String name, String pluralName)
-        {
-            sb.AppendLine( 
-$@"    public partial class {name} : I{name}, I{name}Id {GetAdditionalInterfaces()}
+            public override void StartType(StringBuilder sb, String name, String pluralName)
+            {
+                var baseClassName = "";
+                if (baseClass != null)
+                {
+                    baseClassName = $"{name}Base, ";
+                    sb.AppendLine(baseClass);
+                }
+
+                sb.AppendLine(
+$@"    public partial class {name} : {baseClassName}I{name}, I{name}Id {GetAdditionalInterfaces()}
     {{"
-            );
+                );
 
-            CreateProperty(sb, $"{name}Id", new TypeWriterPropertyInfo<Guid>());
+                CreateProperty(sb, $"{name}Id", new TypeWriterPropertyInfo<Guid>());
+            }
+
+            public override void CreateProperty(StringBuilder sb, string name, IWriterPropertyInfo info)
+            {
+                sb.AppendLine("        [UiOrder]");
+                base.CreateProperty(sb, name, info);
+            }
         }
 
-        public override void CreateProperty(StringBuilder sb, string name, IWriterPropertyInfo info)
+        private static AttributeBuilder CreateAttributeBuilder()
         {
-            sb.AppendLine("        [UiOrder]");
-            base.CreateProperty(sb, name, info);
+            return new AttributeBuilder() { BuildRequired = false, BuildMaxLength = false };
         }
 
         public static String GetUserPartial(String ns, String modelName, String modelPluralName, String generatedSuffix = ".Generated")
@@ -44,10 +100,10 @@ $@"    public partial class {name} : I{name}, I{name}Id {GetAdditionalInterfaces
             NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
             String Models, models;
             NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
-            return Create(ns, Model, model, Models, generatedSuffix);
+            return CreateUserPartial(ns, Model, model, Models, generatedSuffix);
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String generatedSuffix)
+        private static String CreateUserPartial(String ns, String Model, String model, String Models, String generatedSuffix)
         {
             return
 $@"using System;
