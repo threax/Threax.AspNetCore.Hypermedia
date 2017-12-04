@@ -82,4 +82,30 @@ namespace Threax.ModelGen
 
         public int? Order => prop.GetOrder();
     }
+
+    public class NoWriterInfo : IWriterPropertyInfo
+    {
+        public NoWriterInfo()
+        {
+            
+        }
+
+        public bool IsValueType => false;
+
+        public string ClrType => null;
+
+        public bool IsRequiredInQuery => false;
+
+        public bool ShowOnQueryUi => false;
+
+        public String DisplayName => null;
+
+        public bool HasRequiredAttribute => false;
+
+        public int? MaxLength => null;
+
+        public bool IsVirtual => false;
+
+        public int? Order => null;
+    }
 }

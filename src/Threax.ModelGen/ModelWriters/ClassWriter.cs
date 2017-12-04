@@ -37,8 +37,15 @@ using Threax.AspNetCore.Halcyon.Ext.UIAttrs;"
                 {
                     sb.AppendLine("using Threax.AspNetCore.Tracking;");
                 }
+
+                if (!String.IsNullOrEmpty(AdditionalUsings))
+                {
+                    sb.AppendLine(AdditionalUsings);
+                }
             }
         }
+
+        public String AdditionalUsings { get; set; }
 
         public bool WriteUsings { get; set; } = true;
 

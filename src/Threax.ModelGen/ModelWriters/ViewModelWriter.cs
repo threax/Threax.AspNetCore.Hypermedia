@@ -15,17 +15,17 @@ namespace Threax.ModelGen
             var sb = new StringBuilder();
             bool hasBase = false;
             //Names and namespaces don't matter, just generating properties.
-            var baseClass = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new BaseModelWriter(schema), ns, ns + ".ViewModels", allowPropertyCallback: p =>
+            var baseClass = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new BaseModelWriter(), ns, ns + ".ViewModels", allowPropertyCallback: p =>
             {
                 hasBase = hasBase | p.IsVirtual();
                 return p.IsVirtual();
             });
-            return ModelTypeGenerator.Create(schema, schema.GetPluralName(), new MainViewModelWriter(schema, hasBase ? baseClass : null), ns, ns + ".ViewModels", allowPropertyCallback: p => !p.IsVirtual());
+            return ModelTypeGenerator.Create(schema, schema.GetPluralName(), new MainModelWriter(schema, hasBase ? baseClass : null), ns, ns + ".ViewModels", allowPropertyCallback: p => !p.IsVirtual());
         }
 
         class BaseModelWriter : ClassWriter
         {
-            public BaseModelWriter(JsonSchema4 schema) : base(false, false, CreateAttributeBuilder())
+            public BaseModelWriter() : base(false, false, CreateAttributeBuilder())
             {
                 this.WriteUsings = false;
                 this.WriteNamespace = false;
@@ -41,11 +41,11 @@ $@"    public class {name}Base
             }
         }
 
-        class MainViewModelWriter : ClassWriter
+        class MainModelWriter : ClassWriter
         {
             private String baseClass;
 
-            public MainViewModelWriter(JsonSchema4 schema, String baseClass) : base(schema.AllowCreated(), schema.AllowModified(), CreateAttributeBuilder())
+            public MainModelWriter(JsonSchema4 schema, String baseClass) : base(schema.AllowCreated(), schema.AllowModified(), CreateAttributeBuilder())
             {
                 this.baseClass = baseClass;
             }

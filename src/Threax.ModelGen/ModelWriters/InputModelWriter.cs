@@ -1,35 +1,37 @@
-﻿using System;
+﻿using NJsonSchema;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Threax.ModelGen.ModelWriters;
+using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen
 {
-    class InputModelWriter : ClassWriter
+    static class InputModelWriter
     {
-        public InputModelWriter() : base(false, false, new DisplayAttributeBuilder(new RequiredAttributeBuilder(new MaxLengthAttributeBuilder())))
+        public static String Create(JsonSchema4 schema, String ns)
         {
+            var sb = new StringBuilder();
+            bool hasBase = false;
+            var baseClass = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new BaseModelWriter("Input", CreatePropertyAttributes()), ns, ns + ".InputModels", allowPropertyCallback: p =>
+            {
+                hasBase = hasBase | p.IsVirtual();
+                return p.IsVirtual();
+            });
+            return ModelTypeGenerator.Create(schema, schema.GetPluralName(), new MainModelWriter(hasBase ? baseClass : null, "Input", CreatePropertyAttributes(), CreateClassAttributes(), false, false)
+            {
+                AdditionalUsings = $"using {ns}.Models;"
+            }, ns, ns + ".InputModels", allowPropertyCallback: p => !p.IsVirtual());
         }
 
-        public override void AddUsings(StringBuilder sb, string ns)
+        private static IAttributeBuilder CreatePropertyAttributes()
         {
-            base.AddUsings(sb, ns);
-            sb.AppendLine($"using {ns}.Models;");
+            return new DisplayAttributeBuilder(new RequiredAttributeBuilder(new MaxLengthAttributeBuilder(new UiOrderAttributeBuilder())));
         }
 
-        public override void StartType(StringBuilder sb, String name, String pluralName)
+        private static IAttributeBuilder CreateClassAttributes()
         {
-            sb.AppendLine( 
-$@"    [HalModel]
-    public partial class {name}Input : I{name}
-    {{"
-            );
-        }
-
-        public override void CreateProperty(StringBuilder sb, string name, IWriterPropertyInfo info)
-        {
-            sb.AppendLine($@"        [UiOrder]");
-            base.CreateProperty(sb, name, info);
+            return new PredefinedAttributeBuilder("[HalModel]");
         }
     }
 }
