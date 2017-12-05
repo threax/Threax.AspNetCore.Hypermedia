@@ -6,13 +6,18 @@ namespace Threax.AspNetCore.Models.Tests
 {
     public class IndexedPropertyFinderTests
     {
-        //Simulate a dbcontext using lists instead, should be the same to the reflection api
-        class IndexAttributeFinderTest
+        class SimEntity
         {
             public List<String> NoIndex { get; set; }
 
             [IndexProp]
             public List<String> WithIndex { get; set; }
+        }
+
+        //Simulate a dbcontext using lists instead, should be the same to the reflection api
+        class IndexAttributeFinderTest
+        {
+            public List<SimEntity> NoIndex { get; set; }
         }
 
         [Fact]
@@ -26,7 +31,7 @@ namespace Threax.AspNetCore.Models.Tests
             //NoIndex should be skipped
 
             //WithIndex
-            Assert.Equal(typeof(String), attrEnumerator.Current.Type);
+            Assert.Equal(typeof(SimEntity), attrEnumerator.Current.Type);
             Assert.Equal("WithIndex", attrEnumerator.Current.PropertyInfo.Name);
         }
     }

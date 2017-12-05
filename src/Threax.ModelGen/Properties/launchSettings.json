@@ -2,7 +2,7 @@
   "profiles": {
     "Threax.ModelGen": {
       "commandName": "Project",
-      "commandLineArgs": "ValuesModel.json DevApp --AppOutDir ..\\DevApp --TestOutDir ..\\..\\test\\DevApp.Tests"
+      "commandLineArgs": "DevApp.ModelSchemas.HorribleBeast DevApp --AppOutDir ..\\DevApp --TestOutDir ..\\..\\test\\DevApp.Tests"
     },
     "Remove": {
       "commandName": "Project",
@@ -11,9 +11,9 @@
     "Help Output": {
       "commandName": "Project"
     },
-    "FromInterface": {
+    "UpdateDevAppValue": {
       "commandName": "Project",
-      "commandLineArgs": "DevApp.ModelSchemas.HorribleBeast DevApp --AppOutDir ..\\DevApp --TestOutDir ..\\..\\test\\DevApp.Tests"
+      "commandLineArgs": "DevApp.ModelSchemas.Value DevApp --AppOutDir ..\\DevApp --TestOutDir ..\\..\\test\\DevApp.Tests"
     }
   }
 }

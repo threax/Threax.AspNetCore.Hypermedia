@@ -32,17 +32,28 @@ namespace Threax.AspNetCore.Models
                         entityType = propType.GetGenericArguments()[0];
                     }
 
-                    var propAttribute = prop.GetCustomAttribute<IndexPropAttribute>(true);
-
-                    if (propAttribute != null)
+                    foreach(var info in GetEntityProps(entityType))
                     {
-                        yield return new IndexInfo()
-                        {
-                            Type = entityType,
-                            PropertyInfo = prop,
-                            IndexAttribute = propAttribute
-                        };
+                        yield return info;
                     }
+                }
+            }
+        }
+
+        private IEnumerable<IndexInfo> GetEntityProps(Type entityType)
+        {
+            foreach(var prop in entityType.GetProperties())
+            {
+                var propAttribute = prop.GetCustomAttribute<IndexPropAttribute>(true);
+
+                if (propAttribute != null)
+                {
+                    yield return new IndexInfo()
+                    {
+                        Type = entityType,
+                        PropertyInfo = prop,
+                        IndexAttribute = propAttribute
+                    };
                 }
             }
         }
