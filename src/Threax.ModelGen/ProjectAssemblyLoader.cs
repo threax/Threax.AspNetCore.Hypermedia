@@ -82,11 +82,17 @@ namespace Threax.ModelGen
             {
                 try
                 {
+                    var assemblyVersion = "";
                     var assemblyName = a.Name;
                     var commaIndex = assemblyName.IndexOf(',');
                     if (commaIndex != -1)
                     {
                         assemblyName = assemblyName.Substring(0, commaIndex);
+                        var endVersionIndex = a.Name.IndexOf(',', ++commaIndex);
+                        if(endVersionIndex != -1)
+                        {
+                            assemblyVersion = a.Name.Substring(commaIndex, endVersionIndex - commaIndex).Replace("Version=", "").Trim();
+                        }
                     }
                     assemblyName += ".dll";
 
@@ -103,6 +109,37 @@ namespace Threax.ModelGen
                     if (File.Exists(additionalSearch))
                     {
                         return Assembly.LoadFile(additionalSearch);
+                    }
+
+                    //Try to search nuget files, this is really hairy and likely to break in a strong wind
+                    var assemblyFolder = Path.GetFileNameWithoutExtension(assemblyName);
+                    var nugetPath = Path.GetFullPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".nuget/packages", assemblyFolder));
+                    var versionedPath = Path.Combine(nugetPath, assemblyVersion);
+                    if (!Directory.Exists(versionedPath))
+                    {
+                        //Try again without last .0
+                        if (versionedPath.EndsWith(".0"))
+                        {
+                            versionedPath = versionedPath.Substring(0, versionedPath.Length - 2);
+                        }
+                    }
+
+                    if (Directory.Exists(versionedPath))
+                    {
+                        //Find netstandard version, hardcoded to netstandard2.0 for now
+                        nugetPath = versionedPath;
+                        var netStandardPath = Path.Combine(nugetPath, "lib/netstandard2.0", assemblyName);
+                        if (File.Exists(netStandardPath))
+                        {
+                            return Assembly.LoadFile(netStandardPath);
+                        }
+
+                        //Can't find that version, see if there is only 1 dll in this folder
+                        var dllFiles = Directory.GetFiles(nugetPath, assemblyName, SearchOption.AllDirectories);
+                        if(dllFiles.Length == 1)
+                        {
+                            return Assembly.LoadFile(dllFiles[0]);
+                        }
                     }
                 }
                 catch (Exception) { }
