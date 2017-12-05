@@ -59,10 +59,10 @@ $@"        public {info.ClrType}{QueryPropertiesWriter.CreateQueryNullable(info)
             {
                 return p.IsQueryable();
             });
-            return Create(ns, Model, model, Models, models, queryProps, customizer);
+            return Create(ns, Model, model, Models, models, queryProps, customizer, schema.GetKeyType().GetTypeAsNullable());
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models, String queryProps, String customizer)
+        private static String Create(String ns, String Model, String model, String Models, String models, String queryProps, String customizer, String nullableModelIdType)
         {
             return
 $@"using Halcyon.HAL.Attributes;
@@ -81,7 +81,7 @@ namespace {ns}.ViewModels
     {{
         private {Model}Query query;
 
-        public Guid? {Model}Id
+        public {nullableModelIdType} {Model}Id
         {{
             get {{ return query.{Model}Id; }}
             set {{ query.{Model}Id = value; }}

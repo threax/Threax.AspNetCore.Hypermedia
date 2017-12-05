@@ -23,10 +23,10 @@ namespace Threax.ModelGen
             {
                 return p.IsQueryable();
             });
-            return Create(ns, Model, model, Models, models, queryProps, queryCreate);
+            return Create(ns, Model, model, Models, models, queryProps, queryCreate, schema.GetKeyType().GetTypeAsNullable());
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models, String queryProps, String queryCreate)
+        private static String Create(String ns, String Model, String model, String Models, String models, String queryProps, String queryCreate, String nullableModelIdType)
         {
             return
 $@"using Halcyon.HAL.Attributes;
@@ -48,7 +48,7 @@ namespace {ns}.InputModels
         /// <summary>
         /// Lookup a {model} by id.
         /// </summary>
-        public Guid? {Model}Id {{ get; set; }}
+        public {nullableModelIdType} {Model}Id {{ get; set; }}
 
 {queryProps}
         /// <summary>

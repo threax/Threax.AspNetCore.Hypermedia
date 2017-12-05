@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen.TestGenerators
 {
@@ -17,8 +18,8 @@ namespace Threax.ModelGen.TestGenerators
             var equalAssertFunc = ModelTypeGenerator.Create(schema, modelPluralName, new ModelEqualityAssert(), schema, ns, ns);
             var createArgs = ModelTypeGenerator.Create(schema, modelPluralName, new ModelCreateArgs(), schema, ns, ns);
             var createInputFunc = ModelTypeGenerator.Create(schema, modelPluralName, new CreateInputModel(createArgs), schema, ns, ns);
-            var createEntityFunc = ModelTypeGenerator.Create(schema, modelPluralName, new CreateEntity(createArgs), schema, ns, ns);
-            var createViewFunc = ModelTypeGenerator.Create(schema, modelPluralName, new CreateViewModel(createArgs), schema, ns, ns);
+            var createEntityFunc = ModelTypeGenerator.Create(schema, modelPluralName, new CreateEntity(createArgs, schema.GetKeyType()), schema, ns, ns);
+            var createViewFunc = ModelTypeGenerator.Create(schema, modelPluralName, new CreateViewModel(createArgs, schema.GetKeyType()), schema, ns, ns);
             return Create(ns, Model, model, Models, models, equalAssertFunc, createInputFunc, createEntityFunc, createViewFunc);
         }
 
@@ -47,13 +48,13 @@ namespace {ns}.Tests
             return mockup;
         }}
 
-        {createInputFunc}
+{createInputFunc}
 
-        {createEntityFunc}
+{createEntityFunc}
 
-        {createViewFunc}
+{createViewFunc}
 
-        {equalAssertFunc}
+{equalAssertFunc}
     }}
 }}";
         }

@@ -27,7 +27,7 @@ $@"    public partial class {a.Name}Entity : {a.BaseClassName}I{a.Name}, I{a.Nam
         [Key]"
             );
 
-                    a.Writer.CreateProperty(a.Builder, $"{a.Name}Id", new TypeWriterPropertyInfo<Guid>());
+                    a.Writer.CreateProperty(a.Builder, $"{a.Name}Id", new TypeWriterPropertyInfo(schema.GetKeyType()));
                 }
                 )
             {

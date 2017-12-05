@@ -84,8 +84,8 @@ remove [Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirect
                     WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{settings.ModelName}.cs"), ViewModelWriter.GetUserPartial(settings.AppNamespace, settings.ModelName, settings.PluralModelName), false);
                     WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{settings.ModelName}.Generated.cs"), ViewModelWriter.Create(settings.Schema, settings.AppNamespace), true);
 
-                    WriteFile(Path.Combine(settings.AppOutDir, $"Repository/{settings.ModelName}Repository.cs"), RepoGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName), settings.ForceWriteApi);
-                    WriteFile(Path.Combine(settings.AppOutDir, $"Repository/I{settings.ModelName}Repository.cs"), RepoInterfaceGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName), settings.ForceWriteApi);
+                    WriteFile(Path.Combine(settings.AppOutDir, $"Repository/{settings.ModelName}Repository.cs"), RepoGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);
+                    WriteFile(Path.Combine(settings.AppOutDir, $"Repository/I{settings.ModelName}Repository.cs"), RepoInterfaceGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);
                     WriteFile(Path.Combine(settings.AppOutDir, $"Repository/{settings.ModelName}Repository.Config.cs"), RepoConfigGenerator.Get(settings.AppNamespace, settings.ModelName), settings.ForceWriteApi);
                     WriteFile(Path.Combine(settings.AppOutDir, $"Controllers/Api/{settings.PluralModelName}Controller.cs"), ControllerGenerator.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName, settings.Schema), settings.ForceWriteApi);
                     WriteFile(Path.Combine(settings.AppOutDir, $"Mappers/{settings.ModelName}Profile.cs"), MappingProfileGenerator.Get(settings.AppNamespace, settings.ModelName, settings.Schema.AllowCreated(), settings.Schema.AllowModified()), settings.ForceWriteApi);
@@ -105,7 +105,7 @@ remove [Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirect
                 {
                     WriteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/{settings.ModelName}Tests.cs"), ModelTestWrapper.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName, settings.Schema), settings.ForceWriteTests);
                     WriteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/Controller.cs"), ControllerTests.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName), settings.ForceWriteTests);
-                    WriteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/Profile.cs"), ProfileTests.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName), settings.ForceWriteTests);
+                    WriteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/Profile.cs"), ProfileTests.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteTests);
                     WriteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/Repository.cs"), RepositoryTests.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName), settings.ForceWriteTests);
                 }
             }

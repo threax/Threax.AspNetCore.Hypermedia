@@ -21,10 +21,10 @@ namespace Threax.ModelGen
             {
                 additionalAuthorize = $", Roles = {authName}";
             }
-            return Create(ns, Model, model, Models, models, additionalAuthorize);
+            return Create(ns, Model, model, Models, models, additionalAuthorize, schema.GetKeyType().Name);
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models, String additionalAuthorize)
+        private static String Create(String ns, String Model, String model, String Models, String models, String additionalAuthorize, String modelIdType)
         {
             return
 $@"using System;
@@ -61,7 +61,7 @@ namespace {ns}.Controllers.Api
 
         [HttpGet(""{{{Model}Id}}"")]
         [HalRel(CrudRels.Get)]
-        public async Task<{Model}> Get(Guid {model}Id)
+        public async Task<{Model}> Get({modelIdType} {model}Id)
         {{
             return await repo.Get({model}Id);
         }}
@@ -77,14 +77,14 @@ namespace {ns}.Controllers.Api
         [HttpPut(""{{{Model}Id}}"")]
         [HalRel(CrudRels.Update)]
         [AutoValidate(""Cannot update {model}"")]
-        public async Task<{Model}> Update(Guid {model}Id, [FromBody]{Model}Input {model})
+        public async Task<{Model}> Update({modelIdType} {model}Id, [FromBody]{Model}Input {model})
         {{
             return await repo.Update({model}Id, {model});
         }}
 
         [HttpDelete(""{{{Model}Id}}"")]
         [HalRel(CrudRels.Delete)]
-        public async Task Delete(Guid {model}Id)
+        public async Task Delete({modelIdType} {model}Id)
         {{
             await repo.Delete({model}Id);
         }}

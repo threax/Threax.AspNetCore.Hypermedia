@@ -1,21 +1,23 @@
-﻿using System;
+﻿using NJsonSchema;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen
 {
     static class RepoGenerator
     {
-        public static String Get(String ns, String modelName, String modelPluralName)
+        public static String Get(JsonSchema4 schema, String ns)
         {
             String Model, model;
-            NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
+            NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
             String Models, models;
-            NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
-            return Create(ns, Model, model, Models, models);
+            NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
+            return Create(ns, Model, model, Models, models, schema.GetKeyType().Name);
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models) {
+        private static String Create(String ns, String Model, String model, String Models, String models, String modelIdType) {
             return
 $@"using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -54,7 +56,7 @@ namespace {ns}.Repository
             return new {Model}Collection(query, total, results);
         }}
 
-        public async Task<{Model}> Get(Guid {model}Id)
+        public async Task<{Model}> Get({modelIdType} {model}Id)
         {{
             var entity = await this.Entity({model}Id);
             return mapper.Map<{Model}>(entity);
@@ -68,7 +70,7 @@ namespace {ns}.Repository
             return mapper.Map<{Model}>(entity);
         }}
 
-        public async Task<{Model}> Update(Guid {model}Id, {Model}Input {model})
+        public async Task<{Model}> Update({modelIdType} {model}Id, {Model}Input {model})
         {{
             var entity = await this.Entity({model}Id);
             if (entity != null)
@@ -80,7 +82,7 @@ namespace {ns}.Repository
             throw new KeyNotFoundException($""Cannot find {model} {{{model}Id.ToString()}}"");
         }}
 
-        public async Task Delete(Guid id)
+        public async Task Delete({modelIdType} id)
         {{
             var entity = await this.Entity(id);
             if (entity != null)
@@ -110,7 +112,7 @@ namespace {ns}.Repository
             }}
         }}
 
-        private Task<{Model}Entity> Entity(Guid {model}Id)
+        private Task<{Model}Entity> Entity({modelIdType} {model}Id)
         {{
             return Entities.Where(i => i.{Model}Id == {model}Id).FirstOrDefaultAsync();
         }}

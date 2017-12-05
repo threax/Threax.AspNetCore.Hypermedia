@@ -27,13 +27,13 @@ namespace Threax.ModelGen
         int? Order { get; }
     }
 
-    public class TypeWriterPropertyInfo<T> : IWriterPropertyInfo
+    public class TypeWriterPropertyInfo : IWriterPropertyInfo
     {
         private Type type;
 
-        public TypeWriterPropertyInfo()
+        public TypeWriterPropertyInfo(Type t)
         {
-            this.type = typeof(T);
+            this.type = t;
         }
 
         public bool IsValueType => type.IsValueType;
@@ -53,6 +53,13 @@ namespace Threax.ModelGen
         public bool IsVirtual => false;
 
         public int? Order { get; set; } = null;
+    }
+
+    public class TypeWriterPropertyInfo<T> : TypeWriterPropertyInfo
+    {
+        public TypeWriterPropertyInfo() : base(typeof(T))
+        {
+        }
     }
 
     public class SchemaWriterPropertyInfo : IWriterPropertyInfo

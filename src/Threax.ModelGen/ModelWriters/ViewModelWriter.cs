@@ -26,7 +26,7 @@ namespace Threax.ModelGen
 $@"       public partial class {a.Name} : {a.BaseClassName}I{a.Name}, I{a.Name}Id {a.Writer.GetAdditionalInterfaces()}
        {{");
 
-                    a.Writer.CreateProperty(a.Builder, $"{a.Name}Id", new TypeWriterPropertyInfo<Guid>());
+                    a.Writer.CreateProperty(a.Builder, $"{a.Name}Id", new TypeWriterPropertyInfo(schema.GetKeyType()));
                 }
                 )
             {
