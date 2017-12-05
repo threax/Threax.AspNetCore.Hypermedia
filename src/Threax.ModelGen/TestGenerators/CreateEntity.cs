@@ -29,11 +29,25 @@ $@"        public static {name}Entity CreateEntity(String seed = """", {modelIdT
             else if(modelIdType.IsNumeric())
             {
                 sb.AppendLine(
-$@"        public static {name}Entity CreateEntity(String seed = """", {modelIdType.GetTypeAsNullable()} {name}Id = default({modelIdType.GetTypeAsNullable()}){args})
+$@"        private static {modelIdType.Name} currentEntityId = 0;
+        private static Object entityIdLock = new Object();
+        private static {modelIdType.Name} GetNextEntityId()
+        {{
+            lock(entityIdLock)
+            {{
+                if(currentEntityId == {modelIdType.Name}.MaxValue)
+                {{
+                    throw new InvalidOperationException(""Ran out of key values for {name} entities suggest modifying your tests to create keys manually."");
+                }}
+                return currentEntityId++;
+            }}
+        }}
+
+        public static {name}Entity CreateEntity(String seed = """", {modelIdType.GetTypeAsNullable()} {name}Id = default({modelIdType.GetTypeAsNullable()}){args})
         {{
             return new {name}Entity()
             {{
-                {name}Id = {name}Id.HasValue ? {name}Id.Value : new Random().Next(0, {modelIdType.Name}.MaxValue),"
+                {name}Id = {name}Id.HasValue ? {name}Id.Value : GetNextId(),"
                 );
             }
             else if(modelIdType == typeof(String))
@@ -43,17 +57,17 @@ $@"        public static {name}Entity CreateEntity(String seed = """", {modelIdT
         {{
             return new {name}Entity()
             {{
-                {name}Id = {name}Id != null ? {name}Id : seed + ""id"","
+                {name}Id = {name}Id != null ? {name}Id : seed + Guid.NewGuid().ToString(),"
                 );
             }
             else //Some other unknown type, likely an enum
             {
                 sb.AppendLine(
-$@"        public static {name}Entity CreateEntity(String seed = """", {modelIdType.GetTypeAsNullable()} {name}Id = default({modelIdType.GetTypeAsNullable()}){args})
+$@"        public static {name}Entity CreateEntity({modelIdType.GetTypeAsNullable()} {name}Id = default({modelIdType.GetTypeAsNullable()}), String seed = """"{args})
         {{
             return new {name}Entity()
             {{
-                {name}Id = {name}Id != null ? {name}Id : default({modelIdType.Name}),"
+                {name}Id = {name}Id != null ? ({modelIdType.Name}){name}Id : default({modelIdType.Name}),"
                 );
             }
         }

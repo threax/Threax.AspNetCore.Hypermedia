@@ -24,6 +24,7 @@ using Microsoft.EntityFrameworkCore;
 using {ns}.Database;
 using {ns}.InputModels;
 using {ns}.ViewModels;
+using {ns}.Models;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

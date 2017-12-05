@@ -36,6 +36,7 @@ using {ns}.Repository;
 using Threax.AspNetCore.Halcyon.Ext;
 using {ns}.ViewModels;
 using {ns}.InputModels;
+using {ns}.Models;
 using Microsoft.AspNetCore.Authorization;
 
 namespace {ns}.Controllers.Api

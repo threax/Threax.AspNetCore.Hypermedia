@@ -23,6 +23,7 @@ namespace Threax.ModelGen.TestGenerators
 $@"using AutoMapper;
 using {ns}.Database;
 using {ns}.ViewModels;
+using {ns}.Models;
 using System;
 using Threax.AspNetCore.Tests;
 using Xunit;
