@@ -19,16 +19,19 @@ namespace Threax.AspNetCore.Models
             });
             foreach (var type in types)
             {
+                IServiceSetup instance = null;
+
                 try
                 {
-                    var instance = (IServiceSetup)Activator.CreateInstance(type);
-                    instance.ConfigureServices(services);
+                    instance = (IServiceSetup)Activator.CreateInstance(type);
                 }
                 catch (Exception)
                 {
                     //this handles any errors creating a type, not really a big deal, could be an abstract class or something else, just ignore it
                     //Probably should make this better later
                 }
+
+                instance?.ConfigureServices(services);
             }
         }
     }

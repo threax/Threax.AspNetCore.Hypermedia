@@ -39,7 +39,7 @@ using {ns}.Models;"
 
         private static IAttributeBuilder CreateAttributeBuilder()
         {
-            return new IndexPropAttributeBuilder(new RequiredAttributeBuilder(new MaxLengthAttributeBuilder()));
+            return new RequiredAttributeBuilder(new MaxLengthAttributeBuilder());
         }
     }
 }

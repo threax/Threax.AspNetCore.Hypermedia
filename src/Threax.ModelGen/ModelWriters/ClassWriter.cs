@@ -72,13 +72,16 @@ using Threax.AspNetCore.Halcyon.Ext.UIAttrs;"
                 {
                     CreateProperty(sb, "Created", new TypeWriterPropertyInfo<DateTime>()
                     {
-                        HasIndexProp = true
+                        Order = int.MaxValue - 1
                     });
                 }
 
                 if (hasModified)
                 {
-                    CreateProperty(sb, "Modified", new TypeWriterPropertyInfo<DateTime>());
+                    CreateProperty(sb, "Modified", new TypeWriterPropertyInfo<DateTime>()
+                    {
+                        Order = int.MaxValue
+                    });
                 }
 
                 sb.AppendLine("    }");
