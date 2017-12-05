@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define ServerRunning
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,11 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
 {
     public class GeneratedCSharpTests
     {
+#if ServerRunning
+        [Fact]
+#else
         [Fact(Skip = "Server Not Running")]
+#endif
         public async Task EntryPoint()
         {
             using (var clientFactory = new DefaultHttpClientFactory())
@@ -20,7 +25,11 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
             }
         }
 
+#if ServerRunning
+        [Fact]
+#else
         [Fact(Skip = "Server Not Running")]
+#endif
         public async Task ListThingies()
         {
             using (var clientFactory = new DefaultHttpClientFactory())
@@ -39,7 +48,11 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
             }
         }
 
+#if ServerRunning
+        [Fact]
+#else
         [Fact(Skip = "Server Not Running")]
+#endif
         public async Task AddThingyDocs()
         {
             using (var clientFactory = new DefaultHttpClientFactory())
@@ -54,7 +67,11 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
             }
         }
 
+#if ServerRunning
+        [Fact]
+#else
         [Fact(Skip = "Server Not Running")]
+#endif
         public async Task AddThingy()
         {
             using (var clientFactory = new DefaultHttpClientFactory())
@@ -69,7 +86,11 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
             }
         }
 
+#if ServerRunning
+        [Fact]
+#else
         [Fact(Skip = "Server Not Running")]
+#endif
         public async Task RawResultTest()
         {
             using (var clientFactory = new DefaultHttpClientFactory())
