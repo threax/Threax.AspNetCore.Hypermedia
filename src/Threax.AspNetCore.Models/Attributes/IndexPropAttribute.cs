@@ -11,8 +11,14 @@ namespace Threax.AspNetCore.Models
         {
         }
 
+        /// <summary>
+        /// Set this to true (default is true) to specify that the index should be clustered.
+        /// </summary>
         public bool IsClustered { get; set; } = true;
 
-        public bool IsUnique { get; set; } = true;
+        /// <summary>
+        /// Set this to true (default is false) to specify that the index should only contain unique values.
+        /// </summary>
+        public bool IsUnique { get; set; } = false;
     }
 }

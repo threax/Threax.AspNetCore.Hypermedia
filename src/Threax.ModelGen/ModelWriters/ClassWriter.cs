@@ -70,7 +70,10 @@ using Threax.AspNetCore.Halcyon.Ext.UIAttrs;"
             {
                 if (hasCreated)
                 {
-                    CreateProperty(sb, "Created", new TypeWriterPropertyInfo<DateTime>());
+                    CreateProperty(sb, "Created", new TypeWriterPropertyInfo<DateTime>()
+                    {
+                        HasIndexProp = true
+                    });
                 }
 
                 if (hasModified)

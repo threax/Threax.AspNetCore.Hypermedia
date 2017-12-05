@@ -25,6 +25,12 @@ namespace Threax.ModelGen
         bool IsVirtual { get; }
 
         int? Order { get; }
+
+        bool HasIndexProp { get; }
+
+        bool IndexPropClustered { get; }
+
+        bool IndexPropUnique { get; }
     }
 
     public class TypeWriterPropertyInfo<T> : IWriterPropertyInfo
@@ -53,6 +59,12 @@ namespace Threax.ModelGen
         public bool IsVirtual => false;
 
         public int? Order => null;
+
+        public bool HasIndexProp { get; set; }
+
+        public bool IndexPropClustered { get; set; }
+
+        public bool IndexPropUnique { get; set; }
     }
 
     public class SchemaWriterPropertyInfo : IWriterPropertyInfo
@@ -81,13 +93,19 @@ namespace Threax.ModelGen
         public bool IsVirtual => prop.IsVirtual();
 
         public int? Order => prop.GetOrder();
+
+        public bool HasIndexProp => false;
+
+        public bool IndexPropClustered => false;
+
+        public bool IndexPropUnique => false;
     }
 
     public class NoWriterInfo : IWriterPropertyInfo
     {
         public NoWriterInfo()
         {
-            
+
         }
 
         public bool IsValueType => false;
@@ -107,5 +125,11 @@ namespace Threax.ModelGen
         public bool IsVirtual => false;
 
         public int? Order => null;
+
+        public bool HasIndexProp => false;
+
+        public bool IndexPropClustered => false;
+
+        public bool IndexPropUnique => false;
     }
 }

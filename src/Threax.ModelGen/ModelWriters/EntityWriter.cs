@@ -31,13 +31,15 @@ $@"    public partial class {a.Name}Entity : {a.BaseClassName}I{a.Name}, I{a.Nam
                 }
                 )
             {
-                AdditionalUsings = $"using {ns}.Models;"
+                AdditionalUsings = 
+$@"using Threax.AspNetCore.Models;
+using {ns}.Models;"
             }, ns, ns + ".Database", allowPropertyCallback: p => !p.IsVirtual());
         }
 
         private static IAttributeBuilder CreateAttributeBuilder()
         {
-            return new MaxLengthAttributeBuilder();
+            return new IndexPropAttributeBuilder(new RequiredAttributeBuilder(new MaxLengthAttributeBuilder()));
         }
     }
 }
