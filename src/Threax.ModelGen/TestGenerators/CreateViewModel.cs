@@ -43,7 +43,7 @@ $@"        public static {name} CreateView(String seed = """", {modelIdType.GetT
         {{
             return new {name}()
             {{
-                {name}Id = {name}Id.HasValue ? {name}Id.Value : seed + ""id"","
+                {name}Id = {name}Id != null ? {name}Id : seed + ""id"","
                 );
             }
             else //Some other unknown type, likely an enum
@@ -53,7 +53,7 @@ $@"        public static {name} CreateView(String seed = """", {modelIdType.GetT
         {{
             return new {name}()
             {{
-                {name}Id = {name}Id.HasValue ? {name}Id.Value : default({modelIdType.Name}),"
+                {name}Id = {name}Id != null ? {name}Id : default({modelIdType.Name}),"
                 );
             }
         }

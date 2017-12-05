@@ -91,7 +91,7 @@ namespace {ns}.ViewModels
         {{
             if ({Model}Id != null)
             {{
-                queryString.AppendItem(""{model}Id"", {Model}Id.Value.ToString());
+                queryString.AppendItem(""{model}Id"", {Model}Id.ToString());
             }}
 
 {customizer}

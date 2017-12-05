@@ -58,7 +58,7 @@ namespace {ns}.InputModels
         /// <returns>The query passed in populated with additional conditions.</returns>
         public IQueryable<T> Create<T>(IQueryable<T> query) where T : I{Model}, I{Model}Id
         {{
-            if ({Model}Id.HasValue)
+            if ({Model}Id != null)
             {{
                 query = query.Where(i => i.{Model}Id == {Model}Id);
             }}
