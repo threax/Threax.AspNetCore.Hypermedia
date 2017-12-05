@@ -7,12 +7,12 @@ using System.Text;
 
 namespace Threax.AspNetCore.Models
 {
-    public class IndexAttributeFinder
+    public class IndexedPropertyFinder
     {
         private Type type;
         private IEnumerable<Type> supportedPropertyTypes;
 
-        public IndexAttributeFinder(Type type, IEnumerable<Type> supportedPropertyTypes)
+        public IndexedPropertyFinder(Type type, IEnumerable<Type> supportedPropertyTypes)
         {
             this.type = type;
             this.supportedPropertyTypes = supportedPropertyTypes;

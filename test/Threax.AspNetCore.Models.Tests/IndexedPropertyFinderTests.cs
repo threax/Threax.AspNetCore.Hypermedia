@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Threax.AspNetCore.Models.Tests
 {
-    public class IndexAttributeFinderTests
+    public class IndexedPropertyFinderTests
     {
         //Simulate a dbcontext using lists instead, should be the same to the reflection api
         class IndexAttributeFinderTest
@@ -18,8 +18,8 @@ namespace Threax.AspNetCore.Models.Tests
         [Fact]
         public void Test1()
         {
-            var attributeFinder = new IndexAttributeFinder(typeof(IndexAttributeFinderTest), new Type[] { typeof(List<>) });
-            var attributes = attributeFinder.GetIndexProps();
+            var propFinder = new IndexedPropertyFinder(typeof(IndexAttributeFinderTest), new Type[] { typeof(List<>) });
+            var attributes = propFinder.GetIndexProps();
             var attrEnumerator = attributes.GetEnumerator();
             attrEnumerator.MoveNext();
 
