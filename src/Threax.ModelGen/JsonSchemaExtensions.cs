@@ -125,6 +125,9 @@ namespace Threax.ModelGen
                     case "date-time":
                         type = "DateTime" + GetNullable(types); //Overrides completely since date time can be nullable
                         break;
+                    case "guid": //Guids come in as strings sometimes
+                        type = "Guid";
+                        break;
                 }
             }
 
