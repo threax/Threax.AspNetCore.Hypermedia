@@ -25,6 +25,8 @@ namespace Threax.ModelGen
         bool IsVirtual { get; }
 
         int? Order { get; }
+
+        bool OnAllModelTypes { get; }
     }
 
     public class TypeWriterPropertyInfo : IWriterPropertyInfo
@@ -53,6 +55,8 @@ namespace Threax.ModelGen
         public bool IsVirtual => false;
 
         public int? Order { get; set; } = null;
+
+        public bool OnAllModelTypes => true;
     }
 
     public class TypeWriterPropertyInfo<T> : TypeWriterPropertyInfo
@@ -88,6 +92,8 @@ namespace Threax.ModelGen
         public bool IsVirtual => prop.IsVirtual();
 
         public int? Order => prop.GetOrder();
+
+        public bool OnAllModelTypes => prop.OnAllModelTypes();
     }
 
     public class NoWriterInfo : IWriterPropertyInfo
@@ -114,5 +120,7 @@ namespace Threax.ModelGen
         public bool IsVirtual => false;
 
         public int? Order => null;
+
+        public bool OnAllModelTypes => true;
     }
 }

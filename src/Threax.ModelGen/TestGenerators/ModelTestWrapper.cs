@@ -14,12 +14,19 @@ namespace Threax.ModelGen.TestGenerators
             NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
             String Models, models;
             NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
+            String createArgs = "";
 
             var equalAssertFunc = ModelTypeGenerator.Create(schema, modelPluralName, new ModelEqualityAssert(), schema, ns, ns);
-            var createArgs = ModelTypeGenerator.Create(schema, modelPluralName, new ModelCreateArgs(), schema, ns, ns);
-            var createInputFunc = ModelTypeGenerator.Create(schema, modelPluralName, new CreateInputModel(createArgs), schema, ns, ns);
-            var createEntityFunc = ModelTypeGenerator.Create(schema, modelPluralName, new CreateEntity(createArgs, schema.GetKeyType()), schema, ns, ns);
-            var createViewFunc = ModelTypeGenerator.Create(schema, modelPluralName, new CreateViewModel(createArgs, schema.GetKeyType()), schema, ns, ns);
+
+            createArgs = ModelTypeGenerator.Create(schema, modelPluralName, new ModelCreateArgs(), schema, ns, ns, p => p.CreateInputModel());
+            var createInputFunc = ModelTypeGenerator.Create(schema, modelPluralName, new CreateInputModel(createArgs), schema, ns, ns, p => p.CreateInputModel());
+
+            createArgs = ModelTypeGenerator.Create(schema, modelPluralName, new ModelCreateArgs(), schema, ns, ns, p => p.CreateEntity());
+            var createEntityFunc = ModelTypeGenerator.Create(schema, modelPluralName, new CreateEntity(createArgs, schema.GetKeyType()), schema, ns, ns, p => p.CreateEntity());
+
+            createArgs = ModelTypeGenerator.Create(schema, modelPluralName, new ModelCreateArgs(), schema, ns, ns, p => p.CreateViewModel());
+            var createViewFunc = ModelTypeGenerator.Create(schema, modelPluralName, new CreateViewModel(createArgs, schema.GetKeyType()), schema, ns, ns, p => p.CreateViewModel());
+
             return Create(ns, Model, model, Models, models, equalAssertFunc, createInputFunc, createEntityFunc, createViewFunc);
         }
 

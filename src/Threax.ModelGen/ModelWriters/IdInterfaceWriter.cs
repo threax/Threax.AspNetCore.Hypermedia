@@ -79,9 +79,14 @@ namespace Threax.ModelGen
             {
                 if (includePropertyInferaceForCb(prop))
                 {
-                    yield return $"I{schema.Title}_{prop.Name}";
+                    yield return GetPropertyInterfaceName(schema.Title, prop.Name);
                 }
             }
+        }
+
+        public static String GetPropertyInterfaceName(String modelName, String propertyName)
+        {
+            return $"I{modelName}_{propertyName}";
         }
     }
 }
