@@ -23,6 +23,12 @@ namespace Threax.ModelGen
 
                 var assembly = ProjectAssemblyLoader.LoadProjectAssembly(AppOutDir);
                 var type = assembly.GetType(Source);
+
+                if(type == null)
+                {
+                    throw new InvalidOperationException($"Cannot find type {Source} in assembly {assembly.FullName}.");
+                }
+
                 var schemaTask = JsonSchema4.FromTypeAsync(type, new NJsonSchema.Generation.JsonSchemaGeneratorSettings()
                 {
                     DefaultEnumHandling = EnumHandling.String,
