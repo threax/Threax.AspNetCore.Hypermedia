@@ -27,7 +27,7 @@ $@"    public partial interface I{name}
 
         public override void EndNamespace(StringBuilder sb)
         {
-            if(WriteNamespace && WriteEndNamespace)
+            if(WriteEndNamespace)
             {
                 base.EndNamespace(sb);
             }
