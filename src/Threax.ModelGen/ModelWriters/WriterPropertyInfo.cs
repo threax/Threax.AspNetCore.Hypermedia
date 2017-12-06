@@ -27,6 +27,8 @@ namespace Threax.ModelGen
         int? Order { get; }
 
         bool OnAllModelTypes { get; }
+
+        String NullValueLabel { get; }
     }
 
     public class TypeWriterPropertyInfo : IWriterPropertyInfo
@@ -57,6 +59,8 @@ namespace Threax.ModelGen
         public int? Order { get; set; } = null;
 
         public bool OnAllModelTypes => true;
+
+        public String NullValueLabel => null;
     }
 
     public class TypeWriterPropertyInfo<T> : TypeWriterPropertyInfo
@@ -94,6 +98,8 @@ namespace Threax.ModelGen
         public int? Order => prop.GetOrder();
 
         public bool OnAllModelTypes => prop.OnAllModelTypes();
+
+        public String NullValueLabel => prop.GetNullValueLabel();
     }
 
     public class NoWriterInfo : IWriterPropertyInfo
@@ -122,5 +128,7 @@ namespace Threax.ModelGen
         public int? Order => null;
 
         public bool OnAllModelTypes => true;
+
+        public String NullValueLabel => null;
     }
 }

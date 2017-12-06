@@ -39,7 +39,8 @@ namespace Threax.ModelGen
                     );
                 })
             {
-                AdditionalUsings = $"using {ns}.Models;"
+                AdditionalUsings = $@"using {ns}.Models;
+using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
             };
 
             return ModelTypeGenerator.Create(schema, schema.GetPluralName(), modelWriter, ns, ns + ".InputModels", allowPropertyCallback: p => !p.IsVirtual() && p.CreateInputModel());
@@ -47,7 +48,7 @@ namespace Threax.ModelGen
 
         private static IAttributeBuilder CreatePropertyAttributes()
         {
-            return new DisplayAttributeBuilder(new RequiredAttributeBuilder(new MaxLengthAttributeBuilder(new UiOrderAttributeBuilder())));
+            return new NullValueLabelAttributeBuilder(new DisplayAttributeBuilder(new RequiredAttributeBuilder(new MaxLengthAttributeBuilder(new UiOrderAttributeBuilder()))));
         }
 
         private static IAttributeBuilder CreateClassAttributes()

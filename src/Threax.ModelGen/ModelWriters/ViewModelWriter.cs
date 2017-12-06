@@ -43,14 +43,15 @@ $@"       public partial class {a.Name}{InterfaceListBuilder.Build(interfaces)}
             {
                 AdditionalUsings =
 $@"using {ns}.Models;
-using {ns}.Controllers.Api;"
+using {ns}.Controllers.Api;
+using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
             };
             return ModelTypeGenerator.Create(schema, schema.GetPluralName(), mainWriter, ns, ns + ".ViewModels", allowPropertyCallback: p => !p.IsVirtual() && p.CreateViewModel());
         }
 
         private static IAttributeBuilder CreateAttributeBuilder()
         {
-            return new UiOrderAttributeBuilder(new DisplayAttributeBuilder());
+            return new NullValueLabelAttributeBuilder(new UiOrderAttributeBuilder(new DisplayAttributeBuilder()));
         }
 
         public static String GetUserPartial(String ns, String modelName, String modelPluralName, String generatedSuffix = ".Generated")
