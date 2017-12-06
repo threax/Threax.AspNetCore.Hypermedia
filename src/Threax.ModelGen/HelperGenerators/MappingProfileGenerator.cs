@@ -14,6 +14,45 @@ namespace Threax.ModelGen
 
         private static String Create(String ns, String Model, bool hasCreated, bool hasModified)
         {
+            return
+$@"using System;
+using System.Collections.Generic;
+using System.Text;
+using AutoMapper;
+using Threax.AspNetCore.Models;
+using Threax.AspNetCore.Tracking;
+using {ns}.InputModels;
+using {ns}.Database;
+using {ns}.ViewModels;
+
+namespace {ns}.Mappers
+{{
+    public partial class {Model}Profile : Profile
+    {{
+        public {Model}Profile()
+        {{
+            //Map the input model to the entity
+            MapInputToEntity(CreateMap<{Model}Input, {Model}Entity>());
+
+            //Map the entity to the view model.
+            MapEntityToView(CreateMap<{Model}Entity, {Model}>());
+        }}
+
+        partial void MapInputToEntity(IMappingExpression<{Model}Input, {Model}Entity> mapExpr);
+
+        partial void MapEntityToView(IMappingExpression<{Model}Entity, {Model}> mapExpr);
+    }}
+}}";
+        }
+
+        public static String GetGenerated(String ns, String modelName, bool hasCreated, bool hasModified)
+        {
+            String Model = NameGenerator.CreatePascal(modelName);
+            return CreateGenerated(ns, Model, hasCreated, hasModified);
+        }
+
+        private static String CreateGenerated(String ns, String Model, bool hasCreated, bool hasModified)
+        {
             var additionalEntityMaps = "";
             if (hasCreated)
             {
@@ -42,14 +81,14 @@ namespace {ns}.Mappers
 {{
     public partial class {Model}Profile : Profile
     {{
-        public {Model}Profile()
+        partial void MapInputToEntity(IMappingExpression<{Model}Input, {Model}Entity> mapExpr)
         {{
-            //Map the input model to the entity
-            CreateMap<{Model}Input, {Model}Entity>()
-                .ForMember(d => d.{Model}Id, opt => opt.Ignore()){additionalEntityMaps};
+            mapExpr.ForMember(d => d.{Model}Id, opt => opt.Ignore()){additionalEntityMaps};
+        }}
 
-            //Map the entity to the view model.
-            CreateMap<{Model}Entity, {Model}>();
+        partial void MapEntityToView(IMappingExpression<{Model}Entity, {Model}> mapExpr)
+        {{
+            
         }}
     }}
 }}";
