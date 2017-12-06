@@ -24,5 +24,15 @@ $@"    public partial interface I{name}
             sb.AppendLine($"        {info.ClrType} {name} {{ get; set; }}");
             sb.AppendLine();
         }
+
+        public override void EndNamespace(StringBuilder sb)
+        {
+            if(WriteNamespace && WriteEndNamespace)
+            {
+                base.EndNamespace(sb);
+            }
+        }
+
+        public bool WriteEndNamespace { get; set; } = true;
     }
 }

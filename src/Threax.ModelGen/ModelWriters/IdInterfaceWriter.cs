@@ -7,49 +7,38 @@ using Threax.ModelGen.ModelWriters;
 
 namespace Threax.ModelGen
 {
-    public class IdInterfaceWriter : InterfaceWriter
+    public static class IdInterfaceWriter
     {
-        private JsonSchema4 schema;
-        private String ns;
-
-        public IdInterfaceWriter(bool hasCreated, bool hasModified, JsonSchema4 schema)
-            :base(hasCreated, hasModified)
+        public static String Create(JsonSchema4 schema, String ns)
         {
-            this.schema = schema;
-        }
+            bool allPropertiesIncluded = true;
+            var commonWriter = new InterfaceWriter(false, false)
+            {
+                WriteEndNamespace = false
+            };
+            var common = ModelTypeGenerator.Create(schema, schema.GetPluralName(), commonWriter, ns, ns + ".Models",
+                a =>
+            {
+                allPropertiesIncluded = allPropertiesIncluded && a.CreateInputModel() && a.CreateEntity() && a.CreateViewModel();
+                return a.CreateInputModel() && a.CreateEntity() && a.CreateViewModel();
+            });
 
-        public IdInterfaceWriter(JsonSchema4 schema) : this(false, false, schema)
-        {
-        }
-
-        public override void StartNamespace(StringBuilder sb, string name)
-        {
-            this.ns = name;
-            base.StartNamespace(sb, name);
-        }
-
-        public override void EndType(StringBuilder sb, String name, String pluralName)
-        {
-            base.EndType(sb, name, pluralName);
-
-            String queryProps = ModelTypeGenerator.Create(schema, pluralName, new QueryPropertiesWriter(visibility: "", allowAttributes: false), schema, ns, ns, allowPropertyCallback: p =>
+            var queryProps = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new QueryPropertiesWriter(visibility: "", allowAttributes: false), schema, ns, ns, allowPropertyCallback: p =>
             {
                 return p.IsQueryable();
             });
-
-            sb.AppendLine(
-$@"
-    public partial interface I{name}Id
+            return $@"{common}
+    public partial interface I{schema.Title}Id
     {{
-        {this.schema.GetKeyType().Name} {name}Id {{ get; set; }}
+        {schema.GetKeyType().Name} {schema.Title}Id {{ get; set; }}
     }}    
 
-    public partial interface I{name}Query
+    public partial interface I{schema.Title}Query
     {{
-        {this.schema.GetKeyType().GetTypeAsNullable()} {name}Id {{ get; set; }}
+        {schema.GetKeyType().GetTypeAsNullable()} {schema.Title}Id {{ get; set; }}
         {queryProps}
-    }}"
-            );
+    }}
+}}";
         }
     }
 }
