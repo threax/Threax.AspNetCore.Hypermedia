@@ -1,6 +1,9 @@
-﻿using System;
+﻿using NJsonSchema;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen
 {
@@ -45,25 +48,56 @@ namespace {ns}.Mappers
 }}";
         }
 
-        public static String GetGenerated(String ns, String modelName, bool hasCreated, bool hasModified)
+        public static String GetGenerated(String ns, JsonSchema4 schema, bool hasCreated, bool hasModified)
         {
-            String Model = NameGenerator.CreatePascal(modelName);
-            return CreateGenerated(ns, Model, hasCreated, hasModified);
+            String Model = NameGenerator.CreatePascal(schema.Title);
+            return CreateGenerated(ns, Model, hasCreated, hasModified, schema.Properties.Values);
         }
 
-        private static String CreateGenerated(String ns, String Model, bool hasCreated, bool hasModified)
+        private static String CreateGenerated(String ns, String Model, bool hasCreated, bool hasModified, IEnumerable<JsonProperty> props)
         {
-            var additionalEntityMaps = "";
+            StringBuilder inputToEntityMaps = new StringBuilder($"mapExpr.ForMember(d => d.{Model}Id, opt => opt.Ignore())");
+            StringBuilder entityToViewMaps = new StringBuilder("mapExpr");
+
+            bool customEntityToView = false;
+            foreach(var prop in props)
+            {
+                if (!prop.OnAllModelTypes())
+                {
+                    if(!prop.CreateInputModel() && prop.CreateEntity())
+                    {
+                        inputToEntityMaps.AppendLine();
+                        inputToEntityMaps.Append($"                .ForMember(d => d.{NameGenerator.CreatePascal(prop.Name)}, opt => opt.Ignore())");
+                    }
+
+                    if (!prop.CreateEntity() && prop.CreateViewModel())
+                    {
+                        customEntityToView = true;
+                        entityToViewMaps.AppendLine();
+                        entityToViewMaps.Append($"                .ForMember(d => d.{NameGenerator.CreatePascal(prop.Name)}, opt => opt.Ignore())");
+                    }
+                }
+            }
+
             if (hasCreated)
             {
-                additionalEntityMaps += @"
-                .ForMember(d => d.Created, opt => opt.ResolveUsing<ICreatedResolver>())";
+                inputToEntityMaps.AppendLine();
+                inputToEntityMaps.Append("                .ForMember(d => d.Created, opt => opt.ResolveUsing<ICreatedResolver>())");
             }
 
             if (hasModified)
             {
-                additionalEntityMaps += @"
-                .ForMember(d => d.Modified, opt => opt.ResolveUsing<IModifiedResolver>())";
+                inputToEntityMaps.AppendLine();
+                inputToEntityMaps.Append("                .ForMember(d => d.Modified, opt => opt.ResolveUsing<IModifiedResolver>())");
+            }
+
+            inputToEntityMaps.Append(";");
+            entityToViewMaps.Append(";");
+
+            var entityToViews = "";
+            if (customEntityToView) //Only take the string if we added customizations to it
+            {
+                entityToViews = entityToViewMaps.ToString();
             }
 
             return
@@ -83,12 +117,12 @@ namespace {ns}.Mappers
     {{
         partial void MapInputToEntity(IMappingExpression<{Model}Input, {Model}Entity> mapExpr)
         {{
-            mapExpr.ForMember(d => d.{Model}Id, opt => opt.Ignore()){additionalEntityMaps};
+            {inputToEntityMaps.ToString()}
         }}
 
         partial void MapEntityToView(IMappingExpression<{Model}Entity, {Model}> mapExpr)
         {{
-            
+            {entityToViews}
         }}
     }}
 }}";
