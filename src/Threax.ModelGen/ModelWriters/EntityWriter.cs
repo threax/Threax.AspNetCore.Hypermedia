@@ -14,12 +14,10 @@ namespace Threax.ModelGen
         {
             var sb = new StringBuilder();
             bool hasBase = false;
-            bool hasRemovedProperties = false;
 
             var baseWriter = new BaseModelWriter("Entity", CreateAttributeBuilder());
             var baseClass = ModelTypeGenerator.Create(schema, schema.GetPluralName(), baseWriter, ns, ns + ".Database", allowPropertyCallback: p =>
             {
-                hasRemovedProperties = hasRemovedProperties | !p.CreateEntity();
                 if (p.CreateEntity())
                 {
                     hasBase = hasBase | p.IsVirtual();
@@ -31,13 +29,9 @@ namespace Threax.ModelGen
             var mainWriter = new MainModelWriter(hasBase ? baseClass : null, "Entity", CreateAttributeBuilder(), new NoAttributeBuilder(), schema.AllowCreated(), schema.AllowModified(),
                 a =>
                 {
-                    var modelInterfaces = "";
-                    if (!hasRemovedProperties)
-                    {
-                        modelInterfaces = $"I{a.Name}, I{a.Name}Id ";
-                    }
-
-                    var interfaces = new String[] { a.BaseClassName, modelInterfaces }.Concat(a.Writer.GetAdditionalInterfaces());
+                    var interfaces = new String[] { a.BaseClassName, }
+                        .Concat(IdInterfaceWriter.GetInterfaces(schema, true, p => !p.OnAllModelTypes() && p.CreateEntity()))
+                        .Concat(a.Writer.GetAdditionalInterfaces());
 
                     a.Builder.AppendLine(
 $@"    public partial class {a.Name}Entity{InterfaceListBuilder.Build(interfaces)}
@@ -53,7 +47,7 @@ $@"    public partial class {a.Name}Entity{InterfaceListBuilder.Build(interfaces
 $@"using Threax.AspNetCore.Models;
 using {ns}.Models;"
             };
-            return ModelTypeGenerator.Create(schema, schema.GetPluralName(), mainWriter, ns, ns + ".Database", allowPropertyCallback: p => !p.IsVirtual());
+            return ModelTypeGenerator.Create(schema, schema.GetPluralName(), mainWriter, ns, ns + ".Database", allowPropertyCallback: p => !p.IsVirtual() && p.CreateEntity());
         }
 
         private static IAttributeBuilder CreateAttributeBuilder()

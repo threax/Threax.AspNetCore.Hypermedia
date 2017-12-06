@@ -67,6 +67,22 @@ namespace Threax.ModelGen
 
             return sb.ToString();
         }
+
+        public static IEnumerable<String> GetInterfaces(JsonSchema4 schema, bool includeId, Func<JsonProperty, bool> includePropertyInferaceForCb)
+        {
+            yield return $"I{schema.Title}";
+            if (includeId)
+            {
+                yield return $"I{schema.Title}Id";
+            }
+            foreach(var prop in schema.Properties.Values)
+            {
+                if (includePropertyInferaceForCb(prop))
+                {
+                    yield return $"I{schema.Title}_{prop.Name}";
+                }
+            }
+        }
     }
 }
 

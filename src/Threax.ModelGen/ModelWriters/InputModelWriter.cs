@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Threax.ModelGen.ModelWriters;
 using Threax.AspNetCore.Models;
+using System.Linq;
 
 namespace Threax.ModelGen
 {
@@ -13,12 +14,10 @@ namespace Threax.ModelGen
         {
             var sb = new StringBuilder();
             bool hasBase = false;
-            bool hasRemovedProperties = false;
 
             var baseModelWriter = new BaseModelWriter("Input", CreatePropertyAttributes());
             var baseClass = ModelTypeGenerator.Create(schema, schema.GetPluralName(), baseModelWriter, ns, ns + ".InputModels", allowPropertyCallback: p =>
             {
-                hasRemovedProperties = hasRemovedProperties | !p.CreateInputModel();
                 if (p.CreateInputModel())
                 {
                     hasBase = hasBase | p.IsVirtual();
@@ -30,14 +29,12 @@ namespace Threax.ModelGen
             var modelWriter = new MainModelWriter(hasBase ? baseClass : null, "Input", CreatePropertyAttributes(), CreateClassAttributes(), false, false,
                 a =>
                 {
-                    var modelInterfaces = "";
-                    if (!hasRemovedProperties)
-                    {
-                        modelInterfaces = $"I{a.Name} ";
-                    }
+                    var interfaces = new String[] { a.BaseClassName, }
+                        .Concat(IdInterfaceWriter.GetInterfaces(schema, false, p => !p.OnAllModelTypes() && p.CreateInputModel()))
+                        .Concat(a.Writer.GetAdditionalInterfaces());
 
                     a.Builder.AppendLine(
-  $@"    public partial class {a.Name}{a.ModelSuffix}{InterfaceListBuilder.Build(new String[] { a.BaseClassName, modelInterfaces })}
+  $@"    public partial class {a.Name}{a.ModelSuffix}{InterfaceListBuilder.Build(interfaces)}
     {{"
                     );
                 })
