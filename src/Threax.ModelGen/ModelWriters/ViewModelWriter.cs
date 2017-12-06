@@ -14,26 +14,44 @@ namespace Threax.ModelGen
         {
             var sb = new StringBuilder();
             bool hasBase = false;
-            var baseClass = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new BaseModelWriter("", CreateAttributeBuilder()), ns, ns + ".ViewModels", allowPropertyCallback: p =>
+            bool hasRemovedProperties = false;
+
+            var baseWriter = new BaseModelWriter("", CreateAttributeBuilder());
+            var baseClass = ModelTypeGenerator.Create(schema, schema.GetPluralName(), baseWriter, ns, ns + ".ViewModels", allowPropertyCallback: p =>
             {
-                hasBase = hasBase | p.IsVirtual();
-                return p.IsVirtual();
+                hasRemovedProperties = hasRemovedProperties | !p.CreateInputModel();
+                if (p.CreateInputModel())
+                {
+                    hasBase = hasBase | p.IsVirtual();
+                    return p.IsVirtual();
+                }
+                return false;
             });
-            return ModelTypeGenerator.Create(schema, schema.GetPluralName(), new MainModelWriter(hasBase ? baseClass : null, "", CreateAttributeBuilder(), new NoAttributeBuilder(), schema.AllowCreated(), schema.AllowModified(),
+
+            var mainWriter = new MainModelWriter(hasBase ? baseClass : null, "", CreateAttributeBuilder(), new NoAttributeBuilder(), schema.AllowCreated(), schema.AllowModified(),
                 a =>
                 {
+                    var modelInterfaces = "";
+                    if (!hasRemovedProperties)
+                    {
+                        modelInterfaces = $"I{a.Name}, I{a.Name}Id ";
+                    }
+
+                    var interfaces = new string[] { a.BaseClassName, modelInterfaces }.Concat(a.Writer.GetAdditionalInterfaces());
+
                     a.Builder.AppendLine(
-$@"       public partial class {a.Name} : {a.BaseClassName}I{a.Name}, I{a.Name}Id {a.Writer.GetAdditionalInterfaces()}
+$@"       public partial class {a.Name}{InterfaceListBuilder.Build(interfaces)}
        {{");
 
                     a.Writer.CreateProperty(a.Builder, $"{a.Name}Id", new TypeWriterPropertyInfo(schema.GetKeyType()));
                 }
                 )
             {
-                AdditionalUsings = 
+                AdditionalUsings =
 $@"using {ns}.Models;
 using {ns}.Controllers.Api;"
-            }, ns, ns + ".ViewModels", allowPropertyCallback: p => !p.IsVirtual());
+            };
+            return ModelTypeGenerator.Create(schema, schema.GetPluralName(), mainWriter, ns, ns + ".ViewModels", allowPropertyCallback: p => !p.IsVirtual());
         }
 
         private static IAttributeBuilder CreateAttributeBuilder()

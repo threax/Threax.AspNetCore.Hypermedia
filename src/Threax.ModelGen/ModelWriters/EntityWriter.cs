@@ -1,6 +1,7 @@
 ﻿using NJsonSchema;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Threax.AspNetCore.Models;
 using Threax.ModelGen.ModelWriters;
@@ -13,16 +14,33 @@ namespace Threax.ModelGen
         {
             var sb = new StringBuilder();
             bool hasBase = false;
-            var baseClass = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new BaseModelWriter("Entity", CreateAttributeBuilder()), ns, ns + ".Database", allowPropertyCallback: p =>
+            bool hasRemovedProperties = false;
+
+            var baseWriter = new BaseModelWriter("Entity", CreateAttributeBuilder());
+            var baseClass = ModelTypeGenerator.Create(schema, schema.GetPluralName(), baseWriter, ns, ns + ".Database", allowPropertyCallback: p =>
             {
-                hasBase = hasBase | p.IsVirtual();
-                return p.IsVirtual();
+                hasRemovedProperties = hasRemovedProperties | !p.CreateEntity();
+                if (p.CreateEntity())
+                {
+                    hasBase = hasBase | p.IsVirtual();
+                    return p.IsVirtual();
+                }
+                return false;
             });
-            return ModelTypeGenerator.Create(schema, schema.GetPluralName(), new MainModelWriter(hasBase ? baseClass : null, "Entity", CreateAttributeBuilder(), new NoAttributeBuilder(), schema.AllowCreated(), schema.AllowModified(),
+
+            var mainWriter = new MainModelWriter(hasBase ? baseClass : null, "Entity", CreateAttributeBuilder(), new NoAttributeBuilder(), schema.AllowCreated(), schema.AllowModified(),
                 a =>
                 {
+                    var modelInterfaces = "";
+                    if (!hasRemovedProperties)
+                    {
+                        modelInterfaces = $"I{a.Name}, I{a.Name}Id ";
+                    }
+
+                    var interfaces = new String[] { a.BaseClassName, modelInterfaces }.Concat(a.Writer.GetAdditionalInterfaces());
+
                     a.Builder.AppendLine(
-$@"    public partial class {a.Name}Entity : {a.BaseClassName}I{a.Name}, I{a.Name}Id {a.Writer.GetAdditionalInterfaces()}
+$@"    public partial class {a.Name}Entity{InterfaceListBuilder.Build(interfaces)}
     {{
         [Key]"
             );
@@ -31,10 +49,11 @@ $@"    public partial class {a.Name}Entity : {a.BaseClassName}I{a.Name}, I{a.Nam
                 }
                 )
             {
-                AdditionalUsings = 
+                AdditionalUsings =
 $@"using Threax.AspNetCore.Models;
 using {ns}.Models;"
-            }, ns, ns + ".Database", allowPropertyCallback: p => !p.IsVirtual());
+            };
+            return ModelTypeGenerator.Create(schema, schema.GetPluralName(), mainWriter, ns, ns + ".Database", allowPropertyCallback: p => !p.IsVirtual());
         }
 
         private static IAttributeBuilder CreateAttributeBuilder()

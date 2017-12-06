@@ -58,7 +58,7 @@ using Threax.AspNetCore.Halcyon.Ext.UIAttrs;"
                 ClassAttrBuilder?.BuildAttributes(sb, name, new NoWriterInfo(), "    ");
 
                 sb.AppendLine(
-    $@"    public class {name} {GetAdditionalInterfaces()}
+    $@"    public class {name}{InterfaceListBuilder.Build(GetAdditionalInterfaces())}
     {{"
                 );
             }
@@ -131,26 +131,24 @@ $@"namespace {name}
 
         public bool WriteNamespace { get; set; } = true;
 
-        public String GetAdditionalInterfaces()
+        public IEnumerable<String> GetAdditionalInterfaces()
         {
-            String extraInterfaces = "";
             if (hasCreated && hasModified)
             {
-                extraInterfaces += ", ICreatedModified";
+                yield return "ICreatedModified";
             }
             else
             {
                 if (hasCreated)
                 {
-                    extraInterfaces += ", ICreated";
+                    yield return "ICreated";
                 }
 
                 if (hasModified)
                 {
-                    extraInterfaces += ", IModified";
+                    yield return "IModified";
                 }
             }
-            return extraInterfaces;
         }
     }
 }
