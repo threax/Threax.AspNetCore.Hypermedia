@@ -75,8 +75,6 @@ namespace Threax.ModelGen
                             }
                         }
                     }
-
-                    schemaProp.SetAbstract(prop.GetMethod?.IsAbstract == true && prop.SetMethod?.IsAbstract == true);
                 }
             }
             else

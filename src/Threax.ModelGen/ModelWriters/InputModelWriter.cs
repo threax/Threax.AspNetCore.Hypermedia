@@ -20,8 +20,8 @@ namespace Threax.ModelGen
             {
                 if (p.CreateInputModel())
                 {
-                    hasBase = hasBase | p.IsAbstract();
-                    return p.IsAbstract();
+                    hasBase = hasBase | p.IsAbstractOnInputModel();
+                    return p.IsAbstractOnInputModel();
                 }
                 return false;
             });
@@ -43,7 +43,7 @@ namespace Threax.ModelGen
 using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
             };
 
-            return ModelTypeGenerator.Create(schema, schema.GetPluralName(), modelWriter, ns, ns + ".InputModels", allowPropertyCallback: p => !p.IsAbstract() && p.CreateInputModel());
+            return ModelTypeGenerator.Create(schema, schema.GetPluralName(), modelWriter, ns, ns + ".InputModels", allowPropertyCallback: p => !p.IsAbstractOnInputModel() && p.CreateInputModel());
         }
 
         private static IAttributeBuilder CreatePropertyAttributes()
