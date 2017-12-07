@@ -6,7 +6,7 @@ namespace Threax.ModelGen.ModelWriters
 {
     class BaseModelWriter : ClassWriter
     {
-        private String classSuffix;
+        protected String classSuffix;
 
         public BaseModelWriter(String classSuffix, IAttributeBuilder propAttributeBuilder, IAttributeBuilder classAttrBuilder = null) : base(false, false, propAttributeBuilder, classAttrBuilder)
         {

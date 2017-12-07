@@ -14,12 +14,12 @@ namespace Threax.ModelGen.ModelWriters
         {
             if (prop.ShowOnQueryUi)
             {
-                sb.AppendLine(Get(prop.Order.Value, spaces));
+                sb.AppendLine(Get(spaces));
             }
             base.BuildAttributes(sb, name, prop, spaces);
         }
 
-        public static String Get(int order, String spaces)
+        public static String Get(String spaces)
         {
             return $@"{spaces}[UiSearch]";
         }

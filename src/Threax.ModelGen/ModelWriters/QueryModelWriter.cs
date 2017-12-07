@@ -13,7 +13,7 @@ namespace Threax.ModelGen
         {
             bool hasBase = false;
 
-            var baseWriter = new BaseModelWriter("Query", QueryPropertiesWriter.CreateAttributeBuilder())
+            var baseWriter = new QueryBaseModelWriter("Query", QueryPropertiesWriter.CreateAttributeBuilder())
             {
                 InheritFrom = new String[] { "PagedCollectionQuery" }
             };
