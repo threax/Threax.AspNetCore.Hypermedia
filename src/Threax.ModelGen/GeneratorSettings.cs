@@ -32,8 +32,7 @@ namespace Threax.ModelGen
                 var schemaTask = JsonSchema4.FromTypeAsync(type, new NJsonSchema.Generation.JsonSchemaGeneratorSettings()
                 {
                     DefaultEnumHandling = EnumHandling.String,
-                    FlattenInheritanceHierarchy = true,
-                    GenerateAbstractProperties = true //For modelgen we want abstract properties
+                    FlattenInheritanceHierarchy = true
                 });
                 schemaTask.Wait();
                 Schema = schemaTask.Result;
