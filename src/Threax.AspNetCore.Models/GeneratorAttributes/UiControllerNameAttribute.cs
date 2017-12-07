@@ -6,12 +6,16 @@ using System.Text;
 
 namespace Threax.AspNetCore.Models
 {
-    [AttributeUsage(AttributeTargets.Property)]
+    /// <summary>
+    /// This attribute modifies the name of the controller for the ui. You should not include Controller in your
+    /// name. So if you wanted the final controller to be AdminController pass Admin to this class.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class)]
     public class UiControllerNameAttribute : JsonSchemaExtensionDataAttribute
     {
         internal const String Name = "x-ui-controller-name";
 
-        public UiControllerNameAttribute(String label) : base(Name, label)
+        public UiControllerNameAttribute(String controllerName) : base(Name, controllerName)
         {
 
         }
