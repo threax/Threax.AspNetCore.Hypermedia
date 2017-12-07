@@ -60,7 +60,7 @@ namespace Threax.ModelGen
     public partial interface I{schema.Title}Query
     {{
         {schema.GetKeyType().GetTypeAsNullable()} {schema.Title}Id {{ get; set; }}
-        {queryProps}
+{queryProps}
     }}
 }}"
             );
