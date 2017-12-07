@@ -8,7 +8,7 @@ namespace Threax.ModelGen.ModelWriters
     {
         private String visibility;
         private bool allowAttributes;
-        private IAttributeBuilder attributeBuilder = new NullValueLabelAttributeBuilder(new PredefinedAttributeBuilder("[UiOrder]", new DisplayAttributeBuilder(new UiSearchAttributeBuilder())));
+        private IAttributeBuilder attributeBuilder = CreateAttributeBuilder();
 
         public QueryPropertiesWriter(String visibility = "public ", bool allowAttributes = true)
         {
@@ -21,10 +21,6 @@ namespace Threax.ModelGen.ModelWriters
             if (allowAttributes)
             {
                 attributeBuilder.BuildAttributes(sb, name, info, "        ");
-                if (!info.IsValueType && info.IsRequiredInQuery)
-                {
-                    sb.AppendLine($@"        [Required(ErrorMessage = ""You must provide a {name}."")]");
-                }
             }
             sb.AppendLine($"        {visibility}{info.ClrType}{CreateQueryNullable(info)} {name} {{ get; set; }}");
             sb.AppendLine();
@@ -33,6 +29,15 @@ namespace Threax.ModelGen.ModelWriters
         public static String CreateQueryNullable(IWriterPropertyInfo info)
         {
             return info.IsValueType && !info.IsRequiredInQuery ? "?" : String.Empty;
+        }
+
+        public static IAttributeBuilder CreateAttributeBuilder()
+        {
+            return new NullValueLabelAttributeBuilder(
+                new PredefinedAttributeBuilder("[UiOrder]",
+                    new DisplayAttributeBuilder(
+                        new UiSearchAttributeBuilder(
+                            new RequiredInQueryAttributeBuilder()))));
         }
     }
 }

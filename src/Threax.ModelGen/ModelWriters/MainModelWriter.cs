@@ -35,7 +35,7 @@ namespace Threax.ModelGen.ModelWriters
             var baseClassName = "";
             if (baseClass != null)
             {
-                baseClassName = $"{name}{modelSuffix}Base";
+                baseClassName = BaseModelWriter.CreateBaseClassName(name, modelSuffix);
                 sb.AppendLine(baseClass);
             }
 

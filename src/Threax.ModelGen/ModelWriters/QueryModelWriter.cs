@@ -11,6 +11,29 @@ namespace Threax.ModelGen
     {
         public static String Get(String ns, String modelName, String modelPluralName, JsonSchema4 schema)
         {
+            bool hasBase = false;
+
+            var baseWriter = new BaseModelWriter("Query", QueryPropertiesWriter.CreateAttributeBuilder());
+            var baseClass = ModelTypeGenerator.Create(schema, schema.GetPluralName(), baseWriter, ns, ns + ".Database", allowPropertyCallback: p =>
+            {
+                if (p.IsQueryable())
+                {
+                    hasBase = hasBase | p.IsAbstractOnQuery();
+                    return p.IsAbstractOnQuery();
+                }
+                return false;
+            });
+
+            var baseClassName = "";
+            if (hasBase)
+            {
+                baseClassName = BaseModelWriter.CreateBaseClassName(schema.Title, "Query");
+            }
+            else
+            {
+                baseClass = "";
+            }
+
             String Model, model;
             NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
             String Models, models;
@@ -21,7 +44,7 @@ namespace Threax.ModelGen
             });
             String queryCreate = ModelTypeGenerator.Create(schema, modelPluralName, new QueryCreateWriter(), schema, ns, ns, allowPropertyCallback: p =>
             {
-                return p.IsQueryable();
+                return p.IsQueryable() && p.IsAbstractOnQuery();
             });
             return Create(ns, Model, model, Models, models, queryProps, queryCreate, schema.GetKeyType().GetTypeAsNullable());
         }

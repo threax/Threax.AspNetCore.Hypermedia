@@ -21,9 +21,14 @@ namespace Threax.ModelGen.ModelWriters
             ClassAttrBuilder?.BuildAttributes(sb, name, new NoWriterInfo(), "    ");
 
             sb.AppendLine(
-$@"    public {GetInheritance()} class {name}{classSuffix}Base
+$@"    public {GetInheritance()} class {CreateBaseClassName(name, classSuffix)}
     {{"
             );
+        }
+
+        public static String CreateBaseClassName(String name, String classSuffix)
+        {
+            return $"{name}{classSuffix}Base";
         }
     }
 }

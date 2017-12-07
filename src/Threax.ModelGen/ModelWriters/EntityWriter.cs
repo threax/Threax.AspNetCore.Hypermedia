@@ -12,7 +12,6 @@ namespace Threax.ModelGen
     {
         public static String Create(JsonSchema4 schema, String ns)
         {
-            var sb = new StringBuilder();
             bool hasBase = false;
 
             var baseWriter = new BaseModelWriter("Entity", CreateAttributeBuilder());
