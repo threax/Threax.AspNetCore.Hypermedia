@@ -95,6 +95,7 @@ namespace Threax.ModelGen
 
             ModelName = Schema.Title;
             PluralModelName = Schema.GetPluralName();
+            UiController = Schema.GetUiControllerName();
 
             //Make sure directories exist before trying to write files
             WriteApp = WriteApp && Directory.Exists(AppOutDir);
