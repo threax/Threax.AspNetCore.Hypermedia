@@ -21,7 +21,9 @@ namespace Threax.ModelGen
                     throw new DirectoryNotFoundException($"Cannot find app out directory {AppOutDir}");
                 }
 
-                var assembly = ProjectAssemblyLoader.LoadProjectAssembly(AppOutDir);
+                String ns;
+                var assembly = ProjectAssemblyLoader.LoadProjectAssembly(AppOutDir, out ns);
+                AppNamespace = ns;
                 var type = assembly.GetType(Source);
 
                 if(type == null)
@@ -100,6 +102,12 @@ namespace Threax.ModelGen
             //Make sure directories exist before trying to write files
             WriteApp = WriteApp && Directory.Exists(AppOutDir);
             WriteTests = WriteTests && Directory.Exists(TestOutDir);
+
+            //Validate
+            if (String.IsNullOrWhiteSpace(AppNamespace))
+            {
+                throw new MessageException($"You must provide an app namespace, one could not be found. Please pass {{--{nameof(AppNamespace)} Your.Namespace}}");
+            }
         }
 
         public String AppNamespace { get; set; }

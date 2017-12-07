@@ -16,7 +16,7 @@ namespace Threax.ModelGen
     /// </remarks>
     class ProjectAssemblyLoader
     {
-        public static Assembly LoadProjectAssembly(String appDir)
+        public static Assembly LoadProjectAssembly(String appDir, out String rootNamespace)
         {
             //Find the target project
             var projectFile = Directory.EnumerateFiles(
@@ -36,6 +36,7 @@ namespace Threax.ModelGen
          <ItemGroup>
             <_DotNetNamesOutput Include=""OutputPath: $(OutputPath)"" />
             <_DotNetNamesOutput Include=""TargetFileName: $(TargetFileName)"" />
+            <_DotNetNamesOutput Include=""RootNamespace: $(RootNamespace)"" />
          </ItemGroup>
          <WriteLinesToFile File=""$(_ThreaxModelgenNamesFile)"" Lines=""@(_DotNetNamesOutput)"" Overwrite=""true"" />
       </Target>
@@ -69,6 +70,7 @@ namespace Threax.ModelGen
                 properties.Add(name, value);
             }
 
+            rootNamespace = properties["RootNamespace"];
             var targetAssembly = Path.GetFullPath(Path.Combine(appDir, properties["OutputPath"], properties["TargetFileName"]));
             var additionalSearchPath = Path.GetDirectoryName(targetAssembly);
 

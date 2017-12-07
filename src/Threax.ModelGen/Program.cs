@@ -15,29 +15,33 @@ namespace Threax.ModelGen
         {
             try
             {
-                if (args.Length < 2)
+                if (args.Length < 1)
                 {
                     throw new MessageException(@"You must provide the following arguments [] is required {} is optional. 
 To create a model pass:
-[Schema File Path] [App Namespace] {--AppOutDir OutputDirectory} {--TestOutDir TestDirectory}.
+[Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirectory} {--AppNamespace Your.Namespace}.
 To remove a model pass:
 remove [Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirectory}");
                 }
 
-                var config = new ConfigurationBuilder().AddCommandLine(args.Skip(2).ToArray()).Build();
                 var appDir = Directory.GetCurrentDirectory();
                 var directoryName = Path.GetFileName(appDir);
                 var testDir = Path.GetFullPath(Path.Combine(appDir, $"../{directoryName}.Tests"));
 
                 if (args[0] == "remove")
                 {
+                    if (args.Length < 2)
+                    {
+                        throw new MessageException("You must provide the model schema after the remove argument to remove a model");
+                    }
+
                     var settings = new GeneratorSettings()
                     {
                         Source = args[1],
-                        AppNamespace = "Doesn't Matter",
                         AppOutDir = appDir,
                         TestOutDir = testDir
                     };
+                    var config = new ConfigurationBuilder().AddCommandLine(args.Skip(2).ToArray()).Build();
                     config.Bind(settings);
                     settings.Configure();
                     DeleteClasses(settings);
@@ -47,16 +51,16 @@ remove [Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirect
                     var settings = new GeneratorSettings()
                     {
                         Source = args[0],
-                        AppNamespace = args[1],
                         AppOutDir = appDir,
                         TestOutDir = testDir
                     };
+                    var config = new ConfigurationBuilder().AddCommandLine(args.Skip(1).ToArray()).Build();
                     config.Bind(settings);
                     settings.Configure();
                     GenerateClasses(settings);
                 }
             }
-            catch(MessageException ex)
+            catch (MessageException ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -184,7 +188,7 @@ remove [Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirect
                 Directory.CreateDirectory(folder);
             }
 
-            if(force || !File.Exists(file))
+            if (force || !File.Exists(file))
             {
                 using (var writer = new StreamWriter(File.Open(file, FileMode.Create, FileAccess.Write, FileShare.None)))
                 {
