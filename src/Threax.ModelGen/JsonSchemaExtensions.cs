@@ -168,22 +168,22 @@ namespace Threax.ModelGen
             return (types & type) == type;
         }
 
-        private const String IsVirtualExtension = "x-clr-virtual";
+        private const String IsAbstractExtension = "x-clr-abstract";
 
-        public static bool IsVirtual(this JsonProperty prop)
+        public static bool IsAbstract(this JsonProperty prop)
         {
             Object data = null;
-            if(prop.ExtensionData?.TryGetValue(IsVirtualExtension, out data) == true)
+            if(prop.ExtensionData?.TryGetValue(IsAbstractExtension, out data) == true)
             {
                 return data as bool? == true;
             }
             return false; //Not found, false
         }
 
-        public static void SetVirtual(this JsonProperty prop, bool isVirtual)
+        public static void SetAbstract(this JsonProperty prop, bool isVirtual)
         {
             prop.EnsureExtensions();
-            prop.ExtensionData[IsVirtualExtension] = isVirtual;
+            prop.ExtensionData[IsAbstractExtension] = isVirtual;
         }
 
         public const String ClrFullTypeName = "x-clr-fullname";

@@ -13,7 +13,7 @@ namespace Threax.ModelGen.ModelWriters
             this.classSuffix = classSuffix;
             WriteUsings = false;
             WriteNamespace = false;
-            WritePropertiesVirtual = true;
+            WriteAsAbstractClass = true;
         }
 
         public override void StartType(StringBuilder sb, String name, String pluralName)
@@ -21,7 +21,7 @@ namespace Threax.ModelGen.ModelWriters
             ClassAttrBuilder?.BuildAttributes(sb, name, new NoWriterInfo(), "    ");
 
             sb.AppendLine(
-$@"    public partial class {name}{classSuffix}Base
+$@"    public {GetInheritance()} class {name}{classSuffix}Base
     {{"
             );
         }

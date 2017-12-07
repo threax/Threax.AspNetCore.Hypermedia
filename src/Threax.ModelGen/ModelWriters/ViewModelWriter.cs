@@ -20,8 +20,8 @@ namespace Threax.ModelGen
             {
                 if (p.CreateViewModel())
                 {
-                    hasBase = hasBase | p.IsVirtual();
-                    return p.IsVirtual();
+                    hasBase = hasBase | p.IsAbstract();
+                    return p.IsAbstract();
                 }
                 return false;
             });
@@ -46,7 +46,7 @@ $@"using {ns}.Models;
 using {ns}.Controllers.Api;
 using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
             };
-            return ModelTypeGenerator.Create(schema, schema.GetPluralName(), mainWriter, ns, ns + ".ViewModels", allowPropertyCallback: p => !p.IsVirtual() && p.CreateViewModel());
+            return ModelTypeGenerator.Create(schema, schema.GetPluralName(), mainWriter, ns, ns + ".ViewModels", allowPropertyCallback: p => !p.IsAbstract() && p.CreateViewModel());
         }
 
         private static IAttributeBuilder CreateAttributeBuilder()

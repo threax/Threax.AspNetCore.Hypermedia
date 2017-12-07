@@ -22,8 +22,6 @@ namespace Threax.ModelGen
 
         int? MaxLength { get; }
 
-        bool IsVirtual { get; }
-
         int? Order { get; }
 
         bool OnAllModelTypes { get; }
@@ -53,8 +51,6 @@ namespace Threax.ModelGen
         public bool HasRequiredAttribute => false;
 
         public int? MaxLength => null;
-
-        public bool IsVirtual => false;
 
         public int? Order { get; set; } = null;
 
@@ -93,8 +89,6 @@ namespace Threax.ModelGen
 
         public int? MaxLength => prop.MaxLength;
 
-        public bool IsVirtual => prop.IsVirtual();
-
         public int? Order => prop.GetOrder();
 
         public bool OnAllModelTypes => prop.OnAllModelTypes();
@@ -122,8 +116,6 @@ namespace Threax.ModelGen
         public bool HasRequiredAttribute => false;
 
         public int? MaxLength => null;
-
-        public bool IsVirtual => false;
 
         public int? Order => null;
 

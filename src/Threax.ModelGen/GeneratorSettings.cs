@@ -33,6 +33,7 @@ namespace Threax.ModelGen
                 {
                     DefaultEnumHandling = EnumHandling.String,
                     FlattenInheritanceHierarchy = true,
+                    GenerateAbstractProperties = true //For modelgen we want abstract properties
                 });
                 schemaTask.Wait();
                 Schema = schemaTask.Result;
@@ -75,7 +76,7 @@ namespace Threax.ModelGen
                         }
                     }
 
-                    schemaProp.SetVirtual(prop.GetMethod?.IsVirtual == true && prop.SetMethod?.IsVirtual == true);
+                    schemaProp.SetAbstract(prop.GetMethod?.IsAbstract == true && prop.SetMethod?.IsAbstract == true);
                 }
             }
             else

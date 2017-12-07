@@ -20,8 +20,8 @@ namespace Threax.ModelGen
             {
                 if (p.CreateEntity())
                 {
-                    hasBase = hasBase | p.IsVirtual();
-                    return p.IsVirtual();
+                    hasBase = hasBase | p.IsAbstract();
+                    return p.IsAbstract();
                 }
                 return false;
             });
@@ -47,7 +47,7 @@ $@"    public partial class {a.Name}Entity{InterfaceListBuilder.Build(interfaces
 $@"using Threax.AspNetCore.Models;
 using {ns}.Models;"
             };
-            return ModelTypeGenerator.Create(schema, schema.GetPluralName(), mainWriter, ns, ns + ".Database", allowPropertyCallback: p => !p.IsVirtual() && p.CreateEntity());
+            return ModelTypeGenerator.Create(schema, schema.GetPluralName(), mainWriter, ns, ns + ".Database", allowPropertyCallback: p => !p.IsAbstract() && p.CreateEntity());
         }
 
         private static IAttributeBuilder CreateAttributeBuilder()

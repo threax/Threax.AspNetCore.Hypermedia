@@ -58,7 +58,7 @@ using Threax.AspNetCore.Halcyon.Ext.UIAttrs;"
                 ClassAttrBuilder?.BuildAttributes(sb, name, new NoWriterInfo(), "    ");
 
                 sb.AppendLine(
-    $@"    public class {name}{InterfaceListBuilder.Build(GetAdditionalInterfaces())}
+    $@"    public {GetInheritance()}class {name}{InterfaceListBuilder.Build(GetAdditionalInterfaces())}
     {{"
                 );
             }
@@ -94,20 +94,15 @@ using Threax.AspNetCore.Halcyon.Ext.UIAttrs;"
         {
             if (WriteProperties)
             {
-                String @virtual = "";
-                if (WritePropertiesVirtual)
-                {
-                    @virtual = "virtual ";
-                }
                 PropAttrBuilder.BuildAttributes(sb, name, info, "        ");
-                sb.AppendLine($"        public {@virtual}{info.ClrType} {name} {{ get; set; }}");
+                sb.AppendLine($"        public {GetInheritance()}{info.ClrType} {name} {{ get; set; }}");
                 sb.AppendLine();
             }
         }
 
         public bool WriteProperties { get; set; } = true;
 
-        public bool WritePropertiesVirtual { get; set; } = false;
+        public bool WriteAsAbstractClass { get; set; } = false;
 
         public virtual void EndNamespace(StringBuilder sb)
         {
@@ -149,6 +144,17 @@ $@"namespace {name}
                     yield return "IModified";
                 }
             }
+        }
+
+        protected virtual string GetInheritance()
+        {
+            var inheritance = "";
+            if (WriteAsAbstractClass)
+            {
+                inheritance = "abstract ";
+            }
+
+            return inheritance;
         }
     }
 }
