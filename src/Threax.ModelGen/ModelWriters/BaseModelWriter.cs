@@ -21,7 +21,7 @@ namespace Threax.ModelGen.ModelWriters
             ClassAttrBuilder?.BuildAttributes(sb, name, new NoWriterInfo(), "    ");
 
             sb.AppendLine(
-$@"    public {GetInheritance()} class {CreateBaseClassName(name, classSuffix)}
+$@"    public {GetInheritance()} class {CreateBaseClassName(name, classSuffix)}{InterfaceListBuilder.Build(InheritFrom)}
     {{"
             );
         }
@@ -30,5 +30,7 @@ $@"    public {GetInheritance()} class {CreateBaseClassName(name, classSuffix)}
         {
             return $"{name}{classSuffix}Base";
         }
+
+        public IEnumerable<String> InheritFrom { get; set; } = new String[0];
     }
 }

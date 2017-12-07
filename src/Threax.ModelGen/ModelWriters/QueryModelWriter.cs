@@ -13,7 +13,10 @@ namespace Threax.ModelGen
         {
             bool hasBase = false;
 
-            var baseWriter = new BaseModelWriter("Query", QueryPropertiesWriter.CreateAttributeBuilder());
+            var baseWriter = new BaseModelWriter("Query", QueryPropertiesWriter.CreateAttributeBuilder())
+            {
+                InheritFrom = new String[] { "PagedCollectionQuery" }
+            };
             var baseClass = ModelTypeGenerator.Create(schema, schema.GetPluralName(), baseWriter, ns, ns + ".Database", allowPropertyCallback: p =>
             {
                 if (p.IsQueryable())
@@ -24,10 +27,13 @@ namespace Threax.ModelGen
                 return false;
             });
 
-            var baseClassName = "";
+            var baseClassName = "PagedCollectionQuery";
             if (hasBase)
             {
-                baseClassName = BaseModelWriter.CreateBaseClassName(schema.Title, "Query");
+                baseClassName = $"{BaseModelWriter.CreateBaseClassName(schema.Title, "Query")}";
+                baseClass = $@"
+{baseClass}
+";
             }
             else
             {
@@ -40,16 +46,16 @@ namespace Threax.ModelGen
             NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
             String queryProps = ModelTypeGenerator.Create(schema, modelPluralName, new QueryPropertiesWriter(), schema, ns, ns, allowPropertyCallback: p =>
             {
-                return p.IsQueryable();
+                return p.IsQueryable() && !p.IsAbstractOnQuery();
             });
             String queryCreate = ModelTypeGenerator.Create(schema, modelPluralName, new QueryCreateWriter(), schema, ns, ns, allowPropertyCallback: p =>
             {
-                return p.IsQueryable() && p.IsAbstractOnQuery();
+                return p.IsQueryable();
             });
-            return Create(ns, Model, model, Models, models, queryProps, queryCreate, schema.GetKeyType().GetTypeAsNullable());
+            return Create(ns, Model, model, Models, models, queryProps, queryCreate, schema.GetKeyType().GetTypeAsNullable(), baseClass, baseClassName);
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models, String queryProps, String queryCreate, String nullableModelIdType)
+        private static String Create(String ns, String Model, String model, String Models, String models, String queryProps, String queryCreate, String nullableModelIdType, String baseClass, String baseClassName)
         {
             return
 $@"using Halcyon.HAL.Attributes;
@@ -64,9 +70,9 @@ using Threax.AspNetCore.Halcyon.Ext.UIAttrs;
 using System.ComponentModel.DataAnnotations;
 
 namespace {ns}.InputModels
-{{
+{{{baseClass}
     [HalModel]
-    public partial class {Model}Query : PagedCollectionQuery, I{Model}Query
+    public partial class {Model}Query : {baseClassName}, I{Model}Query
     {{
         /// <summary>
         /// Lookup a {model} by id.
