@@ -77,7 +77,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevApp.Tests", "test\DevApp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.AspNetCore.Tests", "src\Threax.AspNetCore.Tests\Threax.AspNetCore.Tests.csproj", "{588195BA-952A-47D0-863B-72C7667374F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Threax.AspNetCore.Models.Tests", "test\Threax.AspNetCore.Models.Tests\Threax.AspNetCore.Models.Tests.csproj", "{4BEA5E5E-B429-4466-BBFB-15D174C8C6B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.AspNetCore.Models.Tests", "test\Threax.AspNetCore.Models.Tests\Threax.AspNetCore.Models.Tests.csproj", "{4BEA5E5E-B429-4466-BBFB-15D174C8C6B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Threax.ModelGen.Tests", "test\Threax.ModelGen.Tests\Threax.ModelGen.Tests.csproj", "{7B0A6072-0757-4D78-BC13-E3F03D140699}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -225,6 +227,10 @@ Global
 		{4BEA5E5E-B429-4466-BBFB-15D174C8C6B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BEA5E5E-B429-4466-BBFB-15D174C8C6B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BEA5E5E-B429-4466-BBFB-15D174C8C6B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B0A6072-0757-4D78-BC13-E3F03D140699}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B0A6072-0757-4D78-BC13-E3F03D140699}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B0A6072-0757-4D78-BC13-E3F03D140699}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B0A6072-0757-4D78-BC13-E3F03D140699}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -265,6 +271,7 @@ Global
 		{7EF8B819-23A4-4F0D-8F93-459EF7B5DDA1} = {7F53A428-36B0-4592-B3F6-7B63CCC40986}
 		{588195BA-952A-47D0-863B-72C7667374F9} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 		{4BEA5E5E-B429-4466-BBFB-15D174C8C6B7} = {7F53A428-36B0-4592-B3F6-7B63CCC40986}
+		{7B0A6072-0757-4D78-BC13-E3F03D140699} = {7F53A428-36B0-4592-B3F6-7B63CCC40986}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {432C63C5-4BBE-4AE4-8963-48D7FCCBA395}

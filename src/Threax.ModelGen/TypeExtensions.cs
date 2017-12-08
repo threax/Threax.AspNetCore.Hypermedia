@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Threax.ModelGen
 {
-    static class TypeExtensions
+    public static class TypeExtensions
     {
         public static String GetTypeAsNullable(this Type t)
         {
@@ -26,6 +26,20 @@ namespace Threax.ModelGen
         public static bool IsNumeric(this Type t)
         {
             return NumericTypes.Contains(t);
+        }
+
+        public static String GetSchemaFormat(this Type t)
+        {
+            if (t.IsGenericType) //See if the type is a Nullable<T>, this will handle value types
+            {
+                var genericDef = t.GetGenericTypeDefinition();
+                if (genericDef == typeof(Nullable<>))
+                {
+                    return t.GetGenericArguments()[0].Name + "?";
+                }
+                //Handle other generic types
+            }
+            return t.Name;
         }
     }
 }
