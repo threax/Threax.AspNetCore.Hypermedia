@@ -49,7 +49,7 @@ namespace Threax.ModelGen
                     if (prop != null && (schemaProp.IsType(JsonObjectType.None) || schemaProp.IsType(JsonObjectType.Object)))
                     {
                         schemaProp.Type = JsonObjectType.Object;
-                        schemaProp.Format = propType.Name;
+                        schemaProp.Format = GetSchemaFormatFromType(propType);
 
                         //If we allow collections check the collection type
                         if (typeof(System.Collections.IEnumerable).IsAssignableFrom(propType) && propType.GenericTypeArguments.Length > 0)
@@ -59,7 +59,7 @@ namespace Threax.ModelGen
                             schemaProp.Item = new JsonProperty()
                             {
                                 Type = JsonObjectType.Object,
-                                Format = enumerableType.Name
+                                Format = GetSchemaFormatFromType(enumerableType)
                             };
                         }
 
@@ -107,6 +107,20 @@ namespace Threax.ModelGen
             {
                 throw new MessageException($"You must provide an app namespace, one could not be found. Please pass {{--{nameof(AppNamespace)} Your.Namespace}}");
             }
+        }
+
+        private String GetSchemaFormatFromType(Type t)
+        {
+            if (t.IsGenericType) //See if the type is a Nullable<T>, this will handle value types
+            {
+                var genericDef = t.GetGenericTypeDefinition();
+                if(genericDef == typeof(Nullable<>))
+                {
+                    return t.GetGenericArguments()[0].Name + "?";
+                }
+                //Handle other generic types
+            }
+            return t.Name;
         }
 
         public String AppNamespace { get; set; }
