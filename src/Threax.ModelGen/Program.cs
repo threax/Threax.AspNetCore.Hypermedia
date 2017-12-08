@@ -148,6 +148,7 @@ remove [Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirect
                 DeleteFile(Path.Combine(settings.AppOutDir, $"Repository/{settings.ModelName}Repository.Config.cs"));
                 DeleteFile(Path.Combine(settings.AppOutDir, $"Controllers/Api/{settings.PluralModelName}Controller.cs"));
                 DeleteFile(Path.Combine(settings.AppOutDir, $"Mappers/{settings.ModelName}Profile.cs"));
+                DeleteFile(Path.Combine(settings.AppOutDir, $"Mappers/{settings.ModelName}Profile.Generated.cs"));
                 DeleteFile(Path.Combine(settings.AppOutDir, $"Database/AppDbContext.{settings.ModelName}.cs"));
                 DeleteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{settings.ModelName}Collection.cs"));
                 DeleteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{settings.ModelName}Collection.Generated.cs"));
