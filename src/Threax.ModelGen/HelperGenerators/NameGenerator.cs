@@ -4,37 +4,40 @@ using System.Text;
 
 namespace Threax.ModelGen
 {
-    static class NameGenerator
+    public static class NameGenerator
     {
         public static void CreatePascalAndCamel(String modelName, out String pascal, out String camel)
         {
-            if(modelName == null)
-            {
-                pascal = "Null";
-                camel = "null";
-                return;
-            }
-            if (String.IsNullOrWhiteSpace(modelName))
-            {
-                pascal = "Empty";
-                camel = "empty";
-                return;
-            }
-            var modelSuffix = modelName.Length > 0 ? modelName.Substring(1) : "";
-            pascal = modelName[0].ToString().ToUpperInvariant() + modelSuffix;
-            camel = modelName[0].ToString().ToLowerInvariant() + modelSuffix;
+            pascal = CreatePascal(modelName);
+            camel = CreateCamel(modelName);
         }
 
         public static string CreatePascal(string modelName)
         {
+            if (modelName == null)
+            {
+                return "Null";
+            }
+            if (String.IsNullOrWhiteSpace(modelName))
+            {
+                return "Empty";
+            }
             var modelSuffix = modelName.Length > 0 ? modelName.Substring(1) : "";
             return modelName[0].ToString().ToUpperInvariant() + modelSuffix;
         }
 
         public static string CreateCamel(string modelName)
         {
+            if (modelName == null)
+            {
+                return "null";
+            }
+            if (String.IsNullOrWhiteSpace(modelName))
+            {
+                return "empty";
+            }
             var modelSuffix = modelName.Length > 0 ? modelName.Substring(1) : "";
-            return modelName[0].ToString().ToLowerInvariant() + modelSuffix;
+            return EscapeKeyword(modelName[0].ToString().ToLowerInvariant() + modelSuffix);
         }
 
         public static String CreatePretty(String name)
@@ -63,5 +66,100 @@ namespace Threax.ModelGen
 
             return title.ToString();
         }
+
+        /// <summary>
+        /// Escape a single word if it is a c# keyword by prepending @.
+        /// </summary>
+        /// <param name="word">The word to escape.</param>
+        /// <returns>Word back or the escaped version if needed.</returns>
+        public static String EscapeKeyword(String word)
+        {
+            if (keywords.Contains(word))
+            {
+                return "@" + word;
+            }
+            return word;
+        }
+
+        private static HashSet<String> keywords = new HashSet<String>()
+        {
+"abstract",
+"as",
+"base",
+"bool",
+"break",
+"byte",
+"case",
+"catch",
+"char",
+"checked",
+"class",
+"const",
+"continue",
+"decimal",
+"default",
+"delegate",
+"do",
+"double",
+"else",
+"enum",
+"event",
+"explicit",
+"extern",
+"false",
+"finally",
+"fixed",
+"float",
+"for",
+"forech",
+"goto",
+"if",
+"implicit",
+"in",
+"int",
+"interface",
+"internal",
+"is",
+"lock",
+"long",
+"namespace",
+"new",
+"null",
+"object",
+"operator",
+"out",
+"override",
+"params",
+"private",
+"protected",
+"public",
+"readonly",
+"ref",
+"return",
+"sbyte",
+"sealed",
+"short",
+"sizeof",
+"stackalloc",
+"static",
+"string",
+"struct",
+"switch",
+"this",
+"throw",
+"true",
+"try",
+"typeof",
+"uint",
+"ulong",
+"unchecked",
+"unsafe",
+"ushort",
+"using",
+"virtual",
+"volatile",
+"void",
+"while"
+        };
     }
 }
