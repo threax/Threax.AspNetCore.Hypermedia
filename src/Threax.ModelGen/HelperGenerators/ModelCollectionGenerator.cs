@@ -133,6 +133,7 @@ namespace {ns}.ViewModels
     [HalSelfActionLink(typeof({Models}Controller), nameof({Models}Controller.List))]
     [HalActionLink(typeof({Models}Controller), nameof({Models}Controller.Get), DocsOnly = true)] //This provides access to docs for showing items
     [HalActionLink(typeof({Models}Controller), nameof({Models}Controller.List), DocsOnly = true)] //This provides docs for searching the list
+    [HalActionLink(typeof({Models}Controller), nameof({Models}Controller.Update), DocsOnly = true)] //This provides access to docs for updating items if the ui has different modes
     [HalActionLink(typeof({Models}Controller), nameof({Models}Controller.Add))]
     [DeclareHalLink(typeof({Models}Controller), nameof({Models}Controller.List), PagedCollectionView<Object>.Rels.Next, ResponseOnly = true)]
     [DeclareHalLink(typeof({Models}Controller), nameof({Models}Controller.List), PagedCollectionView<Object>.Rels.Previous, ResponseOnly = true)]
