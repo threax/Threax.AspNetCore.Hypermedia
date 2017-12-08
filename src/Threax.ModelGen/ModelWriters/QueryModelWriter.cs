@@ -99,7 +99,7 @@ namespace {ns}.InputModels
             return query;
         }}
 
-        partial void OnCreate<T>(ref IQueryable<T> query);
+        partial void OnCreate<T>(ref IQueryable<T> query) where T : I{Model}, I{Model}Id;
     }}
 }}";
         }
