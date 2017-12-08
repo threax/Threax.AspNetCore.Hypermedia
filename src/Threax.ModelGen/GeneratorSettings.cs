@@ -43,9 +43,11 @@ namespace Threax.ModelGen
                 foreach (var schemaProp in Schema.Properties.Values)
                 {
                     var prop = type.GetProperty(schemaProp.Name);
+                    var propType = prop.PropertyType;
+                    schemaProp.SetClrFullTypeName(propType.FullName);
+
                     if (prop != null && (schemaProp.IsType(JsonObjectType.None) || schemaProp.IsType(JsonObjectType.Object)))
                     {
-                        var propType = prop.PropertyType;
                         schemaProp.Type = JsonObjectType.Object;
                         schemaProp.Format = propType.Name;
 
@@ -60,9 +62,6 @@ namespace Threax.ModelGen
                                 Format = enumerableType.Name
                             };
                         }
-
-                        //Record the full clr type also
-                        schemaProp.SetClrFullTypeName(propType.FullName);
 
                         //For some reason enums do not get the custom attributes, so do it here
                         if (propType.IsEnum)

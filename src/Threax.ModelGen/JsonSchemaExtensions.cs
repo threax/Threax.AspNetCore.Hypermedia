@@ -28,28 +28,28 @@ namespace Threax.ModelGen
         /// <returns></returns>
         public static bool IsClrValueType(this JsonProperty prop)
         {
+            //See if the clr type was provided
+            Object fullClrType = prop.GetClrFullTypeName();
+            if (fullClrType != null)
+            {
+                //Look for type in all loaded assemblies
+                foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+                {
+                    var type = assembly.GetType(fullClrType.ToString());
+                    if (type != null)
+                    {
+                        return type.IsValueType;
+                    }
+                }
+            }
+
+            //Otherwise go off the schema type
             switch (prop.Type)
             {
                 case JsonObjectType.Boolean:
                 case JsonObjectType.Integer:
                 case JsonObjectType.Number:
                     return true;
-                case JsonObjectType.Object:
-                    Object fullClrType = prop.GetClrFullTypeName();
-                    if(fullClrType != null)
-                    {
-                        //Look for type in all loaded assemblies
-                        foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-                        {
-                            var type = assembly.GetType(fullClrType.ToString());
-                            if (type != null)
-                            {
-                                return type.IsValueType;
-                            }
-                        }
-                    }
-                    //Could not find anything, assume ref type
-                    return false;
                 default:
                     return false;
             }
