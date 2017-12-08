@@ -43,10 +43,14 @@ namespace Threax.ModelGen
                 foreach (var schemaProp in Schema.Properties.Values)
                 {
                     var prop = type.GetProperty(schemaProp.Name);
+                    if(prop == null)
+                    {
+                        throw new InvalidOperationException($"Cannot find property {schemaProp.Name} from generated schema on type {type.FullName}");
+                    }
                     var propType = prop.PropertyType;
                     schemaProp.SetClrFullTypeName(propType.FullName);
 
-                    if (prop != null && (schemaProp.IsType(JsonObjectType.None) || schemaProp.IsType(JsonObjectType.Object)))
+                    if (schemaProp.IsType(JsonObjectType.None) || schemaProp.IsType(JsonObjectType.Object) || propType == typeof(Guid?))
                     {
                         schemaProp.Type = JsonObjectType.Object;
                         schemaProp.Format = propType.GetSchemaFormat();
