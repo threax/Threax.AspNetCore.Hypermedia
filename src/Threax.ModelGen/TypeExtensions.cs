@@ -37,7 +37,19 @@ namespace Threax.ModelGen
                 {
                     return t.GetGenericArguments()[0].Name + "?";
                 }
-                //Handle other generic types
+                else
+                {
+                    var genericName = new StringBuilder(genericDef.Name.Substring(0, genericDef.Name.IndexOf('`')));
+                    genericName.Append("<");
+                    String format = "{0}";
+                    foreach(var arg in t.GetGenericArguments())
+                    {
+                        genericName.AppendFormat(format, arg.GetSchemaFormat());
+                        format = ", {0}";
+                    }
+                    genericName.Append(">");
+                    return genericName.ToString();
+                }
             }
             return t.Name;
         }
