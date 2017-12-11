@@ -11,7 +11,7 @@ namespace Threax.AspNetCore.Models
     {
         internal const String Name = "x-key-type";
 
-        public KeyTypeAttribute(Type keyType, String name) : base(Name, keyType.FullName)
+        public KeyTypeAttribute(Type keyType) : base(Name, keyType.FullName)
         {
         }
     }
