@@ -1,21 +1,23 @@
-﻿using System;
+﻿using NJsonSchema;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen
 {
     static class CrudInjectorGenerator
     {
-        public static String Get(String modelName, String modelPluralName)
+        public static String Get(JsonSchema4 schema)
         {
             String Model, model;
-            NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
+            NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
             String Models, models;
-            NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
-            return Create(Model, model, Models, models);
+            NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
+            return Create(Model, model, Models, models, NameGenerator.CreateCamel(schema.GetKeyName()));
         }
 
-        private static String Create(String Model, String model, String Models, String models) {
+        private static String Create(String Model, String model, String Models, String models, String modelId) {
             return
 $@"import * as client from 'clientlibs.ServiceClient';
 import * as hyperCrud from 'hr.widgets.HypermediaCrudService';
@@ -45,12 +47,12 @@ import * as di from 'hr.di';
 //    }}
 //
 //    public getItemId(item: client.{Model}Result): string | null {{
-//        return String(item.data.{model}Id);
+//        return String(item.data.{modelId});
 //    }}
 //
 //    public createIdQuery(id: string): client.{Model}Query | null {{
 //        return {{
-//            {model}Id: id
+//            {modelId}: id
 //        }};
 //    }}
 //}}";

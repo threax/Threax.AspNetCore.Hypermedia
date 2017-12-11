@@ -1,21 +1,23 @@
-﻿using System;
+﻿using NJsonSchema;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen.TestGenerators
 {
     class ControllerTests
     {
-        public static String Get(String ns, String modelName, String modelPluralName)
+        public static String Get(JsonSchema4 schema, String ns)
         {
             String Model, model;
-            NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
+            NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
             String Models, models;
-            NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
-            return Create(ns, Model, model, Models, models);
+            NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
+            return Create(ns, Model, model, Models, models, NameGenerator.CreatePascal(schema.GetKeyName()));
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models)
+        private static String Create(String ns, String Model, String model, String Models, String models, String ModelId)
         {
             return
 $@"using {ns}.Controllers.Api;
@@ -83,7 +85,7 @@ namespace {ns}.Tests
 
                 //Manually add the item we will look back up
                 var lookup = await controller.Add({Model}Tests.CreateInput());
-                var result = await controller.Get(lookup.{Model}Id);
+                var result = await controller.Get(lookup.{ModelId});
                 Assert.NotNull(result);
             }}
 
@@ -104,7 +106,7 @@ namespace {ns}.Tests
                 var result = await controller.Add({Model}Tests.CreateInput());
                 Assert.NotNull(result);
 
-                var updateResult = await controller.Update(result.{Model}Id, {Model}Tests.CreateInput());
+                var updateResult = await controller.Update(result.{ModelId}, {Model}Tests.CreateInput());
                 Assert.NotNull(updateResult);
             }}
 
@@ -119,7 +121,7 @@ namespace {ns}.Tests
                 var listResult = await controller.List(new {Model}Query());
                 Assert.Equal(1, listResult.Total);
 
-                await controller.Delete(result.{Model}Id);
+                await controller.Delete(result.{ModelId});
 
                 listResult = await controller.List(new {Model}Query());
                 Assert.Equal(0, listResult.Total);

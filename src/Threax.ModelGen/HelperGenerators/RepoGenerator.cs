@@ -14,10 +14,12 @@ namespace Threax.ModelGen
             NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
             String Models, models;
             NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
-            return Create(ns, Model, model, Models, models, schema.GetKeyType().Name);
+            String ModelId, modelId;
+            NameGenerator.CreatePascalAndCamel(schema.GetKeyName(), out ModelId, out modelId);
+            return Create(ns, Model, model, Models, models, schema.GetKeyType().Name, ModelId, modelId);
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models, String modelIdType) {
+        private static String Create(String ns, String Model, String model, String Models, String models, String modelIdType, String ModelId, String modelId) {
             return
 $@"using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -57,9 +59,9 @@ namespace {ns}.Repository
             return new {Model}Collection(query, total, results);
         }}
 
-        public async Task<{Model}> Get({modelIdType} {model}Id)
+        public async Task<{Model}> Get({modelIdType} {modelId})
         {{
-            var entity = await this.Entity({model}Id);
+            var entity = await this.Entity({modelId});
             return mapper.Map<{Model}>(entity);
         }}
 
@@ -71,16 +73,16 @@ namespace {ns}.Repository
             return mapper.Map<{Model}>(entity);
         }}
 
-        public async Task<{Model}> Update({modelIdType} {model}Id, {Model}Input {model})
+        public async Task<{Model}> Update({modelIdType} {modelId}, {Model}Input {model})
         {{
-            var entity = await this.Entity({model}Id);
+            var entity = await this.Entity({modelId});
             if (entity != null)
             {{
                 mapper.Map({model}, entity);
                 await this.dbContext.SaveChangesAsync();
                 return mapper.Map<{Model}>(entity);
             }}
-            throw new KeyNotFoundException($""Cannot find {model} {{{model}Id.ToString()}}"");
+            throw new KeyNotFoundException($""Cannot find {model} {{{modelId}.ToString()}}"");
         }}
 
         public async Task Delete({modelIdType} id)
@@ -113,9 +115,9 @@ namespace {ns}.Repository
             }}
         }}
 
-        private Task<{Model}Entity> Entity({modelIdType} {model}Id)
+        private Task<{Model}Entity> Entity({modelIdType} {modelId})
         {{
-            return Entities.Where(i => i.{Model}Id == {model}Id).FirstOrDefaultAsync();
+            return Entities.Where(i => i.{ModelId} == {modelId}).FirstOrDefaultAsync();
         }}
     }}
 }}";

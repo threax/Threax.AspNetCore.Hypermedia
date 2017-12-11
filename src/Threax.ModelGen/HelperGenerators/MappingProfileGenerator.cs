@@ -51,12 +51,12 @@ namespace {ns}.Mappers
         public static String GetGenerated(String ns, JsonSchema4 schema, bool hasCreated, bool hasModified)
         {
             String Model = NameGenerator.CreatePascal(schema.Title);
-            return CreateGenerated(ns, Model, hasCreated, hasModified, schema.Properties.Values);
+            return CreateGenerated(ns, Model, NameGenerator.CreatePascal(schema.GetKeyName()), hasCreated, hasModified, schema.Properties.Values);
         }
 
-        private static String CreateGenerated(String ns, String Model, bool hasCreated, bool hasModified, IEnumerable<JsonProperty> props)
+        private static String CreateGenerated(String ns, String Model, String ModelId, bool hasCreated, bool hasModified, IEnumerable<JsonProperty> props)
         {
-            StringBuilder inputToEntityMaps = new StringBuilder($"mapExpr.ForMember(d => d.{Model}Id, opt => opt.Ignore())");
+            StringBuilder inputToEntityMaps = new StringBuilder($"mapExpr.ForMember(d => d.{ModelId}, opt => opt.Ignore())");
             StringBuilder entityToViewMaps = new StringBuilder("mapExpr");
 
             bool customEntityToView = false;

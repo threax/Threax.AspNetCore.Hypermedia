@@ -76,7 +76,7 @@ remove [Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirect
             {
                 if (settings.WriteApp)
                 {
-                    WriteFile(Path.Combine(settings.AppOutDir, $"Models/I{settings.ModelName}.cs"), PartialModelInterfaceGenerator.GetUserPartial(settings.ModelName, settings.AppNamespace + ".Models"), false);
+                    WriteFile(Path.Combine(settings.AppOutDir, $"Models/I{settings.ModelName}.cs"), PartialModelInterfaceGenerator.GetUserPartial(settings.Schema, settings.AppNamespace + ".Models"), false);
                     WriteFile(Path.Combine(settings.AppOutDir, $"Models/I{settings.ModelName}.Generated.cs"), IdInterfaceWriter.Create(settings.Schema, settings.AppNamespace), true);
 
                     if (settings.Schema.CreateEntity())
@@ -113,7 +113,7 @@ remove [Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirect
 
                     var propertyNames = settings.Schema.Properties.Values.Where(i => i.CreateViewModel()).Select(i => NameGenerator.CreatePascal(i.Name));
                     WriteFile(Path.Combine(settings.AppOutDir, $"Views/{settings.UiController}/{settings.PluralModelName}.cshtml"), CrudCshtmlInjectorGenerator.Get(settings.ModelName, settings.PluralModelName, propertyNames: propertyNames), settings.ForceWriteUi);
-                    WriteFile(Path.Combine(settings.AppOutDir, $"Client/Libs/{settings.ModelName}CrudInjector.ts"), CrudInjectorGenerator.Get(settings.ModelName, settings.PluralModelName), settings.ForceWriteUi);
+                    WriteFile(Path.Combine(settings.AppOutDir, $"Client/Libs/{settings.ModelName}CrudInjector.ts"), CrudInjectorGenerator.Get(settings.Schema), settings.ForceWriteUi);
                     WriteFile(Path.Combine(settings.AppOutDir, $"Views/{settings.UiController}/{settings.PluralModelName}.ts"), CrudUiTypescriptGenerator.Get(settings.ModelName), settings.ForceWriteUi);
                     WriteFile(Path.Combine(settings.AppOutDir, $"Controllers/{settings.UiController}Controller.{settings.PluralModelName}.cs"), UiControllerGenerator.Get(settings.AppNamespace, settings.UiController, settings.ModelName, settings.PluralModelName, settings.Schema), settings.ForceWriteUi);
                 }
@@ -121,9 +121,9 @@ remove [Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirect
                 if (settings.WriteTests)
                 {
                     WriteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/{settings.ModelName}Tests.cs"), ModelTestWrapper.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName, settings.Schema), settings.ForceWriteTests);
-                    WriteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/Controller.cs"), ControllerTests.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName), settings.ForceWriteTests);
+                    WriteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/Controller.cs"), ControllerTests.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteTests);
                     WriteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/Profile.cs"), ProfileTests.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteTests);
-                    WriteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/Repository.cs"), RepositoryTests.Get(settings.AppNamespace, settings.ModelName, settings.PluralModelName), settings.ForceWriteTests);
+                    WriteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/Repository.cs"), RepositoryTests.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteTests);
                 }
             }
         }

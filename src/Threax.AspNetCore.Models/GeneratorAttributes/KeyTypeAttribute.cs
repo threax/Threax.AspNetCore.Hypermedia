@@ -11,7 +11,7 @@ namespace Threax.AspNetCore.Models
     {
         internal const String Name = "x-key-type";
 
-        public KeyTypeAttribute(Type keyType) : base(Name, keyType.FullName)
+        public KeyTypeAttribute(Type keyType, String name) : base(Name, keyType.FullName)
         {
         }
     }
@@ -19,8 +19,7 @@ namespace Threax.AspNetCore.Models
     public static class KeyTypeAttributeJsonSchemaExtensions
     {
         /// <summary>
-        /// Get the plural name of a schema. This will always return something either the value of the
-        /// x-plural-title extension data or the schema.Title with an s appended.
+        /// Get the type to use for the key.
         /// </summary>
         /// <param name="schema"></param>
         /// <returns></returns>

@@ -14,6 +14,8 @@ namespace Threax.ModelGen
             NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
             String Models, models;
             NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
+            String ModelId, modelId;
+            NameGenerator.CreatePascalAndCamel(schema.GetKeyName(), out ModelId, out modelId);
 
             var additionalAuthorize = "";
             String authName = schema.GetAuthorizationRoleString();
@@ -21,10 +23,10 @@ namespace Threax.ModelGen
             {
                 additionalAuthorize = $", Roles = {authName}";
             }
-            return Create(ns, Model, model, Models, models, additionalAuthorize, schema.GetKeyType().Name);
+            return Create(ns, Model, model, Models, models, additionalAuthorize, schema.GetKeyType().Name, ModelId, modelId);
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models, String additionalAuthorize, String modelIdType)
+        private static String Create(String ns, String Model, String model, String Models, String models, String additionalAuthorize, String modelIdType, String ModelId, String modelId)
         {
             return
 $@"using System;
@@ -60,11 +62,11 @@ namespace {ns}.Controllers.Api
             return await repo.List(query);
         }}
 
-        [HttpGet(""{{{Model}Id}}"")]
+        [HttpGet(""{{{ModelId}}}"")]
         [HalRel(CrudRels.Get)]
-        public async Task<{Model}> Get({modelIdType} {model}Id)
+        public async Task<{Model}> Get({modelIdType} {modelId})
         {{
-            return await repo.Get({model}Id);
+            return await repo.Get({modelId});
         }}
 
         [HttpPost]
@@ -75,19 +77,19 @@ namespace {ns}.Controllers.Api
             return await repo.Add({model});
         }}
 
-        [HttpPut(""{{{Model}Id}}"")]
+        [HttpPut(""{{{ModelId}}}"")]
         [HalRel(CrudRels.Update)]
         [AutoValidate(""Cannot update {model}"")]
-        public async Task<{Model}> Update({modelIdType} {model}Id, [FromBody]{Model}Input {model})
+        public async Task<{Model}> Update({modelIdType} {modelId}, [FromBody]{Model}Input {model})
         {{
-            return await repo.Update({model}Id, {model});
+            return await repo.Update({modelId}, {model});
         }}
 
-        [HttpDelete(""{{{Model}Id}}"")]
+        [HttpDelete(""{{{ModelId}}}"")]
         [HalRel(CrudRels.Delete)]
-        public async Task Delete({modelIdType} {model}Id)
+        public async Task Delete({modelIdType} {modelId})
         {{
-            await repo.Delete({model}Id);
+            await repo.Delete({modelId});
         }}
     }}
 }}";

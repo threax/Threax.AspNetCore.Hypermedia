@@ -52,10 +52,10 @@ namespace Threax.ModelGen
             {
                 return p.IsQueryable();
             });
-            return Create(ns, Model, model, Models, models, queryProps, queryCreate, schema.GetKeyType().GetTypeAsNullable(), baseClass, baseClassName);
+            return Create(ns, Model, model, Models, models, queryProps, queryCreate, schema.GetKeyType().GetTypeAsNullable(), baseClass, baseClassName, NameGenerator.CreatePascal(schema.GetKeyName()));
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models, String queryProps, String queryCreate, String nullableModelIdType, String baseClass, String baseClassName)
+        private static String Create(String ns, String Model, String model, String Models, String models, String queryProps, String queryCreate, String nullableModelIdType, String baseClass, String baseClassName, String ModelId)
         {
             return
 $@"using Halcyon.HAL.Attributes;
@@ -77,7 +77,7 @@ namespace {ns}.InputModels
         /// <summary>
         /// Lookup a {model} by id.
         /// </summary>
-        public {nullableModelIdType} {Model}Id {{ get; set; }}
+        public {nullableModelIdType} {ModelId} {{ get; set; }}
 
 {queryProps}
         /// <summary>
@@ -85,11 +85,11 @@ namespace {ns}.InputModels
         /// </summary>
         /// <param name=""query"">The query to populate.</param>
         /// <returns>The query passed in populated with additional conditions.</returns>
-        public IQueryable<T> Create<T>(IQueryable<T> query) where T : I{Model}, I{Model}Id
+        public IQueryable<T> Create<T>(IQueryable<T> query) where T : I{Model}, I{ModelId}
         {{
-            if ({Model}Id != null)
+            if ({ModelId} != null)
             {{
-                query = query.Where(i => i.{Model}Id == {Model}Id);
+                query = query.Where(i => i.{ModelId} == {ModelId});
             }}
             else
             {{
@@ -99,7 +99,7 @@ namespace {ns}.InputModels
             return query;
         }}
 
-        partial void OnCreate<T>(ref IQueryable<T> query) where T : I{Model}, I{Model}Id;
+        partial void OnCreate<T>(ref IQueryable<T> query) where T : I{Model}, I{ModelId};
     }}
 }}";
         }

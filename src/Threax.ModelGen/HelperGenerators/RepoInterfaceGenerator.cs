@@ -14,10 +14,10 @@ namespace Threax.ModelGen
             NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
             String Models, models;
             NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
-            return Create(ns, Model, model, Models, models, schema.GetKeyType().Name);
+            return Create(ns, Model, model, Models, models, schema.GetKeyType().Name, NameGenerator.CreateCamel(schema.GetKeyName()));
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models, String modelIdType) {
+        private static String Create(String ns, String Model, String model, String Models, String models, String modelIdType, String modelId) {
             return
 $@"using System;
 using System.Collections.Generic;
@@ -34,10 +34,10 @@ namespace {ns}.Repository
         Task<{Model}> Add({Model}Input value);
         Task AddRange(IEnumerable<{Model}Input> values);
         Task Delete({modelIdType} id);
-        Task<{Model}> Get({modelIdType} {model}Id);
+        Task<{Model}> Get({modelIdType} {modelId});
         Task<bool> Has{Models}();
         Task<{Model}Collection> List({Model}Query query);
-        Task<{Model}> Update({modelIdType} {model}Id, {Model}Input value);
+        Task<{Model}> Update({modelIdType} {modelId}, {Model}Input value);
     }}
 }}";
         }

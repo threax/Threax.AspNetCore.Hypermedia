@@ -1,21 +1,23 @@
-﻿using System;
+﻿using NJsonSchema;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen.TestGenerators
 {
     class RepositoryTests
     {
-        public static String Get(String ns, String modelName, String modelPluralName)
+        public static String Get(JsonSchema4 schema, String ns)
         {
             String Model, model;
-            NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
+            NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
             String Models, models;
-            NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
-            return Create(ns, Model, model, Models, models);
+            NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
+            return Create(ns, Model, model, Models, models, NameGenerator.CreatePascal(schema.GetKeyName()));
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models)
+        private static String Create(String ns, String Model, String model, String Models, String models, String ModelId)
         {
             return
 $@"using {ns}.Database;
@@ -69,7 +71,7 @@ namespace {ns}.Tests
                 await repo.AddRange(new {Model}Input[] {{ {Model}Tests.CreateInput(), {Model}Tests.CreateInput(), {Model}Tests.CreateInput() }});
                 var result = await repo.Add({Model}Tests.CreateInput());
                 Assert.Equal<int>(4, dbContext.{Models}.Count());
-                await repo.Delete(result.{Model}Id);
+                await repo.Delete(result.{ModelId});
                 Assert.Equal<int>(3, dbContext.{Models}.Count());
             }}
 
@@ -81,7 +83,7 @@ namespace {ns}.Tests
                 await repo.AddRange(new {Model}Input[] {{ {Model}Tests.CreateInput(), {Model}Tests.CreateInput(), {Model}Tests.CreateInput() }});
                 var result = await repo.Add({Model}Tests.CreateInput());
                 Assert.Equal<int>(4, dbContext.{Models}.Count());
-                var getResult = await repo.Get(result.{Model}Id);
+                var getResult = await repo.Get(result.{ModelId});
                 Assert.NotNull(getResult);
             }}
 
@@ -120,7 +122,7 @@ namespace {ns}.Tests
                 var repo = mockup.Get<I{Model}Repository>();
                 var result = await repo.Add({Model}Tests.CreateInput());
                 Assert.NotNull(result);
-                var updateResult = await repo.Update(result.{Model}Id, {Model}Tests.CreateInput());
+                var updateResult = await repo.Update(result.{ModelId}, {Model}Tests.CreateInput());
                 Assert.NotNull(updateResult);
             }}
         }}

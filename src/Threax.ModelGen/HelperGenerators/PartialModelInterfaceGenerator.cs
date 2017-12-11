@@ -1,19 +1,21 @@
-﻿using System;
+﻿using NJsonSchema;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen
 {
     class PartialModelInterfaceGenerator
     {
-        public static String GetUserPartial(String modelName, String modelNamespace, String generatedSuffix = ".Generated")
+        public static String GetUserPartial(JsonSchema4 schema, String modelNamespace, String generatedSuffix = ".Generated")
         {
             String Model, model;
-            NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
-            return Create(Model, model, modelNamespace, generatedSuffix);
+            NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
+            return Create(Model, model, modelNamespace, generatedSuffix, NameGenerator.CreatePascal(schema.GetKeyName()));
         }
 
-        private static String Create(String Model, String model, String modelNamespace, String generatedSuffix)
+        private static String Create(String Model, String model, String modelNamespace, String generatedSuffix, String ModelId)
         {
             return
 $@"using System;
@@ -32,7 +34,7 @@ namespace {modelNamespace}
         //Customize main interface here, see {Model}{generatedSuffix} for generated code
     }}  
 
-    public partial interface I{Model}Id
+    public partial interface I{ModelId}
     {{
         //Customize id interface here, see {Model}{generatedSuffix} for generated code
     }}    

@@ -14,10 +14,10 @@ namespace Threax.ModelGen.TestGenerators
             NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
             String Models, models;
             NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
-            return Create(ns, Model, model, Models, models, schema.GetKeyType().Name);
+            return Create(ns, Model, model, Models, models, schema.GetKeyType().Name, schema.GetKeyName());
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models, String modelIdType)
+        private static String Create(String ns, String Model, String model, String Models, String models, String modelIdType, String ModelId)
         {
             return
 $@"using AutoMapper;
@@ -54,7 +54,7 @@ namespace {ns}.Tests
                 var entity = mapper.Map<{Model}Entity>(input);
 
                 //Make sure the id does not copy over
-                Assert.Equal(default({modelIdType}), entity.{Model}Id);
+                Assert.Equal(default({modelIdType}), entity.{ModelId});
                 AssertEqual(input, entity);
             }}
 
@@ -65,7 +65,7 @@ namespace {ns}.Tests
                 var entity = {Model}Tests.CreateEntity();
                 var view = mapper.Map<{Model}>(entity);
 
-                Assert.Equal(entity.{Model}Id, view.{Model}Id);
+                Assert.Equal(entity.{ModelId}, view.{ModelId});
                 AssertEqual(entity, view);
             }}
         }}

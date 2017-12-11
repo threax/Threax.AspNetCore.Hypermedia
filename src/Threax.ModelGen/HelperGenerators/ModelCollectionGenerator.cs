@@ -51,6 +51,9 @@ $@"        public {info.ClrType}{QueryPropertiesWriter.CreateQueryNullable(info)
             NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
             String Models, models;
             NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
+            String ModelId, modelId;
+            NameGenerator.CreatePascalAndCamel(schema.GetKeyName(), out ModelId, out modelId);
+
             String queryProps = ModelTypeGenerator.Create(schema, modelPluralName, new QueryPropWriter(), schema, ns, ns, allowPropertyCallback: p =>
             {
                 return p.IsQueryable();
@@ -59,10 +62,10 @@ $@"        public {info.ClrType}{QueryPropertiesWriter.CreateQueryNullable(info)
             {
                 return p.IsQueryable();
             });
-            return Create(ns, Model, model, Models, models, queryProps, customizer, schema.GetKeyType().GetTypeAsNullable());
+            return Create(ns, Model, model, Models, models, queryProps, customizer, schema.GetKeyType().GetTypeAsNullable(), ModelId, modelId);
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models, String queryProps, String customizer, String nullableModelIdType)
+        private static String Create(String ns, String Model, String model, String Models, String models, String queryProps, String customizer, String nullableModelIdType, String ModelId, String modelId)
         {
             return
 $@"using Halcyon.HAL.Attributes;
@@ -81,17 +84,17 @@ namespace {ns}.ViewModels
     {{
         private {Model}Query query;
 
-        public {nullableModelIdType} {Model}Id
+        public {nullableModelIdType} {ModelId}
         {{
-            get {{ return query.{Model}Id; }}
-            set {{ query.{Model}Id = value; }}
+            get {{ return query.{ModelId}; }}
+            set {{ query.{ModelId} = value; }}
         }}
 
 {queryProps}        protected override void AddCustomQuery(string rel, QueryStringBuilder queryString)
         {{
-            if ({Model}Id != null)
+            if ({ModelId} != null)
             {{
-                queryString.AppendItem(""{model}Id"", {Model}Id.ToString());
+                queryString.AppendItem(""{modelId}"", {ModelId}.ToString());
             }}
 
 {customizer}
