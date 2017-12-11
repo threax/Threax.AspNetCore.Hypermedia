@@ -36,7 +36,7 @@ namespace Threax.ModelGen
 $@"       public partial class {a.Name}{InterfaceListBuilder.Build(interfaces)}
        {{");
 
-                    a.Writer.CreateProperty(a.Builder, $"{a.Name}Id", new TypeWriterPropertyInfo(schema.GetKeyType()));
+                    a.Writer.CreateProperty(a.Builder, NameGenerator.CreatePascal(schema.GetKeyName()), new TypeWriterPropertyInfo(schema.GetKeyType()));
                 }
                 )
             {

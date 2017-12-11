@@ -85,7 +85,7 @@ namespace {ns}.InputModels
         /// </summary>
         /// <param name=""query"">The query to populate.</param>
         /// <returns>The query passed in populated with additional conditions.</returns>
-        public IQueryable<T> Create<T>(IQueryable<T> query) where T : I{Model}, I{ModelId}
+        public IQueryable<T> Create<T>(IQueryable<T> query) where T : I{Model}, I{Model}Id
         {{
             if ({ModelId} != null)
             {{
@@ -99,7 +99,7 @@ namespace {ns}.InputModels
             return query;
         }}
 
-        partial void OnCreate<T>(ref IQueryable<T> query) where T : I{Model}, I{ModelId};
+        partial void OnCreate<T>(ref IQueryable<T> query) where T : I{Model}, I{Model}Id;
     }}
 }}";
         }

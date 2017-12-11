@@ -54,12 +54,12 @@ namespace Threax.ModelGen
             sb.Append($@"
     public partial interface I{schema.Title}Id
     {{
-        {schema.GetKeyType().Name} {schema.Title}Id {{ get; set; }}
+        {schema.GetKeyType().Name} {NameGenerator.CreatePascal(schema.GetKeyName())} {{ get; set; }}
     }}    
 
     public partial interface I{schema.Title}Query
     {{
-        {schema.GetKeyType().GetTypeAsNullable()} {schema.Title}Id {{ get; set; }}
+        {schema.GetKeyType().GetTypeAsNullable()} {NameGenerator.CreatePascal(schema.GetKeyName())} {{ get; set; }}
 {queryProps}
     }}
 }}"
