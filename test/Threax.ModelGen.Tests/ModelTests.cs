@@ -1,4 +1,4 @@
-﻿#define WriteTestFiles
+﻿//#define WriteTestFiles
 using NJsonSchema;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using Xunit;
 
 namespace Threax.ModelGen.Tests
 {
-    public class ModelTests<T>
+    public abstract class ModelTests<T>
     {
         private const String AppNamespace = "Test";
         private JsonSchema4 schema = TypeToSchemaGenerator.CreateSchema(typeof(T));
