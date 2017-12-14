@@ -5,20 +5,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Threax.ModelGen
 {
     public static class TypeToSchemaGenerator
     {
-        public static JsonSchema4 CreateSchema(Type type)
+        public static async Task<JsonSchema4> CreateSchema(Type type)
         {
-            var schemaTask = JsonSchema4.FromTypeAsync(type, new NJsonSchema.Generation.JsonSchemaGeneratorSettings()
+            var schema = await JsonSchema4.FromTypeAsync(type, new NJsonSchema.Generation.JsonSchemaGeneratorSettings()
             {
                 DefaultEnumHandling = EnumHandling.String,
                 FlattenInheritanceHierarchy = true
             });
-            schemaTask.Wait();
-            var schema = schemaTask.Result;
 
             //Modify the schema to make each none or object property aware of its original type
             foreach (var schemaProp in schema.Properties.Values)

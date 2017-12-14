@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Threax.AspNetCore.Models;
 using Threax.AspNetCore.Tests;
 using Threax.ModelGen.TestGenerators;
@@ -15,13 +16,18 @@ namespace Threax.ModelGen.Tests
     public abstract class ModelTests<T>
     {
         private const String AppNamespace = "Test";
-        private JsonSchema4 schema = TypeToSchemaGenerator.CreateSchema(typeof(T));
+        private JsonSchema4 schema;
 
 #if WriteTestFiles
         private bool WriteTestFiles = true;
 #else
         private bool WriteTestFiles = false;
 #endif
+
+        public ModelTests()
+        {
+            schema = Task.Run(async () => await TypeToSchemaGenerator.CreateSchema(typeof(T))).GetAwaiter().GetResult();
+        }
 
         private void TestCode(String fileName, String code)
         {

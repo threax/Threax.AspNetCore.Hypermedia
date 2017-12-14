@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Threax.AspNetCore.Models;
 using Threax.ModelGen.TestGenerators;
 
@@ -13,6 +14,11 @@ namespace Threax.ModelGen
     {
         static void Main(string[] args)
         {
+            Task.Run(async () => await AsyncMain(args)).GetAwaiter().GetResult();
+        }
+
+        static async Task AsyncMain(string[] args)
+        { 
             try
             {
                 if (args.Length < 1)
@@ -43,7 +49,7 @@ remove [Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirect
                     };
                     var config = new ConfigurationBuilder().AddCommandLine(args.Skip(2).ToArray()).Build();
                     config.Bind(settings);
-                    settings.Configure();
+                    await settings.Configure();
                     DeleteClasses(settings);
                 }
                 else
@@ -56,7 +62,7 @@ remove [Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirect
                     };
                     var config = new ConfigurationBuilder().AddCommandLine(args.Skip(1).ToArray()).Build();
                     config.Bind(settings);
-                    settings.Configure();
+                    await settings.Configure();
                     GenerateClasses(settings);
                 }
             }

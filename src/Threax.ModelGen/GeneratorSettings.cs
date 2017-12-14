@@ -6,13 +6,14 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen
 {
     public class GeneratorSettings
     {
-        public void Configure()
+        public async Task Configure()
         {
             if (Path.GetExtension(Source) != ".json")
             {
@@ -31,7 +32,7 @@ namespace Threax.ModelGen
                     throw new InvalidOperationException($"Cannot find type {Source} in assembly {assembly.FullName}.");
                 }
 
-                Schema = TypeToSchemaGenerator.CreateSchema(type);
+                Schema = await TypeToSchemaGenerator.CreateSchema(type);
             }
             else
             {
@@ -40,9 +41,7 @@ namespace Threax.ModelGen
                     throw new MessageException($"Cannot find schema file {Source}.");
                 }
 
-                var schemaTask = JsonSchema4.FromFileAsync(Source);
-                schemaTask.Wait();
-                Schema = schemaTask.Result;
+                Schema = await JsonSchema4.FromFileAsync(Source);
             }
 
             if (Schema.ExtensionData == null) //Make sure this exists
