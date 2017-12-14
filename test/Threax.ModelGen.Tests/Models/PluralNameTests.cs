@@ -10,10 +10,11 @@ using Threax.AspNetCore.Tests;
 using Threax.ModelGen.TestGenerators;
 using Xunit;
 
-namespace Threax.ModelGen.Tests
+namespace Threax.ModelGen.Tests.Models
 {
-    public class EmptyModelTests : ModelTests<EmptyModelTests.Value>
+    public class PluralNameTests : ModelTests<PluralNameTests.Value>
     {
+        [PluralName("LotsaValues")]
         public class Value
         {
 
