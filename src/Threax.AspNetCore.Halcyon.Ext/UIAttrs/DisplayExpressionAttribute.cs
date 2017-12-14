@@ -31,13 +31,9 @@ namespace Threax.AspNetCore.Halcyon.Ext.UIAttrs
                 schemaProp.ExtensionData = new Dictionary<String, Object>();
             }
 
-            var displayIfDictionary = new Dictionary<string, object>();
-
             var expressionFieldInfo = args.TypeProperty.DeclaringType.GetTypeInfo().DeclaredFields.First(i => i.Name == expressionName);
             var expression = expressionFieldInfo.GetValue(null) as LambdaExpression;
             schemaProp.ExtensionData.Add(DisplayIfName, new DisplayExpressionNode(expression.Body));
-
-            //if(expression.Body.NodeType == ExpressionType.)
 
             return Task.FromResult(0);
         }
