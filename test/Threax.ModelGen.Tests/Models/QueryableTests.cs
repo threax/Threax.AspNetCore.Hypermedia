@@ -21,30 +21,30 @@ namespace Threax.ModelGen.Tests.Models
         }
     }
 
-    //public class QueryableRequiredTests : ModelTests<QueryableRequiredTests.Value>
-    //{
-    //    public class Value
-    //    {
-    //        [Queryable(required: true)]
-    //        public String Info { get; set; }
-    //    }
-    //}
+    public class QueryableRequiredTests : ModelTests<QueryableRequiredTests.Value>
+    {
+        public class Value
+        {
+            [Queryable(required: true)]
+            public String Info { get; set; }
+        }
+    }
 
-    //public class QueryableNoUiTests : ModelTests<QueryableNoUiTests.Value>
-    //{
-    //    public class Value
-    //    {
-    //        [Queryable(showOnUi: false)]
-    //        public String Info { get; set; }
-    //    }
-    //}
+    public class QueryableNoUiTests : ModelTests<QueryableNoUiTests.Value>
+    {
+        public class Value
+        {
+            [Queryable(showOnUi: false)]
+            public String Info { get; set; }
+        }
+    }
 
-    //public class QueryableInverseDefaultTests : ModelTests<QueryableInverseDefaultTests.Value>
-    //{
-    //    public class Value
-    //    {
-    //        [Queryable(showOnUi: false, required: true)]
-    //        public String Info { get; set; }
-    //    }
-    //}
+    public class QueryableInverseDefaultTests : ModelTests<QueryableInverseDefaultTests.Value>
+    {
+        public class Value
+        {
+            [Queryable(showOnUi: false, required: true)]
+            public String Info { get; set; }
+        }
+    }
 }
