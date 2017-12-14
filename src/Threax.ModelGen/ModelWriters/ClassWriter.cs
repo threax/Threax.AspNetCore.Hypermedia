@@ -32,7 +32,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Halcyon.HAL.Attributes;
 using Threax.AspNetCore.Halcyon.Ext;
-using Threax.AspNetCore.Halcyon.Ext.UIAttrs;"
+using Threax.AspNetCore.Models;"
                 );
 
                 if (hasCreated || hasModified)

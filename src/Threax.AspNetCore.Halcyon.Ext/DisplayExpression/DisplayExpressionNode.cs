@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 
-namespace Threax.AspNetCore.Halcyon.Ext.UIAttrs
+namespace Threax.AspNetCore.Halcyon.Ext
 {
     public enum OperationType
     {
@@ -59,18 +59,18 @@ namespace Threax.AspNetCore.Halcyon.Ext.UIAttrs
                 case ExpressionType.GreaterThanOrEqual:
                 case ExpressionType.LessThanOrEqual:
                     binaryExpression = expression as BinaryExpression;
-                    if((memberExpression = binaryExpression.Left as MemberExpression) != null)
+                    if ((memberExpression = binaryExpression.Left as MemberExpression) != null)
                     {
                         constantExpression = FindConstantExpression(binaryExpression.Right);
                     }
-                    else if((memberExpression = binaryExpression.Right as MemberExpression) != null)
+                    else if ((memberExpression = binaryExpression.Right as MemberExpression) != null)
                     {
                         constantExpression = FindConstantExpression(binaryExpression.Left);
                     }
                     else
                     {
                         //Enums come in as unary convert expressions over member expressions, so check for that also
-                        if((unaryExpression = binaryExpression.Left as UnaryExpression) != null)
+                        if ((unaryExpression = binaryExpression.Left as UnaryExpression) != null)
                         {
                             memberExpression = unaryExpression.Operand as MemberExpression;
                             constantExpression = FindConstantExpression(binaryExpression.Right);
@@ -82,7 +82,7 @@ namespace Threax.AspNetCore.Halcyon.Ext.UIAttrs
                         }
                     }
 
-                    if(memberExpression == null)
+                    if (memberExpression == null)
                     {
                         throw new NotSupportedException($"Display expressions must have one member expression.");
                     }
@@ -112,10 +112,10 @@ namespace Threax.AspNetCore.Halcyon.Ext.UIAttrs
 
                 case ExpressionType.MemberAccess:
                     memberExpression = expression as MemberExpression;
-                    if(memberExpression.Member.MemberType == MemberTypes.Property)
+                    if (memberExpression.Member.MemberType == MemberTypes.Property)
                     {
                         var propInfo = memberExpression.Member as PropertyInfo;
-                        if(propInfo.PropertyType == typeof(bool))
+                        if (propInfo.PropertyType == typeof(bool))
                         {
                             Test = new Dictionary<String, Object>() { { memberExpression.Member.Name, true } };
                         }

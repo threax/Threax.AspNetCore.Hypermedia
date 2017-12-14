@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Threax.AspNetCore.Halcyon.Ext.UIAttrs
+namespace Threax.AspNetCore.Halcyon.Ext
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class DisplayExpressionAttribute : CustomizeSchemaAttribute, ISchemaCustomizer
