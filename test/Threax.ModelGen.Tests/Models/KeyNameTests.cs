@@ -11,9 +11,9 @@ using Xunit;
 
 namespace Threax.ModelGen.Tests.Models
 {
-    public class PluralNameTests : ModelTests<PluralNameTests.Value>
+    public class KeyNameTests : ModelTests<KeyNameTests.Value>
     {
-        [PluralName("LotsaValues")]
+        [KeyName("CrazyKey")]
         public class Value
         {
 

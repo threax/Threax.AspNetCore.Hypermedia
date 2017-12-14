@@ -1,6 +1,7 @@
 ﻿using NJsonSchema;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,12 +12,12 @@ using Xunit;
 
 namespace Threax.ModelGen.Tests.Models
 {
-    public class PluralNameTests : ModelTests<PluralNameTests.Value>
+    public class RequiredTests : ModelTests<RequiredTests.Value>
     {
-        [PluralName("LotsaValues")]
         public class Value
         {
-
+            [Required]
+            public String Info { get; set; }
         }
     }
 }

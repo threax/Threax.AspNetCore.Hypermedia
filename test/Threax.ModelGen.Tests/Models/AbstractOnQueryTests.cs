@@ -11,12 +11,13 @@ using Xunit;
 
 namespace Threax.ModelGen.Tests.Models
 {
-    public class PluralNameTests : ModelTests<PluralNameTests.Value>
+    public class AbstractOnQueryTests : ModelTests<AbstractOnQueryTests.Value>
     {
-        [PluralName("LotsaValues")]
         public class Value
         {
-
+            [AbstractOnQuery]
+            [Queryable]
+            public int Num { get; set; }
         }
     }
 }

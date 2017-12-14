@@ -11,12 +11,17 @@ using Xunit;
 
 namespace Threax.ModelGen.Tests.Models
 {
-    public class PluralNameTests : ModelTests<PluralNameTests.Value>
+    public class RequireAuthorizationTests : ModelTests<RequireAuthorizationTests.Value>
     {
-        [PluralName("LotsaValues")]
+        [RequireAuthorization(typeof(Roles), nameof(Roles.Administrator))]
         public class Value
         {
 
+        }
+
+        public class Roles
+        {
+            public const String Administrator = "Admin";
         }
     }
 }

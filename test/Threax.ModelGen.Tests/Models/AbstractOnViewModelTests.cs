@@ -11,12 +11,12 @@ using Xunit;
 
 namespace Threax.ModelGen.Tests.Models
 {
-    public class PluralNameTests : ModelTests<PluralNameTests.Value>
+    public class AbstractOnViewModelTests : ModelTests<AbstractOnViewModelTests.Value>
     {
-        [PluralName("LotsaValues")]
         public class Value
         {
-
+            [AbstractOnViewModel]
+            public int Num { get; set; }
         }
     }
 }
