@@ -6,7 +6,12 @@ using System.Text;
 
 namespace Threax.AspNetCore.Models
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    /// <summary>
+    /// This attribute marks a property abstract on the generated side of the input model. You must implement the
+    /// property yourself on the user side of the model, but this allows you to customize behavior or add
+    /// additional attributes not supported by the model generator.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class AbstractOnInputModelAttribute : JsonSchemaExtensionDataAttribute
     {
         internal const String Name = "x-abstract-inputmodel";

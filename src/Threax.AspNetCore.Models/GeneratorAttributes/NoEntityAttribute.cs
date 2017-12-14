@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Threax.AspNetCore.Models
 {
+    /// <summary>
+    /// Do not generate an entity class for this model or do not include the property on the entity.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class NoEntityAttribute : JsonSchemaExtensionDataAttribute
     {

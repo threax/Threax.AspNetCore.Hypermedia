@@ -6,7 +6,12 @@ using System.Text;
 
 namespace Threax.AspNetCore.Models
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    /// <summary>
+    /// This attribute marks a property abstract on the generated side of the entity. You must implement the
+    /// property yourself on the user side of the entity, but this allows you to customize behavior or add
+    /// additional attributes not supported by the model generator.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class AbstractOnEntityAttribute : JsonSchemaExtensionDataAttribute
     {
         internal const String Name = "x-abstract-entity";

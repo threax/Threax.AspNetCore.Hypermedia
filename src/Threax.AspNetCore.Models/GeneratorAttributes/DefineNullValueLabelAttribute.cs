@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Threax.AspNetCore.Models
 {
+    /// <summary>
+    /// Define the label for null values for this property.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     public class DefineNullValueLabelAttribute : JsonSchemaExtensionDataAttribute
     {

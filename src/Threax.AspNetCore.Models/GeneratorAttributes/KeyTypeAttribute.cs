@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Threax.AspNetCore.Models
 {
+    /// <summary>
+    /// Set the type of the key for the model.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class KeyTypeAttribute : JsonSchemaExtensionDataAttribute
     {

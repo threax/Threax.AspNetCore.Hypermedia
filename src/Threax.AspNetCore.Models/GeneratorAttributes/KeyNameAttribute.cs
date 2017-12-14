@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Threax.AspNetCore.Models
 {
+    /// <summary>
+    /// Set the name of the generated key property for this model. Otherwise defaults to ModelId.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class KeyNameAttribute : JsonSchemaExtensionDataAttribute
     {

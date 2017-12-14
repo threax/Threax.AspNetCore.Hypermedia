@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Threax.AspNetCore.Models
 {
+    /// <summary>
+    /// Determine if the tracking properties should be included on the model.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class TrackingAttribute : JsonSchemaExtensionDataAttribute
     {

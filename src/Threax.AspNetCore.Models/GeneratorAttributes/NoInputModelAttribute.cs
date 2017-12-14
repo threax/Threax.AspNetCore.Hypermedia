@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Threax.AspNetCore.Models
 {
+    /// <summary>
+    /// Do not generate an input model for this class or do not include the marked property in the input model.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class NoInputModelAttribute : JsonSchemaExtensionDataAttribute
     {

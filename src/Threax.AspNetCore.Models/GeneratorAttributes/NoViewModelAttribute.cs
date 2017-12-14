@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Threax.AspNetCore.Models
 {
+    /// <summary>
+    /// Do not create the specified property on the generated view model. Or if applied to a class do not generate any view model.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class NoViewModelAttribute : JsonSchemaExtensionDataAttribute
     {

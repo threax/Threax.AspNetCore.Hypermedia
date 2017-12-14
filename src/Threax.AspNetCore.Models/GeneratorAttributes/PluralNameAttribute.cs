@@ -6,6 +6,10 @@ using System.Text;
 
 namespace Threax.AspNetCore.Models
 {
+    /// <summary>
+    /// Specify the name of the model when it is plural. This allows you to handle words that do not just
+    /// append s to be plural.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class PluralNameAttribute : JsonSchemaExtensionDataAttribute
     {

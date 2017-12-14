@@ -6,6 +6,10 @@ using System.Text;
 
 namespace Threax.AspNetCore.Models
 {
+    /// <summary>
+    /// Mark a property with this attribute to include it in the query class. You can also specify if the property should 
+    /// show up on a query ui (default true) and whether or not the property is required in the query (default false).
+    /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class QueryableAttribute : JsonSchemaExtensionDataAttribute
     {
