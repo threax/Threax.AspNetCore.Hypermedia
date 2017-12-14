@@ -55,6 +55,8 @@ namespace Threax.ModelGen.ModelWriters
             public string NullValueLabel => wrapped.NullValueLabel;
 
             public String UiType => wrapped.UiType;
+
+            public String ValueProviderType => wrapped.ValueProviderType;
         }
     }
 }

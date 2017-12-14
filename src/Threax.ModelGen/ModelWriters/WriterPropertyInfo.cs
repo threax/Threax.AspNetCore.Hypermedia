@@ -29,6 +29,8 @@ namespace Threax.ModelGen
         String NullValueLabel { get; }
 
         String UiType { get; }
+
+        String ValueProviderType { get; }
     }
 
     public class TypeWriterPropertyInfo : IWriterPropertyInfo
@@ -61,6 +63,8 @@ namespace Threax.ModelGen
         public String NullValueLabel => null;
 
         public String UiType => null;
+
+        public String ValueProviderType => null;
     }
 
     public class TypeWriterPropertyInfo<T> : TypeWriterPropertyInfo
@@ -100,6 +104,8 @@ namespace Threax.ModelGen
         public String NullValueLabel => prop.GetNullValueLabel();
 
         public String UiType => prop.GetUiType();
+
+        public String ValueProviderType => prop.GetValueProviderType();
     }
 
     public class NoWriterInfo : IWriterPropertyInfo
@@ -130,5 +136,7 @@ namespace Threax.ModelGen
         public String NullValueLabel => null;
 
         public String UiType => null;
+
+        public String ValueProviderType => null;
     }
 }

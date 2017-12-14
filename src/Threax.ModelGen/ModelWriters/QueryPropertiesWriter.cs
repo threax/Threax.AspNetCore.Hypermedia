@@ -38,7 +38,8 @@ namespace Threax.ModelGen.ModelWriters
                     new DisplayAttributeBuilder(
                         new UiSearchAttributeBuilder(
                             new RequiredInQueryAttributeBuilder(
-                                new UiTypeAttributeBuilder())))));
+                                new UiTypeAttributeBuilder(
+                                    new ValueProviderAttributeBuilder()))))));
         }
     }
 }
