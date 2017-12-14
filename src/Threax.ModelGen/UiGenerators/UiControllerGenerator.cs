@@ -6,14 +6,14 @@ using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen
 {
-    static class UiControllerGenerator
+    public static class UiControllerGenerator
     {
-        public static String Get(String ns, String controller, String modelName, String modelPluralName, JsonSchema4 schema)
+        public static String Get(JsonSchema4 schema, String ns)
         {
             String Model, model;
-            NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
+            NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
             String Models, models;
-            NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
+            NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
 
             var authAttribute = "";
             String authName = schema.GetAuthorizationRoleString();
@@ -22,7 +22,7 @@ namespace Threax.ModelGen
                 authAttribute = $@"[Authorize(Roles = {authName})]
         ";
             }
-            return Create(ns, NameGenerator.CreatePascal(controller), Model, model, Models, models, authAttribute);
+            return Create(ns, NameGenerator.CreatePascal(schema.GetUiControllerName()), Model, model, Models, models, authAttribute);
         }
 
         private static String Create(String ns, String controller, String Model, String model, String Models, String models, String authAttribute) {

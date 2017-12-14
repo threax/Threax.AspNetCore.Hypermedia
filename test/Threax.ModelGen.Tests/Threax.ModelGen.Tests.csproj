@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="TestFiles\**\*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="TestFiles\**\*" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
     <PackageReference Include="Moq" Version="4.7.145" />
     <PackageReference Include="xunit" Version="2.3.1" />
@@ -18,4 +26,8 @@
     <ProjectReference Include="..\..\src\Threax.AspNetCore.Tests\Threax.AspNetCore.Tests.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TestFiles\EmptyModelTests\Controllers\Api\" />
+  </ItemGroup>
+  
 </Project>

@@ -7,7 +7,7 @@ using Threax.ModelGen.ModelWriters;
 
 namespace Threax.ModelGen
 {
-    static class ModelCollectionGenerator
+    public static class ModelCollectionGenerator
     {
         class QueryPropWriter : AbstractTypeWriter
         {
@@ -45,20 +45,20 @@ $@"        public {info.ClrType}{QueryPropertiesWriter.CreateQueryNullable(info)
             }
         }
 
-        public static String Get(String ns, String modelName, String modelPluralName, JsonSchema4 schema)
+        public static String Get(JsonSchema4 schema, String ns)
         {
             String Model, model;
-            NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
+            NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
             String Models, models;
-            NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
+            NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
             String ModelId, modelId;
             NameGenerator.CreatePascalAndCamel(schema.GetKeyName(), out ModelId, out modelId);
 
-            String queryProps = ModelTypeGenerator.Create(schema, modelPluralName, new QueryPropWriter(), schema, ns, ns, allowPropertyCallback: p =>
+            String queryProps = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new QueryPropWriter(), schema, ns, ns, allowPropertyCallback: p =>
             {
                 return p.IsQueryable();
             });
-            String customizer = ModelTypeGenerator.Create(schema, modelPluralName, new QueryCustomizerWriter(), schema, ns, ns, allowPropertyCallback: p =>
+            String customizer = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new QueryCustomizerWriter(), schema, ns, ns, allowPropertyCallback: p =>
             {
                 return p.IsQueryable();
             });
@@ -108,12 +108,12 @@ namespace {ns}.ViewModels
 }}";
         }
 
-        public static String GetUserPartial(String ns, String modelName, String modelPluralName, String generatedSuffix = ".Generated")
+        public static String GetUserPartial(JsonSchema4 schema, String ns, String generatedSuffix = ".Generated")
         {
             String Model, model;
-            NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
+            NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
             String Models, models;
-            NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
+            NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
             return CreatePartial(ns, Model, model, Models, models, generatedSuffix);
         }
 

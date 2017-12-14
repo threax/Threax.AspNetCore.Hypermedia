@@ -6,7 +6,7 @@ using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen
 {
-    static class CrudInjectorGenerator
+    public static class CrudInjectorGenerator
     {
         public static String Get(JsonSchema4 schema)
         {

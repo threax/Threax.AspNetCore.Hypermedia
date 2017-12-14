@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Threax.ModelGen
 {
-    static class CrudUiTypescriptGenerator
+    public static class CrudUiTypescriptGenerator
     {
         public static String Get(String modelName)
         {

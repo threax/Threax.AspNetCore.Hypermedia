@@ -1,10 +1,12 @@
-﻿using System;
+﻿using NJsonSchema;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen
 {
-    static class CrudCshtmlInjectorGenerator
+    public static class CrudCshtmlInjectorGenerator
     {
         /// <summary>
         /// Create a cshtml view. OutDir must match the folder where the view will be located, use / between folders.
@@ -13,12 +15,12 @@ namespace Threax.ModelGen
         /// <param name="modelName">The name of the model.</param>
         /// <param name="outDir">The directory the view will be placed in.</param>
         /// <returns></returns>
-        public static String Get(String modelName, String modelPluralName, IEnumerable<String> propertyNames = null)
+        public static String Get(JsonSchema4 schema, IEnumerable<String> propertyNames = null)
         {
             String Model, model;
-            NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
+            NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
             String Models, models;
-            NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
+            NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
 
             if (propertyNames == null)
             {

@@ -6,7 +6,7 @@ using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen
 {
-    static class RepoGenerator
+    public static class RepoGenerator
     {
         public static String Get(JsonSchema4 schema, String ns)
         {

@@ -6,14 +6,14 @@ using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen
 {
-    static class ControllerGenerator
+    public static class ControllerGenerator
     {
-        public static String Get(String ns, String modelName, String modelPluralName, JsonSchema4 schema)
+        public static String Get(JsonSchema4 schema, String ns)
         {
             String Model, model;
-            NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
+            NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
             String Models, models;
-            NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
+            NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
             String ModelId, modelId;
             NameGenerator.CreatePascalAndCamel(schema.GetKeyName(), out ModelId, out modelId);
 

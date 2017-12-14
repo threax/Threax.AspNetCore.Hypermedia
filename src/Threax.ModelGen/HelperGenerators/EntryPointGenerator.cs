@@ -1,17 +1,19 @@
-﻿using System;
+﻿using NJsonSchema;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen
 {
     public class EntryPointGenerator
     {
-        public static String Get(String ns, String modelName, String modelPluralName)
+        public static String Get(JsonSchema4 schema, String ns)
         {
             String Model, model;
-            NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
+            NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
             String Models, models;
-            NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
+            NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
             return Create(ns, Model, model, Models, models);
         }
 

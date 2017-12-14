@@ -6,7 +6,7 @@ using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen
 {
-    class PartialModelInterfaceGenerator
+    public class PartialModelInterfaceGenerator
     {
         public static String GetUserPartial(JsonSchema4 schema, String modelNamespace, String generatedSuffix = ".Generated")
         {

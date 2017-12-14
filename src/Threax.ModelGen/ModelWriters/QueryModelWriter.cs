@@ -9,7 +9,7 @@ namespace Threax.ModelGen
 {
     public static class QueryModelWriter
     {
-        public static String Get(String ns, String modelName, String modelPluralName, JsonSchema4 schema)
+        public static String Get(JsonSchema4 schema, String ns)
         {
             bool hasBase = false;
 
@@ -41,14 +41,14 @@ namespace Threax.ModelGen
             }
 
             String Model, model;
-            NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
+            NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
             String Models, models;
-            NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
-            String queryProps = ModelTypeGenerator.Create(schema, modelPluralName, new QueryPropertiesWriter(), schema, ns, ns, allowPropertyCallback: p =>
+            NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
+            String queryProps = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new QueryPropertiesWriter(), schema, ns, ns, allowPropertyCallback: p =>
             {
                 return p.IsQueryable() && !p.IsAbstractOnQuery();
             });
-            String queryCreate = ModelTypeGenerator.Create(schema, modelPluralName, new QueryCreateWriter(), schema, ns, ns, allowPropertyCallback: p =>
+            String queryCreate = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new QueryCreateWriter(), schema, ns, ns, allowPropertyCallback: p =>
             {
                 return p.IsQueryable();
             });

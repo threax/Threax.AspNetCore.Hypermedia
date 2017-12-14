@@ -6,7 +6,7 @@ using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen.TestGenerators
 {
-    class ControllerTests
+    public class ControllerTests
     {
         public static String Get(JsonSchema4 schema, String ns)
         {

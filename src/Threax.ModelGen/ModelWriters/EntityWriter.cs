@@ -8,7 +8,7 @@ using Threax.ModelGen.ModelWriters;
 
 namespace Threax.ModelGen
 {
-    static class EntityWriter
+    public static class EntityWriter
     {
         public static String Create(JsonSchema4 schema, String ns)
         {

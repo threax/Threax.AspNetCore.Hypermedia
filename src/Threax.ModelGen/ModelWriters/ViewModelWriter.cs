@@ -8,7 +8,7 @@ using Threax.ModelGen.ModelWriters;
 
 namespace Threax.ModelGen
 {
-    static class ViewModelWriter
+    public static class ViewModelWriter
     {
         public static String Create(JsonSchema4 schema, String ns)
         {
@@ -54,12 +54,12 @@ using Threax.AspNetCore.Models;"
             return new NullValueLabelAttributeBuilder(new UiOrderAttributeBuilder(new DisplayAttributeBuilder(new UiTypeAttributeBuilder())));
         }
 
-        public static String GetUserPartial(String ns, String modelName, String modelPluralName, String generatedSuffix = ".Generated")
+        public static String GetUserPartial(JsonSchema4 schema, String ns, String generatedSuffix = ".Generated")
         {
             String Model, model;
-            NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
+            NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
             String Models, models;
-            NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
+            NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
             return CreateUserPartial(ns, Model, model, Models, generatedSuffix);
         }
 

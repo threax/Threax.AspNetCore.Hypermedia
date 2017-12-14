@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Threax.ModelGen
 {
-    static class InputModelWriter
+    public static class InputModelWriter
     {
         public static String Create(JsonSchema4 schema, String ns)
         {

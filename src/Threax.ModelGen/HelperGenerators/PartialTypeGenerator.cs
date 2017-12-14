@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Threax.ModelGen
 {
-    class PartialTypeGenerator
+    public class PartialTypeGenerator
     {
         public static String GetUserPartial(String modelName, String modelNamespace, String modelType, String generatedSuffix = ".Generated")
         {

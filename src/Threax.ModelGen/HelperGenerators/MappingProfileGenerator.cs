@@ -7,12 +7,12 @@ using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen
 {
-    static class MappingProfileGenerator
+    public static class MappingProfileGenerator
     {
-        public static String Get(String ns, String modelName, bool hasCreated, bool hasModified)
+        public static String Get(JsonSchema4 schema, String ns)
         {
-            String Model = NameGenerator.CreatePascal(modelName);
-            return Create(ns, Model, hasCreated, hasModified);
+            String Model = NameGenerator.CreatePascal(schema.Title);
+            return Create(ns, Model, schema.AllowCreated(), schema.AllowModified());
         }
 
         private static String Create(String ns, String Model, bool hasCreated, bool hasModified)
@@ -48,10 +48,10 @@ namespace {ns}.Mappers
 }}";
         }
 
-        public static String GetGenerated(String ns, JsonSchema4 schema, bool hasCreated, bool hasModified)
+        public static String GetGenerated(JsonSchema4 schema, String ns)
         {
             String Model = NameGenerator.CreatePascal(schema.Title);
-            return CreateGenerated(ns, Model, NameGenerator.CreatePascal(schema.GetKeyName()), hasCreated, hasModified, schema.Properties.Values);
+            return CreateGenerated(ns, Model, NameGenerator.CreatePascal(schema.GetKeyName()), schema.AllowCreated(), schema.AllowModified(), schema.Properties.Values);
         }
 
         private static String CreateGenerated(String ns, String Model, String ModelId, bool hasCreated, bool hasModified, IEnumerable<JsonProperty> props)

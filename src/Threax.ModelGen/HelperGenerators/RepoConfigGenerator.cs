@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Threax.ModelGen
 {
-    static class RepoConfigGenerator
+    public static class RepoConfigGenerator
     {
         public static String Get(String ns, String modelName)
         {

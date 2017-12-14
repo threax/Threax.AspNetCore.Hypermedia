@@ -6,26 +6,26 @@ using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen.TestGenerators
 {
-    class ModelTestWrapper
+    public class ModelTestWrapper
     {
-        public static String Get(String ns, String modelName, String modelPluralName, JsonSchema4 schema)
+        public static String Get(JsonSchema4 schema, String ns)
         {
             String Model, model;
-            NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
+            NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
             String Models, models;
-            NameGenerator.CreatePascalAndCamel(modelPluralName, out Models, out models);
+            NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
             String createArgs = "";
 
-            var equalAssertFunc = ModelTypeGenerator.Create(schema, modelPluralName, new ModelEqualityAssert(), schema, ns, ns);
+            var equalAssertFunc = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new ModelEqualityAssert(), schema, ns, ns);
 
-            createArgs = ModelTypeGenerator.Create(schema, modelPluralName, new ModelCreateArgs(), schema, ns, ns, p => p.CreateInputModel());
-            var createInputFunc = ModelTypeGenerator.Create(schema, modelPluralName, new CreateInputModel(createArgs), schema, ns, ns, p => p.CreateInputModel());
+            createArgs = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new ModelCreateArgs(), schema, ns, ns, p => p.CreateInputModel());
+            var createInputFunc = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new CreateInputModel(createArgs), schema, ns, ns, p => p.CreateInputModel());
 
-            createArgs = ModelTypeGenerator.Create(schema, modelPluralName, new ModelCreateArgs(), schema, ns, ns, p => p.CreateEntity());
-            var createEntityFunc = ModelTypeGenerator.Create(schema, modelPluralName, new CreateEntity(schema, createArgs), schema, ns, ns, p => p.CreateEntity());
+            createArgs = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new ModelCreateArgs(), schema, ns, ns, p => p.CreateEntity());
+            var createEntityFunc = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new CreateEntity(schema, createArgs), schema, ns, ns, p => p.CreateEntity());
 
-            createArgs = ModelTypeGenerator.Create(schema, modelPluralName, new ModelCreateArgs(), schema, ns, ns, p => p.CreateViewModel());
-            var createViewFunc = ModelTypeGenerator.Create(schema, modelPluralName, new CreateViewModel(schema, createArgs), schema, ns, ns, p => p.CreateViewModel());
+            createArgs = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new ModelCreateArgs(), schema, ns, ns, p => p.CreateViewModel());
+            var createViewFunc = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new CreateViewModel(schema, createArgs), schema, ns, ns, p => p.CreateViewModel());
 
             return Create(ns, Model, model, Models, models, equalAssertFunc, createInputFunc, createEntityFunc, createViewFunc);
         }
