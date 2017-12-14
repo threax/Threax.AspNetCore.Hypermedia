@@ -12,18 +12,18 @@ using Xunit;
 namespace Threax.ModelGen.Tests.Models
 {
     //This does not work
-    //public class DefineNullValueLabelTests : ModelTests<DefineNullValueLabelTests.Value>
-    //{
-    //    public enum TestEnum
-    //    {
-    //        Value1, 
-    //        Value2
-    //    }
+    public class DefineNullValueLabelTests : ModelTests<DefineNullValueLabelTests.Value>
+    {
+        public enum TestEnum
+        {
+            Value1,
+            Value2
+        }
 
-    //    public class Value
-    //    {
-    //        [DefineNullValueLabel("Any")]
-    //        public TestEnum? Things { get; set; }
-    //    }
-    //}
+        public class Value
+        {
+            [DefineNullValueLabel("Any")]
+            public TestEnum? Things { get; set; }
+        }
+    }
 }

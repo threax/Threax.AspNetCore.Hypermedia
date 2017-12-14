@@ -18,6 +18,7 @@ namespace Test.ViewModels
        {
         public Guid ValueId { get; set; }
 
+        [NullValueLabel("Any")]
         public TestEnum? Things { get; set; }
 
         [UiOrder(0, 2147483646)]

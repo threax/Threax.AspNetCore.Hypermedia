@@ -48,7 +48,12 @@ namespace Threax.ModelGen
                     }
 
                     //For some reason enums do not get the custom attributes, so do it here
-                    if (propType.IsEnum)
+                    var enumTestType = propType;
+                    if(enumTestType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                    {
+                        enumTestType = propType.GetGenericArguments()[0];
+                    }
+                    if (enumTestType.IsEnum)
                     {
                         foreach (var attr in prop.GetCustomAttributes().Select(i => i as JsonSchemaExtensionDataAttribute).Where(i => i != null))
                         {

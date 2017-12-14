@@ -15,6 +15,7 @@ namespace Test.InputModels
     [HalModel]
     public partial class ValueInput : IValue
     {
+        [NullValueLabel("Any")]
         public TestEnum? Things { get; set; }
 
     }
