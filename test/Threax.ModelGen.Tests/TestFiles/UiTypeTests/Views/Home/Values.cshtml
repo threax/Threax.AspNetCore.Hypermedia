@@ -1,0 +1,65 @@
+@{
+    ViewData["Title"] = "Values";
+}
+
+<div data-hr-controller="mainTable">
+    <h1>Values</h1>
+    <load visible="true">
+        <p>Working...</p>
+    </load>
+    <main>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Checkbox</th>
+                        <th>DateOnly</th>
+                        <th>Hidden</th>
+                        <th>Password</th>
+                        <th>Select</th>
+                        <th>TextArea</th>
+                        <th>CustomType</th>
+                        <th>Edit</th>
+                    </tr>
+                </thead>
+                <tbody data-hr-view="listing" data-hr-view-component="mainTableBody"></tbody>
+            </table>
+            <template data-hr-component="mainTableBody">
+                <table>
+                    <tr>
+                        <td>{{checkbox}}</td>
+                        <td>{{dateOnly}}</td>
+                        <td>{{hidden}}</td>
+                        <td>{{password}}</td>
+                        <td>{{select}}</td>
+                        <td>{{textArea}}</td>
+                        <td>{{customType}}</td>
+                        <td>
+                            <button data-hr-on-click="edit" class="btn btn-default" data-hr-toggle="edit" data-hr-style-off="display:none;">Edit</button>
+                            <button data-hr-on-click="del" class="btn btn-default" data-hr-toggle="del" data-hr-style-off="display:none;">Delete</button>
+                        </td>
+                    </tr>
+                </table>
+            </template>
+        </div>
+        <button data-hr-on-click="add" class="btn btn-default" data-hr-toggle="add" data-hr-style-off="display:none;">Add</button>
+
+        <page-numbers></page-numbers>
+    </main>
+
+    <error>
+        An error occured loading the values. Please try again later.
+    </error>
+</div>
+
+<modal data-hr-controller="entryEditor" title-text="Value" dialog-classes="modal-lg">
+    <load class="modal-body">
+        <p>Working...</p>
+    </load>
+    <main>
+        <item-edit-form class="form-horizontal" data-hr-form-component="hr.forms.horizontal"></item-edit-form>
+    </main>
+    <error class="modal-body">
+        <p>An error occured loading the value. Please try again later.</p>
+    </error>
+</modal>
