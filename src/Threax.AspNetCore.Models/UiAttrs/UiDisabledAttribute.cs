@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace Threax.AspNetCore.Halcyon.Ext.UIAttrs
+namespace Threax.AspNetCore.Models
 {
     /// <summary>
     /// This attribute sets a field to disabled by setting its x-ui-disabled attribute.

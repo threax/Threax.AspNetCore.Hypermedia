@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Threax.AspNetCore.Halcyon.Ext.UIAttrs
+namespace Threax.AspNetCore.Models
 {
     /// <summary>
     /// Use this to change the ui type of a property to a hidden. This way you can include
     /// a piece of data in an editing object without displaying it to the user.
     /// </summary>
-    public class HiddenUiTypeAttribute : UiTypeAttribute
+    public class TextAreaUiTypeAttribute : UiTypeAttribute
     {
-        public HiddenUiTypeAttribute() : base("hidden")
+        public TextAreaUiTypeAttribute() : base("textarea")
         {
         }
     }

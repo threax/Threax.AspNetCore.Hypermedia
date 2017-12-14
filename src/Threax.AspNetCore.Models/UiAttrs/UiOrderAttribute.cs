@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace Threax.AspNetCore.Halcyon.Ext.UIAttrs
+namespace Threax.AspNetCore.Models
 {
     /// <summary>
     /// This class helps enforce the order of your properties in the json schema. It will add x-ui-order to the properties
