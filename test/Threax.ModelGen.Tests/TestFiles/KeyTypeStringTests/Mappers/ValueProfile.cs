@@ -12,16 +12,17 @@ namespace Test.Mappers
 {
     public partial class ValueProfile : Profile
     {
-        partial void MapInputToEntity(IMappingExpression<ValueInput, ValueEntity> mapExpr)
+        public ValueProfile()
         {
-            mapExpr.ForMember(d => d.ValueId, opt => opt.Ignore())
-                .ForMember(d => d.Created, opt => opt.ResolveUsing<ICreatedResolver>())
-                .ForMember(d => d.Modified, opt => opt.ResolveUsing<IModifiedResolver>());
+            //Map the input model to the entity
+            MapInputToEntity(CreateMap<ValueInput, ValueEntity>());
+
+            //Map the entity to the view model.
+            MapEntityToView(CreateMap<ValueEntity, Value>());
         }
 
-        partial void MapEntityToView(IMappingExpression<ValueEntity, Value> mapExpr)
-        {
-            
-        }
+        partial void MapInputToEntity(IMappingExpression<ValueInput, ValueEntity> mapExpr);
+
+        partial void MapEntityToView(IMappingExpression<ValueEntity, Value> mapExpr);
     }
 }

@@ -1,4 +1,4 @@
-﻿//#define WriteTestFiles
+﻿#define WriteTestFiles
 using NJsonSchema;
 using System;
 using System.Collections.Generic;
@@ -188,7 +188,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"Mappers/{schema.Title}Profile.cs",
+                $"Mappers/{schema.Title}Profile.Generated.cs",
                 MappingProfileGenerator.GetGenerated(schema, AppNamespace)
             );
         }
