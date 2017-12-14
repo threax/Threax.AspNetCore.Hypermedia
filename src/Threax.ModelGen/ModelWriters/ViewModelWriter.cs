@@ -51,7 +51,7 @@ using Threax.AspNetCore.Models;"
 
         private static IAttributeBuilder CreateAttributeBuilder()
         {
-            return new NullValueLabelAttributeBuilder(new UiOrderAttributeBuilder(new DisplayAttributeBuilder()));
+            return new NullValueLabelAttributeBuilder(new UiOrderAttributeBuilder(new DisplayAttributeBuilder(new UiTypeAttributeBuilder())));
         }
 
         public static String GetUserPartial(String ns, String modelName, String modelPluralName, String generatedSuffix = ".Generated")

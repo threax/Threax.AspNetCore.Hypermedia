@@ -11,7 +11,9 @@ namespace Threax.AspNetCore.Models
     /// </summary>
     public class HiddenUiTypeAttribute : UiTypeAttribute
     {
-        public HiddenUiTypeAttribute() : base("hidden")
+        public const String UiName = "hidden";
+
+        public HiddenUiTypeAttribute() : base(UiName)
         {
         }
     }

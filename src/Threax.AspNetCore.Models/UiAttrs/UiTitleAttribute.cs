@@ -1,4 +1,5 @@
-﻿using NJsonSchema.Annotations;
+﻿using NJsonSchema;
+using NJsonSchema.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,28 @@ namespace Threax.AspNetCore.Models
     [AttributeUsage(AttributeTargets.Class)]
     public class UiTitleAttribute : JsonSchemaExtensionDataAttribute
     {
-        public UiTitleAttribute(String title) : base("x-ui-title", title)
+        internal const String Name = "x-ui-title";
+
+        public UiTitleAttribute(String title) : base(Name, title)
         {
+        }
+    }
+
+    public static class UiTitleAttributeJsonSchemaExtensions
+    {
+        /// <summary>
+        /// Get the ui title of this property. Will return null if no ui title has been defined.
+        /// </summary>
+        /// <param name="prop"></param>
+        /// <returns></returns>
+        public static String GetUiTitle(this JsonProperty prop)
+        {
+            Object val = null;
+            if (prop.ExtensionData?.TryGetValue(UiTitleAttribute.Name, out val) == true)
+            {
+                return (String)val;
+            }
+            return null;
         }
     }
 }

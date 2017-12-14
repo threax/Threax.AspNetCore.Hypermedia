@@ -53,6 +53,8 @@ namespace Threax.ModelGen.ModelWriters
             public bool OnAllModelTypes => wrapped.OnAllModelTypes;
 
             public string NullValueLabel => wrapped.NullValueLabel;
+
+            public String UiType => wrapped.UiType;
         }
     }
 }

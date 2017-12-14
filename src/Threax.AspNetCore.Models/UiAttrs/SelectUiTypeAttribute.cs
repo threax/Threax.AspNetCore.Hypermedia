@@ -12,7 +12,9 @@ namespace Threax.AspNetCore.Models
     /// </summary>
     public class SelectUiTypeAttribute : UiTypeAttribute
     {
-        public SelectUiTypeAttribute() : base("select")
+        public const String UiName = "select";
+
+        public SelectUiTypeAttribute() : base(UiName)
         {
         }
     }

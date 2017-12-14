@@ -37,7 +37,8 @@ namespace Threax.ModelGen.ModelWriters
                 new PredefinedAttributeBuilder("[UiOrder]",
                     new DisplayAttributeBuilder(
                         new UiSearchAttributeBuilder(
-                            new RequiredInQueryAttributeBuilder()))));
+                            new RequiredInQueryAttributeBuilder(
+                                new UiTypeAttributeBuilder())))));
         }
     }
 }

@@ -15,23 +15,20 @@ namespace Threax.AspNetCore.Models
     [AttributeUsage(AttributeTargets.Property)]
     public class UiOrderAttribute : JsonSchemaExtensionDataAttribute
     {
+        internal const String Name = "x-ui-order";
+
         /// <summary>
         /// Setup the ui order for this property.
         /// </summary>
         /// <param name="order">Order is optional, the default is the line number of the attribute.</param>
         /// <param name="offset">An offset to add to the calculated order value. Useful to try to keep order between multiple classes.</param>
-        public UiOrderAttribute(int offset = 0, [CallerLineNumber] int order = 0) : base("x-ui-order", order + offset)
+        public UiOrderAttribute(int offset = 0, [CallerLineNumber] int order = 0) : base(Name, order + offset)
         {
         }
     }
 
     public static class OrderAttributeJsonSchemaExtensions
     {
-        /// <summary>
-        /// Makes use of the x-ui-order extension provided by the UiOrder class in the halcyon extensions, use that to specify order.
-        /// </summary>
-        internal const String Name = "x-ui-order";
-
         /// <summary>
         /// Get the order of the property. This will return null if there is no order.
         /// </summary>
@@ -40,7 +37,7 @@ namespace Threax.AspNetCore.Models
         public static int? GetOrder(this JsonProperty prop)
         {
             Object val = null;
-            prop.ExtensionData?.TryGetValue(Name, out val);
+            prop.ExtensionData?.TryGetValue(UiOrderAttribute.Name, out val);
             return (int?)val;
         }
 
@@ -52,7 +49,7 @@ namespace Threax.AspNetCore.Models
         public static void SetOrder(this JsonProperty prop, int order)
         {
             prop.ExtensionData = prop.ExtensionData ?? new Dictionary<String, Object>();
-            prop.ExtensionData[Name] = order;
+            prop.ExtensionData[UiOrderAttribute.Name] = order;
         }
     }
 }

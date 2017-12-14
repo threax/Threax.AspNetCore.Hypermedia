@@ -1,4 +1,5 @@
-﻿using NJsonSchema.Annotations;
+﻿using NJsonSchema;
+using NJsonSchema.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,28 @@ namespace Threax.AspNetCore.Models
     [AttributeUsage(AttributeTargets.Property)]
     public class UiTypeAttribute : JsonSchemaExtensionDataAttribute
     {
-        public UiTypeAttribute(String value) : base("x-ui-type", value)
+        internal const String Name = "x-ui-type";
+
+        public UiTypeAttribute(String value) : base(Name, value)
         {
+        }
+    }
+
+    public static class UiTypeAttributeJsonSchemaExtensions
+    {
+        /// <summary>
+        /// Get the ui type of this property. Will return null if no ui type has been defined.
+        /// </summary>
+        /// <param name="prop"></param>
+        /// <returns></returns>
+        public static String GetUiType(this JsonProperty prop)
+        {
+            Object val = null;
+            if (prop.ExtensionData?.TryGetValue(UiTypeAttribute.Name, out val) == true)
+            {
+                return (String)val;
+            }
+            return null;
         }
     }
 }

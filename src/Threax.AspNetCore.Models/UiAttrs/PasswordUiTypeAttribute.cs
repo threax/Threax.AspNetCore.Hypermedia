@@ -11,7 +11,9 @@ namespace Threax.AspNetCore.Models
     /// </summary>
     public class PasswordUiTypeAttribute : UiTypeAttribute
     {
-        public PasswordUiTypeAttribute() : base("password")
+        public const String UiName = "password";
+
+        public PasswordUiTypeAttribute() : base(UiName)
         {
         }
     }

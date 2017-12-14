@@ -11,7 +11,9 @@ namespace Threax.AspNetCore.Models
     /// </summary>
     public class DateUiTypeAttribute : UiTypeAttribute
     {
-        public DateUiTypeAttribute() : base("date")
+        public const String UiName = "date";
+
+        public DateUiTypeAttribute() : base(UiName)
         {
         }
     }

@@ -48,7 +48,7 @@ using Threax.AspNetCore.Models;"
 
         private static IAttributeBuilder CreatePropertyAttributes()
         {
-            return new NullValueLabelAttributeBuilder(new DisplayAttributeBuilder(new RequiredAttributeBuilder(new MaxLengthAttributeBuilder(new UiOrderAttributeBuilder()))));
+            return new NullValueLabelAttributeBuilder(new DisplayAttributeBuilder(new RequiredAttributeBuilder(new MaxLengthAttributeBuilder(new UiOrderAttributeBuilder(new UiTypeAttributeBuilder())))));
         }
 
         private static IAttributeBuilder CreateClassAttributes()

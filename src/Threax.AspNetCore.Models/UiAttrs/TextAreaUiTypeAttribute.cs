@@ -11,7 +11,9 @@ namespace Threax.AspNetCore.Models
     /// </summary>
     public class TextAreaUiTypeAttribute : UiTypeAttribute
     {
-        public TextAreaUiTypeAttribute() : base("textarea")
+        public const String UiName = "textarea";
+
+        public TextAreaUiTypeAttribute() : base(UiName)
         {
         }
     }

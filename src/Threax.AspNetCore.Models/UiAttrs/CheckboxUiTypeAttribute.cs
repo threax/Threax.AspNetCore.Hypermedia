@@ -12,7 +12,9 @@ namespace Threax.AspNetCore.Models
     /// </summary>
     public class CheckboxUiTypeAttribute : UiTypeAttribute
     {
-        public CheckboxUiTypeAttribute() : base("checkbox")
+        public const String UiName = "checkbox";
+
+        public CheckboxUiTypeAttribute() : base(UiName)
         {
         }
     }
