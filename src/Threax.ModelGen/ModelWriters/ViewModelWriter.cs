@@ -43,8 +43,7 @@ $@"       public partial class {a.Name}{InterfaceListBuilder.Build(interfaces)}
                 AdditionalUsings =
 $@"using {ns}.Models;
 using {ns}.Controllers.Api;
-using Threax.AspNetCore.Halcyon.Ext.ValueProviders;
-using Threax.AspNetCore.Models;"
+using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
             };
             return ModelTypeGenerator.Create(schema, schema.GetPluralName(), mainWriter, ns, ns + ".ViewModels", allowPropertyCallback: p => !p.IsAbstractOnViewModel() && p.CreateViewModel());
         }

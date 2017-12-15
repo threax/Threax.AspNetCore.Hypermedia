@@ -39,8 +39,7 @@ namespace Threax.ModelGen
                 })
             {
                 AdditionalUsings = $@"using {ns}.Models;
-using Threax.AspNetCore.Halcyon.Ext.ValueProviders;
-using Threax.AspNetCore.Models;"
+using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
             };
 
             return ModelTypeGenerator.Create(schema, schema.GetPluralName(), modelWriter, ns, ns + ".InputModels", allowPropertyCallback: p => !p.IsAbstractOnInputModel() && p.CreateInputModel());
