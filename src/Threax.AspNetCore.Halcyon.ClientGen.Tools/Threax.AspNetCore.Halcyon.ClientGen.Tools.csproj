@@ -13,7 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Threax.AspNetCore.BuiltInTools\Threax.AspNetCore.BuiltInTools.csproj" />
+    <PackageReference Include="Threax.AspNetCore.BuiltInTools" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Threax.AspNetCore.Halcyon.ClientGen\Threax.AspNetCore.Halcyon.ClientGen.csproj" />
   </ItemGroup>
 

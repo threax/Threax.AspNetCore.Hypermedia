@@ -17,13 +17,13 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
     <PackageReference Include="Moq" Version="4.7.145" />
+    <PackageReference Include="Threax.Tests" Version="1.0.2" />
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Threax.ModelGen\Threax.ModelGen.csproj" />
-    <ProjectReference Include="..\..\src\Threax.AspNetCore.Tests\Threax.AspNetCore.Tests.csproj" />
   </ItemGroup>
 
   <ItemGroup>
