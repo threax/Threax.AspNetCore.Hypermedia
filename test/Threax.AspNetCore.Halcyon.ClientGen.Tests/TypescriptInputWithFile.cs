@@ -19,6 +19,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
     public class TypescriptInputWithFile
     {
         private Mockup mockup = new Mockup();
+        private bool WriteTestFiles = false;
 
         public TypescriptInputWithFile()
         {
@@ -56,9 +57,19 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
                 using (var reader = new StreamReader(writer.BaseStream))
                 {
                     var code = reader.ReadToEnd();
-                    Assert.NotNull(code);
+                    TestCode($"TypescriptInputWithFile.ts", code);
                 }
             }
+        }
+
+        private void TestCode(String fileName, String code)
+        {
+            if (WriteTestFiles)
+            {
+                FileUtils.WriteTestFile(this.GetType(), fileName, code);
+            }
+
+            Assert.Equal(FileUtils.ReadTestFile(this.GetType(), fileName), code);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿//#define WriteTestFiles
-using NJsonSchema;
+﻿using NJsonSchema;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,12 +16,7 @@ namespace Threax.ModelGen.Tests
     {
         private const String AppNamespace = "Test";
         private JsonSchema4 schema;
-
-#if WriteTestFiles
-        private bool WriteTestFiles = true;
-#else
         private bool WriteTestFiles = false;
-#endif
 
         public ModelTests()
         {
