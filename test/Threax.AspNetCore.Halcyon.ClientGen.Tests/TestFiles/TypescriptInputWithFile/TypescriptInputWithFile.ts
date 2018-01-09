@@ -1,16 +1,39 @@
 import * as hal from 'hr.halcyon.EndpointClient';
 
-export class TypescriptInputWithFileResult {
+export class FileResultResult {
     private client: hal.HalEndpointClient;
 
     constructor(client: hal.HalEndpointClient) {
         this.client = client;
     }
 
-    private strongData: TypescriptInputWithFile = undefined;
-    public get data(): TypescriptInputWithFile {
-        this.strongData = this.strongData || this.client.GetData<TypescriptInputWithFile>();
+    private strongData: FileResult = undefined;
+    public get data(): FileResult {
+        this.strongData = this.strongData || this.client.GetData<FileResult>();
         return this.strongData;
+    }
+
+    public save(data: InputWithFile): Promise<void> {
+        return this.client.LoadLinkWithBody("Save", data).then(hal.makeVoid);
+    }
+
+    public canSave(): boolean {
+        return this.client.HasLink("Save");
+    }
+
+    public linkForSave(): hal.HalLink {
+        return this.client.GetLink("Save");
+    }
+
+    public getSaveDocs(): Promise<hal.HalEndpointDoc> {
+        return this.client.LoadLinkDoc("Save")
+            .then(r => {
+                return r.GetData<hal.HalEndpointDoc>();
+            });
+    }
+
+    public hasSaveDocs(): boolean {
+        return this.client.HasLinkDoc("Save");
     }
 }
 //----------------------
@@ -22,6 +45,9 @@ export class TypescriptInputWithFileResult {
 
 
 
+
+export interface FileResult {
+}
 
 export interface InputWithFile {
     File?: any;
