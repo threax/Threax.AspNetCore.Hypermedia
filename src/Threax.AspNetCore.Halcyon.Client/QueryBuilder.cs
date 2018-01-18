@@ -19,22 +19,25 @@ namespace Threax.AspNetCore.Halcyon.Client
             {
                 bool notSpecial = true;
                 var value = prop.GetValue(source);
-                if(value.GetType() != typeof(String))
+                if (value != null)
                 {
-                    var array = value as IEnumerable;
-                    if (array != null)
+                    if (value.GetType() != typeof(String))
                     {
-                        foreach (var i in array)
+                        var array = value as IEnumerable;
+                        if (array != null)
                         {
-                            query.Append($"&{Uri.EscapeUriString(prop.Name)}[]={Uri.EscapeUriString(i.ToString())}");
+                            foreach (var i in array)
+                            {
+                                query.Append($"&{Uri.EscapeUriString(prop.Name)}[]={Uri.EscapeUriString(i.ToString())}");
+                            }
+                            notSpecial = false;
                         }
-                        notSpecial = false;
                     }
-                }
 
-                if(notSpecial)
-                {
-                    query.Append($"&{Uri.EscapeUriString(prop.Name)}={Uri.EscapeUriString(value.ToString())}");
+                    if (notSpecial)
+                    {
+                        query.Append($"&{Uri.EscapeUriString(prop.Name)}={Uri.EscapeUriString(value.ToString())}");
+                    }
                 }
             }
 

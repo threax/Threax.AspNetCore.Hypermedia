@@ -34,6 +34,17 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
             Assert.Equal("?Name=Bob%20Smith%20&%20The%20Crew%20/%20Other%20Peeps&Number=1", query);
         }
 
+        [Fact]
+        public void QueryWithNull()
+        {
+            var query = QueryBuilder.BuildQueryString(new SimpleQueryTest()
+            {
+                Name = null,
+                Number = 1
+            });
+            Assert.Equal("?Number=1", query);
+        }
+
         class ArrayQueryTest
         {
             public String Name { get; set; }
