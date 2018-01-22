@@ -23,16 +23,23 @@ namespace Threax.ModelGen
                 }
 
                 String ns;
-                var assembly = ProjectAssemblyLoader.LoadProjectAssembly(AppOutDir, out ns);
-                AppNamespace = ns;
-                var type = assembly.GetType(Source);
-
-                if(type == null)
+                try
                 {
-                    throw new InvalidOperationException($"Cannot find type {Source} in assembly {assembly.FullName}.");
-                }
+                    var assembly = ProjectAssemblyLoader.LoadProjectAssembly(AppOutDir, out ns);
+                    AppNamespace = ns;
+                    var type = assembly.GetType(Source);
 
-                Schema = await TypeToSchemaGenerator.CreateSchema(type);
+                    if (type == null)
+                    {
+                        throw new InvalidOperationException($"Cannot find type {Source} in assembly {assembly.FullName}.");
+                    }
+
+                    Schema = await TypeToSchemaGenerator.CreateSchema(type);
+                }
+                catch(FileLoadException ex)
+                {
+                    throw new RunOnFullFrameworkException(ex);
+                }
             }
             else
             {

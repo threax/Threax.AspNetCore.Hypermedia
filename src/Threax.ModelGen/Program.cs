@@ -2,8 +2,10 @@
 using NJsonSchema;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Threax.AspNetCore.Models;
 using Threax.ModelGen.TestGenerators;
@@ -23,47 +25,59 @@ namespace Threax.ModelGen
             {
                 if (args.Length < 1)
                 {
-                    throw new MessageException(@"You must provide the following arguments [] is required {} is optional. 
+                    throw new MessageException($@"threax-modelgen version: {typeof(Program).Assembly.GetName().Version.ToString()}
+You must provide the following arguments [] is required {{}} is optional. 
 To create a model pass:
-[Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirectory} {--AppNamespace Your.Namespace}.
+[Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDirectory}} {{--AppNamespace Your.Namespace}}.
 To remove a model pass:
-remove [Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirectory}");
+remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDirectory}}");
                 }
 
                 var appDir = Directory.GetCurrentDirectory();
                 var directoryName = Path.GetFileName(appDir);
                 var testDir = Path.GetFullPath(Path.Combine(appDir, $"../{directoryName}.Tests"));
 
-                if (args[0] == "remove")
+                try
                 {
-                    if (args.Length < 2)
+                    if (args[0] == "remove")
                     {
-                        throw new MessageException("You must provide the model schema after the remove argument to remove a model");
-                    }
+                        if (args.Length < 2)
+                        {
+                            throw new MessageException("You must provide the model schema after the remove argument to remove a model");
+                        }
 
-                    var settings = new GeneratorSettings()
+                        var settings = new GeneratorSettings()
+                        {
+                            Source = args[1],
+                            AppOutDir = appDir,
+                            TestOutDir = testDir
+                        };
+                        var config = new ConfigurationBuilder().AddCommandLine(args.Skip(2).ToArray()).Build();
+                        config.Bind(settings);
+                        await settings.Configure();
+                        DeleteClasses(settings);
+                    }
+                    else
                     {
-                        Source = args[1],
-                        AppOutDir = appDir,
-                        TestOutDir = testDir
-                    };
-                    var config = new ConfigurationBuilder().AddCommandLine(args.Skip(2).ToArray()).Build();
-                    config.Bind(settings);
-                    await settings.Configure();
-                    DeleteClasses(settings);
+                        var settings = new GeneratorSettings()
+                        {
+                            Source = args[0],
+                            AppOutDir = appDir,
+                            TestOutDir = testDir
+                        };
+                        var config = new ConfigurationBuilder().AddCommandLine(args.Skip(1).ToArray()).Build();
+                        config.Bind(settings);
+                        await settings.Configure();
+                        GenerateClasses(settings);
+                    }
                 }
-                else
+                catch (RunOnFullFrameworkException ex)
                 {
-                    var settings = new GeneratorSettings()
-                    {
-                        Source = args[0],
-                        AppOutDir = appDir,
-                        TestOutDir = testDir
-                    };
-                    var config = new ConfigurationBuilder().AddCommandLine(args.Skip(1).ToArray()).Build();
-                    config.Bind(settings);
-                    await settings.Configure();
-                    GenerateClasses(settings);
+#if NETCOREAPP2_0
+                    RunFullFramework(args, ex);
+#else
+                    throw;
+#endif
                 }
             }
             catch (MessageException ex)
@@ -74,6 +88,35 @@ remove [Schema File Path] {--AppOutDir OutputDirectory} {--TestOutDir TestDirect
             {
                 Console.WriteLine($"A {ex.GetType().Name} occured. Message: {ex.Message}");
             }
+        }
+
+        private static void RunFullFramework(string[] args, RunOnFullFrameworkException ex)
+        {
+            var fullExePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(typeof(Program).Assembly.Location), "../net471/dotnet-threax-modelgen.exe"));
+            if (!File.Exists(fullExePath))
+            {
+                throw new InvalidOperationException($"Cannot find full .net framework executable at {fullExePath}", ex);
+            }
+            Console.WriteLine($"Running full .net framework version from {fullExePath}");
+            var argsBuilder = new StringBuilder();
+            foreach (var arg in args)
+            {
+                argsBuilder.Append(arg);
+                argsBuilder.Append(" ");
+            }
+            var process = new Process();
+            process.StartInfo.Arguments = argsBuilder.ToString();
+            process.StartInfo.FileName = fullExePath;
+            process.StartInfo.WorkingDirectory = Directory.GetCurrentDirectory();
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.RedirectStandardError = true;
+            process.StartInfo.RedirectStandardOutput = true;
+            process.OutputDataReceived += (s, o) => Console.WriteLine(o.Data);
+            process.ErrorDataReceived += (s, o) => Console.WriteLine(o.Data);
+            process.Start();
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+            process.WaitForExit();
         }
 
         private static void GenerateClasses(GeneratorSettings settings)
