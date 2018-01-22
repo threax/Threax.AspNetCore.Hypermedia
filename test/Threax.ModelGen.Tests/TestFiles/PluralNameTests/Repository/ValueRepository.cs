@@ -46,7 +46,7 @@ namespace Test.Repository
         {
             var entity = mapper.Map<ValueEntity>(value);
             this.dbContext.Add(entity);
-            await this.dbContext.SaveChangesAsync();
+            await SaveChanges();
             return mapper.Map<Value>(entity);
         }
 
@@ -56,7 +56,7 @@ namespace Test.Repository
             if (entity != null)
             {
                 mapper.Map(value, entity);
-                await this.dbContext.SaveChangesAsync();
+                await SaveChanges();
                 return mapper.Map<Value>(entity);
             }
             throw new KeyNotFoundException($"Cannot find value {valueId.ToString()}");
@@ -68,7 +68,7 @@ namespace Test.Repository
             if (entity != null)
             {
                 Entities.Remove(entity);
-                await this.dbContext.SaveChangesAsync();
+                await SaveChanges();
             }
         }
 
@@ -81,6 +81,11 @@ namespace Test.Repository
         {
             var entities = lotsaValues.Select(i => mapper.Map<ValueEntity>(i));
             this.dbContext.LotsaValues.AddRange(entities);
+            await SaveChanges();
+        }
+
+        protected virtual async Task SaveChanges()
+        {
             await this.dbContext.SaveChangesAsync();
         }
 

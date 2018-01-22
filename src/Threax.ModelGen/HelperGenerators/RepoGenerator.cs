@@ -69,7 +69,7 @@ namespace {ns}.Repository
         {{
             var entity = mapper.Map<{Model}Entity>({model});
             this.dbContext.Add(entity);
-            await this.dbContext.SaveChangesAsync();
+            await SaveChanges();
             return mapper.Map<{Model}>(entity);
         }}
 
@@ -79,7 +79,7 @@ namespace {ns}.Repository
             if (entity != null)
             {{
                 mapper.Map({model}, entity);
-                await this.dbContext.SaveChangesAsync();
+                await SaveChanges();
                 return mapper.Map<{Model}>(entity);
             }}
             throw new KeyNotFoundException($""Cannot find {model} {{{modelId}.ToString()}}"");
@@ -91,7 +91,7 @@ namespace {ns}.Repository
             if (entity != null)
             {{
                 Entities.Remove(entity);
-                await this.dbContext.SaveChangesAsync();
+                await SaveChanges();
             }}
         }}
 
@@ -104,6 +104,11 @@ namespace {ns}.Repository
         {{
             var entities = {models}.Select(i => mapper.Map<{Model}Entity>(i));
             this.dbContext.{Models}.AddRange(entities);
+            await SaveChanges();
+        }}
+
+        protected virtual async Task SaveChanges()
+        {{
             await this.dbContext.SaveChangesAsync();
         }}
 
