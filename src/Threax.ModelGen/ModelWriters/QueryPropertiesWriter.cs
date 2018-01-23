@@ -28,6 +28,10 @@ namespace Threax.ModelGen.ModelWriters
 
         public static String CreateQueryNullable(IWriterPropertyInfo info)
         {
+            if (info.ClrType.EndsWith("?")) //Already nullable
+            {
+                return String.Empty;
+            }
             return info.IsValueType && !info.IsRequiredInQuery ? "?" : String.Empty;
         }
 
