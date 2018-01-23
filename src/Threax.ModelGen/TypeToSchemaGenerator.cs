@@ -49,7 +49,7 @@ namespace Threax.ModelGen
 
                     //For some reason enums do not get the custom attributes, so do it here
                     var enumTestType = propType;
-                    if(enumTestType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                    if(enumTestType.IsGenericType && enumTestType.GetGenericTypeDefinition() == typeof(Nullable<>))
                     {
                         enumTestType = propType.GetGenericArguments()[0];
                     }
