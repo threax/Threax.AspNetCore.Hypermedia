@@ -8,14 +8,14 @@ namespace Threax.ModelGen
 {
     public class PartialModelInterfaceGenerator
     {
-        public static String GetUserPartial(JsonSchema4 schema, String modelNamespace, String generatedSuffix = ".Generated")
+        public static String GetUserPartial(JsonSchema4 schema, String modelNamespace)
         {
             String Model, model;
             NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
-            return Create(Model, model, modelNamespace, generatedSuffix, NameGenerator.CreatePascal(schema.GetKeyName()), schema.GetExtraNamespaces(StrConstants.FileNewline));
+            return Create(Model, model, modelNamespace, NameGenerator.CreatePascal(schema.GetKeyName()), schema.GetExtraNamespaces(StrConstants.FileNewline));
         }
 
-        private static String Create(String Model, String model, String modelNamespace, String generatedSuffix, String ModelId, String additionalNs)
+        private static String Create(String Model, String model, String modelNamespace, String ModelId, String additionalNs)
         {
             return
 $@"using System;
@@ -31,17 +31,17 @@ namespace {modelNamespace}
 {{
     public partial interface I{Model}
     {{
-        //Customize main interface here, see {Model}{generatedSuffix} for generated code
+        //Customize main interface here, see {Model}.Generated for generated code
     }}  
 
     public partial interface I{ModelId}
     {{
-        //Customize id interface here, see {Model}{generatedSuffix} for generated code
+        //Customize id interface here, see {Model}.Generated for generated code
     }}    
 
     public partial interface I{Model}Query
     {{
-        //Customize query interface here, see {Model}{generatedSuffix} for generated code
+        //Customize query interface here, see {Model}.Generated for generated code
     }}
 }}";
         }

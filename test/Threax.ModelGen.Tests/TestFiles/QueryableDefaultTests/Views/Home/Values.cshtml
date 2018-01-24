@@ -2,7 +2,7 @@
     ViewData["Title"] = "Values";
 }
 
-<div data-hr-controller="mainTable">
+<div data-hr-controller="mainTable" class="col-sm-8">
     <h1>Values</h1>
     <load visible="true">
         <p>Working...</p>
@@ -38,6 +38,24 @@
     <error>
         An error occured loading the values. Please try again later.
     </error>
+</div>
+<div class="col-sm-4">
+    <h3>Search</h3>
+    <div data-hr-controller="search">
+        <load visible="true">
+            <p>Loading Search...</p>
+        </load>
+        <main>
+            <form data-hr-on-submit="submit" data-hr-form="input">
+                <p class="bg-danger hiddenToggler" data-hr-toggle="mainError" data-hr-view="mainError" data-hr-style-on="display:block;">{{message}}</p>
+
+                <button type="submit" class="btn btn-primary" data-hr-form-end>Search</button>
+            </form>
+        </main>
+        <error>
+            An error occured loading the search form. Please try again later.
+        </error>
+    </div>
 </div>
 
 <modal data-hr-controller="entryEditor" title-text="Value" dialog-classes="modal-lg">

@@ -1,6 +1,7 @@
 ﻿using NJsonSchema;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Threax.AspNetCore.Models;
 
@@ -27,16 +28,17 @@ namespace Threax.ModelGen
                 propertyNames = new String[] { "Thing" };
             }
 
-            return Create(Model, model, Models, models, propertyNames);
+            return Create(Model, model, Models, models, propertyNames, schema.Properties.Values.Any(i => i.IsQueryableShowOnUi()));
         }
 
-        private static String Create(String Model, String model, String Models, String models, IEnumerable<String> propertyNames) {
+        private static String Create(String Model, String model, String Models, String models, IEnumerable<String> propertyNames, bool hasQuery) {
+            var cls = hasQuery ? @" class=""col-sm-8""" : null;
             var sb = new StringBuilder(
 $@"@{{
     ViewData[""Title""] = ""{Models}"";
 }}
 
-<div data-hr-controller=""mainTable"">
+<div data-hr-controller=""mainTable""{cls}>
     <h1>{Models}</h1>
     <load visible=""true"">
         <p>Working...</p>
@@ -86,7 +88,32 @@ $@"                        <td>
     <error>
         An error occured loading the {models}. Please try again later.
     </error>
-</div>
+</div>");
+
+            if (hasQuery)
+            {
+                sb.Append($@"
+<div class=""col-sm-4"">
+    <h3>Search</h3>
+    <div data-hr-controller=""search"">
+        <load visible=""true"">
+            <p>Loading Search...</p>
+        </load>
+        <main>
+            <form data-hr-on-submit=""submit"" data-hr-form=""input"">
+                <p class=""bg-danger hiddenToggler"" data-hr-toggle=""mainError"" data-hr-view=""mainError"" data-hr-style-on=""display:block;"">{{{{message}}}}</p>
+
+                <button type=""submit"" class=""btn btn-primary"" data-hr-form-end>Search</button>
+            </form>
+        </main>
+        <error>
+            An error occured loading the search form. Please try again later.
+        </error>
+    </div>
+</div>");
+            }
+
+sb.Append($@"
 
 <modal data-hr-controller=""entryEditor"" title-text=""{Model}"" dialog-classes=""modal-lg"">
     <load class=""modal-body"">

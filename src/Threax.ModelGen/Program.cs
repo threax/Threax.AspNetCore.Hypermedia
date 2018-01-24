@@ -125,7 +125,7 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
             {
                 if (settings.WriteApp)
                 {
-                    WriteFile(Path.Combine(settings.AppOutDir, $"Models/I{settings.ModelName}.cs"), PartialModelInterfaceGenerator.GetUserPartial(settings.Schema, settings.AppNamespace + ".Models", settings.Schema.GetExtraNamespaces(StrConstants.FileNewline)), false);
+                    WriteFile(Path.Combine(settings.AppOutDir, $"Models/I{settings.ModelName}.cs"), PartialModelInterfaceGenerator.GetUserPartial(settings.Schema, settings.AppNamespace + ".Models"), false);
                     WriteFile(Path.Combine(settings.AppOutDir, $"Models/I{settings.ModelName}.Generated.cs"), IdInterfaceWriter.Create(settings.Schema, settings.AppNamespace), true);
 
                     if (settings.Schema.CreateEntity())
