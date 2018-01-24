@@ -62,10 +62,10 @@ $@"        public {info.ClrType}{QueryPropertiesWriter.CreateQueryNullable(info)
             {
                 return p.IsQueryable();
             });
-            return Create(ns, Model, model, Models, models, queryProps, customizer, schema.GetKeyType().GetTypeAsNullable(), ModelId, modelId);
+            return Create(ns, Model, model, Models, models, queryProps, customizer, schema.GetKeyType().GetTypeAsNullable(), ModelId, modelId, schema.GetExtraNamespaces(StrConstants.FileNewline));
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models, String queryProps, String customizer, String nullableModelIdType, String ModelId, String modelId)
+        private static String Create(String ns, String Model, String model, String Models, String models, String queryProps, String customizer, String nullableModelIdType, String ModelId, String modelId, String additionalNs)
         {
             return
 $@"using Halcyon.HAL.Attributes;
@@ -76,7 +76,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Threax.AspNetCore.Halcyon.Ext;
+using Threax.AspNetCore.Halcyon.Ext;{additionalNs}
 
 namespace {ns}.ViewModels
 {{
@@ -114,10 +114,10 @@ namespace {ns}.ViewModels
             NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
             String Models, models;
             NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
-            return CreatePartial(ns, Model, model, Models, models, generatedSuffix);
+            return CreatePartial(ns, Model, model, Models, models, generatedSuffix, schema.GetExtraNamespaces(StrConstants.FileNewline));
         }
 
-        private static String CreatePartial(String ns, String Model, String model, String Models, String models, String generatedSuffix)
+        private static String CreatePartial(String ns, String Model, String model, String Models, String models, String generatedSuffix, String additionalNs)
         {
             return
 $@"using Halcyon.HAL.Attributes;
@@ -128,7 +128,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Threax.AspNetCore.Halcyon.Ext;
+using Threax.AspNetCore.Halcyon.Ext;{additionalNs}
 
 namespace {ns}.ViewModels
 {{
