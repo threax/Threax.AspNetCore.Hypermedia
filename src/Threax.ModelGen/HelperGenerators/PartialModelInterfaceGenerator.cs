@@ -12,10 +12,10 @@ namespace Threax.ModelGen
         {
             String Model, model;
             NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
-            return Create(Model, model, modelNamespace, generatedSuffix, NameGenerator.CreatePascal(schema.GetKeyName()));
+            return Create(Model, model, modelNamespace, generatedSuffix, NameGenerator.CreatePascal(schema.GetKeyName()), schema.GetExtraNamespaces(StrConstants.FileNewline));
         }
 
-        private static String Create(String Model, String model, String modelNamespace, String generatedSuffix, String ModelId)
+        private static String Create(String Model, String model, String modelNamespace, String generatedSuffix, String ModelId, String additionalNs)
         {
             return
 $@"using System;
@@ -25,7 +25,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Halcyon.HAL.Attributes;
 using Threax.AspNetCore.Halcyon.Ext;
-using Threax.AspNetCore.Models;
+using Threax.AspNetCore.Models;{additionalNs}
 
 namespace {modelNamespace}
 {{

@@ -12,10 +12,10 @@ namespace Threax.ModelGen
         public static String Get(JsonSchema4 schema, String ns)
         {
             String Model = NameGenerator.CreatePascal(schema.Title);
-            return Create(ns, Model, schema.AllowCreated(), schema.AllowModified());
+            return Create(ns, Model, schema.AllowCreated(), schema.AllowModified(), schema.GetExtraNamespaces(StrConstants.FileNewline));
         }
 
-        private static String Create(String ns, String Model, bool hasCreated, bool hasModified)
+        private static String Create(String ns, String Model, bool hasCreated, bool hasModified, String additionalNs)
         {
             return
 $@"using System;
@@ -26,7 +26,7 @@ using Threax.AspNetCore.Models;
 using Threax.AspNetCore.Tracking;
 using {ns}.InputModels;
 using {ns}.Database;
-using {ns}.ViewModels;
+using {ns}.ViewModels;{additionalNs}
 
 namespace {ns}.Mappers
 {{
@@ -51,10 +51,10 @@ namespace {ns}.Mappers
         public static String GetGenerated(JsonSchema4 schema, String ns)
         {
             String Model = NameGenerator.CreatePascal(schema.Title);
-            return CreateGenerated(ns, Model, NameGenerator.CreatePascal(schema.GetKeyName()), schema.AllowCreated(), schema.AllowModified(), schema.Properties.Values);
+            return CreateGenerated(ns, Model, NameGenerator.CreatePascal(schema.GetKeyName()), schema.AllowCreated(), schema.AllowModified(), schema.Properties.Values, schema.GetExtraNamespaces(StrConstants.FileNewline));
         }
 
-        private static String CreateGenerated(String ns, String Model, String ModelId, bool hasCreated, bool hasModified, IEnumerable<JsonProperty> props)
+        private static String CreateGenerated(String ns, String Model, String ModelId, bool hasCreated, bool hasModified, IEnumerable<JsonProperty> props, String additionalNs)
         {
             StringBuilder inputToEntityMaps = new StringBuilder($"mapExpr.ForMember(d => d.{ModelId}, opt => opt.Ignore())");
             StringBuilder entityToViewMaps = new StringBuilder("mapExpr");
@@ -109,7 +109,7 @@ using Threax.AspNetCore.Models;
 using Threax.AspNetCore.Tracking;
 using {ns}.InputModels;
 using {ns}.Database;
-using {ns}.ViewModels;
+using {ns}.ViewModels;{additionalNs}
 
 namespace {ns}.Mappers
 {{

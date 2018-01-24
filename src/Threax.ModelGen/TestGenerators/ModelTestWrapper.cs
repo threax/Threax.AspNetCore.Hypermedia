@@ -27,10 +27,10 @@ namespace Threax.ModelGen.TestGenerators
             createArgs = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new ModelCreateArgs(), schema, ns, ns, p => p.CreateViewModel());
             var createViewFunc = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new CreateViewModel(schema, createArgs), schema, ns, ns, p => p.CreateViewModel());
 
-            return Create(ns, Model, model, Models, models, equalAssertFunc, createInputFunc, createEntityFunc, createViewFunc);
+            return Create(ns, Model, model, Models, models, equalAssertFunc, createInputFunc, createEntityFunc, createViewFunc, schema.GetExtraNamespaces(StrConstants.FileNewline));
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models, String equalAssertFunc, String createInputFunc, String createEntityFunc, String createViewFunc)
+        private static String Create(String ns, String Model, String model, String Models, String models, String equalAssertFunc, String createInputFunc, String createEntityFunc, String createViewFunc, String additionalNs)
         {
             return
 $@"using AutoMapper;
@@ -42,7 +42,7 @@ using {ns}.ViewModels;
 using System;
 using Threax.AspNetCore.Tests;
 using Xunit;
-using System.Collections.Generic;
+using System.Collections.Generic;{additionalNs}
 
 namespace {ns}.Tests
 {{

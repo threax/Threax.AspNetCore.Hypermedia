@@ -52,10 +52,10 @@ namespace Threax.ModelGen
             {
                 return p.IsQueryable();
             });
-            return Create(ns, Model, model, Models, models, queryProps, queryCreate, schema.GetKeyType().GetTypeAsNullable(), baseClass, baseClassName, NameGenerator.CreatePascal(schema.GetKeyName()));
+            return Create(ns, Model, model, Models, models, queryProps, queryCreate, schema.GetKeyType().GetTypeAsNullable(), baseClass, baseClassName, NameGenerator.CreatePascal(schema.GetKeyName()), schema.GetExtraNamespaces(StrConstants.FileNewline));
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models, String queryProps, String queryCreate, String nullableModelIdType, String baseClass, String baseClassName, String ModelId)
+        private static String Create(String ns, String Model, String model, String Models, String models, String queryProps, String queryCreate, String nullableModelIdType, String baseClass, String baseClassName, String ModelId, String additionalNs)
         {
             return
 $@"using Halcyon.HAL.Attributes;
@@ -68,7 +68,7 @@ using System.Threading.Tasks;
 using Threax.AspNetCore.Halcyon.Ext;
 using Threax.AspNetCore.Halcyon.Ext.ValueProviders;
 using Threax.AspNetCore.Models;
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;{additionalNs}
 
 namespace {ns}.InputModels
 {{{baseClass}

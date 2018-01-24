@@ -14,10 +14,10 @@ namespace Threax.ModelGen.TestGenerators
             NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
             String Models, models;
             NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
-            return Create(ns, Model, model, Models, models, schema.GetKeyType().Name, schema.GetKeyName());
+            return Create(ns, Model, model, Models, models, schema.GetKeyType().Name, schema.GetKeyName(), schema.GetExtraNamespaces(StrConstants.FileNewline));
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models, String modelIdType, String ModelId)
+        private static String Create(String ns, String Model, String model, String Models, String models, String modelIdType, String ModelId, String additionalNs)
         {
             return
 $@"using AutoMapper;
@@ -26,7 +26,7 @@ using {ns}.ViewModels;
 using {ns}.Models;
 using System;
 using Threax.AspNetCore.Tests;
-using Xunit;
+using Xunit;{additionalNs}
 
 namespace {ns}.Tests
 {{

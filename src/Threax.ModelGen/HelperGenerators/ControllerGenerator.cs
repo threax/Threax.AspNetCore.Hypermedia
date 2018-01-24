@@ -23,10 +23,10 @@ namespace Threax.ModelGen
             {
                 additionalAuthorize = $", Roles = {authName}";
             }
-            return Create(ns, Model, model, Models, models, additionalAuthorize, schema.GetKeyType().Name, ModelId, modelId);
+            return Create(ns, Model, model, Models, models, additionalAuthorize, schema.GetKeyType().Name, ModelId, modelId, schema.GetExtraNamespaces(StrConstants.FileNewline));
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models, String additionalAuthorize, String modelIdType, String ModelId, String modelId)
+        private static String Create(String ns, String Model, String model, String Models, String models, String additionalAuthorize, String modelIdType, String ModelId, String modelId, String additionalNs)
         {
             return
 $@"using System;
@@ -39,7 +39,7 @@ using Threax.AspNetCore.Halcyon.Ext;
 using {ns}.ViewModels;
 using {ns}.InputModels;
 using {ns}.Models;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;{additionalNs}
 
 namespace {ns}.Controllers.Api
 {{

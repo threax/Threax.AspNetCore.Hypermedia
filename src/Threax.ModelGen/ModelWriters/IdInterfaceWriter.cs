@@ -19,6 +19,7 @@ namespace Threax.ModelGen
             {
                 WriteEndNamespace = false
             };
+            commonWriter.AdditionalUsings = schema.GetExtraNamespaces();
             sb.Append(ModelTypeGenerator.Create(schema, schema.GetPluralName(), commonWriter, ns, ns + ".Models",
                 a =>
             {

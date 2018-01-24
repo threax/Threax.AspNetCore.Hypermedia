@@ -16,7 +16,7 @@ namespace Threax.ModelGen.Tests
     {
         private const String AppNamespace = "Test";
         private JsonSchema4 schema;
-        private bool WriteTestFiles = false;
+        protected bool WriteTestFiles = false;
 
         public ModelTests()
         {
@@ -59,7 +59,7 @@ namespace Threax.ModelGen.Tests
             TestCode
             (
                 $"Database/{schema.Title}Entity.cs",
-                PartialTypeGenerator.GetUserPartial(schema.Title, AppNamespace + ".Database", "Entity")
+                PartialTypeGenerator.GetUserPartial(schema.Title, AppNamespace + ".Database", "Entity", schema.GetExtraNamespaces(StrConstants.FileNewline))
             );
         }
 
@@ -79,7 +79,7 @@ namespace Threax.ModelGen.Tests
             TestCode
             (
                 $"InputModels/{schema.Title}Input.cs",
-                PartialTypeGenerator.GetUserPartial(schema.Title, AppNamespace + ".InputModels", "Input")
+                PartialTypeGenerator.GetUserPartial(schema.Title, AppNamespace + ".InputModels", "Input", schema.GetExtraNamespaces(StrConstants.FileNewline))
             );
         }
 
@@ -99,7 +99,7 @@ namespace Threax.ModelGen.Tests
             TestCode
             (
                 $"InputModels/{schema.Title}Query.cs",
-                PartialTypeGenerator.GetUserPartial(schema.Title, AppNamespace + ".InputModels", "Query")
+                PartialTypeGenerator.GetUserPartial(schema.Title, AppNamespace + ".InputModels", "Query", schema.GetExtraNamespaces(StrConstants.FileNewline))
             );
         }
 

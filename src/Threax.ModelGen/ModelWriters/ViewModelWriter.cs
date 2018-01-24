@@ -43,7 +43,8 @@ $@"       public partial class {a.Name}{InterfaceListBuilder.Build(interfaces)}
                 AdditionalUsings =
 $@"using {ns}.Models;
 using {ns}.Controllers.Api;
-using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
+using Threax.AspNetCore.Halcyon.Ext.ValueProviders;" 
++ schema.GetExtraNamespaces(StrConstants.FileNewline)
             };
             return ModelTypeGenerator.Create(schema, schema.GetPluralName(), mainWriter, ns, ns + ".ViewModels", allowPropertyCallback: p => !p.IsAbstractOnViewModel() && p.CreateViewModel());
         }
@@ -62,10 +63,10 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
             NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
             String Models, models;
             NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
-            return CreateUserPartial(ns, Model, model, Models, generatedSuffix);
+            return CreateUserPartial(ns, Model, model, Models, generatedSuffix, schema.GetExtraNamespaces(StrConstants.FileNewline));
         }
 
-        private static String CreateUserPartial(String ns, String Model, String model, String Models, String generatedSuffix)
+        private static String CreateUserPartial(String ns, String Model, String model, String Models, String generatedSuffix, String additionalNs)
         {
             return
 $@"using System;
@@ -77,7 +78,7 @@ using Halcyon.HAL.Attributes;
 using Threax.AspNetCore.Halcyon.Ext;
 using Threax.AspNetCore.Models;
 using {ns}.Models;
-using {ns}.Controllers.Api;
+using {ns}.Controllers.Api;{additionalNs}
 
 namespace {ns}.ViewModels
 {{

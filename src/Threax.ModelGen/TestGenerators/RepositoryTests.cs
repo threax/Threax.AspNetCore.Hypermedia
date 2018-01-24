@@ -14,10 +14,10 @@ namespace Threax.ModelGen.TestGenerators
             NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
             String Models, models;
             NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
-            return Create(ns, Model, model, Models, models, NameGenerator.CreatePascal(schema.GetKeyName()));
+            return Create(ns, Model, model, Models, models, NameGenerator.CreatePascal(schema.GetKeyName()), schema.GetExtraNamespaces(StrConstants.FileNewline));
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models, String ModelId)
+        private static String Create(String ns, String Model, String model, String Models, String models, String ModelId, String additionalNs)
         {
             return
 $@"using {ns}.Database;
@@ -28,7 +28,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Threax.AspNetCore.Tests;
-using Xunit;
+using Xunit;{additionalNs}
 
 namespace {ns}.Tests
 {{
