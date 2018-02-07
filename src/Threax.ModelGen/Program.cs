@@ -170,6 +170,7 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                 if (settings.WriteTests)
                 {
                     WriteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/{settings.ModelName}Tests.cs"), ModelTestWrapper.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteTests);
+                    WriteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/{settings.ModelName}Tests.Generated.cs"), ModelTestWrapperGenerated.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteTests);
                     if (!File.Exists(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/Controller.cs"))) //Legacy File check
                     {
                         WriteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/{settings.ModelName}ControllerTests.cs"), ControllerTests.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteTests);

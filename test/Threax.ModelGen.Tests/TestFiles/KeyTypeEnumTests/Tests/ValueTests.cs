@@ -19,36 +19,5 @@ namespace Test.Tests
 
             return mockup;
         }
-
-        public static ValueInput CreateInput(String seed = "")
-        {
-            return new ValueInput()
-            {
-            };
-        }
-
-
-        public static ValueEntity CreateEntity(KeyEnum? ValueId = default(KeyEnum?), String seed = "")
-        {
-            return new ValueEntity()
-            {
-                ValueId = ValueId != null ? (KeyEnum)ValueId : default(KeyEnum),
-            };
-        }
-
-
-        public static Value CreateView(KeyEnum? ValueId = default(KeyEnum?), String seed = "")
-        {
-            return new Value()
-            {
-                ValueId = ValueId != null ? (KeyEnum)ValueId : default(KeyEnum),
-            };
-        }
-
-
-        public static void AssertEqual(IValue expected, IValue actual)
-        {
-        }
-
     }
 }

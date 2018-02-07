@@ -1,6 +1,7 @@
 using Halcyon.HAL.Attributes;
 using Test.Controllers;
 using Test.Models;
+using Test.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace Test.InputModels
         /// </summary>
         /// <param name="query">The query to populate.</param>
         /// <returns>The query passed in populated with additional conditions.</returns>
-        public IQueryable<T> Create<T>(IQueryable<T> query) where T : IValue, IValueId
+        public IQueryable<ValueEntity> Create(IQueryable<ValueEntity> query)
         {
             if (ValueId != null)
             {
@@ -49,6 +50,6 @@ namespace Test.InputModels
             return query;
         }
 
-        partial void OnCreate<T>(ref IQueryable<T> query) where T : IValue, IValueId;
+        partial void OnCreate<ValueEntity>(ref IQueryable<ValueEntity> query);
     }
 }

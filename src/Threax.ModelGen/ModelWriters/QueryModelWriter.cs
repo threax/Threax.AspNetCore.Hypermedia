@@ -61,6 +61,7 @@ namespace Threax.ModelGen
 $@"using Halcyon.HAL.Attributes;
 using {ns}.Controllers;
 using {ns}.Models;
+using {ns}.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -86,7 +87,7 @@ namespace {ns}.InputModels
         /// </summary>
         /// <param name=""query"">The query to populate.</param>
         /// <returns>The query passed in populated with additional conditions.</returns>
-        public IQueryable<T> Create<T>(IQueryable<T> query) where T : I{Model}, I{Model}Id
+        public IQueryable<{Model}Entity> Create(IQueryable<{Model}Entity> query)
         {{
             if ({ModelId} != null)
             {{
@@ -100,7 +101,7 @@ namespace {ns}.InputModels
             return query;
         }}
 
-        partial void OnCreate<T>(ref IQueryable<T> query) where T : I{Model}, I{Model}Id;
+        partial void OnCreate<{Model}Entity>(ref IQueryable<{Model}Entity> query);
     }}
 }}";
         }

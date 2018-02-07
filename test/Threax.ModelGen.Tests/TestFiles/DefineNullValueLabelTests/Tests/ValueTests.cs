@@ -19,40 +19,5 @@ namespace Test.Tests
 
             return mockup;
         }
-
-        public static ValueInput CreateInput(String seed = "", TestEnum? Things = default(TestEnum?))
-        {
-            return new ValueInput()
-            {
-                Things = Things,
-            };
-        }
-
-
-        public static ValueEntity CreateEntity(String seed = "", Guid? ValueId = default(Guid?), TestEnum? Things = default(TestEnum?))
-        {
-            return new ValueEntity()
-            {
-                ValueId = ValueId.HasValue ? ValueId.Value : Guid.NewGuid(),
-                Things = Things,
-            };
-        }
-
-
-        public static Value CreateView(String seed = "", Guid? ValueId = default(Guid?), TestEnum? Things = default(TestEnum?))
-        {
-            return new Value()
-            {
-                ValueId = ValueId.HasValue ? ValueId.Value : Guid.NewGuid(),
-                Things = Things,
-            };
-        }
-
-
-        public static void AssertEqual(IValue expected, IValue actual)
-        {
-           Assert.Equal(expected.Things, actual.Things);
-        }
-
     }
 }

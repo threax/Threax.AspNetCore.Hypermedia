@@ -14,23 +14,11 @@ namespace Threax.ModelGen.TestGenerators
             NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
             String Models, models;
             NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
-            String createArgs = "";
 
-            var equalAssertFunc = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new ModelEqualityAssert(), schema, ns, ns);
-
-            createArgs = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new ModelCreateArgs(), schema, ns, ns, p => p.CreateInputModel());
-            var createInputFunc = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new CreateInputModel(createArgs), schema, ns, ns, p => p.CreateInputModel());
-
-            createArgs = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new ModelCreateArgs(), schema, ns, ns, p => p.CreateEntity());
-            var createEntityFunc = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new CreateEntity(schema, createArgs), schema, ns, ns, p => p.CreateEntity());
-
-            createArgs = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new ModelCreateArgs(), schema, ns, ns, p => p.CreateViewModel());
-            var createViewFunc = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new CreateViewModel(schema, createArgs), schema, ns, ns, p => p.CreateViewModel());
-
-            return Create(ns, Model, model, Models, models, equalAssertFunc, createInputFunc, createEntityFunc, createViewFunc, schema.GetExtraNamespaces(StrConstants.FileNewline));
+            return Create(ns, Model, model, Models, models, schema.GetExtraNamespaces(StrConstants.FileNewline));
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models, String equalAssertFunc, String createInputFunc, String createEntityFunc, String createViewFunc, String additionalNs)
+        private static String Create(String ns, String Model, String model, String Models, String models, String additionalNs)
         {
             return
 $@"using AutoMapper;
@@ -54,14 +42,6 @@ namespace {ns}.Tests
 
             return mockup;
         }}
-
-{createInputFunc}
-
-{createEntityFunc}
-
-{createViewFunc}
-
-{equalAssertFunc}
     }}
 }}";
         }

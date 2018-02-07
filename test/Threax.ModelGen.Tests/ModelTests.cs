@@ -285,6 +285,16 @@ namespace Threax.ModelGen.Tests
         }
 
         [Fact]
+        public void TestWrapperGenerated()
+        {
+            TestCode
+            (
+                $"Tests/{schema.Title}Tests.Generated.cs",
+                ModelTestWrapperGenerated.Get(schema, AppNamespace)
+            );
+        }
+
+        [Fact]
         public void TestController()
         {
             TestCode

@@ -19,36 +19,5 @@ namespace Test.Tests
 
             return mockup;
         }
-
-        public static ValueInput CreateInput(String seed = "")
-        {
-            return new ValueInput()
-            {
-            };
-        }
-
-
-        public static ValueEntity CreateEntity(String seed = "", Guid? CrazyKey = default(Guid?))
-        {
-            return new ValueEntity()
-            {
-                CrazyKey = CrazyKey.HasValue ? CrazyKey.Value : Guid.NewGuid(),
-            };
-        }
-
-
-        public static Value CreateView(String seed = "", Guid? CrazyKey = default(Guid?))
-        {
-            return new Value()
-            {
-                CrazyKey = CrazyKey.HasValue ? CrazyKey.Value : Guid.NewGuid(),
-            };
-        }
-
-
-        public static void AssertEqual(IValue expected, IValue actual)
-        {
-        }
-
     }
 }
