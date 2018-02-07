@@ -43,6 +43,6 @@ namespace Test.InputModels
             return query;
         }
 
-        partial void OnCreate<ValueEntity>(ref IQueryable<ValueEntity> query);
+        partial void OnCreate(ref IQueryable<ValueEntity> query);
     }
 }

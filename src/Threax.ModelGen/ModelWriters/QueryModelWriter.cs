@@ -101,7 +101,7 @@ namespace {ns}.InputModels
             return query;
         }}
 
-        partial void OnCreate<{Model}Entity>(ref IQueryable<{Model}Entity> query);
+        partial void OnCreate(ref IQueryable<{Model}Entity> query);
     }}
 }}";
         }
