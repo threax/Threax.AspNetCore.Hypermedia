@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json.Serialization;
+using NJsonSchema;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,6 +8,9 @@ namespace Threax.ModelGen
 {
     public static class NameGenerator
     {
+        //Use the newtonsoft camel case conversion, this way we are consistent when generating camel case names
+        private static CamelCaseNamingStrategy camelNaming = new CamelCaseNamingStrategy();
+
         public static void CreatePascalAndCamel(String modelName, out String pascal, out String camel)
         {
             pascal = CreatePascal(modelName);
@@ -36,8 +41,7 @@ namespace Threax.ModelGen
             {
                 return "empty";
             }
-            var modelSuffix = modelName.Length > 0 ? modelName.Substring(1) : "";
-            return EscapeKeyword(modelName[0].ToString().ToLowerInvariant() + modelSuffix);
+            return EscapeKeyword(camelNaming.GetPropertyName(modelName, false));
         }
 
         public static String CreatePretty(String name)
