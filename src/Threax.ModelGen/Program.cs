@@ -222,6 +222,7 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
             if (settings.WriteTests)
             {
                 DeleteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/{settings.ModelName}Tests.cs"));
+                DeleteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/{settings.ModelName}Tests.Generated.cs"));
                 DeleteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/{settings.ModelName}ControllerTests.cs"));
                 DeleteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/{settings.ModelName}ProfileTests.cs"));
                 DeleteFile(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/{settings.ModelName}RepositoryTests.cs"));

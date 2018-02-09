@@ -6,14 +6,13 @@
     <PackageType>DotNetCliTool</PackageType>
     <AssemblyName>dotnet-threax-modelgen</AssemblyName>
     <PackageId>Threax.ModelGen</PackageId>
-    <Version>4.1.0</Version>
+    <Version>4.1.1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Andrew Piper</Authors>
     <PackageLicenseUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</PackageProjectUrl>
     <RepositoryUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</RepositoryUrl>
-    <PackageReleaseNotes>Fixed camel case conversion.
-Version 4+ will generate test functions for creating objects in another file. To update erase the functions that are added to ModelTests.Generated.cs from your ModelTests.cs file. This way the model generator can update these definitions as the model changes.</PackageReleaseNotes>
+    <PackageReleaseNotes>Erase ModelTests.Generated file when removing a model.</PackageReleaseNotes>
   </PropertyGroup>
   
   <ItemGroup>
