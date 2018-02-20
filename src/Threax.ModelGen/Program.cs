@@ -132,6 +132,11 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                     {
                         WriteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.ModelName}Entity.cs"), PartialTypeGenerator.GetUserPartial(settings.ModelName, settings.AppNamespace + ".Database", "Entity", settings.Schema.GetExtraNamespaces(StrConstants.FileNewline)), false);
                         WriteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.ModelName}Entity.Generated.cs"), EntityWriter.Create(settings.Schema, settings.AppNamespace), true);
+
+                        if (settings.Schema.GetRelationshipKind() == RelationKind.ManyToMany)
+                        {
+                            WriteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.Schema.GetLeftModelName()}To{settings.Schema.GetRightModelName()}Entity.Generated.cs"), ViewModelWriter.GetUserPartial(settings.Schema, settings.AppNamespace), false);
+                        }
                     }
 
                     if (settings.Schema.CreateInputModel())
@@ -195,6 +200,7 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                 DeleteFile(Path.Combine(settings.AppOutDir, $"Models/I{settings.ModelName}.Generated.cs"));
                 DeleteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.ModelName}Entity.cs"));
                 DeleteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.ModelName}Entity.Generated.cs"));
+                DeleteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.Schema.GetLeftModelName()}To{settings.Schema.GetRightModelName()}Entity.Generated.cs"));
                 DeleteFile(Path.Combine(settings.AppOutDir, $"InputModels/{settings.ModelName}Input.cs"));
                 DeleteFile(Path.Combine(settings.AppOutDir, $"InputModels/{settings.ModelName}Input.Generated.cs"));
                 DeleteFile(Path.Combine(settings.AppOutDir, $"InputModels/{settings.ModelName}Query.cs"));
