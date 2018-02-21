@@ -133,20 +133,25 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                         WriteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.ModelName}Entity.cs"), PartialTypeGenerator.GetUserPartial(settings.ModelName, settings.AppNamespace + ".Database", "Entity", settings.Schema.GetExtraNamespaces(StrConstants.FileNewline)), false);
                         WriteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.ModelName}Entity.Generated.cs"), EntityWriter.Create(settings.Schema, settings.AppNamespace), true);
 
+                        var manyToManyName = $"Database/{settings.Schema.GetLeftModelName()}To{settings.Schema.GetRightModelName()}Entity.Generated.{settings.Schema.GetSideName()}.cs";
                         var sideRelationshipName = $"Database/{settings.ModelName}Entity.Generated.{settings.Schema.GetOtherModelName()}Relationship.cs";
                         switch (settings.Schema.GetRelationshipKind())
                         {
                             case RelationKind.ManyToMany:
-                                WriteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.Schema.GetLeftModelName()}To{settings.Schema.GetRightModelName()}Entity.Generated.{settings.Schema.GetSideName()}.cs"), ManyToManyGenerator.Get(settings.Schema, settings.AppNamespace), true);
+                                WriteFile(Path.Combine(settings.AppOutDir, manyToManyName), ManyToManyGenerator.Get(settings.Schema, settings.AppNamespace), true);
+                                DeleteFile(Path.Combine(settings.AppOutDir, sideRelationshipName));
                                 break;
                             case RelationKind.OneToMany:
                                 WriteFile(Path.Combine(settings.AppOutDir, sideRelationshipName), OneToManyGenerator.Get(settings.Schema, settings.AppNamespace), true);
+                                DeleteFile(Path.Combine(settings.AppOutDir, manyToManyName));
                                 break;
                             case RelationKind.ManyToOne:
                                 WriteFile(Path.Combine(settings.AppOutDir, sideRelationshipName), ManyToOneGenerator.Get(settings.Schema, settings.AppNamespace), true);
+                                DeleteFile(Path.Combine(settings.AppOutDir, manyToManyName));
                                 break;
                             case RelationKind.OneToOne:
                                 WriteFile(Path.Combine(settings.AppOutDir, sideRelationshipName), OneToOneGenerator.Get(settings.Schema, settings.AppNamespace), true);
+                                DeleteFile(Path.Combine(settings.AppOutDir, manyToManyName));
                                 break;
                         }
                     }
