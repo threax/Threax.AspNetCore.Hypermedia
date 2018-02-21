@@ -6,15 +6,15 @@ using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen
 {
-    public class ManyToManyEntityGenerator
+    public class ManyToManyGenerator
     {
         public static String Get(JsonSchema4 schema, String ns)
         {
-            String Model, model;
-            NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
-            String Models, models;
-            NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
-            return Create(ns, schema.GetKeyType().Name, NameGenerator.CreatePascal(schema.GetKeyName()), NameGenerator.CreatePascal(schema.GetLeftModelName()), NameGenerator.CreatePascal(schema.GetRightModelName()));
+            return Create(ns, 
+                schema.GetKeyType().Name, 
+                NameGenerator.CreatePascal(schema.GetKeyName()), 
+                NameGenerator.CreatePascal(schema.Title), 
+                NameGenerator.CreatePascal(schema.GetOtherModelName()));
         }
 
         private static String Create(String ns, String ModelType, String ModelId, String Model, String OtherModel)
@@ -32,10 +32,6 @@ namespace {ns}.Database
         public {ModelType} {ModelId} {{ get; set; }}
 
         public {Model}Entity {Model} {{ get; set; }}
-
-        public Guid {OtherModel}Id {{ get; set; }}
-
-        public {OtherModel}Entity {OtherModel} {{ get; set; }}
     }}
 }}";
         }

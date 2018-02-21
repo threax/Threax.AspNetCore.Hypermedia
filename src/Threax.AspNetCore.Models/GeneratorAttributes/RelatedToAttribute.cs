@@ -100,6 +100,47 @@ namespace Threax.AspNetCore.Models
         }
 
         /// <summary>
+        /// Get the name of the model on the other side of the relationship.
+        /// </summary>
+        /// <param name="schema"></param>
+        /// <returns></returns>
+        public static String GetOtherModelName(this JsonSchema4 schema)
+        {
+            if(schema.GetRelationshipKind() == RelationKind.None)
+            {
+                return null;
+            }
+
+            if (schema.IsLeftModel())
+            {
+                return schema.GetRightModelName();
+            }
+
+            return schema.GetLeftModelName();
+        }
+
+        /// <summary>
+        /// Get the name of the side of the relationship, either "Left" or "Right"
+        /// will be null if the RelationKind is None.
+        /// </summary>
+        /// <param name="schema"></param>
+        /// <returns></returns>
+        public static String GetSideName(this JsonSchema4 schema)
+        {
+            if (schema.GetRelationshipKind() == RelationKind.None)
+            {
+                return null;
+            }
+
+            if (schema.IsLeftModel())
+            {
+                return "Left";
+            }
+
+            return "Right";
+        }
+
+        /// <summary>
         /// Determine if this is the left model, does not have any real meaning if the relationship is none.
         /// </summary>
         /// <param name="schema"></param>
