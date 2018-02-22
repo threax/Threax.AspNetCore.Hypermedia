@@ -93,7 +93,8 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
                 FileUtils.WriteTestFile(this.GetType(), fileName, code);
             }
 
-            Assert.Equal(FileUtils.ReadTestFile(this.GetType(), fileName), code);
+            //This works around line ending goofyness.
+            Assert.Equal(FileUtils.ReadTestFile(this.GetType(), fileName).Replace("\r\n", "\n"), code.Replace("\r\n", "\n"));
         }
     }
 }
