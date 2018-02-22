@@ -59,7 +59,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
             var jObj = JObject.FromObject(jsonSchema, serializer);
 
             //Repair definition paths, this has to be post processed due to the way we are serializing
-            foreach (var schemaReferencePath in jObj.SelectTokens("$..schemaReferencePath").OfType<JValue>())
+            foreach (var schemaReferencePath in jObj.SelectTokens("$..__referencePath").OfType<JValue>())
             {
                 //First make sure we can't actually find the definition
                 var refPath = schemaReferencePath.Value.ToString();
