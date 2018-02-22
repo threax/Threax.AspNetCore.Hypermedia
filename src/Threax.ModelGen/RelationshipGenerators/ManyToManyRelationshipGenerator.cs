@@ -11,12 +11,15 @@ namespace Threax.ModelGen
         public static String Get(JsonSchema4 schema, String ns)
         {
             return Create(ns,
-                    NameGenerator.CreatePascal(schema.GetOtherModelName()),
-                    NameGenerator.CreatePascal(schema.GetLeftModelName()),
-                    NameGenerator.CreatePascal(schema.GetRightModelName()));
+                schema.GetKeyType().Name,
+                NameGenerator.CreatePascal(schema.GetKeyName()),
+                NameGenerator.CreatePascal(schema.Title),
+                NameGenerator.CreatePascal(schema.GetLeftModelName()),
+                NameGenerator.CreatePascal(schema.GetRightModelName()),
+                NameGenerator.CreatePascal(schema.GetOtherModelName()));
         }
 
-        public static String Create(String ns, String OtherModel, String LeftModel, String RightModel)
+        private static String Create(String ns, String ModelType, String ModelId, String Model, String LeftModel, String RightModel, String OtherModel)
         {
             return
 $@"using System;
@@ -29,6 +32,16 @@ namespace {ns}.Database
     public partial class {OtherModel}Entity
     {{
         public List<{LeftModel}To{RightModel}Entity> {LeftModel}To{RightModel}Entities {{ get; set; }}
+    }}
+}}
+
+namespace {ns}.Database
+{{
+    public partial class {LeftModel}To{RightModel}Entity
+    {{
+        public {ModelType} {ModelId} {{ get; set; }}
+
+        public {Model}Entity {Model} {{ get; set; }}
     }}
 }}";
         }
