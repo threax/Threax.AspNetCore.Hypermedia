@@ -6,7 +6,7 @@ using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen
 {
-    public class ManyToManyGenerator
+    public class ManyToManyEntityGenerator
     {
         public static String Get(JsonSchema4 schema, String ns)
         {
@@ -14,10 +14,11 @@ namespace Threax.ModelGen
                 schema.GetKeyType().Name, 
                 NameGenerator.CreatePascal(schema.GetKeyName()), 
                 NameGenerator.CreatePascal(schema.Title), 
-                NameGenerator.CreatePascal(schema.GetOtherModelName()));
+                NameGenerator.CreatePascal(schema.GetLeftModelName()),
+                NameGenerator.CreatePascal(schema.GetRightModelName()));
         }
 
-        private static String Create(String ns, String ModelType, String ModelId, String Model, String OtherModel)
+        private static String Create(String ns, String ModelType, String ModelId, String Model, String LeftModel, String RightModel)
         {
             return
 $@"using System;
@@ -27,7 +28,7 @@ using System.Threading.Tasks;
 
 namespace {ns}.Database
 {{
-    public partial class {Model}To{OtherModel}Entity
+    public partial class {LeftModel}To{RightModel}Entity
     {{
         public {ModelType} {ModelId} {{ get; set; }}
 

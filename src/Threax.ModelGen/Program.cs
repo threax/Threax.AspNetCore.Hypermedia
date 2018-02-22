@@ -138,8 +138,8 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                         switch (settings.Schema.GetRelationshipKind())
                         {
                             case RelationKind.ManyToMany:
-                                WriteFile(Path.Combine(settings.AppOutDir, manyToManyName), ManyToManyGenerator.Get(settings.Schema, settings.AppNamespace), true);
-                                DeleteFile(Path.Combine(settings.AppOutDir, sideRelationshipName));
+                                WriteFile(Path.Combine(settings.AppOutDir, manyToManyName), ManyToManyEntityGenerator.Get(settings.Schema, settings.AppNamespace), true);
+                                WriteFile(Path.Combine(settings.AppOutDir, sideRelationshipName), ManyToManyRelationshipGenerator.Get(settings.Schema, settings.AppNamespace), true);
                                 break;
                             case RelationKind.OneToMany:
                                 WriteFile(Path.Combine(settings.AppOutDir, sideRelationshipName), OneToManyGenerator.Get(settings.Schema, settings.AppNamespace), true);
