@@ -349,7 +349,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"Database/{schema.Title}Entity.Generated.{schema.GetOtherModelName()}Relationship.cs",
+                $"Database/{schema.GetOtherModelName()}Entity.Generated.To{schema.Title}Entity.cs",
                 RelationshipWriter.Get(schema, AppNamespace)
             );
         }

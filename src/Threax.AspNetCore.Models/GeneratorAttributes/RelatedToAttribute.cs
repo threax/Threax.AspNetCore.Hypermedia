@@ -24,7 +24,7 @@ namespace Threax.AspNetCore.Models
     /// Base class for model relationships.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public abstract class RelatedToAttribute : JsonSchemaExtensionDataAttribute
+    public class RelatedToAttribute : JsonSchemaExtensionDataAttribute
     {
         internal const String Name = "x-relatedto";
 

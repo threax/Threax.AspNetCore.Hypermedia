@@ -134,7 +134,7 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                         WriteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.ModelName}Entity.Generated.cs"), EntityWriter.Create(settings.Schema, settings.AppNamespace), true);
 
                         var relationship = RelationshipWriter.Get(settings.Schema, settings.AppNamespace);
-                        var relationshipFile = Path.Combine(settings.AppOutDir, $"Database/{settings.ModelName}Entity.Generated.{settings.Schema.GetOtherModelName()}Relationship.cs");
+                        var relationshipFile = Path.Combine(settings.AppOutDir, $"Database/{settings.Schema.GetOtherModelName()}Entity.Generated.To{settings.ModelName}Entity.cs");
                         if(relationship != null)
                         {
                             WriteFile(relationshipFile, relationship, true);
@@ -206,7 +206,7 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                 DeleteFile(Path.Combine(settings.AppOutDir, $"Models/I{settings.ModelName}.Generated.cs"));
                 DeleteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.ModelName}Entity.cs"));
                 DeleteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.ModelName}Entity.Generated.cs"));
-                DeleteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.ModelName}Entity.Generated.{settings.Schema.GetOtherModelName()}Relationship.cs"));
+                DeleteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.Schema.GetOtherModelName()}Entity.Generated.To{settings.ModelName}Entity.cs"));
                 DeleteFile(Path.Combine(settings.AppOutDir, $"InputModels/{settings.ModelName}Input.cs"));
                 DeleteFile(Path.Combine(settings.AppOutDir, $"InputModels/{settings.ModelName}Input.Generated.cs"));
                 DeleteFile(Path.Combine(settings.AppOutDir, $"InputModels/{settings.ModelName}Query.cs"));
