@@ -23,14 +23,34 @@ namespace Threax.ModelGen.Tests
             schema = Task.Run(async () => await TypeToSchemaGenerator.CreateSchema(typeof(T))).GetAwaiter().GetResult();
         }
 
+        /// <summary>
+        /// Test some code, sending null for code means that no file should exist for that code
+        /// and this will be checked.
+        /// </summary>
+        /// <param name="fileName">The name of the file.</param>
+        /// <param name="code">The code to test.</param>
         private void TestCode(String fileName, String code)
         {
             if (WriteTestFiles)
             {
-                FileUtils.WriteTestFile(this.GetType(), fileName, code);
+                if (code != null)
+                {
+                    FileUtils.WriteTestFile(this.GetType(), fileName, code);
+                }
+                else
+                {
+                    FileUtils.DeleteTestFile(this.GetType(), fileName);
+                }
             }
 
-            Assert.Equal(FileUtils.ReadTestFile(this.GetType(), fileName), code);
+            if (code != null)
+            {
+                Assert.Equal(FileUtils.ReadTestFile(this.GetType(), fileName), code);
+            }
+            else
+            {
+                Assert.False(File.Exists(fileName));
+            }
         }
 
         [Fact]
@@ -321,6 +341,16 @@ namespace Threax.ModelGen.Tests
             (
                 $"Tests/Repository.cs",
                 RepositoryTests.Get(schema, AppNamespace)
+            );
+        }
+
+        [Fact]
+        public void Relationship()
+        {
+            TestCode
+            (
+                $"Database/{schema.Title}Entity.Generated.{schema.GetOtherModelName()}Relationship.cs",
+                RelationshipWriter.Get(schema, AppNamespace)
             );
         }
     }

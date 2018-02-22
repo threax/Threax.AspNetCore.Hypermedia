@@ -25,6 +25,16 @@ namespace Threax.ModelGen.Tests
             }
         }
 
+        public static void DeleteTestFile(Type testType, String filename)
+        {
+            filename = Path.Combine(TestFileDirectory, testType.Name, filename);
+
+            if (File.Exists(filename))
+            {
+                File.Delete(filename);
+            }
+        }
+
         public static String ReadTestFile(Type testType, String filename)
         {
             filename = Path.Combine(TestFileDirectory, testType.Name, filename);
