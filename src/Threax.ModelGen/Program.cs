@@ -133,16 +133,17 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                         WriteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.ModelName}Entity.cs"), PartialTypeGenerator.GetUserPartial(settings.ModelName, settings.AppNamespace + ".Database", "Entity", settings.Schema.GetExtraNamespaces(StrConstants.FileNewline)), false);
                         WriteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.ModelName}Entity.Generated.cs"), EntityWriter.Create(settings.Schema, settings.AppNamespace), true);
 
-                        var relationship = RelationshipWriter.Get(settings.Schema, settings.AppNamespace);
-                        var relationshipFile = Path.Combine(settings.AppOutDir, $"Database/{settings.Schema.GetOtherModelName()}Entity.Generated.To{settings.ModelName}Entity.cs");
-                        if(relationship != null)
-                        {
-                            WriteFile(relationshipFile, relationship, true);
-                        }
-                        else
-                        {
-                            DeleteFile(relationshipFile);
-                        }
+                        WriteFile(Path.Combine(settings.AppOutDir, $"Database/AppDbContext.{settings.ModelName}.cs"), AppDbContextGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);
+
+                        WriteFile(
+                            Path.Combine(settings.AppOutDir, $"Database/{settings.Schema.GetOtherModelName()}Entity.Generated.To{settings.ModelName}Entity.cs"),
+                            RelationshipWriter.Get(settings.Schema, settings.AppNamespace),
+                            true);
+
+                        WriteFile(
+                            Path.Combine(settings.AppOutDir, $"Database/AppDbContext.{settings.Schema.GetLeftModelName()}To{settings.Schema.GetRightModelName()}Entity.cs"),
+                            AppDbContextGenerator.GetManyToManyEntityDbContext(settings.Schema, settings.AppNamespace),
+                            settings.ForceWriteApi);
                     }
 
                     if (settings.Schema.CreateInputModel())
@@ -166,7 +167,6 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                     WriteFile(Path.Combine(settings.AppOutDir, $"Controllers/Api/{settings.PluralModelName}Controller.cs"), ControllerGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);
                     WriteFile(Path.Combine(settings.AppOutDir, $"Mappers/{settings.ModelName}Profile.cs"), MappingProfileGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);
                     WriteFile(Path.Combine(settings.AppOutDir, $"Mappers/{settings.ModelName}Profile.Generated.cs"), MappingProfileGenerator.GetGenerated(settings.Schema, settings.AppNamespace), true);
-                    WriteFile(Path.Combine(settings.AppOutDir, $"Database/AppDbContext.{settings.ModelName}.cs"), AppDbContextGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);
                     WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{settings.ModelName}Collection.cs"), ModelCollectionGenerator.GetUserPartial(settings.Schema, settings.AppNamespace), false);
                     WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{settings.ModelName}Collection.Generated.cs"), ModelCollectionGenerator.Get(settings.Schema, settings.AppNamespace), true);
                     WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/EntryPoint.{settings.ModelName}.cs"), EntryPointGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);
@@ -258,6 +258,11 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
 
         private static void WriteFile(String file, String content, bool force)
         {
+            if(content == null)
+            {
+                DeleteFile(file);
+            }
+
             var folder = Path.GetDirectoryName(file);
             if (!Directory.Exists(folder))
             {

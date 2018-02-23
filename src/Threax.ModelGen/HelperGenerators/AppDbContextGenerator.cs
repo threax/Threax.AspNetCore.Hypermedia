@@ -17,7 +17,20 @@ namespace Threax.ModelGen
             return Create(ns, Model, Models);
         }
 
-        private static String Create(String ns, String Model, String Models)
+        public static String GetManyToManyEntityDbContext(JsonSchema4 schema, String ns)
+        {
+            String content = null;
+            if (schema.GetRelationshipKind() == RelationKind.ManyToMany)
+            {
+                content = AppDbContextGenerator.Create(
+                    ns,
+                    $"{schema.GetLeftModelName()}To{schema.GetRightModelName()}",
+                    $"Join{schema.GetLeftModelName()}To{schema.GetRightModelName()}");
+            }
+            return content;
+        }
+
+        public static String Create(String ns, String Model, String Models)
         {
             return
 $@"using Microsoft.EntityFrameworkCore;

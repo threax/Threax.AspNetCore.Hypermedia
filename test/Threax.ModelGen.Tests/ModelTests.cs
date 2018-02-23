@@ -353,5 +353,17 @@ namespace Threax.ModelGen.Tests
                 RelationshipWriter.Get(schema, AppNamespace)
             );
         }
+
+        [Fact]
+        public void RelationshipDbContext()
+        {
+
+
+            TestCode
+            (
+                $"Database/AppDbContext.{schema.GetLeftModelName()}To{schema.GetRightModelName()}Entity.cs",
+                AppDbContextGenerator.GetManyToManyEntityDbContext(schema, AppNamespace)
+            );
+        }
     }
 }
