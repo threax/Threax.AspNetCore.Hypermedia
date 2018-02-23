@@ -207,6 +207,7 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                 DeleteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.ModelName}Entity.cs"));
                 DeleteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.ModelName}Entity.Generated.cs"));
                 DeleteFile(Path.Combine(settings.AppOutDir, $"Database/{settings.Schema.GetOtherModelName()}Entity.Generated.To{settings.ModelName}Entity.cs"));
+                DeleteFile(Path.Combine(settings.AppOutDir, $"Database/AppDbContext.{settings.Schema.GetLeftModelName()}To{settings.Schema.GetRightModelName()}Entity.cs"));
                 DeleteFile(Path.Combine(settings.AppOutDir, $"InputModels/{settings.ModelName}Input.cs"));
                 DeleteFile(Path.Combine(settings.AppOutDir, $"InputModels/{settings.ModelName}Input.Generated.cs"));
                 DeleteFile(Path.Combine(settings.AppOutDir, $"InputModels/{settings.ModelName}Query.cs"));
