@@ -363,8 +363,8 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                RelationshipWriter.GetFileName(schema, otherSchema),
-                RelationshipWriter.Get(schema, AppNamespace)
+                JoinEntityWriter.GetFileName(schema),
+                JoinEntityWriter.Get(schema, AppNamespace)
             );
         }
 
