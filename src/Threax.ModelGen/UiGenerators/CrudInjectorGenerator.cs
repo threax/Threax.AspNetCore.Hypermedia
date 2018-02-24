@@ -8,6 +8,11 @@ namespace Threax.ModelGen
 {
     public static class CrudInjectorGenerator
     {
+        public static String GetFileName(JsonSchema4 schema)
+        {
+            return $"Client/Libs/{schema.Title}CrudInjector.ts";
+        }
+
         public static String Get(JsonSchema4 schema)
         {
             String Model, model;

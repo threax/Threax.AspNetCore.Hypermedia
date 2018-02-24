@@ -9,6 +9,11 @@ namespace Threax.ModelGen
 {
     public static class IdInterfaceWriter
     {
+        public static String GetFileName(JsonSchema4 schema)
+        {
+            return $"Models/I{schema.Title}.Generated.cs";
+        }
+
         public static String Create(JsonSchema4 schema, String ns)
         {
             var sb = new StringBuilder();

@@ -8,6 +8,11 @@ namespace Threax.ModelGen
 {
     public static class RepoGenerator
     {
+        public static String GetFileName(JsonSchema4 schema)
+        {
+            return $"Repository/{schema.Title}Repository.cs";
+        }
+
         public static String Get(JsonSchema4 schema, String ns)
         {
             String Model, model;

@@ -8,6 +8,11 @@ namespace Threax.ModelGen.TestGenerators
 {
     public class ControllerTests
     {
+        public static String GetFileName(JsonSchema4 schema)
+        {
+            return $"{schema.Title}/{schema.Title}ControllerTests.cs";
+        }
+
         public static String Get(JsonSchema4 schema, String ns)
         {
             String Model, model;

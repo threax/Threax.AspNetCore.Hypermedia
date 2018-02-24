@@ -10,6 +10,11 @@ namespace Threax.ModelGen
 {
     public static class EntityWriter
     {
+        public static String GetFileName(JsonSchema4 schema)
+        {
+            return $"Database/{schema.Title}Entity.Generated.cs";
+        }
+
         public static String Create(JsonSchema4 schema, String ns)
         {
             bool hasBase = false;

@@ -8,6 +8,11 @@ namespace Threax.ModelGen
 {
     public static class UiControllerGenerator
     {
+        public static String GetFileName(JsonSchema4 schema)
+        {
+            return $"Controllers/{schema.GetUiControllerName()}Controller.{schema.GetPluralName()}.cs";
+        }
+
         public static String Get(JsonSchema4 schema, String ns)
         {
             String Model, model;

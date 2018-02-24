@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NJsonSchema;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,10 +7,15 @@ namespace Threax.ModelGen
 {
     public static class RepoConfigGenerator
     {
-        public static String Get(String ns, String modelName)
+        public static String GetFileName(JsonSchema4 schema)
+        {
+            return $"Repository/{schema.Title}Repository.Config.cs";
+        }
+
+        public static String Get(JsonSchema4 schema, String ns)
         {
             String Model, model;
-            NameGenerator.CreatePascalAndCamel(modelName, out Model, out model);
+            NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
             return Create(ns, Model);
         }
 

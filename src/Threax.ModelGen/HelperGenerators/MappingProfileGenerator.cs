@@ -9,6 +9,11 @@ namespace Threax.ModelGen
 {
     public static class MappingProfileGenerator
     {
+        public static String GetFileName(JsonSchema4 schema)
+        {
+            return $"Mappers/{schema.Title}Profile.cs";
+        }
+
         public static String Get(JsonSchema4 schema, String ns)
         {
             String Model = NameGenerator.CreatePascal(schema.Title);
@@ -46,6 +51,11 @@ namespace {ns}.Mappers
         partial void MapEntityToView(IMappingExpression<{Model}Entity, {Model}> mapExpr);
     }}
 }}";
+        }
+
+        public static String GetGeneratedFileName(JsonSchema4 schema)
+        {
+            return $"Mappers/{schema.Title}Profile.Generated.cs";
         }
 
         public static String GetGenerated(JsonSchema4 schema, String ns)

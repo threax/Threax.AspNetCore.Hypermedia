@@ -1,11 +1,18 @@
-﻿using System;
+﻿using NJsonSchema;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen
 {
     public static class CrudUiTypescriptGenerator
     {
+        public static String GetFileName(JsonSchema4 schema)
+        {
+            return $"Views/{schema.GetUiControllerName()}/{schema.GetPluralName()}.ts";
+        }
+
         public static String Get(String modelName)
         {
             return Create(NameGenerator.CreatePascal(modelName));

@@ -8,6 +8,11 @@ namespace Threax.ModelGen
 {
     public class PartialModelInterfaceGenerator
     {
+        public static String GetFileName(JsonSchema4 schema)
+        {
+            return $"Models/I{schema.Title}.cs";
+        }
+
         public static String GetUserPartial(JsonSchema4 schema, String modelNamespace)
         {
             String Model, model;

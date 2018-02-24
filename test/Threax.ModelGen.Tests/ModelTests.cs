@@ -67,7 +67,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"Models/I{schema.Title}.cs",
+                PartialModelInterfaceGenerator.GetFileName(schema),
                 PartialModelInterfaceGenerator.GetUserPartial(schema, AppNamespace + ".Models")
             );
         }
@@ -77,7 +77,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"Models/I{schema.Title}.Generated.cs",
+                IdInterfaceWriter.GetFileName(schema),
                 IdInterfaceWriter.Create(schema, AppNamespace)
             );
         }
@@ -87,8 +87,8 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"Database/{schema.Title}Entity.cs",
-                PartialTypeGenerator.GetUserPartial(schema.Title, AppNamespace + ".Database", "Entity", schema.GetExtraNamespaces(StrConstants.FileNewline))
+                PartialTypeGenerator.GetEntityFileName(schema),
+                PartialTypeGenerator.Get(schema, AppNamespace + ".Database", "Entity", schema.GetExtraNamespaces(StrConstants.FileNewline))
             );
         }
 
@@ -97,7 +97,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"Database/{schema.Title}Entity.Generated.cs",
+                EntityWriter.GetFileName(schema),
                 EntityWriter.Create(schema, AppNamespace)
             );
         }
@@ -107,8 +107,8 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"InputModels/{schema.Title}Input.cs",
-                PartialTypeGenerator.GetUserPartial(schema.Title, AppNamespace + ".InputModels", "Input", schema.GetExtraNamespaces(StrConstants.FileNewline))
+                PartialTypeGenerator.GetInputFileName(schema),
+                PartialTypeGenerator.Get(schema, AppNamespace + ".InputModels", "Input", schema.GetExtraNamespaces(StrConstants.FileNewline))
             );
         }
 
@@ -117,7 +117,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"InputModels/{schema.Title}Input.Generated.cs",
+                InputModelWriter.GetFileName(schema),
                 InputModelWriter.Create(schema, otherSchema, AppNamespace)
             );
         }
@@ -127,8 +127,8 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"InputModels/{schema.Title}Query.cs",
-                PartialTypeGenerator.GetUserPartial(schema.Title, AppNamespace + ".InputModels", "Query", schema.GetExtraNamespaces(StrConstants.FileNewline))
+                PartialTypeGenerator.GetQueryFileName(schema),
+                PartialTypeGenerator.Get(schema, AppNamespace + ".InputModels", "Query", schema.GetExtraNamespaces(StrConstants.FileNewline))
             );
         }
 
@@ -137,7 +137,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"InputModels/{schema.Title}Query.Generated.cs",
+                QueryModelWriter.GetFileName(schema),
                 QueryModelWriter.Get(schema, AppNamespace)
             );
         }
@@ -147,7 +147,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"ViewModels/{schema.Title}.cs",
+                ViewModelWriter.GetUserPartialFileName(schema),
                 ViewModelWriter.GetUserPartial(schema, AppNamespace)
             );
         }
@@ -157,7 +157,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"ViewModels/{schema.Title}.Generated.cs",
+                ViewModelWriter.GetFileName(schema),
                 ViewModelWriter.Create(schema, otherSchema, AppNamespace)
             );
         }
@@ -167,7 +167,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"Repository/{schema.Title}Repository.cs",
+                RepoGenerator.GetFileName(schema),
                 RepoGenerator.Get(schema, AppNamespace)
             );
         }
@@ -177,7 +177,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"Repository/I{schema.Title}Repository.cs",
+                RepoInterfaceGenerator.GetFileName(schema),
                 RepoInterfaceGenerator.Get(schema, AppNamespace)
             );
         }
@@ -187,8 +187,8 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"Repository/{schema.Title}Repository.Config.cs",
-                RepoConfigGenerator.Get(AppNamespace, schema.Title)
+                RepoConfigGenerator.GetFileName(schema),
+                RepoConfigGenerator.Get(schema, AppNamespace)
             );
         }
 
@@ -197,7 +197,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"Controllers/Api/{schema.GetPluralName()}Controller.cs",
+                ControllerGenerator.GetFileName(schema),
                 ControllerGenerator.Get(schema, AppNamespace)
             );
         }
@@ -207,7 +207,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"Mappers/{schema.Title}Profile.cs",
+                MappingProfileGenerator.GetFileName(schema),
                 MappingProfileGenerator.Get(schema, AppNamespace)
             );
         }
@@ -217,7 +217,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"Mappers/{schema.Title}Profile.Generated.cs",
+                MappingProfileGenerator.GetGeneratedFileName(schema),
                 MappingProfileGenerator.GetGenerated(schema, AppNamespace)
             );
         }
@@ -227,7 +227,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"Database/AppDbContext.{schema.Title}.cs",
+                AppDbContextGenerator.GetFileName(schema),
                 AppDbContextGenerator.Get(schema, AppNamespace)
             );
         }
@@ -237,7 +237,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"ViewModels/{schema.Title}Collection.cs",
+                ModelCollectionGenerator.GetUserPartialFileName(schema),
                 ModelCollectionGenerator.GetUserPartial(schema, AppNamespace)
             );
         }
@@ -247,7 +247,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"ViewModels/{schema.Title}Collection.Generated.cs",
+                ModelCollectionGenerator.GetFileName(schema),
                 ModelCollectionGenerator.Get(schema, AppNamespace)
             );
         }
@@ -257,7 +257,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"ViewModels/EntryPoint.{schema.Title}.cs",
+                EntryPointGenerator.GetFileName(schema),
                 EntryPointGenerator.Get(schema, AppNamespace)
             );
         }
@@ -268,7 +268,7 @@ namespace Threax.ModelGen.Tests
             var propertyNames = schema.Properties.Values.Where(i => i.CreateViewModel()).Select(i => NameGenerator.CreatePascal(i.Name));
             TestCode
             (
-                $"Views/{schema.GetUiControllerName()}/{schema.GetPluralName()}.cshtml",
+                CrudCshtmlInjectorGenerator.GetFileName(schema),
                 CrudCshtmlInjectorGenerator.Get(schema, propertyNames: propertyNames)
             );
         }
@@ -278,7 +278,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"Client/Libs/{schema.Title}CrudInjector.ts",
+                CrudCshtmlInjectorGenerator.GetFileName(schema),
                 CrudInjectorGenerator.Get(schema)
             );
         }
@@ -288,7 +288,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"Views/{schema.GetUiControllerName()}/{schema.GetPluralName()}.ts",
+                CrudUiTypescriptGenerator.GetFileName(schema),
                 CrudUiTypescriptGenerator.Get(schema.Title)
             );
         }
@@ -298,7 +298,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"Controllers/{schema.GetUiControllerName()}Controller.{schema.GetPluralName()}.cs",
+                UiControllerGenerator.GetFileName(schema),
                 UiControllerGenerator.Get(schema, AppNamespace)
             );
         }
@@ -308,7 +308,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"Tests/{schema.Title}Tests.cs",
+                ModelTestWrapper.GetFileName(schema),
                 ModelTestWrapper.Get(schema, AppNamespace)
             );
         }
@@ -318,7 +318,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"Tests/{schema.Title}Tests.Generated.cs",
+                ModelTestWrapperGenerated.GetFileName(schema),
                 ModelTestWrapperGenerated.Get(schema, AppNamespace)
             );
         }
@@ -328,7 +328,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"Tests/Controller.cs",
+                ControllerTests.GetFileName(schema),
                 ControllerTests.Get(schema, AppNamespace)
             );
         }
@@ -338,7 +338,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"Tests/Profile.cs",
+                ProfileTests.GetFileName(schema),
                 ProfileTests.Get(schema, AppNamespace)
             );
         }
@@ -348,7 +348,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"Tests/Repository.cs",
+                RepositoryTests.GetFileName(schema),
                 RepositoryTests.Get(schema, AppNamespace)
             );
         }
@@ -358,7 +358,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                $"Database/{schema.GetOtherModelName()}Entity.Generated.To{schema.Title}Entity.cs",
+                RelationshipWriter.GetFileName(schema, otherSchema),
                 RelationshipWriter.Get(schema, AppNamespace)
             );
         }
@@ -370,7 +370,7 @@ namespace Threax.ModelGen.Tests
 
             TestCode
             (
-                $"Database/AppDbContext.{schema.GetLeftModelName()}To{schema.GetRightModelName()}Entity.cs",
+                AppDbContextGenerator.GetManyToManyEntityDbContextFileName(schema),
                 AppDbContextGenerator.GetManyToManyEntityDbContext(schema, AppNamespace)
             );
         }

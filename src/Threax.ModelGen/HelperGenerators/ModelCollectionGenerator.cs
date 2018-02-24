@@ -45,6 +45,11 @@ $@"        public {info.ClrType}{QueryPropertiesWriter.CreateQueryNullable(info)
             }
         }
 
+        public static String GetFileName(JsonSchema4 schema)
+        {
+            return $"ViewModels/{schema.Title}Collection.Generated.cs";
+        }
+
         public static String Get(JsonSchema4 schema, String ns)
         {
             String Model, model;
@@ -106,6 +111,11 @@ namespace {ns}.ViewModels
         partial void OnAddCustomQuery(String rel, QueryStringBuilder queryString);
     }}
 }}";
+        }
+
+        public static String GetUserPartialFileName(JsonSchema4 schema)
+        {
+            return $"ViewModels/{schema.Title}Collection.cs";
         }
 
         public static String GetUserPartial(JsonSchema4 schema, String ns, String generatedSuffix = ".Generated")

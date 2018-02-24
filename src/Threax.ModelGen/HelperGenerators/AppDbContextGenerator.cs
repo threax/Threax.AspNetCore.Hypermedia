@@ -8,6 +8,11 @@ namespace Threax.ModelGen
 {
     public static class AppDbContextGenerator
     {
+        public static String GetFileName(JsonSchema4 schema)
+        {
+            return $"Database/AppDbContext.{schema.Title}.cs";
+        }
+
         public static String Get(JsonSchema4 schema, String ns)
         {
             String Model, model;
@@ -15,6 +20,11 @@ namespace Threax.ModelGen
             String Models, models;
             NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
             return Create(ns, Model, Models);
+        }
+
+        public static String GetManyToManyEntityDbContextFileName(JsonSchema4 schema)
+        {
+            return $"Database/AppDbContext.{schema.GetLeftModelName()}To{schema.GetRightModelName()}Entity.cs";
         }
 
         public static String GetManyToManyEntityDbContext(JsonSchema4 schema, String ns)

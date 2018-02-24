@@ -10,6 +10,11 @@ namespace Threax.ModelGen
 {
     public static class InputModelWriter
     {
+        public static String GetFileName(JsonSchema4 schema)
+        {
+            return $"InputModels/{schema.Title}Input.Generated.cs";
+        }
+
         public static String Create(JsonSchema4 schema, JsonSchema4 other, String ns)
         {
             bool hasBase = false;

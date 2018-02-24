@@ -9,6 +9,11 @@ namespace Threax.ModelGen
 {
     public static class QueryModelWriter
     {
+        public static String GetFileName(JsonSchema4 schema)
+        {
+            return $"InputModels/{schema.Title}Query.Generated.cs";
+        }
+
         public static String Get(JsonSchema4 schema, String ns)
         {
             bool hasBase = false;

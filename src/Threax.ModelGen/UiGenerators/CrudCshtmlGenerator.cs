@@ -9,6 +9,11 @@ namespace Threax.ModelGen
 {
     public static class CrudCshtmlInjectorGenerator
     {
+        public static String GetFileName(JsonSchema4 schema)
+        {
+            return $"Views/{schema.GetUiControllerName()}/{schema.GetPluralName()}.cshtml";
+        }
+
         /// <summary>
         /// Create a cshtml view. OutDir must match the folder where the view will be located, use / between folders.
         /// This is important because it will be set as the runner and must match the typescript file.

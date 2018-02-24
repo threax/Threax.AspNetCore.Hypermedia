@@ -8,6 +8,11 @@ namespace Threax.ModelGen
 {
     public class EntryPointGenerator
     {
+        public static String GetFileName(JsonSchema4 schema)
+        {
+            return $"ViewModels/EntryPoint.{schema.Title}.cs";
+        }
+
         public static String Get(JsonSchema4 schema, String ns)
         {
             String Model, model;
