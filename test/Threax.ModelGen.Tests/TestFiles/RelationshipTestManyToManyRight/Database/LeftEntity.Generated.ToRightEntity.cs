@@ -5,14 +5,6 @@ using System.Threading.Tasks;
 
 namespace Test.Database
 {
-    public partial class LeftEntity
-    {
-        public List<LeftToRightEntity> LeftToRightEntities { get; set; }
-    }
-}
-
-namespace Test.Database
-{
     public partial class LeftToRightEntity
     {
         public Guid RightId { get; set; }

@@ -29,14 +29,6 @@ using System.Threading.Tasks;
 
 namespace {ns}.Database
 {{
-    public partial class {OtherModel}Entity
-    {{
-        public List<{LeftModel}To{RightModel}Entity> {LeftModel}To{RightModel}Entities {{ get; set; }}
-    }}
-}}
-
-namespace {ns}.Database
-{{
     public partial class {LeftModel}To{RightModel}Entity
     {{
         public {ModelType} {ModelId} {{ get; set; }}

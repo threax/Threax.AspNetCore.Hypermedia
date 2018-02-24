@@ -354,7 +354,7 @@ namespace Threax.ModelGen.Tests
         }
 
         [Fact]
-        public void Relationship()
+        public void RelationshipEntity()
         {
             TestCode
             (

@@ -14,12 +14,6 @@ namespace Threax.ModelGen
             {
                 case RelationKind.ManyToMany:
                     return ManyToManyRelationshipGenerator.Get(schema, ns);
-                case RelationKind.OneToMany:
-                    return OneToManyGenerator.Get(schema, ns);
-                case RelationKind.ManyToOne:
-                    return ManyToOneGenerator.Get(schema, ns);
-                case RelationKind.OneToOne:
-                    return OneToOneGenerator.Get(schema, ns);
             }
             return null;
         }
