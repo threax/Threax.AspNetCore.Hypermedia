@@ -18,6 +18,8 @@ namespace Test.Database
 
         public String Info { get; set; }
 
+        public Guid LeftId { get; set; }
+
         public Left Left { get; set; }
 
         public DateTime Created { get; set; }

@@ -75,6 +75,7 @@ $@"using {ns}.Models;"
                         break;
                     case RelationKind.OneToOne:
                     case RelationKind.ManyToOne:
+                        yield return WriteOneSideId(schema, other);
                         yield return WriteOneSide(schema, other);
                         break;
                 }
@@ -91,6 +92,7 @@ $@"using {ns}.Models;"
                         break;
                     case RelationKind.OneToOne:
                     case RelationKind.OneToMany:
+                        yield return WriteOneSideId(schema, other);
                         yield return WriteOneSide(schema, other);
                         break;
                 }
@@ -142,6 +144,20 @@ $@"using {ns}.Models;"
                 {
                     Type = JsonObjectType.Object,
                     Format = other.Title,
+                    Parent = schema
+                }
+            );
+        }
+
+        private static KeyValuePair<String, JsonProperty> WriteOneSideId(JsonSchema4 schema, JsonSchema4 other)
+        {
+            return new KeyValuePair<string, JsonProperty>
+            (
+                key: other.GetKeyName(),
+                value: new JsonProperty()
+                {
+                    Type = JsonObjectType.Object,
+                    Format = other.GetKeyType().Name,
                     Parent = schema
                 }
             );
