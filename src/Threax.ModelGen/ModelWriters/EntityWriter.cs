@@ -48,12 +48,17 @@ $@"    public partial class {a.Name}Entity{InterfaceListBuilder.Build(interfaces
                 )
             {
                 AdditionalUsings =
-$@"using {ns}.Models;" 
+$@"using {ns}.Models;"
 + schema.GetExtraNamespaces(StrConstants.FileNewline)
             };
             return ModelTypeGenerator.Create(schema, schema.GetPluralName(), mainWriter, ns, ns + ".Database",
-                allowPropertyCallback: p => !p.IsAbstractOnEntity() && p.CreateEntity(),
+                allowPropertyCallback: AllowProperty,
                 additionalPropertiesCallback: () => AdditionalProperties(schema, otherSchema));
+        }
+
+        private static bool AllowProperty(JsonProperty p)
+        {
+            return !p.IsAbstractOnEntity() && p.CreateEntity();
         }
 
         private static IAttributeBuilder CreateAttributeBuilder()
@@ -68,16 +73,13 @@ $@"using {ns}.Models;"
                 switch (schema.GetRelationshipKind())
                 {
                     case RelationKind.ManyToMany:
-                        yield return WriteManyManySide(schema, other);
-                        break;
+                        return WriteManyManySide(schema, other);
                     case RelationKind.OneToMany:
-                        yield return WriteManySide(schema, other);
-                        break;
+                        return WriteManySide(schema, other);
                     case RelationKind.OneToOne:
                     case RelationKind.ManyToOne:
-                        yield return WriteOneSideId(schema, other);
-                        yield return WriteOneSide(schema, other);
-                        break;
+                        return WriteOneSide(schema, other);
+
                 }
             }
             else
@@ -85,82 +87,99 @@ $@"using {ns}.Models;"
                 switch (schema.GetRelationshipKind())
                 {
                     case RelationKind.ManyToMany:
-                        yield return WriteManyManySide(schema, other);
-                        break;
+                        return WriteManyManySide(schema, other);
                     case RelationKind.ManyToOne:
-                        yield return WriteManySide(schema, other);
-                        break;
+                        return WriteManySide(schema, other);
                     case RelationKind.OneToOne:
                     case RelationKind.OneToMany:
-                        yield return WriteOneSideId(schema, other);
-                        yield return WriteOneSide(schema, other);
-                        break;
+                        return WriteOneSide(schema, other);
                 }
+            }
+
+            return new KeyValuePair<String, JsonProperty>[0];
+        }
+
+        private static IEnumerable<KeyValuePair<String, JsonProperty>> WriteManyManySide(JsonSchema4 schema, JsonSchema4 other)
+        {
+            var name = $"Join{schema.GetLeftModelName()}To{schema.GetRightModelName()}";
+
+            if (!schema.Properties.ContainsKey(name)) //Don't write if schema defined property.
+            {
+                yield return new KeyValuePair<string, JsonProperty>
+                (
+                    key: name,
+                    value: new JsonProperty()
+                    {
+                        Type = JsonObjectType.Array,
+                        Item = new JsonSchema4()
+                        {
+                            Type = JsonObjectType.Object,
+                            Format = $"Join{schema.GetLeftModelName()}To{schema.GetRightModelName()}Entity",
+                        },
+                        Parent = schema
+                    }
+                );
             }
         }
 
-        private static KeyValuePair<String, JsonProperty> WriteManyManySide(JsonSchema4 schema, JsonSchema4 other)
+        private static IEnumerable<KeyValuePair<String, JsonProperty>> WriteManySide(JsonSchema4 schema, JsonSchema4 other)
         {
-            return new KeyValuePair<string, JsonProperty>
-            (
-                key: $"Join{schema.GetLeftModelName()}To{schema.GetRightModelName()}",
-                value: new JsonProperty()
-                {
-                    Type = JsonObjectType.Array,
-                    Item = new JsonSchema4()
+            var name = other.GetPluralName();
+
+            if (!schema.Properties.ContainsKey(name)) //Don't write if schema defined property.
+            {
+                yield return new KeyValuePair<string, JsonProperty>
+                (
+                    key: name,
+                    value: new JsonProperty()
                     {
-                        Type = JsonObjectType.Object,
-                        Format = $"Join{schema.GetLeftModelName()}To{schema.GetRightModelName()}Entity",
-                    },
-                    Parent = schema
-                }
-            );
+                        Type = JsonObjectType.Array,
+                        Item = new JsonSchema4()
+                        {
+                            Type = JsonObjectType.Object,
+                            Format = other.Title,
+                        },
+                        Parent = schema
+                    }
+                );
+            }
         }
 
-        private static KeyValuePair<String, JsonProperty> WriteManySide(JsonSchema4 schema, JsonSchema4 other)
+        private static IEnumerable<KeyValuePair<String, JsonProperty>> WriteOneSide(JsonSchema4 schema, JsonSchema4 other)
         {
-            return new KeyValuePair<string, JsonProperty>
-            (
-                key: other.GetPluralName(),
-                value: new JsonProperty()
-                {
-                    Type = JsonObjectType.Array,
-                    Item = new JsonSchema4()
+            var name = other.GetKeyName();
+
+            if (!schema.Properties.ContainsKey(name)) //Don't write if schema defined property.
+            {
+                yield return new KeyValuePair<string, JsonProperty>
+                (
+                    key: other.GetKeyName(),
+                    value: new JsonProperty()
+                    {
+                        Type = JsonObjectType.Object,
+                        Format = other.GetKeyType().Name,
+                        Parent = schema
+                    }
+                );
+            }
+
+            name = other.Title;
+
+            if (!schema.Properties.ContainsKey(name)) //Don't write if schema defined property.
+            {
+                yield return new KeyValuePair<string, JsonProperty>
+                (
+                    key: other.Title,
+                    value: new JsonProperty()
                     {
                         Type = JsonObjectType.Object,
                         Format = other.Title,
-                    },
-                    Parent = schema
-                }
-            );
-        }
+                        Parent = schema
+                    }
+                );
+            }
 
-        private static KeyValuePair<String, JsonProperty> WriteOneSide(JsonSchema4 schema, JsonSchema4 other)
-        {
-            return new KeyValuePair<string, JsonProperty>
-            (
-                key: other.Title,
-                value: new JsonProperty()
-                {
-                    Type = JsonObjectType.Object,
-                    Format = other.Title,
-                    Parent = schema
-                }
-            );
-        }
 
-        private static KeyValuePair<String, JsonProperty> WriteOneSideId(JsonSchema4 schema, JsonSchema4 other)
-        {
-            return new KeyValuePair<string, JsonProperty>
-            (
-                key: other.GetKeyName(),
-                value: new JsonProperty()
-                {
-                    Type = JsonObjectType.Object,
-                    Format = other.GetKeyType().Name,
-                    Parent = schema
-                }
-            );
         }
     }
 }

@@ -49,8 +49,13 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
             };
 
             return ModelTypeGenerator.Create(schema, schema.GetPluralName(), modelWriter, ns, ns + ".InputModels",
-                allowPropertyCallback: p => !p.IsAbstractOnInputModel() && p.CreateInputModel(),
+                allowPropertyCallback: AllowProperty,
                 additionalPropertiesCallback: () => AdditionalProperties(schema, other));
+        }
+
+        private static bool AllowProperty(JsonProperty p)
+        {
+            return !p.IsAbstractOnInputModel() && p.CreateInputModel();
         }
 
         private static IEnumerable<KeyValuePair<String, JsonProperty>> AdditionalProperties(JsonSchema4 schema, JsonSchema4 other)
@@ -61,12 +66,10 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
                 {
                     case RelationKind.ManyToMany:
                     case RelationKind.OneToMany:
-                        yield return WriteManySide(schema, other);
-                        break;
+                        return WriteManySide(schema, other);
                     case RelationKind.OneToOne:
                     case RelationKind.ManyToOne:
-                        yield return WriteOneSide(schema, other);
-                        break;
+                        return WriteOneSide(schema, other);
                 }
             }
             else
@@ -75,46 +78,56 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
                 {
                     case RelationKind.ManyToMany:
                     case RelationKind.ManyToOne:
-                        yield return WriteManySide(schema, other);
-                        break;
+                        return WriteManySide(schema, other);
                     case RelationKind.OneToOne:
                     case RelationKind.OneToMany:
-                        yield return WriteOneSide(schema, other);
-                        break;
+                        return WriteOneSide(schema, other);
                 }
+            }
+
+            return new KeyValuePair<String, JsonProperty>[0];
+        }
+
+        private static IEnumerable<KeyValuePair<String,JsonProperty>> WriteManySide(JsonSchema4 schema, JsonSchema4 other)
+        {
+            var name = other.GetPluralName();
+
+            if (!schema.Properties.ContainsKey(name)) //Don't write if schema defined property.
+            {
+                yield return new KeyValuePair<string, JsonProperty>
+                (
+                    key: name,
+                    value: new JsonProperty()
+                    {
+                        Type = JsonObjectType.Array,
+                        Item = new JsonSchema4()
+                        {
+                            Type = JsonObjectType.Object,
+                            Format = "Guid",
+                        },
+                        Parent = schema
+                    }
+                );
             }
         }
 
-        private static KeyValuePair<String,JsonProperty> WriteManySide(JsonSchema4 schema, JsonSchema4 other)
+        private static IEnumerable<KeyValuePair<String, JsonProperty>> WriteOneSide(JsonSchema4 schema, JsonSchema4 other)
         {
-            return new KeyValuePair<string, JsonProperty>
-            (
-                key: other.GetPluralName(),
-                value: new JsonProperty()
-                {
-                    Type = JsonObjectType.Array,
-                    Item = new JsonSchema4()
+            var name = other.Title;
+
+            if (!schema.Properties.ContainsKey(name)) //Don't write if schema defined property.
+            {
+                yield return new KeyValuePair<string, JsonProperty>
+                (
+                    key: other.Title,
+                    value: new JsonProperty()
                     {
                         Type = JsonObjectType.Object,
                         Format = "Guid",
-                    },
-                    Parent = schema
-                }
-            );
-        }
-
-        private static KeyValuePair<String, JsonProperty> WriteOneSide(JsonSchema4 schema, JsonSchema4 other)
-        {
-            return new KeyValuePair<string, JsonProperty>
-            (
-                key: other.Title,
-                value: new JsonProperty()
-                {
-                    Type = JsonObjectType.Object,
-                    Format = "Guid",
-                    Parent = schema
-                }
-            );
+                        Parent = schema
+                    }
+                );
+            }
         }
 
         private static IAttributeBuilder CreatePropertyAttributes()
