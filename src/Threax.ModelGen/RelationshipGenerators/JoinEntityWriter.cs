@@ -24,18 +24,30 @@ namespace Threax.ModelGen
                 return null;
             }
 
-            return Create(ns,
-                schema.GetKeyType().Name,
-                NameGenerator.CreatePascal(schema.GetKeyName()),
-                NameGenerator.CreatePascal(schema.Title),
-                NameGenerator.CreatePascal(schema.GetLeftModelName()),
-                NameGenerator.CreatePascal(schema.GetRightModelName()),
-                NameGenerator.CreatePascal(otherSchema.GetKeyType().Name),
-                NameGenerator.CreatePascal(otherSchema.GetKeyName()),
-                NameGenerator.CreatePascal(otherSchema.Title));
+            if (schema.IsLeftModel())
+            {
+
+                return Create(ns,
+                    NameGenerator.CreatePascal(schema.GetKeyType().Name),
+                    NameGenerator.CreatePascal(schema.GetKeyName()),
+                    NameGenerator.CreatePascal(schema.Title),
+                    NameGenerator.CreatePascal(otherSchema.GetKeyType().Name),
+                    NameGenerator.CreatePascal(otherSchema.GetKeyName()),
+                    NameGenerator.CreatePascal(otherSchema.Title));
+            }
+            else
+            {
+                return Create(ns,
+                    NameGenerator.CreatePascal(otherSchema.GetKeyType().Name),
+                    NameGenerator.CreatePascal(otherSchema.GetKeyName()),
+                    NameGenerator.CreatePascal(otherSchema.Title),
+                    NameGenerator.CreatePascal(schema.GetKeyType().Name),
+                    NameGenerator.CreatePascal(schema.GetKeyName()),
+                    NameGenerator.CreatePascal(schema.Title));
+            }
         }
 
-        private static String Create(String ns, String ModelType, String ModelId, String Model, String LeftModel, String RightModel, String OtherModelType, String OtherModelId, String OtherModel)
+        private static String Create(String ns, String LeftModelType, String LeftModelId, String LeftModel, String RightModelType, String RightModelId, String RightModel)
         {
             return
 $@"using System;
@@ -47,13 +59,13 @@ namespace {ns}.Database
 {{
     public partial class Join{LeftModel}To{RightModel}Entity
     {{
-        public {ModelType} {ModelId} {{ get; set; }}
+        public {LeftModelType} {LeftModelId} {{ get; set; }}
 
-        public {Model}Entity {Model} {{ get; set; }}
+        public {LeftModel}Entity {LeftModel} {{ get; set; }}
 
-        public {OtherModelType} {OtherModelId} {{ get; set; }}
+        public {RightModelType} {RightModelId} {{ get; set; }}
 
-        public {OtherModel}Entity {OtherModel} {{ get; set; }}
+        public {RightModel}Entity {RightModel} {{ get; set; }}
     }}
 }}";
         }

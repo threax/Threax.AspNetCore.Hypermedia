@@ -279,6 +279,11 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
 
         private static void DeleteFile(String outDir, String file)
         {
+            if(file == null)
+            {
+                return;
+            }
+
             var fullPath = Path.Combine(outDir, file);
 
             if (File.Exists(fullPath))

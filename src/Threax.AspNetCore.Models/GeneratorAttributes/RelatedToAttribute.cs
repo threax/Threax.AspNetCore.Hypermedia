@@ -55,9 +55,6 @@ namespace Threax.AspNetCore.Models
             this.RelKind = kind;
         }
 
-        /// <summary>
-        /// The type on the other side of the relationship.
-        /// </summary>
         public Type Left { get; private set; }
 
         public Type Right { get; private set; }

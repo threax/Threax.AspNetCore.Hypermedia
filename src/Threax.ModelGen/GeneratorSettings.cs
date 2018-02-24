@@ -39,7 +39,12 @@ namespace Threax.ModelGen
                     if(Schema.GetRelationshipKind() != RelationKind.None)
                     {
                         var otherClrName = Schema.GetOtherModelClrName();
-                        var otherType = Type.GetType(otherClrName);
+                        var otherType = assembly.GetType(otherClrName);
+
+                        if(otherType == null)
+                        {
+                            throw new InvalidOperationException($"Cannot find type {otherClrName}");
+                        }
 
                         OtherSchema = await TypeToSchemaGenerator.CreateSchema(otherType);
                     }
