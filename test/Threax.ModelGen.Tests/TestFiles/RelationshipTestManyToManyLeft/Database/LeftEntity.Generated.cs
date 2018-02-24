@@ -18,6 +18,8 @@ namespace Test.Database
 
         public String Info { get; set; }
 
+        public List<JoinLeftToRightEntity> JoinLeftToRight { get; set; }
+
         public DateTime Created { get; set; }
 
         public DateTime Modified { get; set; }

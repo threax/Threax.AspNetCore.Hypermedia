@@ -131,7 +131,7 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                     if (settings.Schema.CreateEntity())
                     {
                         WriteFile(settings.AppOutDir, PartialTypeGenerator.GetEntityFileName(settings.Schema), PartialTypeGenerator.Get(settings.Schema, settings.AppNamespace + ".Database", "Entity", settings.Schema.GetExtraNamespaces(StrConstants.FileNewline)), false);
-                        WriteFile(settings.AppOutDir, EntityWriter.GetFileName(settings.Schema), EntityWriter.Create(settings.Schema, settings.AppNamespace), true);
+                        WriteFile(settings.AppOutDir, EntityWriter.GetFileName(settings.Schema), EntityWriter.Create(settings.Schema, settings.OtherSchema, settings.AppNamespace), true);
                         WriteFile(settings.AppOutDir, AppDbContextGenerator.GetFileName(settings.Schema), AppDbContextGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);
                         WriteFile(settings.AppOutDir, JoinEntityWriter.GetFileName(settings.Schema), JoinEntityWriter.Get(settings.Schema, settings.OtherSchema, settings.AppNamespace), true);
                         WriteFile(settings.AppOutDir, AppDbContextGenerator.GetManyToManyEntityDbContextFileName(settings.Schema), AppDbContextGenerator.GetManyToManyEntityDbContext(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);

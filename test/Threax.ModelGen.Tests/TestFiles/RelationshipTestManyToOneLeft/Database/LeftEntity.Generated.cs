@@ -18,6 +18,8 @@ namespace Test.Database
 
         public String Info { get; set; }
 
+        public Right Right { get; set; }
+
         public DateTime Created { get; set; }
 
         public DateTime Modified { get; set; }
