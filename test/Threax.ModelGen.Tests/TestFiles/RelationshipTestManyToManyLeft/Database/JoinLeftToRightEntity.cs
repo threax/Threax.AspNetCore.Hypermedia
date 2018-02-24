@@ -5,10 +5,14 @@ using System.Threading.Tasks;
 
 namespace Test.Database
 {
-    public partial class LeftToRightEntity
+    public partial class JoinLeftToRightEntity
     {
         public Guid LeftId { get; set; }
 
         public LeftEntity Left { get; set; }
+
+        public Guid RightId { get; set; }
+
+        public RightEntity Right { get; set; }
     }
 }

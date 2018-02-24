@@ -25,7 +25,7 @@ namespace Threax.ModelGen.Tests
         private const String AppNamespace = "Test";
         private JsonSchema4 schema;
         protected JsonSchema4 otherSchema;
-        protected bool WriteTestFiles = false;
+        protected bool WriteTestFiles = true;
 
         public ModelTests()
         {
@@ -364,7 +364,7 @@ namespace Threax.ModelGen.Tests
             TestCode
             (
                 JoinEntityWriter.GetFileName(schema),
-                JoinEntityWriter.Get(schema, AppNamespace)
+                JoinEntityWriter.Get(schema, otherSchema, AppNamespace)
             );
         }
 

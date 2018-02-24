@@ -12,23 +12,30 @@ namespace Threax.ModelGen
         {
             if (schema.GetRelationshipKind() == RelationKind.ManyToMany)
             {
-                return $"Database/{schema.GetLeftModelName()}To{schema.GetRightModelName()}Entity.cs";
+                return $"Database/Join{schema.GetLeftModelName()}To{schema.GetRightModelName()}Entity.cs";
             }
             return null;
         }
 
-        public static String Get(JsonSchema4 schema, String ns)
+        public static String Get(JsonSchema4 schema, JsonSchema4 otherSchema, String ns)
         {
+            if(otherSchema == null)
+            {
+                return null;
+            }
+
             return Create(ns,
                 schema.GetKeyType().Name,
                 NameGenerator.CreatePascal(schema.GetKeyName()),
                 NameGenerator.CreatePascal(schema.Title),
                 NameGenerator.CreatePascal(schema.GetLeftModelName()),
                 NameGenerator.CreatePascal(schema.GetRightModelName()),
-                NameGenerator.CreatePascal(schema.GetOtherModelName()));
+                NameGenerator.CreatePascal(otherSchema.GetKeyType().Name),
+                NameGenerator.CreatePascal(otherSchema.GetKeyName()),
+                NameGenerator.CreatePascal(otherSchema.Title));
         }
 
-        private static String Create(String ns, String ModelType, String ModelId, String Model, String LeftModel, String RightModel, String OtherModel)
+        private static String Create(String ns, String ModelType, String ModelId, String Model, String LeftModel, String RightModel, String OtherModelType, String OtherModelId, String OtherModel)
         {
             return
 $@"using System;
@@ -38,11 +45,15 @@ using System.Threading.Tasks;
 
 namespace {ns}.Database
 {{
-    public partial class {LeftModel}To{RightModel}Entity
+    public partial class Join{LeftModel}To{RightModel}Entity
     {{
         public {ModelType} {ModelId} {{ get; set; }}
 
         public {Model}Entity {Model} {{ get; set; }}
+
+        public {OtherModelType} {OtherModelId} {{ get; set; }}
+
+        public {OtherModel}Entity {OtherModel} {{ get; set; }}
     }}
 }}";
         }
