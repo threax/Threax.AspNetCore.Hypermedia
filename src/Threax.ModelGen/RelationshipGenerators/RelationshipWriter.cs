@@ -10,7 +10,11 @@ namespace Threax.ModelGen
     {
         public static String GetFileName(JsonSchema4 schema, JsonSchema4 other)
         {
-            return $"Database/{other.Title}Entity.Generated.To{schema.Title}Entity.cs";
+            if (other != null)
+            {
+                return $"Database/{other.Title}Entity.Generated.To{schema.Title}Entity.cs";
+            }
+            return null;
         }
 
         public static String Get(JsonSchema4 schema, string ns)

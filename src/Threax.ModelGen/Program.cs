@@ -250,6 +250,11 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
 
         private static void WriteFile(String outDir, String file, String content, bool force)
         {
+            if (file == null)
+            {
+                return;
+            }
+
             var fullPath = Path.Combine(outDir, file);
 
             if (content == null)

@@ -40,6 +40,11 @@ namespace Threax.ModelGen.Tests
         /// <param name="code">The code to test.</param>
         private void TestCode(String fileName, String code)
         {
+            if(fileName == null)
+            {
+                return;
+            }
+
             if (WriteTestFiles)
             {
                 if (code != null)
@@ -278,7 +283,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                CrudCshtmlInjectorGenerator.GetFileName(schema),
+                CrudInjectorGenerator.GetFileName(schema),
                 CrudInjectorGenerator.Get(schema)
             );
         }
@@ -308,7 +313,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                ModelTestWrapper.GetFileName(schema),
+                Path.Combine("Tests", ModelTestWrapper.GetFileName(schema)),
                 ModelTestWrapper.Get(schema, AppNamespace)
             );
         }
@@ -318,7 +323,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                ModelTestWrapperGenerated.GetFileName(schema),
+                Path.Combine("Tests", ModelTestWrapperGenerated.GetFileName(schema)),
                 ModelTestWrapperGenerated.Get(schema, AppNamespace)
             );
         }
@@ -328,7 +333,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                ControllerTests.GetFileName(schema),
+                Path.Combine("Tests", ControllerTests.GetFileName(schema)),
                 ControllerTests.Get(schema, AppNamespace)
             );
         }
@@ -338,7 +343,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                ProfileTests.GetFileName(schema),
+                Path.Combine("Tests", ProfileTests.GetFileName(schema)),
                 ProfileTests.Get(schema, AppNamespace)
             );
         }
@@ -348,7 +353,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                RepositoryTests.GetFileName(schema),
+                Path.Combine("Tests", RepositoryTests.GetFileName(schema)),
                 RepositoryTests.Get(schema, AppNamespace)
             );
         }
