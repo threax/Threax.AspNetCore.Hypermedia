@@ -25,21 +25,23 @@ namespace {ns}.Database
 }}";
         }
 
-        public static String CreateMany(String ns, String RightModel, String LeftModel, String LeftKeyType, String LeftModelId)
+        public static String CreateMany(String ns, String RightModel, String LeftModel, String LeftKeyType, String LeftModelId, String Suffix, bool writeObjectLink)
         {
+            var objectLink = writeObjectLink ? $@"
+
+        public {LeftModel}{Suffix} {LeftModel} {{ get; set; }}" : "";
+
             return
 $@"using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace {ns}.Database
+namespace {ns}
 {{
-    public partial class {RightModel}Entity
+    public partial class {RightModel}{Suffix}
     {{
-        public {LeftKeyType} {LeftModelId} {{ get; set; }}
-
-        public {LeftModel}Entity {LeftModel} {{ get; set; }}
+        public {LeftKeyType} {LeftModelId} {{ get; set; }}{objectLink}
     }}
 }}";
         }
@@ -51,11 +53,12 @@ namespace {ns}.Database
         {
             if (schema.IsLeftModel())
             {
-                return UnevenRelationshipSideGenerator.CreateMany(ns,
+                return UnevenRelationshipSideGenerator.CreateMany(ns + ".Database",
                     NameGenerator.CreatePascal(schema.GetOtherModelName()),
                     NameGenerator.CreatePascal(schema.Title),
                     NameGenerator.CreatePascal(schema.GetKeyType().Name),
-                    NameGenerator.CreatePascal(schema.GetKeyName()));
+                    NameGenerator.CreatePascal(schema.GetKeyName()),
+                    "Entity", true);
             }
             else
             {
@@ -84,11 +87,12 @@ namespace {ns}.Database
             }
             else
             {
-                return UnevenRelationshipSideGenerator.CreateMany(ns,
+                return UnevenRelationshipSideGenerator.CreateMany(ns + ".Database",
                     NameGenerator.CreatePascal(schema.GetOtherModelName()),
                     NameGenerator.CreatePascal(schema.Title),
                     NameGenerator.CreatePascal(schema.GetKeyType().Name),
-                    NameGenerator.CreatePascal(schema.GetKeyName()));
+                    NameGenerator.CreatePascal(schema.GetKeyName()),
+                    "Entity", true);
             }
         }
     }

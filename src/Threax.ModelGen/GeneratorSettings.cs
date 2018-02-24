@@ -35,6 +35,14 @@ namespace Threax.ModelGen
                     }
 
                     Schema = await TypeToSchemaGenerator.CreateSchema(type);
+
+                    if(Schema.GetRelationshipKind() != RelationKind.None)
+                    {
+                        var otherClrName = Schema.GetOtherModelClrName();
+                        var otherType = Type.GetType(otherClrName);
+
+                        OtherSchema = await TypeToSchemaGenerator.CreateSchema(otherType);
+                    }
                 }
                 catch(FileLoadException ex)
                 {
@@ -90,6 +98,8 @@ namespace Threax.ModelGen
         public String PluralModelName { get; set; }
 
         public JsonSchema4 Schema { get; set; }
+
+        public JsonSchema4 OtherSchema { get; set; }
 
         /// <summary>
         /// Set this to true to force the ui classes to write.

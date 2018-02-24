@@ -32,7 +32,11 @@ namespace Threax.AspNetCore.Models
         {
             public String Left { get; set; }
 
+            public String LeftClrName { get; set; }
+
             public String Right { get; set; }
+
+            public String RightClrName { get; set; }
 
             public RelationKind Kind { get; set; }
         }
@@ -41,6 +45,8 @@ namespace Threax.AspNetCore.Models
         {
             Left = left.Name,
             Right = right.Name,
+            LeftClrName = left.FullName,
+            RightClrName = right.FullName,
             Kind = kind
         })
         {
@@ -81,6 +87,25 @@ namespace Threax.AspNetCore.Models
         }
 
         /// <summary>
+        /// Get the clr name of the model on the left side of the relationship.
+        /// </summary>
+        /// <param name="schema"></param>
+        /// <returns></returns>
+        public static String GetLeftModelClrName(this JsonSchema4 schema)
+        {
+            Object val = null;
+            if (schema.ExtensionData?.TryGetValue(RelatedToAttribute.Name, out val) == true)
+            {
+                var settings = val as RelatedToAttribute.Settings;
+                if (settings != null)
+                {
+                    return settings.LeftClrName;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Get the name of the model on the right side of the relationship.
         /// </summary>
         /// <param name="schema"></param>
@@ -94,6 +119,25 @@ namespace Threax.AspNetCore.Models
                 if (settings != null)
                 {
                     return settings.Right;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Get the clr name of the model on the right side of the relationship.
+        /// </summary>
+        /// <param name="schema"></param>
+        /// <returns></returns>
+        public static String GetRightModelClrName(this JsonSchema4 schema)
+        {
+            Object val = null;
+            if (schema.ExtensionData?.TryGetValue(RelatedToAttribute.Name, out val) == true)
+            {
+                var settings = val as RelatedToAttribute.Settings;
+                if (settings != null)
+                {
+                    return settings.RightClrName;
                 }
             }
             return null;
@@ -117,6 +161,26 @@ namespace Threax.AspNetCore.Models
             }
 
             return schema.GetLeftModelName();
+        }
+
+        /// <summary>
+        /// Get the name of the model on the other side of the relationship.
+        /// </summary>
+        /// <param name="schema"></param>
+        /// <returns></returns>
+        public static String GetOtherModelClrName(this JsonSchema4 schema)
+        {
+            if (schema.GetRelationshipKind() == RelationKind.None)
+            {
+                return null;
+            }
+
+            if (schema.IsLeftModel())
+            {
+                return schema.GetRightModelClrName();
+            }
+
+            return schema.GetLeftModelClrName();
         }
 
         /// <summary>
