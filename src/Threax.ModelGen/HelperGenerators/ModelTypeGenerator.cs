@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text;
 
 namespace Threax.ModelGen
@@ -13,7 +14,7 @@ namespace Threax.ModelGen
             return Create(schema, pluralName, typeWriter, defaultNs, ns, allowPropertyCallback);
         }
 
-        public static String Create(JsonSchema4 schema, String pluralName, ITypeWriter typeWriter, String defaultNs, String ns, Func<JsonProperty, bool> allowPropertyCallback = null)
+        public static String Create(JsonSchema4 schema, String pluralName, ITypeWriter typeWriter, String defaultNs, String ns, Func<JsonProperty, bool> allowPropertyCallback = null, Func<IEnumerable<KeyValuePair<String, JsonProperty>>> additionalPropertiesCallback = null)
         {
             var sb = new StringBuilder();
             typeWriter.AddUsings(sb, defaultNs);
@@ -22,7 +23,13 @@ namespace Threax.ModelGen
 
             var prettyName = schema.Title;
 
-            foreach (var propPair in schema.Properties)
+            IEnumerable<KeyValuePair<String, JsonProperty>> props = schema.Properties;
+            if(additionalPropertiesCallback != null)
+            {
+                props = props.Concat(additionalPropertiesCallback());
+            }
+
+            foreach (var propPair in props)
             {
                 if (allowPropertyCallback == null || allowPropertyCallback.Invoke(propPair.Value))
                 {

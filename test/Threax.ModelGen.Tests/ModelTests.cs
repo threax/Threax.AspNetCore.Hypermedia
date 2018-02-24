@@ -12,10 +12,19 @@ using Xunit;
 
 namespace Threax.ModelGen.Tests
 {
+    public abstract class ModelTests<T, TO> : ModelTests<T>
+    {
+        public ModelTests()
+        {
+            this.otherSchema = Task.Run(async () => await TypeToSchemaGenerator.CreateSchema(typeof(TO))).GetAwaiter().GetResult();
+        }
+    }
+
     public abstract class ModelTests<T>
     {
         private const String AppNamespace = "Test";
         private JsonSchema4 schema;
+        protected JsonSchema4 otherSchema;
         protected bool WriteTestFiles = false;
 
         public ModelTests()
@@ -109,7 +118,7 @@ namespace Threax.ModelGen.Tests
             TestCode
             (
                 $"InputModels/{schema.Title}Input.Generated.cs",
-                InputModelWriter.Create(schema, AppNamespace)
+                InputModelWriter.Create(schema, otherSchema, AppNamespace)
             );
         }
 
@@ -149,7 +158,7 @@ namespace Threax.ModelGen.Tests
             TestCode
             (
                 $"ViewModels/{schema.Title}.Generated.cs",
-                ViewModelWriter.Create(schema, AppNamespace)
+                ViewModelWriter.Create(schema, otherSchema, AppNamespace)
             );
         }
 

@@ -19,6 +19,8 @@ namespace Test.ViewModels
 
         public String Info { get; set; }
 
+        public Guid Right { get; set; }
+
         [UiOrder(0, 2147483646)]
         public DateTime Created { get; set; }
 

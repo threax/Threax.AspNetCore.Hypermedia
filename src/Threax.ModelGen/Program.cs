@@ -149,7 +149,7 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                     if (settings.Schema.CreateInputModel())
                     {
                         WriteFile(Path.Combine(settings.AppOutDir, $"InputModels/{settings.ModelName}Input.cs"), PartialTypeGenerator.GetUserPartial(settings.ModelName, settings.AppNamespace + ".InputModels", "Input", settings.Schema.GetExtraNamespaces(StrConstants.FileNewline)), false);
-                        WriteFile(Path.Combine(settings.AppOutDir, $"InputModels/{settings.ModelName}Input.Generated.cs"), InputModelWriter.Create(settings.Schema, settings.AppNamespace), true);
+                        WriteFile(Path.Combine(settings.AppOutDir, $"InputModels/{settings.ModelName}Input.Generated.cs"), InputModelWriter.Create(settings.Schema, settings.OtherSchema, settings.AppNamespace), true);
                     }
 
                     WriteFile(Path.Combine(settings.AppOutDir, $"InputModels/{settings.ModelName}Query.cs"), PartialTypeGenerator.GetUserPartial(settings.ModelName, settings.AppNamespace + ".InputModels", "Query", settings.Schema.GetExtraNamespaces(StrConstants.FileNewline)), false);
@@ -158,7 +158,7 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                     if (settings.Schema.CreateViewModel())
                     {
                         WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{settings.ModelName}.cs"), ViewModelWriter.GetUserPartial(settings.Schema, settings.AppNamespace), false);
-                        WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{settings.ModelName}.Generated.cs"), ViewModelWriter.Create(settings.Schema, settings.AppNamespace), true);
+                        WriteFile(Path.Combine(settings.AppOutDir, $"ViewModels/{settings.ModelName}.Generated.cs"), ViewModelWriter.Create(settings.Schema, settings.OtherSchema, settings.AppNamespace), true);
                     }
 
                     WriteFile(Path.Combine(settings.AppOutDir, $"Repository/{settings.ModelName}Repository.cs"), RepoGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);

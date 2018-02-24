@@ -10,7 +10,7 @@ namespace Threax.ModelGen
 {
     public static class ViewModelWriter
     {
-        public static String Create(JsonSchema4 schema, String ns)
+        public static String Create(JsonSchema4 schema, JsonSchema4 other, String ns)
         {
             bool hasBase = false;
 
@@ -43,10 +43,76 @@ $@"       public partial class {a.Name}{InterfaceListBuilder.Build(interfaces)}
                 AdditionalUsings =
 $@"using {ns}.Models;
 using {ns}.Controllers.Api;
-using Threax.AspNetCore.Halcyon.Ext.ValueProviders;" 
+using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
 + schema.GetExtraNamespaces(StrConstants.FileNewline)
             };
-            return ModelTypeGenerator.Create(schema, schema.GetPluralName(), mainWriter, ns, ns + ".ViewModels", allowPropertyCallback: p => !p.IsAbstractOnViewModel() && p.CreateViewModel());
+            return ModelTypeGenerator.Create(schema, schema.GetPluralName(), mainWriter, ns, ns + ".ViewModels",
+                allowPropertyCallback: p => !p.IsAbstractOnViewModel() && p.CreateViewModel(),
+                additionalPropertiesCallback: () => AdditionalProperties(schema, other));
+        }
+
+        private static IEnumerable<KeyValuePair<String, JsonProperty>> AdditionalProperties(JsonSchema4 schema, JsonSchema4 other)
+        {
+            if (schema.IsLeftModel())
+            {
+                switch (schema.GetRelationshipKind())
+                {
+                    case RelationKind.ManyToMany:
+                    case RelationKind.OneToMany:
+                        yield return WriteManySide(schema, other);
+                        break;
+                    case RelationKind.OneToOne:
+                    case RelationKind.ManyToOne:
+                        yield return WriteOneSide(schema, other);
+                        break;
+                }
+            }
+            else
+            {
+                switch (schema.GetRelationshipKind())
+                {
+                    case RelationKind.ManyToMany:
+                    case RelationKind.ManyToOne:
+                        yield return WriteManySide(schema, other);
+                        break;
+                    case RelationKind.OneToOne:
+                    case RelationKind.OneToMany:
+                        yield return WriteOneSide(schema, other);
+                        break;
+                }
+            }
+        }
+
+        private static KeyValuePair<String, JsonProperty> WriteManySide(JsonSchema4 schema, JsonSchema4 other)
+        {
+            return new KeyValuePair<string, JsonProperty>
+            (
+                key: other.GetPluralName(),
+                value: new JsonProperty()
+                {
+                    Type = JsonObjectType.Array,
+                    Item = new JsonSchema4()
+                    {
+                        Type = JsonObjectType.Object,
+                        Format = "Guid",
+                    },
+                    Parent = schema
+                }
+            );
+        }
+
+        private static KeyValuePair<String, JsonProperty> WriteOneSide(JsonSchema4 schema, JsonSchema4 other)
+        {
+            return new KeyValuePair<string, JsonProperty>
+            (
+                key: other.Title,
+                value: new JsonProperty()
+                {
+                    Type = JsonObjectType.Object,
+                    Format = "Guid",
+                    Parent = schema
+                }
+            );
         }
 
         private static IAttributeBuilder CreateAttributeBuilder()
