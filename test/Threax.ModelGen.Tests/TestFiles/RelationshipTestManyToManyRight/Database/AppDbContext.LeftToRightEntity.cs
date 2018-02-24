@@ -4,6 +4,6 @@ namespace Test.Database
 {
     public partial class AppDbContext
     {
-        public DbSet<LeftToRightEntity> JoinLeftToRight { get; set; }
+        public DbSet<JoinLeftToRightEntity> JoinLeftToRight { get; set; }
     }
 }

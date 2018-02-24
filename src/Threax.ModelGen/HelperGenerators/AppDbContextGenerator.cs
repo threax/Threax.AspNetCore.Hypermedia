@@ -34,7 +34,7 @@ namespace Threax.ModelGen
             {
                 content = AppDbContextGenerator.Create(
                     ns,
-                    $"{schema.GetLeftModelName()}To{schema.GetRightModelName()}",
+                    $"Join{schema.GetLeftModelName()}To{schema.GetRightModelName()}",
                     $"Join{schema.GetLeftModelName()}To{schema.GetRightModelName()}");
             }
             return content;
