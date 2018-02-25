@@ -106,7 +106,7 @@ namespace Threax.AspNetCore.Models
     /// <summary>
     /// Base class for model relationships.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class RelatedToAttribute : Attribute
     {
         internal const String Name = "x-relatedto";

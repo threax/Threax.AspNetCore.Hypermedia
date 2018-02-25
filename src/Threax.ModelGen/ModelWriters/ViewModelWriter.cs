@@ -72,10 +72,12 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
                     {
                         case RelationKind.ManyToMany:
                         case RelationKind.OneToMany:
-                            return WriteManySide(schema, others[relationship.OtherModelName]);
+                            props = props.Concat(WriteManySide(schema, others[relationship.OtherModelName]));
+                            break;
                         case RelationKind.OneToOne:
                         case RelationKind.ManyToOne:
-                            return WriteOneSide(schema, others[relationship.OtherModelName]);
+                            props = props.Concat(WriteOneSide(schema, others[relationship.OtherModelName]));
+                            break;
                     }
                 }
                 else
@@ -84,10 +86,12 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
                     {
                         case RelationKind.ManyToMany:
                         case RelationKind.ManyToOne:
-                            return WriteManySide(schema, others[relationship.OtherModelName]);
+                            props = props.Concat(WriteManySide(schema, others[relationship.OtherModelName]));
+                            break;
                         case RelationKind.OneToOne:
                         case RelationKind.OneToMany:
-                            return WriteOneSide(schema, others[relationship.OtherModelName]);
+                            props = props.Concat(WriteOneSide(schema, others[relationship.OtherModelName]));
+                            break;
                     }
                 }
             }
