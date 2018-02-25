@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen
 {
@@ -64,6 +65,12 @@ namespace Threax.ModelGen
                         }
                     }
                 }
+            }
+
+            var relationships = type.GetCustomAttributes<RelatedToAttribute>().Select(i => i.Settings).ToList();
+            if(relationships.Count > 0)
+            {
+                schema.SetRelationshipSettings(relationships);
             }
 
             return schema;

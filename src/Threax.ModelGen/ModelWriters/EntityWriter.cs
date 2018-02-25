@@ -15,7 +15,7 @@ namespace Threax.ModelGen
             return $"Database/{schema.Title}Entity.Generated.cs";
         }
 
-        public static String Create(JsonSchema4 schema, JsonSchema4 otherSchema, String ns)
+        public static String Create(JsonSchema4 schema, Dictionary<String, JsonSchema4> others, String ns)
         {
             bool hasBase = false;
 
@@ -53,7 +53,7 @@ $@"using {ns}.Models;"
             };
             return ModelTypeGenerator.Create(schema, schema.GetPluralName(), mainWriter, ns, ns + ".Database",
                 allowPropertyCallback: AllowProperty,
-                additionalPropertiesCallback: () => AdditionalProperties(schema, otherSchema));
+                additionalPropertiesCallback: () => AdditionalProperties(schema, others));
         }
 
         private static bool AllowProperty(JsonProperty p)
@@ -66,42 +66,51 @@ $@"using {ns}.Models;"
             return new RequiredAttributeBuilder(new MaxLengthAttributeBuilder());
         }
 
-        private static IEnumerable<KeyValuePair<String, JsonProperty>> AdditionalProperties(JsonSchema4 schema, JsonSchema4 other)
+        private static IEnumerable<KeyValuePair<String, JsonProperty>> AdditionalProperties(JsonSchema4 schema, Dictionary<String, JsonSchema4> others)
         {
-            if (schema.GetRelationshipSettings().IsLeftModel)
+            IEnumerable<KeyValuePair<String, JsonProperty>> props = new KeyValuePair<String, JsonProperty>[0];
+            foreach (var relationship in schema.GetRelationshipSettings())
             {
-                switch (schema.GetRelationshipSettings().Kind)
+                if (relationship.IsLeftModel)
                 {
-                    case RelationKind.ManyToMany:
-                        return WriteManyManySide(schema, other);
-                    case RelationKind.OneToMany:
-                        return WriteManySide(schema, other);
-                    case RelationKind.OneToOne:
-                    case RelationKind.ManyToOne:
-                        return WriteOneSide(schema, other);
+                    switch (relationship.Kind)
+                    {
+                        case RelationKind.ManyToMany:
+                            props = props.Concat(WriteManyManySide(schema, others[relationship.OtherModelName], relationship));
+                            break;
+                        case RelationKind.OneToMany:
+                            props = props.Concat(WriteManySide(schema, others[relationship.OtherModelName], relationship));
+                            break;
+                        case RelationKind.OneToOne:
+                        case RelationKind.ManyToOne:
+                            props = props.Concat(WriteOneSide(schema, others[relationship.OtherModelName], relationship));
+                            break;
 
+                    }
+                }
+                else
+                {
+                    switch (relationship.Kind)
+                    {
+                        case RelationKind.ManyToMany:
+                            props = props.Concat(WriteManyManySide(schema, others[relationship.OtherModelName], relationship));
+                            break;
+                        case RelationKind.ManyToOne:
+                            props = props.Concat(WriteManySide(schema, others[relationship.OtherModelName], relationship));
+                            break;
+                        case RelationKind.OneToOne:
+                        case RelationKind.OneToMany:
+                            props = props.Concat(WriteOneSide(schema, others[relationship.OtherModelName], relationship));
+                            break;
+                    }
                 }
             }
-            else
-            {
-                switch (schema.GetRelationshipSettings().Kind)
-                {
-                    case RelationKind.ManyToMany:
-                        return WriteManyManySide(schema, other);
-                    case RelationKind.ManyToOne:
-                        return WriteManySide(schema, other);
-                    case RelationKind.OneToOne:
-                    case RelationKind.OneToMany:
-                        return WriteOneSide(schema, other);
-                }
-            }
-
-            return new KeyValuePair<String, JsonProperty>[0];
+            return props;
         }
 
-        private static IEnumerable<KeyValuePair<String, JsonProperty>> WriteManyManySide(JsonSchema4 schema, JsonSchema4 other)
+        private static IEnumerable<KeyValuePair<String, JsonProperty>> WriteManyManySide(JsonSchema4 schema, JsonSchema4 other, RelationshipSettings relationship)
         {
-            var name = $"Join{schema.GetRelationshipSettings().LeftModelName}To{schema.GetRelationshipSettings().RightModelName}";
+            var name = $"Join{relationship.LeftModelName}To{relationship.RightModelName}";
 
             if (!schema.Properties.ContainsKey(name)) //Don't write if schema defined property.
             {
@@ -114,7 +123,7 @@ $@"using {ns}.Models;"
                         Item = new JsonSchema4()
                         {
                             Type = JsonObjectType.Object,
-                            Format = $"Join{schema.GetRelationshipSettings().LeftModelName}To{schema.GetRelationshipSettings().RightModelName}Entity",
+                            Format = $"Join{relationship.LeftModelName}To{relationship.RightModelName}Entity",
                         },
                         Parent = schema
                     }
@@ -122,7 +131,7 @@ $@"using {ns}.Models;"
             }
         }
 
-        private static IEnumerable<KeyValuePair<String, JsonProperty>> WriteManySide(JsonSchema4 schema, JsonSchema4 other)
+        private static IEnumerable<KeyValuePair<String, JsonProperty>> WriteManySide(JsonSchema4 schema, JsonSchema4 other, RelationshipSettings relationship)
         {
             var name = other.GetPluralName();
 
@@ -145,7 +154,7 @@ $@"using {ns}.Models;"
             }
         }
 
-        private static IEnumerable<KeyValuePair<String, JsonProperty>> WriteOneSide(JsonSchema4 schema, JsonSchema4 other)
+        private static IEnumerable<KeyValuePair<String, JsonProperty>> WriteOneSide(JsonSchema4 schema, JsonSchema4 other, RelationshipSettings relationship)
         {
             var name = other.GetKeyName();
 

@@ -22,20 +22,20 @@ namespace Threax.ModelGen
             return Create(ns, Model, Models);
         }
 
-        public static String GetManyToManyEntityDbContextFileName(JsonSchema4 schema)
+        public static String GetManyToManyEntityDbContextFileName(RelationshipSettings relationship)
         {
-            return $"Database/AppDbContext.{schema.GetRelationshipSettings().LeftModelName}To{schema.GetRelationshipSettings().RightModelName}Entity.cs";
+            return $"Database/AppDbContext.{relationship.LeftModelName}To{relationship.RightModelName}Entity.cs";
         }
 
-        public static String GetManyToManyEntityDbContext(JsonSchema4 schema, String ns)
+        public static String GetManyToManyEntityDbContext(RelationshipSettings relationship, String ns)
         {
             String content = null;
-            if (schema.GetRelationshipSettings().Kind == RelationKind.ManyToMany)
+            if (relationship.Kind == RelationKind.ManyToMany)
             {
                 content = AppDbContextGenerator.Create(
                     ns,
-                    $"Join{schema.GetRelationshipSettings().LeftModelName}To{schema.GetRelationshipSettings().RightModelName}",
-                    $"Join{schema.GetRelationshipSettings().LeftModelName}To{schema.GetRelationshipSettings().RightModelName}");
+                    $"Join{relationship.LeftModelName}To{relationship.RightModelName}",
+                    $"Join{relationship.LeftModelName}To{relationship.RightModelName}");
             }
             return content;
         }

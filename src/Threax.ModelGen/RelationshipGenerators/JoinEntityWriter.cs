@@ -8,28 +8,25 @@ namespace Threax.ModelGen
 {
     public static class JoinEntityWriter
     {
-        public static String GetFileName(JsonSchema4 schema)
+        public static String GetFileName(RelationshipSettings relationship)
         {
-            if (schema.GetRelationshipSettings().Kind == RelationKind.ManyToMany)
+            if (relationship.Kind == RelationKind.ManyToMany)
             {
-                return $"Database/Join{schema.GetRelationshipSettings().LeftModelName}To{schema.GetRelationshipSettings().RightModelName}Entity.Generated.cs";
+                return $"Database/Join{relationship.LeftModelName}To{relationship.RightModelName}Entity.Generated.cs";
             }
             return "Does__Not_____Exist.dne";
         }
 
-        public static String Get(JsonSchema4 schema, JsonSchema4 otherSchema, String ns)
+        public static String Get(JsonSchema4 schema, Dictionary<String, JsonSchema4> otherSchemas, RelationshipSettings relationship, String ns)
         {
-            if (otherSchema == null)
+            if (relationship.Kind != RelationKind.ManyToMany)
             {
                 return null;
             }
 
-            if (schema.GetRelationshipSettings().Kind != RelationKind.ManyToMany)
-            {
-                return null;
-            }
+            var otherSchema = otherSchemas[relationship.OtherModelName];
 
-            if (schema.GetRelationshipSettings().IsLeftModel)
+            if (relationship.IsLeftModel)
             {
                 return Create(ns,
                     NameGenerator.CreatePascal(schema.GetKeyType().Name),

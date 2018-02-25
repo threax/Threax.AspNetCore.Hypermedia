@@ -2,6 +2,7 @@
 using NJsonSchema.Annotations;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -106,20 +107,23 @@ namespace Threax.AspNetCore.Models
     /// Base class for model relationships.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class RelatedToAttribute : JsonSchemaExtensionDataAttribute
+    public class RelatedToAttribute : Attribute
     {
         internal const String Name = "x-relatedto";
 
-        public RelatedToAttribute(Type left, Type right, RelationKind kind) : base(Name, new RelationshipSettings
+        public RelatedToAttribute(Type left, Type right, RelationKind kind)
         {
-            LeftModelName = left.Name,
-            RightModelName = right.Name,
-            LeftClrName = left.FullName,
-            RightClrName = right.FullName,
-            Kind = kind
-        })
-        {
+            this.Settings = new RelationshipSettings
+            {
+                LeftModelName = left.Name,
+                RightModelName = right.Name,
+                LeftClrName = left.FullName,
+                RightClrName = right.FullName,
+                Kind = kind
+            };
         }
+
+        public RelationshipSettings Settings { get; set; }
     }
 
     public static class ModelRelationshipAttributeJsonSchemaExtensions
@@ -129,23 +133,33 @@ namespace Threax.AspNetCore.Models
         /// </summary>
         /// <param name="schema"></param>
         /// <returns></returns>
-        public static RelationshipSettings GetRelationshipSettings(this JsonSchema4 schema)
+        public static IEnumerable<RelationshipSettings> GetRelationshipSettings(this JsonSchema4 schema)
         {
             Object val = null;
-            RelationshipSettings settings;
+            IEnumerable<RelationshipSettings> settings = null;
             if (schema.ExtensionData?.TryGetValue(RelatedToAttribute.Name, out val) == true)
             {
-                settings = val as RelationshipSettings;
+                settings = val as IEnumerable<RelationshipSettings>;
             }
-            else
+            if (settings == null)
             {
-                settings = new RelationshipSettings
-                {
-                    Kind = RelationKind.None
-                };
+                settings = new RelationshipSettings[0];
             }
-            settings.IsLeftModel = settings.LeftModelName == schema.Title;
-            return settings;
+            return settings.Select(i =>
+            {
+                i.IsLeftModel = i.LeftModelName == schema.Title;
+                return i;
+            });
+        }
+
+        public static void SetRelationshipSettings(this JsonSchema4 schema, IEnumerable<RelationshipSettings> value)
+        {
+            if (schema.ExtensionData == null)
+            {
+                schema.ExtensionData = new Dictionary<String, Object>();
+            }
+
+            schema.ExtensionData[RelatedToAttribute.Name] = value;
         }
     }
 }

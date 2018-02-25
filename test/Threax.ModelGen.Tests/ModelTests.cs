@@ -16,7 +16,8 @@ namespace Threax.ModelGen.Tests
     {
         public ModelTests()
         {
-            this.otherSchema = Task.Run(async () => await TypeToSchemaGenerator.CreateSchema(typeof(TO))).GetAwaiter().GetResult();
+            var otherSchema = Task.Run(async () => await TypeToSchemaGenerator.CreateSchema(typeof(TO))).GetAwaiter().GetResult();
+            this.otherSchema[otherSchema.Title] = otherSchema;
         }
     }
 
@@ -24,7 +25,7 @@ namespace Threax.ModelGen.Tests
     {
         private const String AppNamespace = "Test";
         private JsonSchema4 schema;
-        protected JsonSchema4 otherSchema;
+        protected Dictionary<String, JsonSchema4> otherSchema = new Dictionary<string, JsonSchema4>();
         protected bool WriteTestFiles = false;
 
         public ModelTests()
@@ -356,33 +357,40 @@ namespace Threax.ModelGen.Tests
         [Fact]
         public void JoinEntityGenerated()
         {
-            TestCode
-            (
-                JoinEntityWriter.GetFileName(schema),
-                JoinEntityWriter.Get(schema, otherSchema, AppNamespace)
-            );
+            foreach (var relationship in schema.GetRelationshipSettings())
+            {
+                TestCode
+                (
+                    JoinEntityWriter.GetFileName(relationship),
+                    JoinEntityWriter.Get(schema, otherSchema, relationship, AppNamespace)
+                );
+            }
         }
 
         [Fact]
         public void JoinEntity()
         {
-            TestCode
-            (
-                PartialTypeGenerator.GetJoinEntityFileName(schema),
-                PartialTypeGenerator.GetJoinEntity(schema, AppNamespace)
-            );
+            foreach (var relationship in schema.GetRelationshipSettings())
+            {
+                TestCode
+                (
+                    PartialTypeGenerator.GetJoinEntityFileName(relationship),
+                    PartialTypeGenerator.GetJoinEntity(schema, relationship, AppNamespace)
+                );
+            }
         }
 
         [Fact]
         public void JoinEntityDbContext()
         {
-
-
-            TestCode
-            (
-                AppDbContextGenerator.GetManyToManyEntityDbContextFileName(schema),
-                AppDbContextGenerator.GetManyToManyEntityDbContext(schema, AppNamespace)
-            );
+            foreach (var relationship in schema.GetRelationshipSettings())
+            {
+                TestCode
+                (
+                    AppDbContextGenerator.GetManyToManyEntityDbContextFileName(relationship),
+                    AppDbContextGenerator.GetManyToManyEntityDbContext(relationship, AppNamespace)
+                );
+            }
         }
     }
 }

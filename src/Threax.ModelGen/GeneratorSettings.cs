@@ -36,17 +36,21 @@ namespace Threax.ModelGen
 
                     Schema = await TypeToSchemaGenerator.CreateSchema(type);
 
-                    if(Schema.GetRelationshipSettings().Kind != RelationKind.None)
+                    foreach (var relationship in Schema.GetRelationshipSettings())
                     {
-                        var otherClrName = Schema.GetRelationshipSettings().OtherModelClrName;
-                        var otherType = assembly.GetType(otherClrName);
-
-                        if(otherType == null)
+                        if (relationship.Kind != RelationKind.None)
                         {
-                            throw new InvalidOperationException($"Cannot find type {otherClrName}");
-                        }
+                            var otherClrName = relationship.OtherModelClrName;
+                            var otherType = assembly.GetType(otherClrName);
 
-                        OtherSchema = await TypeToSchemaGenerator.CreateSchema(otherType);
+                            if (otherType == null)
+                            {
+                                throw new InvalidOperationException($"Cannot find related type {otherClrName}");
+                            }
+
+                            var otherSchema = await TypeToSchemaGenerator.CreateSchema(otherType);
+                            OtherSchemas[otherSchema.Title] = otherSchema;
+                        }
                     }
                 }
                 catch(FileLoadException ex)
@@ -104,7 +108,7 @@ namespace Threax.ModelGen
 
         public JsonSchema4 Schema { get; set; }
 
-        public JsonSchema4 OtherSchema { get; set; }
+        public Dictionary<String, JsonSchema4> OtherSchemas { get; private set; } = new Dictionary<string, JsonSchema4>();
 
         /// <summary>
         /// Set this to true to force the ui classes to write.

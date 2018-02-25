@@ -13,11 +13,11 @@ namespace Threax.ModelGen
             return $"Database/{schema.Title}Entity.cs";
         }
 
-        public static String GetJoinEntityFileName(JsonSchema4 schema)
+        public static String GetJoinEntityFileName(RelationshipSettings relationship)
         {
-            if (schema.GetRelationshipSettings().Kind == RelationKind.ManyToMany)
+            if (relationship.Kind == RelationKind.ManyToMany)
             {
-                return $"Database/Join{schema.GetRelationshipSettings().LeftModelName}To{schema.GetRelationshipSettings().RightModelName}Entity.cs";
+                return $"Database/Join{relationship.LeftModelName}To{relationship.RightModelName}Entity.cs";
             }
             return $"Does__Not_____Exist.dne";
         }
@@ -32,11 +32,11 @@ namespace Threax.ModelGen
             return $"InputModels/{schema.Title}Query.cs";
         }
 
-        public static String GetJoinEntity(JsonSchema4 schema, String ns)
+        public static String GetJoinEntity(JsonSchema4 schema, RelationshipSettings relationship, String ns)
         {
-            if (schema.GetRelationshipSettings().Kind == RelationKind.ManyToMany)
+            if (relationship.Kind == RelationKind.ManyToMany)
             {
-                return Create($"Join{schema.GetRelationshipSettings().LeftModelName}To{schema.GetRelationshipSettings().RightModelName}Entity", "", ns + ".Database", "", schema.GetExtraNamespaces(StrConstants.FileNewline));
+                return Create($"Join{relationship.LeftModelName}To{relationship.RightModelName}Entity", "", ns + ".Database", "", schema.GetExtraNamespaces(StrConstants.FileNewline));
             }
             return null;
         }
