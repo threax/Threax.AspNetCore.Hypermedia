@@ -14,19 +14,23 @@ namespace Threax.ModelGen
             {
                 return $"Database/Join{schema.GetLeftModelName()}To{schema.GetRightModelName()}Entity.Generated.cs";
             }
-            return null;
+            return "Does__Not_____Exist.dne";
         }
 
         public static String Get(JsonSchema4 schema, JsonSchema4 otherSchema, String ns)
         {
-            if(otherSchema == null)
+            if (otherSchema == null)
+            {
+                return null;
+            }
+
+            if (schema.GetRelationshipKind() != RelationKind.ManyToMany)
             {
                 return null;
             }
 
             if (schema.IsLeftModel())
             {
-
                 return Create(ns,
                     NameGenerator.CreatePascal(schema.GetKeyType().Name),
                     NameGenerator.CreatePascal(schema.GetKeyName()),

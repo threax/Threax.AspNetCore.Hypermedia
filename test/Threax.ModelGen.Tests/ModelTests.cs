@@ -40,11 +40,6 @@ namespace Threax.ModelGen.Tests
         /// <param name="code">The code to test.</param>
         private void TestCode(String fileName, String code)
         {
-            if(fileName == null)
-            {
-                return;
-            }
-
             if (WriteTestFiles)
             {
                 if (code != null)
