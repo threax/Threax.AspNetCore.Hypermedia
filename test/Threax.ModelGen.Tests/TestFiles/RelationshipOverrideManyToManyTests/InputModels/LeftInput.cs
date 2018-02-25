@@ -6,17 +6,12 @@ using System.Threading.Tasks;
 using Halcyon.HAL.Attributes;
 using Threax.AspNetCore.Halcyon.Ext;
 using Threax.AspNetCore.Models;
-using Test.Models;
-using Threax.AspNetCore.Halcyon.Ext.ValueProviders;
 
-namespace Test.InputModels 
+namespace Test.InputModels
 {
-    [HalModel]
-    public partial class RightInput : IRight
+    public partial class LeftInput
     {
-        public String Info { get; set; }
-
-        public List<Guid> LeftIds { get; set; }
-
+        //You can add your own customizations here. These will not be overwritten by the model generator.
+        //See LeftInput.Generated for the generated code
     }
 }

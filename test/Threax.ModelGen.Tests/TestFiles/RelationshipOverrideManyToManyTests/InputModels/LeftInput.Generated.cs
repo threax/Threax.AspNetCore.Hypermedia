@@ -12,11 +12,12 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;
 namespace Test.InputModels 
 {
     [HalModel]
-    public partial class RightInput : IRight
+    public partial class LeftInput : ILeft, ILeft_RightIds
     {
         public String Info { get; set; }
 
-        public List<Guid> LeftIds { get; set; }
+        [Display(Name = "Cool Right Things")]
+        public List<Guid> RightIds { get; set; }
 
     }
 }

@@ -13,12 +13,13 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;
 
 namespace Test.ViewModels 
 {
-       public partial class Left : ILeft, ILeftId, ICreatedModified
+       public partial class Left : ILeft, ILeftId, ILeft_RightIds, ICreatedModified
        {
         public Guid LeftId { get; set; }
 
         public String Info { get; set; }
 
+        [Display(Name = "Cool Right Things")]
         public List<Guid> RightIds { get; set; }
 
         [UiOrder(0, 2147483646)]

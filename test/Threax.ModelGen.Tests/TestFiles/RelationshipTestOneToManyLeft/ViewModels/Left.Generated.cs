@@ -19,7 +19,7 @@ namespace Test.ViewModels
 
         public String Info { get; set; }
 
-        public List<Guid> Rights { get; set; }
+        public List<Guid> RightIds { get; set; }
 
         [UiOrder(0, 2147483646)]
         public DateTime Created { get; set; }

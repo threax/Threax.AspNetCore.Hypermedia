@@ -90,7 +90,7 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
 
         private static IEnumerable<KeyValuePair<String,JsonProperty>> WriteManySide(JsonSchema4 schema, JsonSchema4 other)
         {
-            var name = other.GetPluralName();
+            var name = other.GetKeyName() + "s"; //Should be xxId so adding s should be fine
 
             if (!schema.Properties.ContainsKey(name)) //Don't write if schema defined property.
             {
@@ -100,11 +100,7 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
                     value: new JsonProperty()
                     {
                         Type = JsonObjectType.Array,
-                        Item = new JsonSchema4()
-                        {
-                            Type = JsonObjectType.Object,
-                            Format = "Guid",
-                        },
+                        Item = TypeToSchemaGenerator.CreateSchema(other.GetKeyType()).GetAwaiter().GetResult(),
                         Parent = schema
                     }
                 );
@@ -117,13 +113,15 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
 
             if (!schema.Properties.ContainsKey(name)) //Don't write if schema defined property.
             {
+                var propSchema = TypeToSchemaGenerator.CreateSchema(other.GetKeyType()).GetAwaiter().GetResult();
+
                 yield return new KeyValuePair<string, JsonProperty>
                 (
-                    key: other.Title,
+                    key: name,
                     value: new JsonProperty()
                     {
-                        Type = JsonObjectType.Object,
-                        Format = "Guid",
+                        Type = propSchema.Type,
+                        Format = propSchema.Format,
                         Parent = schema
                     }
                 );

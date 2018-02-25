@@ -16,7 +16,7 @@ namespace Test.InputModels
     {
         public String Info { get; set; }
 
-        public List<Guid> Lefts { get; set; }
+        public List<Guid> LeftIds { get; set; }
 
     }
 }

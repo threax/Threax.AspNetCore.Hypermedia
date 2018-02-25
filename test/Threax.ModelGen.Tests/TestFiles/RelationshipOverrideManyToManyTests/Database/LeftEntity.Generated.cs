@@ -8,23 +8,20 @@ using Threax.AspNetCore.Halcyon.Ext;
 using Threax.AspNetCore.Models;
 using Threax.AspNetCore.Tracking;
 using Test.Models;
-using Test.Controllers.Api;
-using Threax.AspNetCore.Halcyon.Ext.ValueProviders;
 
-namespace Test.ViewModels 
+namespace Test.Database 
 {
-       public partial class Left : ILeft, ILeftId, ICreatedModified
-       {
+    public partial class LeftEntity : ILeft, ILeftId, ICreatedModified
+    {
+        [Key]
         public Guid LeftId { get; set; }
 
         public String Info { get; set; }
 
-        public List<Guid> RightIds { get; set; }
+        public List<JoinLeftToRightEntity> JoinLeftToRight { get; set; }
 
-        [UiOrder(0, 2147483646)]
         public DateTime Created { get; set; }
 
-        [UiOrder(0, 2147483647)]
         public DateTime Modified { get; set; }
 
     }

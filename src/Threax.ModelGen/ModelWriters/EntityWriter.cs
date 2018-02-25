@@ -153,7 +153,7 @@ $@"using {ns}.Models;"
             {
                 yield return new KeyValuePair<string, JsonProperty>
                 (
-                    key: other.GetKeyName(),
+                    key: name,
                     value: new JsonProperty()
                     {
                         Type = JsonObjectType.Object,
@@ -169,7 +169,7 @@ $@"using {ns}.Models;"
             {
                 yield return new KeyValuePair<string, JsonProperty>
                 (
-                    key: other.Title,
+                    key: name,
                     value: new JsonProperty()
                     {
                         Type = JsonObjectType.Object,
@@ -178,8 +178,6 @@ $@"using {ns}.Models;"
                     }
                 );
             }
-
-
         }
     }
 }
