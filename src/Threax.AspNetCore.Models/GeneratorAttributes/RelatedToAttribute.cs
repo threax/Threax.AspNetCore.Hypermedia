@@ -28,23 +28,92 @@ namespace Threax.AspNetCore.Models
     {
         internal const String Name = "x-relatedto";
 
-        internal class Settings
+        public class Settings
         {
-            public String Left { get; set; }
+            public String LeftModelName { get; set; }
 
             public String LeftClrName { get; set; }
 
-            public String Right { get; set; }
+            public String RightModelName { get; set; }
 
             public String RightClrName { get; set; }
 
             public RelationKind Kind { get; set; }
+
+            public bool IsLeftModel { get; set; }
+
+            /// <summary>
+            /// Get the name of the model on the other side of the relationship.
+            /// </summary>
+            /// <returns></returns>
+            public String OtherModelName
+            {
+                get
+                {
+                    if (Kind == RelationKind.None)
+                    {
+                        return null;
+                    }
+
+                    if (IsLeftModel)
+                    {
+                        return RightModelName;
+                    }
+
+                    return LeftModelName;
+                }
+            }
+
+            /// <summary>
+            /// Get the name of the model on the other side of the relationship.
+            /// </summary>
+            /// <returns></returns>
+            public String OtherModelClrName
+            {
+                get
+                {
+                    if (this.Kind == RelationKind.None)
+                    {
+                        return null;
+                    }
+
+                    if (IsLeftModel)
+                    {
+                        return RightClrName;
+                    }
+
+                    return LeftClrName;
+                }
+            }
+
+            /// <summary>
+            /// Get the name of the side of the relationship, either "Left" or "Right"
+            /// will be null if the RelationKind is None.
+            /// </summary>
+            /// <returns></returns>
+            public String SideName
+            {
+                get
+                {
+                    if (this.Kind == RelationKind.None)
+                    {
+                        return null;
+                    }
+
+                    if (IsLeftModel)
+                    {
+                        return "Left";
+                    }
+
+                    return "Right";
+                }
+            }
         }
 
         public RelatedToAttribute(Type left, Type right, RelationKind kind) : base(Name, new Settings
         {
-            Left = left.Name,
-            Right = right.Name,
+            LeftModelName = left.Name,
+            RightModelName = right.Name,
             LeftClrName = left.FullName,
             RightClrName = right.FullName,
             Kind = kind
@@ -69,166 +138,23 @@ namespace Threax.AspNetCore.Models
         /// </summary>
         /// <param name="schema"></param>
         /// <returns></returns>
-        public static String GetLeftModelName(this JsonSchema4 schema)
+        public static RelatedToAttribute.Settings GetRelationshipSettings(this JsonSchema4 schema)
         {
             Object val = null;
+            RelatedToAttribute.Settings settings;
             if (schema.ExtensionData?.TryGetValue(RelatedToAttribute.Name, out val) == true)
             {
-                var settings = val as RelatedToAttribute.Settings;
-                if (settings != null)
+                settings = val as RelatedToAttribute.Settings;
+            }
+            else
+            {
+                settings = new RelatedToAttribute.Settings()
                 {
-                    return settings.Left;
-                }
+                    Kind = RelationKind.None
+                };
             }
-            return null;
-        }
-
-        /// <summary>
-        /// Get the clr name of the model on the left side of the relationship.
-        /// </summary>
-        /// <param name="schema"></param>
-        /// <returns></returns>
-        public static String GetLeftModelClrName(this JsonSchema4 schema)
-        {
-            Object val = null;
-            if (schema.ExtensionData?.TryGetValue(RelatedToAttribute.Name, out val) == true)
-            {
-                var settings = val as RelatedToAttribute.Settings;
-                if (settings != null)
-                {
-                    return settings.LeftClrName;
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Get the name of the model on the right side of the relationship.
-        /// </summary>
-        /// <param name="schema"></param>
-        /// <returns></returns>
-        public static String GetRightModelName(this JsonSchema4 schema)
-        {
-            Object val = null;
-            if (schema.ExtensionData?.TryGetValue(RelatedToAttribute.Name, out val) == true)
-            {
-                var settings = val as RelatedToAttribute.Settings;
-                if (settings != null)
-                {
-                    return settings.Right;
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Get the clr name of the model on the right side of the relationship.
-        /// </summary>
-        /// <param name="schema"></param>
-        /// <returns></returns>
-        public static String GetRightModelClrName(this JsonSchema4 schema)
-        {
-            Object val = null;
-            if (schema.ExtensionData?.TryGetValue(RelatedToAttribute.Name, out val) == true)
-            {
-                var settings = val as RelatedToAttribute.Settings;
-                if (settings != null)
-                {
-                    return settings.RightClrName;
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Get the name of the model on the other side of the relationship.
-        /// </summary>
-        /// <param name="schema"></param>
-        /// <returns></returns>
-        public static String GetOtherModelName(this JsonSchema4 schema)
-        {
-            if(schema.GetRelationshipKind() == RelationKind.None)
-            {
-                return null;
-            }
-
-            if (schema.IsLeftModel())
-            {
-                return schema.GetRightModelName();
-            }
-
-            return schema.GetLeftModelName();
-        }
-
-        /// <summary>
-        /// Get the name of the model on the other side of the relationship.
-        /// </summary>
-        /// <param name="schema"></param>
-        /// <returns></returns>
-        public static String GetOtherModelClrName(this JsonSchema4 schema)
-        {
-            if (schema.GetRelationshipKind() == RelationKind.None)
-            {
-                return null;
-            }
-
-            if (schema.IsLeftModel())
-            {
-                return schema.GetRightModelClrName();
-            }
-
-            return schema.GetLeftModelClrName();
-        }
-
-        /// <summary>
-        /// Get the name of the side of the relationship, either "Left" or "Right"
-        /// will be null if the RelationKind is None.
-        /// </summary>
-        /// <param name="schema"></param>
-        /// <returns></returns>
-        public static String GetSideName(this JsonSchema4 schema)
-        {
-            if (schema.GetRelationshipKind() == RelationKind.None)
-            {
-                return null;
-            }
-
-            if (schema.IsLeftModel())
-            {
-                return "Left";
-            }
-
-            return "Right";
-        }
-
-        /// <summary>
-        /// Determine if this is the left model, does not have any real meaning if the relationship is none.
-        /// </summary>
-        /// <param name="schema"></param>
-        /// <returns></returns>
-        public static bool IsLeftModel(this JsonSchema4 schema)
-        {
-            var leftModelName = GetLeftModelName(schema);
-            return leftModelName == schema.Title;
-        }
-
-        /// <summary>
-        /// Get the kind of relationship this is.
-        /// </summary>
-        /// <param name="schema"></param>
-        /// <returns></returns>
-        public static RelationKind GetRelationshipKind(this JsonSchema4 schema)
-        {
-            Object val = null;
-            if (schema.ExtensionData?.TryGetValue(RelatedToAttribute.Name, out val) == true)
-            {
-                var settings = val as RelatedToAttribute.Settings;
-                if (settings != null)
-                {
-                    return settings.Kind;
-                }
-            }
-            return RelationKind.None;
+            settings.IsLeftModel = settings.LeftModelName == schema.Title;
+            return settings;
         }
     }
 }

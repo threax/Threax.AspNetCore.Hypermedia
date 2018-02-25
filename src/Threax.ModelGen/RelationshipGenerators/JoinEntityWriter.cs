@@ -10,9 +10,9 @@ namespace Threax.ModelGen
     {
         public static String GetFileName(JsonSchema4 schema)
         {
-            if (schema.GetRelationshipKind() == RelationKind.ManyToMany)
+            if (schema.GetRelationshipSettings().Kind == RelationKind.ManyToMany)
             {
-                return $"Database/Join{schema.GetLeftModelName()}To{schema.GetRightModelName()}Entity.Generated.cs";
+                return $"Database/Join{schema.GetRelationshipSettings().LeftModelName}To{schema.GetRelationshipSettings().RightModelName}Entity.Generated.cs";
             }
             return "Does__Not_____Exist.dne";
         }
@@ -24,12 +24,12 @@ namespace Threax.ModelGen
                 return null;
             }
 
-            if (schema.GetRelationshipKind() != RelationKind.ManyToMany)
+            if (schema.GetRelationshipSettings().Kind != RelationKind.ManyToMany)
             {
                 return null;
             }
 
-            if (schema.IsLeftModel())
+            if (schema.GetRelationshipSettings().IsLeftModel)
             {
                 return Create(ns,
                     NameGenerator.CreatePascal(schema.GetKeyType().Name),

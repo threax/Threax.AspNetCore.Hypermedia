@@ -51,10 +51,10 @@ namespace {ns}
     {
         public static String Get(JsonSchema4 schema, String ns)
         {
-            if (schema.IsLeftModel())
+            if (schema.GetRelationshipSettings().IsLeftModel)
             {
                 return UnevenRelationshipSideGenerator.CreateMany(ns + ".Database",
-                    NameGenerator.CreatePascal(schema.GetOtherModelName()),
+                    NameGenerator.CreatePascal(schema.GetRelationshipSettings().OtherModelName),
                     NameGenerator.CreatePascal(schema.Title),
                     NameGenerator.CreatePascal(schema.GetKeyType().Name),
                     NameGenerator.CreatePascal(schema.GetKeyName()),
@@ -63,7 +63,7 @@ namespace {ns}
             else
             {
                 return UnevenRelationshipSideGenerator.CreateOne(ns,
-                    NameGenerator.CreatePascal(schema.GetOtherModelName()),
+                    NameGenerator.CreatePascal(schema.GetRelationshipSettings().OtherModelName),
                     NameGenerator.CreatePascal(schema.Title),
                     NameGenerator.CreatePascal(schema.GetPluralName()),
                     NameGenerator.CreatePascal(schema.GetKeyType().Name),
@@ -76,10 +76,10 @@ namespace {ns}
     {
         public static String Get(JsonSchema4 schema, String ns)
         {
-            if (schema.IsLeftModel())
+            if (schema.GetRelationshipSettings().IsLeftModel)
             {
                 return UnevenRelationshipSideGenerator.CreateOne(ns,
-                    NameGenerator.CreatePascal(schema.GetOtherModelName()),
+                    NameGenerator.CreatePascal(schema.GetRelationshipSettings().OtherModelName),
                     NameGenerator.CreatePascal(schema.Title),
                     NameGenerator.CreatePascal(schema.GetPluralName()),
                     NameGenerator.CreatePascal(schema.GetKeyType().Name),
@@ -88,7 +88,7 @@ namespace {ns}
             else
             {
                 return UnevenRelationshipSideGenerator.CreateMany(ns + ".Database",
-                    NameGenerator.CreatePascal(schema.GetOtherModelName()),
+                    NameGenerator.CreatePascal(schema.GetRelationshipSettings().OtherModelName),
                     NameGenerator.CreatePascal(schema.Title),
                     NameGenerator.CreatePascal(schema.GetKeyType().Name),
                     NameGenerator.CreatePascal(schema.GetKeyName()),

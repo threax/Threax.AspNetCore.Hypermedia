@@ -60,9 +60,9 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
 
         private static IEnumerable<KeyValuePair<String, JsonProperty>> AdditionalProperties(JsonSchema4 schema, JsonSchema4 other)
         {
-            if (schema.IsLeftModel())
+            if (schema.GetRelationshipSettings().IsLeftModel)
             {
-                switch (schema.GetRelationshipKind())
+                switch (schema.GetRelationshipSettings().Kind)
                 {
                     case RelationKind.ManyToMany:
                     case RelationKind.OneToMany:
@@ -74,7 +74,7 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
             }
             else
             {
-                switch (schema.GetRelationshipKind())
+                switch (schema.GetRelationshipSettings().Kind)
                 {
                     case RelationKind.ManyToMany:
                     case RelationKind.ManyToOne:

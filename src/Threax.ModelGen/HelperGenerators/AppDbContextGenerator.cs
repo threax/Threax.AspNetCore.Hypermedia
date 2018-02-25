@@ -24,18 +24,18 @@ namespace Threax.ModelGen
 
         public static String GetManyToManyEntityDbContextFileName(JsonSchema4 schema)
         {
-            return $"Database/AppDbContext.{schema.GetLeftModelName()}To{schema.GetRightModelName()}Entity.cs";
+            return $"Database/AppDbContext.{schema.GetRelationshipSettings().LeftModelName}To{schema.GetRelationshipSettings().RightModelName}Entity.cs";
         }
 
         public static String GetManyToManyEntityDbContext(JsonSchema4 schema, String ns)
         {
             String content = null;
-            if (schema.GetRelationshipKind() == RelationKind.ManyToMany)
+            if (schema.GetRelationshipSettings().Kind == RelationKind.ManyToMany)
             {
                 content = AppDbContextGenerator.Create(
                     ns,
-                    $"Join{schema.GetLeftModelName()}To{schema.GetRightModelName()}",
-                    $"Join{schema.GetLeftModelName()}To{schema.GetRightModelName()}");
+                    $"Join{schema.GetRelationshipSettings().LeftModelName}To{schema.GetRelationshipSettings().RightModelName}",
+                    $"Join{schema.GetRelationshipSettings().LeftModelName}To{schema.GetRelationshipSettings().RightModelName}");
             }
             return content;
         }

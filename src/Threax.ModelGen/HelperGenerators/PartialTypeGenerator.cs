@@ -15,9 +15,9 @@ namespace Threax.ModelGen
 
         public static String GetJoinEntityFileName(JsonSchema4 schema)
         {
-            if (schema.GetRelationshipKind() == RelationKind.ManyToMany)
+            if (schema.GetRelationshipSettings().Kind == RelationKind.ManyToMany)
             {
-                return $"Database/Join{schema.GetLeftModelName()}To{schema.GetRightModelName()}Entity.cs";
+                return $"Database/Join{schema.GetRelationshipSettings().LeftModelName}To{schema.GetRelationshipSettings().RightModelName}Entity.cs";
             }
             return $"Does__Not_____Exist.dne";
         }
@@ -34,9 +34,9 @@ namespace Threax.ModelGen
 
         public static String GetJoinEntity(JsonSchema4 schema, String ns)
         {
-            if (schema.GetRelationshipKind() == RelationKind.ManyToMany)
+            if (schema.GetRelationshipSettings().Kind == RelationKind.ManyToMany)
             {
-                return Create($"Join{schema.GetLeftModelName()}To{schema.GetRightModelName()}Entity", "", ns + ".Database", "", schema.GetExtraNamespaces(StrConstants.FileNewline));
+                return Create($"Join{schema.GetRelationshipSettings().LeftModelName}To{schema.GetRelationshipSettings().RightModelName}Entity", "", ns + ".Database", "", schema.GetExtraNamespaces(StrConstants.FileNewline));
             }
             return null;
         }

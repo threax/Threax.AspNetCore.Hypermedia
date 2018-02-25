@@ -11,7 +11,7 @@ namespace Threax.ModelGen
         public static String Get(JsonSchema4 schema, String ns)
         {
             return CreateOne(ns,
-                    NameGenerator.CreatePascal(schema.GetOtherModelName()),
+                    NameGenerator.CreatePascal(schema.GetRelationshipSettings().OtherModelName),
                     NameGenerator.CreatePascal(schema.Title),
                     NameGenerator.CreatePascal(schema.GetKeyType().Name),
                     NameGenerator.CreatePascal(schema.GetKeyName()));

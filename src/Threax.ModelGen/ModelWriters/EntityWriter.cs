@@ -68,9 +68,9 @@ $@"using {ns}.Models;"
 
         private static IEnumerable<KeyValuePair<String, JsonProperty>> AdditionalProperties(JsonSchema4 schema, JsonSchema4 other)
         {
-            if (schema.IsLeftModel())
+            if (schema.GetRelationshipSettings().IsLeftModel)
             {
-                switch (schema.GetRelationshipKind())
+                switch (schema.GetRelationshipSettings().Kind)
                 {
                     case RelationKind.ManyToMany:
                         return WriteManyManySide(schema, other);
@@ -84,7 +84,7 @@ $@"using {ns}.Models;"
             }
             else
             {
-                switch (schema.GetRelationshipKind())
+                switch (schema.GetRelationshipSettings().Kind)
                 {
                     case RelationKind.ManyToMany:
                         return WriteManyManySide(schema, other);
@@ -101,7 +101,7 @@ $@"using {ns}.Models;"
 
         private static IEnumerable<KeyValuePair<String, JsonProperty>> WriteManyManySide(JsonSchema4 schema, JsonSchema4 other)
         {
-            var name = $"Join{schema.GetLeftModelName()}To{schema.GetRightModelName()}";
+            var name = $"Join{schema.GetRelationshipSettings().LeftModelName}To{schema.GetRelationshipSettings().RightModelName}";
 
             if (!schema.Properties.ContainsKey(name)) //Don't write if schema defined property.
             {
@@ -114,7 +114,7 @@ $@"using {ns}.Models;"
                         Item = new JsonSchema4()
                         {
                             Type = JsonObjectType.Object,
-                            Format = $"Join{schema.GetLeftModelName()}To{schema.GetRightModelName()}Entity",
+                            Format = $"Join{schema.GetRelationshipSettings().LeftModelName}To{schema.GetRelationshipSettings().RightModelName}Entity",
                         },
                         Parent = schema
                     }
