@@ -199,6 +199,7 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                 DeleteFile(settings.AppOutDir, PartialTypeGenerator.GetEntityFileName(settings.Schema));
                 DeleteFile(settings.AppOutDir, EntityWriter.GetFileName(settings.Schema));
                 DeleteFile(settings.AppOutDir, JoinEntityWriter.GetFileName(settings.Schema));
+                DeleteFile(settings.AppOutDir, PartialTypeGenerator.GetJoinEntityFileName(settings.Schema));
                 DeleteFile(settings.AppOutDir, AppDbContextGenerator.GetManyToManyEntityDbContextFileName(settings.Schema));
                 DeleteFile(settings.AppOutDir, PartialTypeGenerator.GetInputFileName(settings.Schema));
                 DeleteFile(settings.AppOutDir, InputModelWriter.GetFileName(settings.Schema));
