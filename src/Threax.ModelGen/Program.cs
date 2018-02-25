@@ -130,7 +130,8 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
 
                     if (settings.Schema.CreateEntity())
                     {
-                        WriteFile(settings.AppOutDir, PartialTypeGenerator.GetEntityFileName(settings.Schema), PartialTypeGenerator.Get(settings.Schema, settings.AppNamespace + ".Database", "Entity", settings.Schema.GetExtraNamespaces(StrConstants.FileNewline)), false);
+                        WriteFile(settings.AppOutDir, PartialTypeGenerator.GetEntityFileName(settings.Schema), PartialTypeGenerator.GetEntity(settings.Schema, settings.AppNamespace), false);
+                        WriteFile(settings.AppOutDir, PartialTypeGenerator.GetJoinEntityFileName(settings.Schema), PartialTypeGenerator.GetJoinEntity(settings.Schema, settings.AppNamespace), false);
                         WriteFile(settings.AppOutDir, EntityWriter.GetFileName(settings.Schema), EntityWriter.Create(settings.Schema, settings.OtherSchema, settings.AppNamespace), true);
                         WriteFile(settings.AppOutDir, AppDbContextGenerator.GetFileName(settings.Schema), AppDbContextGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);
                         WriteFile(settings.AppOutDir, JoinEntityWriter.GetFileName(settings.Schema), JoinEntityWriter.Get(settings.Schema, settings.OtherSchema, settings.AppNamespace), true);
@@ -139,11 +140,11 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
 
                     if (settings.Schema.CreateInputModel())
                     {
-                        WriteFile(settings.AppOutDir, PartialTypeGenerator.GetInputFileName(settings.Schema), PartialTypeGenerator.Get(settings.Schema, settings.AppNamespace + ".InputModels", "Input", settings.Schema.GetExtraNamespaces(StrConstants.FileNewline)), false);
+                        WriteFile(settings.AppOutDir, PartialTypeGenerator.GetInputFileName(settings.Schema), PartialTypeGenerator.GetInput(settings.Schema, settings.AppNamespace), false);
                         WriteFile(settings.AppOutDir, InputModelWriter.GetFileName(settings.Schema), InputModelWriter.Create(settings.Schema, settings.OtherSchema, settings.AppNamespace), true);
                     }
 
-                    WriteFile(settings.AppOutDir, PartialTypeGenerator.GetQueryFileName(settings.Schema), PartialTypeGenerator.Get(settings.Schema, settings.AppNamespace + ".InputModels", "Query", settings.Schema.GetExtraNamespaces(StrConstants.FileNewline)), false);
+                    WriteFile(settings.AppOutDir, PartialTypeGenerator.GetQueryFileName(settings.Schema), PartialTypeGenerator.GetQuery(settings.Schema, settings.AppNamespace), false);
                     WriteFile(settings.AppOutDir, QueryModelWriter.GetFileName(settings.Schema), QueryModelWriter.Get(settings.Schema, settings.AppNamespace), true);
 
                     if (settings.Schema.CreateViewModel())

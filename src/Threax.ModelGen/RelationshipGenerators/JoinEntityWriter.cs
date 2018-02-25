@@ -12,7 +12,7 @@ namespace Threax.ModelGen
         {
             if (schema.GetRelationshipKind() == RelationKind.ManyToMany)
             {
-                return $"Database/Join{schema.GetLeftModelName()}To{schema.GetRightModelName()}Entity.cs";
+                return $"Database/Join{schema.GetLeftModelName()}To{schema.GetRightModelName()}Entity.Generated.cs";
             }
             return null;
         }

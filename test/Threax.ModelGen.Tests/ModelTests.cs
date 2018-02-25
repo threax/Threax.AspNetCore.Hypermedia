@@ -93,7 +93,7 @@ namespace Threax.ModelGen.Tests
             TestCode
             (
                 PartialTypeGenerator.GetEntityFileName(schema),
-                PartialTypeGenerator.Get(schema, AppNamespace + ".Database", "Entity", schema.GetExtraNamespaces(StrConstants.FileNewline))
+                PartialTypeGenerator.GetEntity(schema, AppNamespace)
             );
         }
 
@@ -113,7 +113,7 @@ namespace Threax.ModelGen.Tests
             TestCode
             (
                 PartialTypeGenerator.GetInputFileName(schema),
-                PartialTypeGenerator.Get(schema, AppNamespace + ".InputModels", "Input", schema.GetExtraNamespaces(StrConstants.FileNewline))
+                PartialTypeGenerator.GetInput(schema, AppNamespace)
             );
         }
 
@@ -133,7 +133,7 @@ namespace Threax.ModelGen.Tests
             TestCode
             (
                 PartialTypeGenerator.GetQueryFileName(schema),
-                PartialTypeGenerator.Get(schema, AppNamespace + ".InputModels", "Query", schema.GetExtraNamespaces(StrConstants.FileNewline))
+                PartialTypeGenerator.GetQuery(schema, AppNamespace)
             );
         }
 
@@ -359,7 +359,7 @@ namespace Threax.ModelGen.Tests
         }
 
         [Fact]
-        public void RelationshipEntity()
+        public void JoinEntityGenerated()
         {
             TestCode
             (
@@ -369,7 +369,17 @@ namespace Threax.ModelGen.Tests
         }
 
         [Fact]
-        public void RelationshipDbContext()
+        public void JoinEntity()
+        {
+            TestCode
+            (
+                PartialTypeGenerator.GetJoinEntityFileName(schema),
+                PartialTypeGenerator.GetJoinEntity(schema, AppNamespace)
+            );
+        }
+
+        [Fact]
+        public void JoinEntityDbContext()
         {
 
 
