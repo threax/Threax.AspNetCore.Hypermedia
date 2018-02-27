@@ -74,12 +74,12 @@ namespace Threax.ModelGen.Tests.Models
 {
     public class RelationshipTestOneToManyLeft : ModelTests<Relationships.OneToMany.Left, Relationships.OneToMany.Right>
     {
-       
+
     }
 
     public class RelationshipTestOneToManyRight : ModelTests<Relationships.OneToMany.Right, Relationships.OneToMany.Left>
     {
-        
+
     }
 
     public class RelationshipTestManyToOneLeft : ModelTests<Relationships.ManyToOne.Left, Relationships.ManyToOne.Right>
