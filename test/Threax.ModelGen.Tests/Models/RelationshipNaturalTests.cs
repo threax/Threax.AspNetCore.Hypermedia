@@ -15,6 +15,8 @@ namespace Threax.ModelGen.Tests.Models.RelationshipNatural.OneToMany
     public class Left
     {
         public String Info { get; set; }
+
+        public Right Right { get; set; }
     }
 
     public class Right
@@ -37,6 +39,8 @@ namespace Threax.ModelGen.Tests.Models.RelationshipNatural.ManyToOne
     public class Right
     {
         public String Info { get; set; }
+
+        public Left Left { get; set; }
     }
 }
 
@@ -76,43 +80,43 @@ namespace Threax.ModelGen.Tests.Models.RelationshipNatural.ManyToMany
 
 namespace Threax.ModelGen.Tests.Models
 {
-    //public class RelationshipTestOneToManyLeft : ModelTests<RelationshipNatural.OneToMany.Left, RelationshipNatural.OneToMany.Right>
-    //{
-       
-    //}
+    public class RelationshipNaturalTestOneToManyLeft : ModelTests<RelationshipNatural.OneToMany.Left, RelationshipNatural.OneToMany.Right>
+    {
 
-    //public class RelationshipTestOneToManyRight : ModelTests<RelationshipNatural.OneToMany.Right, RelationshipNatural.OneToMany.Left>
-    //{
-        
-    //}
+    }
 
-    //public class RelationshipTestManyToOneLeft : ModelTests<RelationshipNatural.ManyToOne.Left, RelationshipNatural.ManyToOne.Right>
-    //{
+    public class RelationshipNaturalTestOneToManyRight : ModelTests<RelationshipNatural.OneToMany.Right, RelationshipNatural.OneToMany.Left>
+    {
 
-    //}
+    }
 
-    //public class RelationshipTestManyToOneRight : ModelTests<RelationshipNatural.ManyToOne.Right, RelationshipNatural.ManyToOne.Left>
-    //{
+    public class RelationshipNaturalTestManyToOneLeft : ModelTests<RelationshipNatural.ManyToOne.Left, RelationshipNatural.ManyToOne.Right>
+    {
 
-    //}
+    }
 
-    //public class RelationshipTestOneToOneLeft : ModelTests<RelationshipNatural.OneToOne.Left, RelationshipNatural.OneToOne.Right>
-    //{
+    public class RelationshipNaturalTestManyToOneRight : ModelTests<RelationshipNatural.ManyToOne.Right, RelationshipNatural.ManyToOne.Left>
+    {
 
-    //}
+    }
 
-    //public class RelationshipTestOneToOneRight : ModelTests<RelationshipNatural.OneToOne.Right, RelationshipNatural.OneToOne.Left>
-    //{
+    public class RelationshipNaturalTestOneToOneLeft : ModelTests<RelationshipNatural.OneToOne.Left, RelationshipNatural.OneToOne.Right>
+    {
 
-    //}
+    }
 
-    //public class RelaationshipTestManyToManyLeft : ModelTests<RelationshipNatural.ManyToMany.Left, RelationshipNatural.ManyToMany.Right>
-    //{
+    public class RelationshipNaturalTestOneToOneRight : ModelTests<RelationshipNatural.OneToOne.Right, RelationshipNatural.OneToOne.Left>
+    {
 
-    //}
+    }
 
-    //public class RelationshipTestManyToManyRight : ModelTests<RelationshipNatural.ManyToMany.Right, RelationshipNatural.ManyToMany.Left>
-    //{
+    public class RelationshipNaturalTestManyToManyLeft : ModelTests<RelationshipNatural.ManyToMany.Left, RelationshipNatural.ManyToMany.Right>
+    {
 
-    //}
+    }
+
+    public class RelationshipNaturalTestManyToManyRight : ModelTests<RelationshipNatural.ManyToMany.Right, RelationshipNatural.ManyToMany.Left>
+    {
+
+    }
 }
