@@ -83,13 +83,25 @@ namespace Threax.ModelGen
                         var leftSideProp = left.GetProperties().Where(i =>
                             i.PropertyType == right ||
                             (i.PropertyType.IsGenericType && i.PropertyType.GenericTypeArguments[0] == right)).FirstOrDefault();
-                        var leftMany = leftSideProp != null && typeof(System.Collections.IEnumerable).IsAssignableFrom(leftSideProp.PropertyType)
+
+                        if(leftSideProp == null)
+                        {
+                            throw new NotSupportedException($"Cannot find a member with type {right.Name} on {left.Name}.");
+                        }
+
+                        var leftMany = typeof(System.Collections.IEnumerable).IsAssignableFrom(leftSideProp.PropertyType)
                                 && leftSideProp.PropertyType.GenericTypeArguments.Length > 0;
 
                         var rightSideProp = right.GetProperties().Where(i =>
                             i.PropertyType == left ||
                             (i.PropertyType.IsGenericType && i.PropertyType.GenericTypeArguments[0] == left)).FirstOrDefault();
-                        var rightMany = rightSideProp != null && typeof(System.Collections.IEnumerable).IsAssignableFrom(rightSideProp.PropertyType)
+
+                        if(rightSideProp == null)
+                        {
+                            throw new InvalidOperationException($"Cannot find a member with type {left.Name} on {right.Name}.");
+                        }
+
+                        var rightMany = typeof(System.Collections.IEnumerable).IsAssignableFrom(rightSideProp.PropertyType)
                                 && rightSideProp.PropertyType.GenericTypeArguments.Length > 0;
 
                         if (leftMany)

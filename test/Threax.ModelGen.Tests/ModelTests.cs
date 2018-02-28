@@ -12,24 +12,6 @@ using Xunit;
 
 namespace Threax.ModelGen.Tests
 {
-    public abstract class ModelTests<T, TO, TO2> : ModelTests<T, TO>
-    {
-        public ModelTests()
-        {
-            var otherSchema = Task.Run(async () => await TypeToSchemaGenerator.CreateSchema(typeof(TO2))).GetAwaiter().GetResult();
-            this.otherSchema[otherSchema.Title] = otherSchema;
-        }
-    }
-
-    public abstract class ModelTests<T, TO> : ModelTests<T>
-    {
-        public ModelTests()
-        {
-            var otherSchema = Task.Run(async () => await TypeToSchemaGenerator.CreateSchema(typeof(TO))).GetAwaiter().GetResult();
-            this.otherSchema[otherSchema.Title] = otherSchema;
-        }
-    }
-
     public abstract class ModelTests<T>
     {
         private const String AppNamespace = "Test";
@@ -400,6 +382,24 @@ namespace Threax.ModelGen.Tests
                     AppDbContextGenerator.GetManyToManyEntityDbContext(relationship, AppNamespace)
                 );
             }
+        }
+    }
+
+    public abstract class ModelTests<T, TO> : ModelTests<T>
+    {
+        public ModelTests()
+        {
+            var otherSchema = Task.Run(async () => await TypeToSchemaGenerator.CreateSchema(typeof(TO))).GetAwaiter().GetResult();
+            this.otherSchema[otherSchema.Title] = otherSchema;
+        }
+    }
+
+    public abstract class ModelTests<T, TO, TO2> : ModelTests<T, TO>
+    {
+        public ModelTests()
+        {
+            var otherSchema = Task.Run(async () => await TypeToSchemaGenerator.CreateSchema(typeof(TO2))).GetAwaiter().GetResult();
+            this.otherSchema[otherSchema.Title] = otherSchema;
         }
     }
 }
