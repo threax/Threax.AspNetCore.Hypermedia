@@ -12,7 +12,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
 {
     public abstract class FileGenTests<TInput, TResult>
     {
-        private bool WriteTestFiles = true;
+        private bool WriteTestFiles = false;
 
         protected Mockup mockup = new Mockup();
 
@@ -47,16 +47,37 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
         [Fact]
         protected void Typescript()
         {
-            var typescriptWriter = new TypescriptClientWriter(mockup.Get<IClientGenerator>());
+            var clientWriter = new TypescriptClientWriter(mockup.Get<IClientGenerator>());
             using (var writer = new StreamWriter(new MemoryStream()))
             {
-                typescriptWriter.CreateClient(writer);
+                clientWriter.CreateClient(writer);
                 writer.Flush();
                 writer.BaseStream.Seek(0, SeekOrigin.Begin);
                 using (var reader = new StreamReader(writer.BaseStream))
                 {
                     var code = reader.ReadToEnd();
                     TestCode($"{GetType().Name}.ts", code);
+                }
+            }
+        }
+
+        [Fact]
+        protected void CSharp()
+        {
+            var clientWriter = new CSharpClientWriter(mockup.Get<IClientGenerator>(), new CSharpOptions()
+            {
+                Namespace = "Test"
+            });
+
+            using (var writer = new StreamWriter(new MemoryStream()))
+            {
+                clientWriter.CreateClient(writer);
+                writer.Flush();
+                writer.BaseStream.Seek(0, SeekOrigin.Begin);
+                using (var reader = new StreamReader(writer.BaseStream))
+                {
+                    var code = reader.ReadToEnd();
+                    TestCode($"{GetType().Name}.cs", code);
                 }
             }
         }
