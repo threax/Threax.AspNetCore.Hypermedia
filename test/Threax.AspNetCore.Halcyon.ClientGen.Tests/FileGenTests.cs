@@ -1,7 +1,4 @@
-﻿using Halcyon.HAL.Attributes;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
+﻿using Moq;
 using NJsonSchema.Generation;
 using System;
 using System.Collections.Generic;
@@ -13,35 +10,13 @@ using Xunit;
 
 namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
 {
-    [HalModel]
-    public class InputWithFile
+    public abstract class FileGenTests
     {
-        public IFormFile File { get; set; }
-    }
-
-    [HalModel]
-    [HalActionLink(typeof(FileController), nameof(FileController.Save))]
-    public class FileResult
-    {
-
-    }
-
-    public class FileController : Controller
-    {
-        [HalRel("Save")]
-        [HttpPost]
-        public void Save([FromForm] InputWithFile input)
-        {
-
-        }
-    }
-
-    public class TypescriptInputWithFile
-    {
-        private Mockup mockup = new Mockup();
         private bool WriteTestFiles = false;
 
-        public TypescriptInputWithFile()
+        protected Mockup mockup = new Mockup();
+
+        public FileGenTests()
         {
             mockup.Add<IValidSchemaTypeManager>(s =>
             {
@@ -53,27 +28,13 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
             mockup.Add<JsonSchemaGenerator>(s => new JsonSchemaGenerator(new JsonSchemaGeneratorSettings()));
 
             mockup.Add<ISchemaBuilder>(s => new SchemaBuilder(s.Get<JsonSchemaGenerator>(), s.Get<IValidSchemaTypeManager>()));
-
-            mockup.Add<IClientGenerator>(s =>
-            {
-                var schemaBuilder = s.Get<ISchemaBuilder>();
-
-                var mock = new Mock<IClientGenerator>();
-                var endpoint = new EndpointClientDefinition(typeof(FileResult), schemaBuilder.GetSchema(typeof(FileResult)));
-                var endpointDoc = new EndpointDoc();
-                endpointDoc.RequestSchema = schemaBuilder.GetSchema(typeof(InputWithFile));
-                endpoint.AddLink(new EndpointClientLinkDefinition("Save", endpointDoc, false));
-                var mockEndpoints = new List<EndpointClientDefinition>() { endpoint };
-                mock.Setup(i => i.GetEndpointDefinitions()).Returns(mockEndpoints);
-                return mock.Object;
-            });
         }
 
         [Fact]
-        public void Test()
+        protected void Typescript()
         {
             var typescriptWriter = new TypescriptClientWriter(mockup.Get<IClientGenerator>());
-            using(var writer = new StreamWriter(new MemoryStream()))
+            using (var writer = new StreamWriter(new MemoryStream()))
             {
                 typescriptWriter.CreateClient(writer);
                 writer.Flush();
@@ -81,7 +42,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
                 using (var reader = new StreamReader(writer.BaseStream))
                 {
                     var code = reader.ReadToEnd();
-                    TestCode($"TypescriptInputWithFile.ts", code);
+                    TestCode($"{GetType().Name}.ts", code);
                 }
             }
         }
