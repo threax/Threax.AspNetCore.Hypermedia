@@ -50,5 +50,5 @@ export interface Output {
 }
 
 export interface Input {
-    Date?: Date;
+    Date?: string;
 }

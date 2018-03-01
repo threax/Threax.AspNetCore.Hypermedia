@@ -35,7 +35,8 @@ writer.WriteLine(
             {
                 TypeStyle = TypeScriptTypeStyle.Interface,
                 MarkOptionalProperties = true,
-                EnumNameGenerator = new EnumValueEnumNameGenerator()
+                EnumNameGenerator = new EnumValueEnumNameGenerator(),
+                DateTimeType = TypeScriptDateTimeType.String
             };
 
             var resolver = new TypeScriptTypeResolver(settings);
