@@ -13,12 +13,12 @@ using Xunit;
 
 namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
 {
-    public class InputWithFileTest : FileGenTests<InputWithFileTest.Input, InputWithFileTest.Output>
+    public class InputWithDateTest : FileGenTests<InputWithDateTest.Input, InputWithDateTest.Output>
     {
         [HalModel]
         public class Input
         {
-            public IFormFile File { get; set; }
+            public DateTime Date { get; set; }
         }
 
         [HalModel]
