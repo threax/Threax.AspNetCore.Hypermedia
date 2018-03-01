@@ -1,19 +1,19 @@
 import * as hal from 'hr.halcyon.EndpointClient';
 
-export class FileResultResult {
+export class OutputResult {
     private client: hal.HalEndpointClient;
 
     constructor(client: hal.HalEndpointClient) {
         this.client = client;
     }
 
-    private strongData: FileResult = undefined;
-    public get data(): FileResult {
-        this.strongData = this.strongData || this.client.GetData<FileResult>();
+    private strongData: Output = undefined;
+    public get data(): Output {
+        this.strongData = this.strongData || this.client.GetData<Output>();
         return this.strongData;
     }
 
-    public save(data: InputWithFile): Promise<void> {
+    public save(data: Input): Promise<void> {
         return this.client.LoadLinkWithBody("Save", data).then(hal.makeVoid);
     }
 
@@ -46,9 +46,9 @@ export class FileResultResult {
 
 
 
-export interface FileResult {
+export interface Output {
 }
 
-export interface InputWithFile {
+export interface Input {
     File?: any;
 }

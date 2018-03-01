@@ -1,7 +1,4 @@
-﻿using Halcyon.HAL.Attributes;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
+﻿using Moq;
 using NJsonSchema.Generation;
 using System;
 using System.Collections.Generic;
@@ -13,35 +10,13 @@ using Xunit;
 
 namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
 {
-    [HalModel]
-    public class InputWithFile
+    public abstract class FileGenTests<TInput, TResult>
     {
-        public IFormFile File { get; set; }
-    }
-
-    [HalModel]
-    [HalActionLink(typeof(FileController), nameof(FileController.Save))]
-    public class FileResult
-    {
-
-    }
-
-    public class FileController : Controller
-    {
-        [HalRel("Save")]
-        [HttpPost]
-        public void Save([FromForm] InputWithFile input)
-        {
-
-        }
-    }
-
-    public class TypescriptInputWithFile
-    {
-        private Mockup mockup = new Mockup();
         private bool WriteTestFiles = false;
 
-        public TypescriptInputWithFile()
+        protected Mockup mockup = new Mockup();
+
+        public FileGenTests()
         {
             mockup.Add<IValidSchemaTypeManager>(s =>
             {
@@ -59,9 +34,9 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
                 var schemaBuilder = s.Get<ISchemaBuilder>();
 
                 var mock = new Mock<IClientGenerator>();
-                var endpoint = new EndpointClientDefinition(typeof(FileResult), schemaBuilder.GetSchema(typeof(FileResult)));
+                var endpoint = new EndpointClientDefinition(typeof(TResult), schemaBuilder.GetSchema(typeof(TResult)));
                 var endpointDoc = new EndpointDoc();
-                endpointDoc.RequestSchema = schemaBuilder.GetSchema(typeof(InputWithFile));
+                endpointDoc.RequestSchema = schemaBuilder.GetSchema(typeof(TInput));
                 endpoint.AddLink(new EndpointClientLinkDefinition("Save", endpointDoc, false));
                 var mockEndpoints = new List<EndpointClientDefinition>() { endpoint };
                 mock.Setup(i => i.GetEndpointDefinitions()).Returns(mockEndpoints);
@@ -70,31 +45,53 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
         }
 
         [Fact]
-        public void Test()
+        protected void Typescript()
         {
-            var typescriptWriter = new TypescriptClientWriter(mockup.Get<IClientGenerator>());
-            using(var writer = new StreamWriter(new MemoryStream()))
+            var clientWriter = new TypescriptClientWriter(mockup.Get<IClientGenerator>());
+            using (var writer = new StreamWriter(new MemoryStream()))
             {
-                typescriptWriter.CreateClient(writer);
+                clientWriter.CreateClient(writer);
                 writer.Flush();
                 writer.BaseStream.Seek(0, SeekOrigin.Begin);
                 using (var reader = new StreamReader(writer.BaseStream))
                 {
                     var code = reader.ReadToEnd();
-                    TestCode($"TypescriptInputWithFile.ts", code);
+                    TestCode($"{GetType().Name}.ts", code);
+                }
+            }
+        }
+
+        [Fact]
+        protected void CSharp()
+        {
+            var clientWriter = new CSharpClientWriter(mockup.Get<IClientGenerator>(), new CSharpOptions()
+            {
+                Namespace = "Test"
+            });
+
+            using (var writer = new StreamWriter(new MemoryStream()))
+            {
+                clientWriter.CreateClient(writer);
+                writer.Flush();
+                writer.BaseStream.Seek(0, SeekOrigin.Begin);
+                using (var reader = new StreamReader(writer.BaseStream))
+                {
+                    var code = reader.ReadToEnd();
+                    TestCode($"{GetType().Name}.cs", code);
                 }
             }
         }
 
         private void TestCode(String fileName, String code)
         {
+            code = code.Replace("\r\n", "\n");
+
             if (WriteTestFiles)
             {
                 FileUtils.WriteTestFile(this.GetType(), fileName, code);
             }
 
-            //This works around line ending goofyness.
-            Assert.Equal(FileUtils.ReadTestFile(this.GetType(), fileName).Replace("\r\n", "\n"), code.Replace("\r\n", "\n"));
+            Assert.Equal(FileUtils.ReadTestFile(this.GetType(), fileName).Replace("\r\n", "\n"), code);
         }
     }
 }
