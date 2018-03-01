@@ -86,7 +86,7 @@ namespace Threax.ModelGen
 
                         if(leftSideProp == null)
                         {
-                            throw new NotSupportedException($"Cannot find a member with type {right.Name} on {left.Name}.");
+                            throw new InvalidOperationException($"Cannot find a member with type {right.Name} on {left.Name}.");
                         }
 
                         var leftMany = typeof(System.Collections.IEnumerable).IsAssignableFrom(leftSideProp.PropertyType)

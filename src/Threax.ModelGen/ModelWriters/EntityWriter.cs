@@ -53,7 +53,7 @@ $@"using {ns}.Models;"
             };
             return ModelTypeGenerator.Create(schema, schema.GetPluralName(), mainWriter, ns, ns + ".Database",
                 allowPropertyCallback: AllowProperty,
-                additionalPropertiesCallback: () => AdditionalProperties(schema, others));
+                additionalProperties: AdditionalProperties(schema, others));
         }
 
         private static bool AllowProperty(JsonProperty p)

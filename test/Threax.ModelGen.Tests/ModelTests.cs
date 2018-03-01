@@ -15,13 +15,26 @@ namespace Threax.ModelGen.Tests
     public abstract class ModelTests<T>
     {
         private const String AppNamespace = "Test";
-        private JsonSchema4 schema;
-        protected Dictionary<String, JsonSchema4> otherSchema = new Dictionary<string, JsonSchema4>();
         protected bool WriteTestFiles = false;
 
         public ModelTests()
         {
-            schema = Task.Run(async () => await TypeToSchemaGenerator.CreateSchema(typeof(T))).GetAwaiter().GetResult();
+
+        }
+
+        private static JsonSchema4 ___LoadedSchemaDoNotUse;
+        private async Task<JsonSchema4> GetSchema()
+        {
+            if (___LoadedSchemaDoNotUse == null)
+            {
+                ___LoadedSchemaDoNotUse = await TypeToSchemaGenerator.CreateSchema(typeof(T));
+            }
+            return ___LoadedSchemaDoNotUse;
+        }
+
+        protected virtual Task<Dictionary<String, JsonSchema4>> GetOtherSchema()
+        {
+            return Task.FromResult(new Dictionary<String, JsonSchema4>());
         }
 
         /// <summary>
@@ -55,326 +68,326 @@ namespace Threax.ModelGen.Tests
         }
 
         [Fact]
-        public void Interface()
+        public async Task Interface()
         {
             TestCode
             (
-                PartialModelInterfaceGenerator.GetFileName(schema),
-                PartialModelInterfaceGenerator.GetUserPartial(schema, AppNamespace + ".Models")
+                PartialModelInterfaceGenerator.GetFileName(await GetSchema()),
+                PartialModelInterfaceGenerator.GetUserPartial(await GetSchema(), AppNamespace + ".Models")
             );
         }
 
         [Fact]
-        public void InterfaceGenerated()
+        public async Task InterfaceGenerated()
         {
             TestCode
             (
-                IdInterfaceWriter.GetFileName(schema),
-                IdInterfaceWriter.Create(schema, AppNamespace)
+                IdInterfaceWriter.GetFileName(await GetSchema()),
+                IdInterfaceWriter.Create(await GetSchema(), AppNamespace)
             );
         }
 
         [Fact]
-        public void Entity()
+        public async Task Entity()
         {
             TestCode
             (
-                PartialTypeGenerator.GetEntityFileName(schema),
-                PartialTypeGenerator.GetEntity(schema, AppNamespace)
+                PartialTypeGenerator.GetEntityFileName(await GetSchema()),
+                PartialTypeGenerator.GetEntity(await GetSchema(), AppNamespace)
             );
         }
 
         [Fact]
-        public void EntityGenerated()
+        public async Task EntityGenerated()
         {
             TestCode
             (
-                EntityWriter.GetFileName(schema),
-                EntityWriter.Create(schema, otherSchema, AppNamespace)
+                EntityWriter.GetFileName(await GetSchema()),
+                EntityWriter.Create(await GetSchema(), await GetOtherSchema(), AppNamespace)
             );
         }
 
         [Fact]
-        public void InputModel()
+        public async Task InputModel()
         {
             TestCode
             (
-                PartialTypeGenerator.GetInputFileName(schema),
-                PartialTypeGenerator.GetInput(schema, AppNamespace)
+                PartialTypeGenerator.GetInputFileName(await GetSchema()),
+                PartialTypeGenerator.GetInput(await GetSchema(), AppNamespace)
             );
         }
 
         [Fact]
-        public void InputModelGenerated()
+        public async Task InputModelGenerated()
         {
             TestCode
             (
-                InputModelWriter.GetFileName(schema),
-                InputModelWriter.Create(schema, otherSchema, AppNamespace)
+                InputModelWriter.GetFileName(await GetSchema()),
+                await InputModelWriter.Create(await GetSchema(), await GetOtherSchema(), AppNamespace)
             );
         }
 
         [Fact]
-        public void Query()
+        public async Task Query()
         {
             TestCode
             (
-                PartialTypeGenerator.GetQueryFileName(schema),
-                PartialTypeGenerator.GetQuery(schema, AppNamespace)
+                PartialTypeGenerator.GetQueryFileName(await GetSchema()),
+                PartialTypeGenerator.GetQuery(await GetSchema(), AppNamespace)
             );
         }
 
         [Fact]
-        public void QueryGenerated()
+        public async Task QueryGenerated()
         {
             TestCode
             (
-                QueryModelWriter.GetFileName(schema),
-                QueryModelWriter.Get(schema, AppNamespace)
+                QueryModelWriter.GetFileName(await GetSchema()),
+                QueryModelWriter.Get(await GetSchema(), AppNamespace)
             );
         }
 
         [Fact]
-        public void ViewModel()
+        public async Task ViewModel()
         {
             TestCode
             (
-                ViewModelWriter.GetUserPartialFileName(schema),
-                ViewModelWriter.GetUserPartial(schema, AppNamespace)
+                ViewModelWriter.GetUserPartialFileName(await GetSchema()),
+                ViewModelWriter.GetUserPartial(await GetSchema(), AppNamespace)
             );
         }
 
         [Fact]
-        public void ViewModelGenerated()
+        public async Task ViewModelGenerated()
         {
             TestCode
             (
-                ViewModelWriter.GetFileName(schema),
-                ViewModelWriter.Create(schema, otherSchema, AppNamespace)
+                ViewModelWriter.GetFileName(await GetSchema()),
+                await ViewModelWriter.Create(await GetSchema(), await GetOtherSchema(), AppNamespace)
             );
         }
 
         [Fact]
-        public void Repository()
+        public async Task Repository()
         {
             TestCode
             (
-                RepoGenerator.GetFileName(schema),
-                RepoGenerator.Get(schema, AppNamespace)
+                RepoGenerator.GetFileName(await GetSchema()),
+                RepoGenerator.Get(await GetSchema(), AppNamespace)
             );
         }
 
         [Fact]
-        public void RepositoryInterface()
+        public async Task RepositoryInterface()
         {
             TestCode
             (
-                RepoInterfaceGenerator.GetFileName(schema),
-                RepoInterfaceGenerator.Get(schema, AppNamespace)
+                RepoInterfaceGenerator.GetFileName(await GetSchema()),
+                RepoInterfaceGenerator.Get(await GetSchema(), AppNamespace)
             );
         }
 
         [Fact]
-        public void RepositoryConfig()
+        public async Task RepositoryConfig()
         {
             TestCode
             (
-                RepoConfigGenerator.GetFileName(schema),
-                RepoConfigGenerator.Get(schema, AppNamespace)
+                RepoConfigGenerator.GetFileName(await GetSchema()),
+                RepoConfigGenerator.Get(await GetSchema(), AppNamespace)
             );
         }
 
         [Fact]
-        public void ApiController()
+        public async Task ApiController()
         {
             TestCode
             (
-                ControllerGenerator.GetFileName(schema),
-                ControllerGenerator.Get(schema, AppNamespace)
+                ControllerGenerator.GetFileName(await GetSchema()),
+                ControllerGenerator.Get(await GetSchema(), AppNamespace)
             );
         }
 
         [Fact]
-        public void Profile()
+        public async Task Profile()
         {
             TestCode
             (
-                MappingProfileGenerator.GetFileName(schema),
-                MappingProfileGenerator.Get(schema, AppNamespace)
+                MappingProfileGenerator.GetFileName(await GetSchema()),
+                MappingProfileGenerator.Get(await GetSchema(), AppNamespace)
             );
         }
 
         [Fact]
-        public void ProfileGenerated()
+        public async Task ProfileGenerated()
         {
             TestCode
             (
-                MappingProfileGenerator.GetGeneratedFileName(schema),
-                MappingProfileGenerator.GetGenerated(schema, AppNamespace)
+                MappingProfileGenerator.GetGeneratedFileName(await GetSchema()),
+                MappingProfileGenerator.GetGenerated(await GetSchema(), AppNamespace)
             );
         }
 
         [Fact]
-        public void AppDbContext()
+        public async Task AppDbContext()
         {
             TestCode
             (
-                AppDbContextGenerator.GetFileName(schema),
-                AppDbContextGenerator.Get(schema, AppNamespace)
+                AppDbContextGenerator.GetFileName(await GetSchema()),
+                AppDbContextGenerator.Get(await GetSchema(), AppNamespace)
             );
         }
 
         [Fact]
-        public void ModelCollection()
+        public async Task ModelCollection()
         {
             TestCode
             (
-                ModelCollectionGenerator.GetUserPartialFileName(schema),
-                ModelCollectionGenerator.GetUserPartial(schema, AppNamespace)
+                ModelCollectionGenerator.GetUserPartialFileName(await GetSchema()),
+                ModelCollectionGenerator.GetUserPartial(await GetSchema(), AppNamespace)
             );
         }
 
         [Fact]
-        public void ModelCollectionGenerated()
+        public async Task ModelCollectionGenerated()
         {
             TestCode
             (
-                ModelCollectionGenerator.GetFileName(schema),
-                ModelCollectionGenerator.Get(schema, AppNamespace)
+                ModelCollectionGenerator.GetFileName(await GetSchema()),
+                ModelCollectionGenerator.Get(await GetSchema(), AppNamespace)
             );
         }
 
         [Fact]
-        public void EntryPoint()
+        public async Task EntryPoint()
         {
             TestCode
             (
-                EntryPointGenerator.GetFileName(schema),
-                EntryPointGenerator.Get(schema, AppNamespace)
+                EntryPointGenerator.GetFileName(await GetSchema()),
+                EntryPointGenerator.Get(await GetSchema(), AppNamespace)
             );
         }
 
         [Fact]
-        public void Cshtml()
+        public async Task Cshtml()
         {
-            var propertyNames = schema.Properties.Values.Where(i => i.CreateViewModel()).Select(i => NameGenerator.CreatePascal(i.Name));
+            var propertyNames = (await GetSchema()).Properties.Values.Where(i => i.CreateViewModel()).Select(i => NameGenerator.CreatePascal(i.Name));
             TestCode
             (
-                CrudCshtmlInjectorGenerator.GetFileName(schema),
-                CrudCshtmlInjectorGenerator.Get(schema, propertyNames: propertyNames)
+                CrudCshtmlInjectorGenerator.GetFileName(await GetSchema()),
+                CrudCshtmlInjectorGenerator.Get(await GetSchema(), propertyNames: propertyNames)
             );
         }
 
         [Fact]
-        public void CrudInjector()
+        public async Task CrudInjector()
         {
             TestCode
             (
-                CrudInjectorGenerator.GetFileName(schema),
-                CrudInjectorGenerator.Get(schema)
+                CrudInjectorGenerator.GetFileName(await GetSchema()),
+                CrudInjectorGenerator.Get(await GetSchema())
             );
         }
 
         [Fact]
-        public void UiTypescript()
+        public async Task UiTypescript()
         {
             TestCode
             (
-                CrudUiTypescriptGenerator.GetFileName(schema),
-                CrudUiTypescriptGenerator.Get(schema.Title)
+                CrudUiTypescriptGenerator.GetFileName(await GetSchema()),
+                CrudUiTypescriptGenerator.Get((await GetSchema()).Title)
             );
         }
 
         [Fact]
-        public void ViewController()
+        public async Task ViewController()
         {
             TestCode
             (
-                UiControllerGenerator.GetFileName(schema),
-                UiControllerGenerator.Get(schema, AppNamespace)
+                UiControllerGenerator.GetFileName(await GetSchema()),
+                UiControllerGenerator.Get(await GetSchema(), AppNamespace)
             );
         }
 
         [Fact]
-        public void TestWrapper()
+        public async Task TestWrapper()
         {
             TestCode
             (
-                Path.Combine("Tests", ModelTestWrapper.GetFileName(schema)),
-                ModelTestWrapper.Get(schema, AppNamespace)
+                Path.Combine("Tests", ModelTestWrapper.GetFileName(await GetSchema())),
+                ModelTestWrapper.Get(await GetSchema(), AppNamespace)
             );
         }
 
         [Fact]
-        public void TestWrapperGenerated()
+        public async Task TestWrapperGenerated()
         {
             TestCode
             (
-                Path.Combine("Tests", ModelTestWrapperGenerated.GetFileName(schema)),
-                ModelTestWrapperGenerated.Get(schema, AppNamespace)
+                Path.Combine("Tests", ModelTestWrapperGenerated.GetFileName(await GetSchema())),
+                ModelTestWrapperGenerated.Get(await GetSchema(), AppNamespace)
             );
         }
 
         [Fact]
-        public void TestController()
+        public async Task TestController()
         {
             TestCode
             (
-                Path.Combine("Tests", ControllerTests.GetFileName(schema)),
-                ControllerTests.Get(schema, AppNamespace)
+                Path.Combine("Tests", ControllerTests.GetFileName(await GetSchema())),
+                ControllerTests.Get(await GetSchema(), AppNamespace)
             );
         }
 
         [Fact]
-        public void TestProfile()
+        public async Task TestProfile()
         {
             TestCode
             (
-                Path.Combine("Tests", ProfileTests.GetFileName(schema)),
-                ProfileTests.Get(schema, AppNamespace)
+                Path.Combine("Tests", ProfileTests.GetFileName(await GetSchema())),
+                ProfileTests.Get(await GetSchema(), AppNamespace)
             );
         }
 
         [Fact]
-        public void TestRepository()
+        public async Task TestRepository()
         {
             TestCode
             (
-                Path.Combine("Tests", RepositoryTests.GetFileName(schema)),
-                RepositoryTests.Get(schema, AppNamespace)
+                Path.Combine("Tests", RepositoryTests.GetFileName(await GetSchema())),
+                RepositoryTests.Get(await GetSchema(), AppNamespace)
             );
         }
 
         [Fact]
-        public void JoinEntityGenerated()
+        public async Task JoinEntityGenerated()
         {
-            foreach (var relationship in schema.GetRelationshipSettings())
+            foreach (var relationship in (await GetSchema()).GetRelationshipSettings())
             {
                 TestCode
                 (
                     JoinEntityWriter.GetFileName(relationship),
-                    JoinEntityWriter.Get(schema, otherSchema, relationship, AppNamespace)
+                    JoinEntityWriter.Get(await GetSchema(), await GetOtherSchema(), relationship, AppNamespace)
                 );
             }
         }
 
         [Fact]
-        public void JoinEntity()
+        public async Task JoinEntity()
         {
-            foreach (var relationship in schema.GetRelationshipSettings())
+            foreach (var relationship in (await GetSchema()).GetRelationshipSettings())
             {
                 TestCode
                 (
                     PartialTypeGenerator.GetJoinEntityFileName(relationship),
-                    PartialTypeGenerator.GetJoinEntity(schema, relationship, AppNamespace)
+                    PartialTypeGenerator.GetJoinEntity(await GetSchema(), relationship, AppNamespace)
                 );
             }
         }
 
         [Fact]
-        public void JoinEntityDbContext()
+        public async Task JoinEntityDbContext()
         {
-            foreach (var relationship in schema.GetRelationshipSettings())
+            foreach (var relationship in (await GetSchema()).GetRelationshipSettings())
             {
                 TestCode
                 (
@@ -389,8 +402,19 @@ namespace Threax.ModelGen.Tests
     {
         public ModelTests()
         {
-            var otherSchema = Task.Run(async () => await TypeToSchemaGenerator.CreateSchema(typeof(TO))).GetAwaiter().GetResult();
-            this.otherSchema[otherSchema.Title] = otherSchema;
+                        
+        }
+
+        private static Dictionary<String, JsonSchema4> ___LoadedOtherSchemaDoNotUse;
+        protected override async Task<Dictionary<String, JsonSchema4>> GetOtherSchema()
+        {
+            if (___LoadedOtherSchemaDoNotUse == null)
+            {
+                ___LoadedOtherSchemaDoNotUse = new Dictionary<string, JsonSchema4>();;
+                var schema = await TypeToSchemaGenerator.CreateSchema(typeof(TO));
+                ___LoadedOtherSchemaDoNotUse[schema.Title] = schema;
+            }
+            return ___LoadedOtherSchemaDoNotUse;
         }
     }
 
@@ -398,8 +422,21 @@ namespace Threax.ModelGen.Tests
     {
         public ModelTests()
         {
-            var otherSchema = Task.Run(async () => await TypeToSchemaGenerator.CreateSchema(typeof(TO2))).GetAwaiter().GetResult();
-            this.otherSchema[otherSchema.Title] = otherSchema;
+            
+        }
+
+        private static Dictionary<String, JsonSchema4> ___LoadedOtherSchemaDoNotUse;
+        protected override async Task<Dictionary<String, JsonSchema4>> GetOtherSchema()
+        {
+            if (___LoadedOtherSchemaDoNotUse == null)
+            {
+                ___LoadedOtherSchemaDoNotUse = new Dictionary<string, JsonSchema4>();
+                var schema = await TypeToSchemaGenerator.CreateSchema(typeof(TO));
+                ___LoadedOtherSchemaDoNotUse[schema.Title] = schema;
+                schema = await TypeToSchemaGenerator.CreateSchema(typeof(TO2));
+                ___LoadedOtherSchemaDoNotUse[schema.Title] = schema;
+            }
+            return ___LoadedOtherSchemaDoNotUse;
         }
     }
 }

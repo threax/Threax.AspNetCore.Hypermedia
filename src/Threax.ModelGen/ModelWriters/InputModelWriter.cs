@@ -5,6 +5,7 @@ using System.Text;
 using Threax.ModelGen.ModelWriters;
 using Threax.AspNetCore.Models;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Threax.ModelGen
 {
@@ -15,7 +16,7 @@ namespace Threax.ModelGen
             return $"InputModels/{schema.Title}Input.Generated.cs";
         }
 
-        public static String Create(JsonSchema4 schema, Dictionary<String, JsonSchema4> others, String ns)
+        public static async Task<String> Create(JsonSchema4 schema, Dictionary<String, JsonSchema4> others, String ns)
         {
             bool hasBase = false;
 
@@ -50,7 +51,7 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
 
             return ModelTypeGenerator.Create(schema, schema.GetPluralName(), modelWriter, ns, ns + ".InputModels",
                 allowPropertyCallback: AllowProperty,
-                additionalPropertiesCallback: () => AdditionalProperties(schema, others));
+                additionalProperties: await AdditionalProperties(schema, others));
         }
 
         private static bool AllowProperty(JsonProperty p)
@@ -58,7 +59,7 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
             return !p.IsAbstractOnInputModel() && p.CreateInputModel();
         }
 
-        private static IEnumerable<KeyValuePair<String, JsonProperty>> AdditionalProperties(JsonSchema4 schema, Dictionary<String, JsonSchema4> others)
+        private static async Task<IEnumerable<KeyValuePair<String, JsonProperty>>> AdditionalProperties(JsonSchema4 schema, Dictionary<String, JsonSchema4> others)
         {
             IEnumerable<KeyValuePair<String, JsonProperty>> props = new KeyValuePair<String, JsonProperty>[0];
             foreach (var relationship in schema.GetRelationshipSettings())
@@ -69,11 +70,11 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
                     {
                         case RelationKind.ManyToMany:
                         case RelationKind.OneToMany:
-                            props = props.Concat(WriteManySide(schema, others[relationship.OtherModelName]));
+                            props = props.Concat(await WriteManySide(schema, others[relationship.OtherModelName]));
                             break;
                         case RelationKind.OneToOne:
                         case RelationKind.ManyToOne:
-                            props = props.Concat(WriteOneSide(schema, others[relationship.OtherModelName]));
+                            props = props.Concat(await WriteOneSide(schema, others[relationship.OtherModelName]));
                             break;
                     }
                 }
@@ -83,11 +84,11 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
                     {
                         case RelationKind.ManyToMany:
                         case RelationKind.ManyToOne:
-                            props = props.Concat(WriteManySide(schema, others[relationship.OtherModelName]));
+                            props = props.Concat(await WriteManySide(schema, others[relationship.OtherModelName]));
                             break;
                         case RelationKind.OneToOne:
                         case RelationKind.OneToMany:
-                            props = props.Concat(WriteOneSide(schema, others[relationship.OtherModelName]));
+                            props = props.Concat(await WriteOneSide(schema, others[relationship.OtherModelName]));
                             break;
                     }
                 }
@@ -95,44 +96,42 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
             return props;
         }
 
-        private static IEnumerable<KeyValuePair<String,JsonProperty>> WriteManySide(JsonSchema4 schema, JsonSchema4 other)
+        private static async Task<Dictionary<String, JsonProperty>> WriteManySide(JsonSchema4 schema, JsonSchema4 other)
         {
             var name = other.GetKeyName() + "s"; //Should be xxId so adding s should be fine
+            var props = new Dictionary<String, JsonProperty>();
 
             if (!schema.Properties.ContainsKey(name)) //Don't write if schema defined property.
             {
-                yield return new KeyValuePair<string, JsonProperty>
-                (
-                    key: name,
-                    value: new JsonProperty()
-                    {
-                        Type = JsonObjectType.Array,
-                        Item = TypeToSchemaGenerator.CreateSchema(other.GetKeyType()).GetAwaiter().GetResult(),
-                        Parent = schema
-                    }
-                );
+                props.Add(name, new JsonProperty()
+                {
+                    Type = JsonObjectType.Array,
+                    Item = await TypeToSchemaGenerator.CreateSchema(other.GetKeyType()),
+                    Parent = schema
+                });
             }
+
+            return props;
         }
 
-        private static IEnumerable<KeyValuePair<String, JsonProperty>> WriteOneSide(JsonSchema4 schema, JsonSchema4 other)
+        private static async Task<Dictionary<String, JsonProperty>> WriteOneSide(JsonSchema4 schema, JsonSchema4 other)
         {
             var name = other.Title;
+            var props = new Dictionary<String, JsonProperty>();
 
             if (!schema.Properties.ContainsKey(name)) //Don't write if schema defined property.
             {
-                var propSchema = TypeToSchemaGenerator.CreateSchema(other.GetKeyType()).GetAwaiter().GetResult();
+                var propSchema = await TypeToSchemaGenerator.CreateSchema(other.GetKeyType());
 
-                yield return new KeyValuePair<string, JsonProperty>
-                (
-                    key: name,
-                    value: new JsonProperty()
-                    {
-                        Type = propSchema.Type,
-                        Format = propSchema.Format,
-                        Parent = schema
-                    }
-                );
+                props.Add(name, new JsonProperty()
+                {
+                    Type = propSchema.Type,
+                    Format = propSchema.Format,
+                    Parent = schema
+                });
             }
+
+            return props;
         }
 
         private static IAttributeBuilder CreatePropertyAttributes()

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Threax.ModelGen.Tests
@@ -8,15 +9,15 @@ namespace Threax.ModelGen.Tests
     public class TypeToSchemaGeneratorTests
     {
         [Fact]
-        public void MissingRightProp()
+        public async Task MissingRightProp()
         {
-            Assert.ThrowsAsync<InvalidOperationException>(() => TypeToSchemaGenerator.CreateSchema(typeof(Left)));
+            await Assert.ThrowsAsync<InvalidOperationException>(() => TypeToSchemaGenerator.CreateSchema(typeof(Left)));
         }
 
         [Fact]
-        public void MissingLeftProp()
+        public async Task MissingLeftProp()
         {
-            Assert.ThrowsAsync<InvalidOperationException>(() => TypeToSchemaGenerator.CreateSchema(typeof(Right2)));
+            await Assert.ThrowsAsync<InvalidOperationException>(() => TypeToSchemaGenerator.CreateSchema(typeof(Right2)));
         }
 
         public class Left

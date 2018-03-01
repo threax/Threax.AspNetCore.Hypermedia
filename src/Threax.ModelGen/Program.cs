@@ -68,7 +68,7 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                         var config = new ConfigurationBuilder().AddCommandLine(args.Skip(1).ToArray()).Build();
                         config.Bind(settings);
                         await settings.Configure();
-                        GenerateClasses(settings);
+                        await GenerateClasses(settings);
                     }
                 }
                 catch (RunOnFullFrameworkException ex)
@@ -119,7 +119,7 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
             process.WaitForExit();
         }
 
-        private static void GenerateClasses(GeneratorSettings settings)
+        private static async Task GenerateClasses(GeneratorSettings settings)
         {
             if (settings.AppOutDir != null && settings.AppNamespace != null)
             {
@@ -145,7 +145,7 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                     if (settings.Schema.CreateInputModel())
                     {
                         WriteFile(settings.AppOutDir, PartialTypeGenerator.GetInputFileName(settings.Schema), PartialTypeGenerator.GetInput(settings.Schema, settings.AppNamespace), false);
-                        WriteFile(settings.AppOutDir, InputModelWriter.GetFileName(settings.Schema), InputModelWriter.Create(settings.Schema, settings.OtherSchemas, settings.AppNamespace), true);
+                        WriteFile(settings.AppOutDir, InputModelWriter.GetFileName(settings.Schema), await InputModelWriter.Create(settings.Schema, settings.OtherSchemas, settings.AppNamespace), true);
                     }
 
                     WriteFile(settings.AppOutDir, PartialTypeGenerator.GetQueryFileName(settings.Schema), PartialTypeGenerator.GetQuery(settings.Schema, settings.AppNamespace), false);
@@ -154,7 +154,7 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                     if (settings.Schema.CreateViewModel())
                     {
                         WriteFile(settings.AppOutDir, ViewModelWriter.GetUserPartialFileName(settings.Schema), ViewModelWriter.GetUserPartial(settings.Schema, settings.AppNamespace), false);
-                        WriteFile(settings.AppOutDir, ViewModelWriter.GetFileName(settings.Schema), ViewModelWriter.Create(settings.Schema, settings.OtherSchemas, settings.AppNamespace), true);
+                        WriteFile(settings.AppOutDir, ViewModelWriter.GetFileName(settings.Schema), await ViewModelWriter.Create(settings.Schema, settings.OtherSchemas, settings.AppNamespace), true);
                     }
 
                     WriteFile(settings.AppOutDir, RepoGenerator.GetFileName(settings.Schema), RepoGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);

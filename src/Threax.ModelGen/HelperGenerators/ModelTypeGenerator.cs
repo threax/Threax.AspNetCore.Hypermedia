@@ -14,7 +14,7 @@ namespace Threax.ModelGen
             return Create(schema, pluralName, typeWriter, defaultNs, ns, allowPropertyCallback);
         }
 
-        public static String Create(JsonSchema4 schema, String pluralName, ITypeWriter typeWriter, String defaultNs, String ns, Func<JsonProperty, bool> allowPropertyCallback = null, Func<IEnumerable<KeyValuePair<String, JsonProperty>>> additionalPropertiesCallback = null)
+        public static String Create(JsonSchema4 schema, String pluralName, ITypeWriter typeWriter, String defaultNs, String ns, Func<JsonProperty, bool> allowPropertyCallback = null, IEnumerable<KeyValuePair<String, JsonProperty>> additionalProperties = null)
         {
             var sb = new StringBuilder();
             typeWriter.AddUsings(sb, defaultNs);
@@ -24,9 +24,9 @@ namespace Threax.ModelGen
             var prettyName = schema.Title;
 
             IEnumerable<KeyValuePair<String, JsonProperty>> props = schema.Properties;
-            if(additionalPropertiesCallback != null)
+            if(additionalProperties != null)
             {
-                props = props.Concat(additionalPropertiesCallback());
+                props = props.Concat(additionalProperties);
             }
 
             foreach (var propPair in props)
