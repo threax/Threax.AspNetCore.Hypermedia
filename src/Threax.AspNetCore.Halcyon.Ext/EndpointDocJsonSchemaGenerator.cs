@@ -45,6 +45,12 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 NJsonSchema.JsonProperty schemaProp;
                 if (schema.Properties.TryGetValue(propName, out schemaProp))
                 {
+                    //Always make sure we have extension data declared
+                    if (schemaProp.ExtensionData == null)
+                    {
+                        schemaProp.ExtensionData = new Dictionary<String, Object>();
+                    }
+
                     //Check to see if the value can be null, value types are considered null if they are nullables, 
                     //reference types are considered nullable if they are not marked with a Required attribute.
                     if (propTypeInfo.IsGenericType && propTypeInfo.GetGenericTypeDefinition() == typeof(Nullable<>)) //See if the type is a Nullable<T>, this will handle value types
@@ -83,10 +89,6 @@ namespace Threax.AspNetCore.Halcyon.Ext
                         //For some reason enums do not get the custom attributes, so do it here
                         foreach (var attr in prop.GetCustomAttributes().Select(i => i as JsonSchemaExtensionDataAttribute).Where(i => i != null))
                         {
-                            if (schemaProp.ExtensionData == null)
-                            {
-                                schemaProp.ExtensionData = new Dictionary<String, Object>();
-                            }
                             if (!schemaProp.ExtensionData.ContainsKey(attr.Property))
                             {
                                 schemaProp.ExtensionData.Add(attr.Property, attr.Value);
@@ -129,6 +131,14 @@ namespace Threax.AspNetCore.Halcyon.Ext
                         if (customizer != null)
                         {
                             await customizer.Customize(new SchemaCustomizerArgs(propName, prop, schemaProp, schema));
+                        }
+                    }
+
+                    foreach (var multiExtension in prop.GetCustomAttributes().Where(i => typeof(JsonSchemaMultiExtensionDataAttribute).IsAssignableFrom(i.GetType())).Cast<JsonSchemaMultiExtensionDataAttribute>())
+                    {
+                        foreach(var item in multiExtension.ExtensionValues)
+                        {
+                            schemaProp.ExtensionData[item.Key] = item.Value;
                         }
                     }
 
