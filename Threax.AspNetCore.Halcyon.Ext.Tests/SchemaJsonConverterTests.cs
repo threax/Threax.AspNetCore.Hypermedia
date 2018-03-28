@@ -6,6 +6,7 @@ using NJsonSchema.Generation;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using Threax.AspNetCore.Tests;
 using Xunit;
 
@@ -30,27 +31,27 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
         }
 
         [Fact]
-        public void TestSimple()
+        public Task TestSimple()
         {
-            TestSchema(typeof(TestType), "TestSimple.json");
+            return TestSchema(typeof(TestType), "TestSimple.json");
         }
 
         [Fact]
-        public void TestSimpleArray()
+        public Task TestSimpleArray()
         {
-            TestSchema(typeof(TestSimpleArray), "TestSimpleArray.json");
+            return TestSchema(typeof(TestSimpleArray), "TestSimpleArray.json");
         }
 
         [Fact]
-        public void TestComplexArray()
+        public Task TestComplexArray()
         {
-            TestSchema(typeof(TestComplexArrayType), "TestComplexArray.json");
+            return TestSchema(typeof(TestComplexArrayType), "TestComplexArray.json");
         }
 
-        private void TestSchema(Type type, String Filename)
+        private async Task TestSchema(Type type, String Filename)
         {
             var schemaBuilder = mockup.Get<ISchemaBuilder>();
-            var schema = schemaBuilder.GetSchema(type);
+            var schema = await schemaBuilder.GetSchema(type);
             var converter = mockup.Get<SchemaJsonConverter>();
             var serializer = JsonSerializer.Create(HalcyonConvention.DefaultJsonSerializerSettings);
             String finalJson;

@@ -24,14 +24,14 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
         {
             foreach(var type in resultViewProvider.GetResultViewTypes())
             {
-                EndpointClientDefinition clientDef = new EndpointClientDefinition(type, schemaBuilder.GetSchema(type));
+                EndpointClientDefinition clientDef = new EndpointClientDefinition(type, schemaBuilder.GetSchema(type).GetAwaiter().GetResult());
                 var customAttrs = type.GetTypeInfo().GetCustomAttributes();
                 foreach (var link in customAttrs)
                 {
                     var actionLink = link as HalActionLinkAttribute;
                     if(actionLink != null)
                     {
-                        var doc = endpointDocBuilder.GetDoc(actionLink.GroupName, actionLink.Method, actionLink.UriTemplate.Substring(1));
+                        var doc = endpointDocBuilder.GetDoc(actionLink.GroupName, actionLink.Method, actionLink.UriTemplate.Substring(1)).GetAwaiter().GetResult();
                         clientDef.AddLink(new EndpointClientLinkDefinition(actionLink.Rel, doc, actionLink.DocsOnly));
                     }
                     else
@@ -42,7 +42,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
                             EndpointDoc doc;
                             if (declaredLink.LinkedToControllerRel)
                             {
-                                doc = endpointDocBuilder.GetDoc(declaredLink.GroupName, declaredLink.Method, declaredLink.UriTemplate.Substring(1));
+                                doc = endpointDocBuilder.GetDoc(declaredLink.GroupName, declaredLink.Method, declaredLink.UriTemplate.Substring(1)).GetAwaiter().GetResult();
                             }
                             else
                             {

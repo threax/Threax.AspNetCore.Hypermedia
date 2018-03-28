@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
@@ -23,7 +24,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// <param name="relativePath">The relative path</param>
         /// <param name="user">The user to check, can be null.</param>
         /// <returns>The EndpointDoc object for the endpoint.</returns>
-        EndpointDoc GetDoc(String groupName, String method, String relativePath, ClaimsPrincipal user = null);
+        Task<EndpointDoc> GetDoc(String groupName, String method, String relativePath, ClaimsPrincipal user = null);
     }
 
     public class EndpointDocBuilder : IEndpointDocBuilder
@@ -39,7 +40,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
             this.validSchemaManager = validSchemaManager;
         }
 
-        public virtual EndpointDoc GetDoc(String groupName, String method, String relativePath, ClaimsPrincipal user = null)
+        public virtual async Task<EndpointDoc> GetDoc(String groupName, String method, String relativePath, ClaimsPrincipal user = null)
         {
             if(relativePath == null)
             {
@@ -80,7 +81,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 var returnType = methodInfo.ReturnType;
                 if (returnType != typeof(void))
                 {
-                    description.ResponseSchema = schemaBuilder.GetSchema(returnType);
+                    description.ResponseSchema = await schemaBuilder.GetSchema(returnType);
                 }
             }
 
@@ -90,7 +91,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 {
                     if (param.Source.CanAcceptDataFrom(BindingSource.Body))
                     {
-                        description.RequestSchema = schemaBuilder.GetSchema(param.Type, true);
+                        description.RequestSchema = await schemaBuilder.GetSchema(param.Type, true);
                     }
                     else if (param.Source.CanAcceptDataFrom(BindingSource.Query))
                     {
@@ -124,7 +125,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                         
                         if (type != null && validSchemaManager.IsValid(type))
                         {
-                            description.RequestSchema = schemaBuilder.GetSchema(type, true);
+                            description.RequestSchema = await schemaBuilder.GetSchema(type, true);
                             description.RequestSchema.SetDataIsForm(true);
                         }
                     }
@@ -133,7 +134,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
             if (queryModelType != null)
             {
-                description.QuerySchema = schemaBuilder.GetSchema(queryModelType, true);
+                description.QuerySchema = await schemaBuilder.GetSchema(queryModelType, true);
             }
 
             return description;
