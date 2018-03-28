@@ -109,7 +109,11 @@ namespace Threax.AspNetCore.Halcyon.Ext
             context.Schema.Properties.Remove("offset");
             context.Schema.Properties.Remove("limit");
 
+            var originalTitle = context.Schema.Title;
+
             await context.Generator.GenerateAsync<TSchemaType>(queryType, Enumerable.Empty<Attribute>(), context.Schema, context.SchemaResolver);
+
+            context.Schema.Title = originalTitle;
         }
     }
 }

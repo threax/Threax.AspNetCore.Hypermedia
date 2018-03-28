@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "TestQuery",
+  "title": "TestCollection",
   "type": "object",
   "additionalProperties": false,
   "properties": {
