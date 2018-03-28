@@ -67,7 +67,19 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 var value = prop.GetValue(this.query);
                 if (value != null)
                 {
-                    queryString.AppendItem(camelNaming.GetPropertyName(prop.Name, false), value.ToString());
+                    var name = camelNaming.GetPropertyName(prop.Name, false);
+                    var collection = value as System.Collections.ICollection;
+                    if (collection != null)
+                    {
+                        foreach(var item in collection)
+                        {
+                            queryString.AppendItem(name, item?.ToString());
+                        }
+                    }
+                    else
+                    {
+                        queryString.AppendItem(name, value.ToString());
+                    }
                 }
             }
         }

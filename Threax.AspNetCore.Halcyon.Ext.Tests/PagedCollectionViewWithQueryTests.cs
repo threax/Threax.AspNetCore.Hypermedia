@@ -18,7 +18,7 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
         {
             var generator = mockup.Get<EndpointDocJsonSchemaGenerator>();
             var schema = await generator.GenerateAsync(typeof(TestCollection));
-            var filename = $"{nameof(Json)}.Schema.json";
+            var filename = $"{nameof(Schema)}.json";
             FileUtils.WriteTestFile(this.GetType(), filename, schema.ToJson());
             var expected = FileUtils.ReadTestFile(this.GetType(), filename);
             Assert.Equal(expected, schema.ToJson());
@@ -27,33 +27,20 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
         [Fact]
         public void Query()
         {
-
+            TestCollection collection = CreateCollection();
+            var queryStringBuilder = new QueryStringBuilder();
+            collection.AddQuery(HalSelfActionLinkAttribute.SelfRelName, queryStringBuilder);
+            var query = queryStringBuilder.AddToUrl("");
+            var filename = $"{nameof(Query)}.txt";
+            FileUtils.WriteTestFile(this.GetType(), filename, query);
+            var expected = FileUtils.ReadTestFile(this.GetType(), filename);
+            Assert.Equal(expected, query);
         }
 
         [Fact]
         public void Json()
         {
-            var query = new TestQuery();
-            var items = new List<Test>
-            {
-                new Test()
-                {
-                    IntVal = 1,
-                    StringVal = "Da String"
-                },
-                new Test()
-                {
-                    IntVal = -76,
-                    StringVal = "Another String"
-                },
-                new Test()
-                {
-                    IntVal = 1233,
-                    StringVal = "Tacos"
-                }
-            };
-
-            var collection = new TestCollection(query, items.Count, items);
+            TestCollection collection = CreateCollection();
 
             var serializer = mockup.Get<JsonSerializer>();
             using (var stream = new MemoryStream())
@@ -74,6 +61,37 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
                     Assert.Equal(expected, json);
                 }
             }
+        }
+
+        private static TestCollection CreateCollection()
+        {
+            var query = new TestQuery()
+            {
+                AnInt = 1,
+                PRETest = "Woot"
+            };
+
+            var items = new List<Test>
+            {
+                new Test()
+                {
+                    IntVal = 1,
+                    StringVal = "Da String"
+                },
+                new Test()
+                {
+                    IntVal = -76,
+                    StringVal = "Another String"
+                },
+                new Test()
+                {
+                    IntVal = 1233,
+                    StringVal = "Tacos"
+                }
+            };
+
+            var collection = new TestCollection(query, items.Count, items);
+            return collection;
         }
 
         public class TestQuery : PagedCollectionQuery
