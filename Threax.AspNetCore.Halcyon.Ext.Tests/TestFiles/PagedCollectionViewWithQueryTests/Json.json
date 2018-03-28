@@ -1,0 +1,20 @@
+{
+  "optionalGuid": null,
+  "anInt": 0,
+  "fancyString": null,
+  "preTest": null,
+  "items": [
+    {
+      "intVal": 1,
+      "stringVal": "Da String"
+    },
+    {
+      "intVal": -76,
+      "stringVal": "Another String"
+    },
+    {
+      "intVal": 1233,
+      "stringVal": "Tacos"
+    }
+  ]
+}

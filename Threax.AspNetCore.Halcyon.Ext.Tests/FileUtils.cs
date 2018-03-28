@@ -3,14 +3,21 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
+namespace Threax.AspNetCore.Halcyon.Ext.Tests
 {
     static class FileUtils
     {
+        private static bool writeTests = false;
+
         private static String TestFileDirectory => Path.Combine(Directory.GetCurrentDirectory(), "../../../TestFiles");
 
         public static void WriteTestFile(Type testType, String filename, String contents)
         {
+            if (!writeTests)
+            {
+                return;
+            }
+
             filename = Path.Combine(TestFileDirectory, testType.Name, filename);
 
             var folder = Path.GetDirectoryName(filename);

@@ -6,7 +6,6 @@ using NJsonSchema.Generation;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Threax.AspNetCore.Halcyon.ClientGen.Tests;
 using Threax.AspNetCore.Tests;
 using Xunit;
 
@@ -14,9 +13,7 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
 {
     public class SchemaJsonConverterTests
     {
-        private bool writeTests = false;
-
-        private Mockup mockup = new Mockup();
+        private Mockup mockup = new Mockup().SetupGlobal();
 
         public SchemaJsonConverterTests()
         {
@@ -26,13 +23,6 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
                 mock.Setup(i => i.IsValid(It.IsAny<Type>())).Returns(true);
                 return mock.Object;
             });
-
-            mockup.Add<JsonSchemaGenerator>(s => new JsonSchemaGenerator(new JsonSchemaGeneratorSettings()
-            {
-                DefaultEnumHandling = EnumHandling.String,
-                DefaultPropertyNameHandling = PropertyNameHandling.CamelCase,
-                FlattenInheritanceHierarchy = true,
-            }));
 
             mockup.Add<ISchemaBuilder>(s => new SchemaBuilder(s.Get<JsonSchemaGenerator>(), s.Get<IValidSchemaTypeManager>()));
 
@@ -78,11 +68,7 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
                 }
             }
 
-            if (writeTests)
-            {
-                FileUtils.WriteTestFile(this.GetType(), Filename, finalJson);
-            }
-
+            FileUtils.WriteTestFile(this.GetType(), Filename, finalJson);
             var expected = FileUtils.ReadTestFile(this.GetType(), Filename);
             Assert.Equal(expected, finalJson);
         }
