@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using Threax.AspNetCore.Tests;
 using Xunit;
 
@@ -11,6 +12,17 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
     public class PagedCollectionViewWithQueryTests
     {
         private Mockup mockup = new Mockup().SetupGlobal();
+
+        [Fact]
+        public async Task Schema()
+        {
+            var generator = mockup.Get<EndpointDocJsonSchemaGenerator>();
+            var schema = await generator.GenerateAsync(typeof(TestCollection));
+            var filename = $"{nameof(Json)}.Schema.json";
+            FileUtils.WriteTestFile(this.GetType(), filename, schema.ToJson());
+            var expected = FileUtils.ReadTestFile(this.GetType(), filename);
+            Assert.Equal(expected, schema.ToJson());
+        }
 
         [Fact]
         public void Query()

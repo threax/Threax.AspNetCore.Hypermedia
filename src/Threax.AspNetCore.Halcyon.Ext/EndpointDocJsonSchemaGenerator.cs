@@ -136,7 +136,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
                     foreach (var multiExtension in prop.GetCustomAttributes().Where(i => typeof(JsonSchemaMultiExtensionDataAttribute).IsAssignableFrom(i.GetType())).Cast<JsonSchemaMultiExtensionDataAttribute>())
                     {
-                        foreach(var item in multiExtension.ExtensionValues)
+                        foreach (var item in multiExtension.ExtensionValues)
                         {
                             schemaProp.ExtensionData[item.Key] = item.Value;
                         }
@@ -148,6 +148,18 @@ namespace Threax.AspNetCore.Halcyon.Ext
                         schemaProp.Title = titleGenerator.CreateTitle(schemaProp.Name);
                     }
                 }
+            }
+
+            var typeCustomizer = type.GetCustomAttributes<EndpointDocJsonSchemaCustomizerAttribute>().FirstOrDefault();
+            if (typeCustomizer != null)
+            {
+                await typeCustomizer.ProcessAsync<TSchemaType>(new EndpointDocJsonSchemaCustomizerContext<TSchemaType>()
+                {
+                    Generator = this,
+                    Schema = schema,
+                    SchemaResolver = schemaResolver,
+                    Type = type
+                });
             }
         }
     }

@@ -6,6 +6,8 @@ using NJsonSchema.Generation;
 using NJsonSchema;
 using Newtonsoft.Json;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
+using Threax.AspNetCore.Halcyon.Ext.ValueProviders;
 
 namespace Threax.AspNetCore.Halcyon.Ext.Tests
 {
@@ -18,7 +20,18 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
         /// <returns>The passed in mockup test.</returns>
         public static Mockup SetupGlobal(this Mockup mockup)
         {
-            mockup.Add<JsonSchemaGenerator>(s => new JsonSchemaGenerator(HalcyonConvention.DefaultJsonSchemaGeneratorSettings));
+            mockup.Add<IValidSchemaTypeManager>(s =>
+            {
+                var mock = new Mock<IValidSchemaTypeManager>();
+                mock.Setup(i => i.IsValid(It.IsAny<Type>())).Returns(true);
+                return mock.Object;
+            });
+
+            mockup.Add<EndpointDocJsonSchemaGenerator>(s => new EndpointDocJsonSchemaGenerator(HalcyonConvention.DefaultJsonSchemaGeneratorSettings, s.Get<IValueProviderResolver>(), s.Get<ISchemaCustomizerResolver>(), s.Get<IAutoTitleGenerator>() ));
+
+            mockup.Add<ISchemaBuilder>(s => new SchemaBuilder(s.Get<EndpointDocJsonSchemaGenerator>(), s.Get<IValidSchemaTypeManager>()));
+
+            mockup.Add<SchemaJsonConverter>(m => new SchemaJsonConverter());
 
             mockup.Add<JsonSerializerSettings>(s =>
             {

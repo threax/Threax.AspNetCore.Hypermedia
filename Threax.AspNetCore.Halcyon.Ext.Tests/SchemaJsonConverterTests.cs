@@ -18,16 +18,7 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
 
         public SchemaJsonConverterTests()
         {
-            mockup.Add<IValidSchemaTypeManager>(s =>
-            {
-                var mock = new Mock<IValidSchemaTypeManager>();
-                mock.Setup(i => i.IsValid(It.IsAny<Type>())).Returns(true);
-                return mock.Object;
-            });
-
-            mockup.Add<ISchemaBuilder>(s => new SchemaBuilder(s.Get<JsonSchemaGenerator>(), s.Get<IValidSchemaTypeManager>()));
-
-            mockup.Add<SchemaJsonConverter>(m => new SchemaJsonConverter());
+            
         }
 
         [Fact]
