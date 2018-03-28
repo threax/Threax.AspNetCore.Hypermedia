@@ -41,13 +41,13 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 naming = camelNaming;
             }
             writer.WriteStartObject();
-            foreach (var prop in typeof(TQuery).GetTypeInfo().GetProperties().Where(i => i.Name != nameof(IPagedCollectionQuery.Offset) && i.Name != nameof(IPagedCollectionQuery.Limit)))
+            foreach (var prop in typeof(TQuery).GetTypeInfo().GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
                 writer.WritePropertyName(naming.GetPropertyName(prop.Name, false));
                 serializer.Serialize(writer, prop.GetValue(this.query));
             }
-            writer.WritePropertyName(naming.GetPropertyName(nameof(Items), false));
-            serializer.Serialize(writer, Items);
+            writer.WritePropertyName(naming.GetPropertyName(nameof(Total), false));
+            serializer.Serialize(writer, Total);
             writer.WriteEndObject();
         }
 
