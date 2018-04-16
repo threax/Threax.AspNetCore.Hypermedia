@@ -6,7 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Threax.AspNetCore.Halcyon.Client</AssemblyName>
     <PackageId>Threax.AspNetCore.Halcyon.Client</PackageId>
-    <Version>5.3.0</Version>
+    <Version>5.4.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
@@ -14,7 +14,7 @@
     <PackageProjectUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</PackageProjectUrl>
     <RepositoryUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</RepositoryUrl>
     <PackageLicenseUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageReleaseNotes>Added shared credentials. This makes it easier to reuse some settings across multiple client credentials logins.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added better error messages when an error occures on the server.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
