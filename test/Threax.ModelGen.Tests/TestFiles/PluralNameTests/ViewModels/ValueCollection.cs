@@ -24,7 +24,7 @@ namespace Test.ViewModels
     {
         public ValueCollection(ValueQuery query, int total, IEnumerable<Value> items) : base(query, total, items)
         {
-            this.query = query;
+            
         }
 
         //You can add your own customizations here. These will not be overwritten by the model generator.

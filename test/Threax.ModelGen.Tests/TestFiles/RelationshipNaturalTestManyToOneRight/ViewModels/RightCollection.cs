@@ -24,7 +24,7 @@ namespace Test.ViewModels
     {
         public RightCollection(RightQuery query, int total, IEnumerable<Right> items) : base(query, total, items)
         {
-            this.query = query;
+            
         }
 
         //You can add your own customizations here. These will not be overwritten by the model generator.

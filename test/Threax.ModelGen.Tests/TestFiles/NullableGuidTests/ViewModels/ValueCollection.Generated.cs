@@ -10,40 +10,8 @@ using Threax.AspNetCore.Halcyon.Ext;
 
 namespace Test.ViewModels
 {
-    public partial class ValueCollection : PagedCollectionView<Value>, IValueQuery
+    public partial class ValueCollection : PagedCollectionViewWithQuery<Value, ValueQuery>
     {
-        private ValueQuery query;
-
-        public Guid? ValueId
-        {
-            get { return query.ValueId; }
-            set { query.ValueId = value; }
-        }
-
-        public Guid? OptionalId
-        {
-            get { return query.OptionalId; }
-            set { query.OptionalId = value; }
-        }
-
-        protected override void AddCustomQuery(string rel, QueryStringBuilder queryString)
-        {
-            if (ValueId != null)
-            {
-                queryString.AppendItem("valueId", ValueId.ToString());
-            }
-
-            if (OptionalId != null)
-            {
-                queryString.AppendItem("optionalId", OptionalId.ToString());
-            }
-
-
-            OnAddCustomQuery(rel, queryString);
-
-            base.AddCustomQuery(rel, queryString);
-        }
-
-        partial void OnAddCustomQuery(String rel, QueryStringBuilder queryString);
+        
     }
 }

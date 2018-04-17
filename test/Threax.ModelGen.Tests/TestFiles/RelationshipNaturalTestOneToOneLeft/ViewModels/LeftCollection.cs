@@ -24,7 +24,7 @@ namespace Test.ViewModels
     {
         public LeftCollection(LeftQuery query, int total, IEnumerable<Left> items) : base(query, total, items)
         {
-            this.query = query;
+            
         }
 
         //You can add your own customizations here. These will not be overwritten by the model generator.

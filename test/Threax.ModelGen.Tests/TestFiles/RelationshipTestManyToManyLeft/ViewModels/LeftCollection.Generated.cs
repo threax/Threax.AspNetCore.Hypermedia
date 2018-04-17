@@ -10,29 +10,8 @@ using Threax.AspNetCore.Halcyon.Ext;
 
 namespace Test.ViewModels
 {
-    public partial class LeftCollection : PagedCollectionView<Left>, ILeftQuery
+    public partial class LeftCollection : PagedCollectionViewWithQuery<Left, LeftQuery>
     {
-        private LeftQuery query;
-
-        public Guid? LeftId
-        {
-            get { return query.LeftId; }
-            set { query.LeftId = value; }
-        }
-
-        protected override void AddCustomQuery(string rel, QueryStringBuilder queryString)
-        {
-            if (LeftId != null)
-            {
-                queryString.AppendItem("leftId", LeftId.ToString());
-            }
-
-
-            OnAddCustomQuery(rel, queryString);
-
-            base.AddCustomQuery(rel, queryString);
-        }
-
-        partial void OnAddCustomQuery(String rel, QueryStringBuilder queryString);
+        
     }
 }
