@@ -25,7 +25,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
             this.validSchemaManager = validSchemaManager;
         }
 
-        public JsonSchema4 GetSchema(Type type, bool allowEnumerables = false)
+        public async Task<JsonSchema4> GetSchema(Type type, bool allowEnumerables = false)
         {
             bool isEnumerable = false;
 
@@ -65,13 +65,12 @@ namespace Threax.AspNetCore.Halcyon.Ext
             }
 
             //Create schema from type
-            var t = generator.GenerateAsync(type);
-            t.Wait();
+            var t = await generator.GenerateAsync(type);
 
             //Set the array extension to true if this was enumerable
-            t.Result.SetIsArray(isEnumerable);
+            t.SetIsArray(isEnumerable);
 
-            return t.Result;
+            return t;
         }
     }
 }

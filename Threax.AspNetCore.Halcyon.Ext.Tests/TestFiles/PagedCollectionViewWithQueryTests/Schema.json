@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "TestCollection",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "anInt": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "optionalGuid": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "format": "guid"
+    },
+    "total": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "fancyString": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "preTest": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "offset": {
+      "type": "integer",
+      "description": "The number of pages (item number = Offset * Limit) into the collection to query.",
+      "format": "int32"
+    },
+    "limit": {
+      "type": "integer",
+      "description": "The limit of the number of items to return.",
+      "format": "int32"
+    }
+  }
+}

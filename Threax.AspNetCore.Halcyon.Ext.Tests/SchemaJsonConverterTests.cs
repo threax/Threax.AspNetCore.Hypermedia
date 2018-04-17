@@ -6,7 +6,7 @@ using NJsonSchema.Generation;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Threax.AspNetCore.Halcyon.ClientGen.Tests;
+using System.Threading.Tasks;
 using Threax.AspNetCore.Tests;
 using Xunit;
 
@@ -14,53 +14,35 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
 {
     public class SchemaJsonConverterTests
     {
-        private bool writeTests = false;
-
-        private Mockup mockup = new Mockup();
+        private Mockup mockup = new Mockup().SetupGlobal();
 
         public SchemaJsonConverterTests()
         {
-            mockup.Add<IValidSchemaTypeManager>(s =>
-            {
-                var mock = new Mock<IValidSchemaTypeManager>();
-                mock.Setup(i => i.IsValid(It.IsAny<Type>())).Returns(true);
-                return mock.Object;
-            });
-
-            mockup.Add<JsonSchemaGenerator>(s => new JsonSchemaGenerator(new JsonSchemaGeneratorSettings()
-            {
-                DefaultEnumHandling = EnumHandling.String,
-                DefaultPropertyNameHandling = PropertyNameHandling.CamelCase,
-                FlattenInheritanceHierarchy = true,
-            }));
-
-            mockup.Add<ISchemaBuilder>(s => new SchemaBuilder(s.Get<JsonSchemaGenerator>(), s.Get<IValidSchemaTypeManager>()));
-
-            mockup.Add<SchemaJsonConverter>(m => new SchemaJsonConverter());
+            
         }
 
         [Fact]
-        public void TestSimple()
+        public Task TestSimple()
         {
-            TestSchema(typeof(TestType), "TestSimple.json");
+            return TestSchema(typeof(TestType), "TestSimple.json");
         }
 
         [Fact]
-        public void TestSimpleArray()
+        public Task TestSimpleArray()
         {
-            TestSchema(typeof(TestSimpleArray), "TestSimpleArray.json");
+            return TestSchema(typeof(TestSimpleArray), "TestSimpleArray.json");
         }
 
         [Fact]
-        public void TestComplexArray()
+        public Task TestComplexArray()
         {
-            TestSchema(typeof(TestComplexArrayType), "TestComplexArray.json");
+            return TestSchema(typeof(TestComplexArrayType), "TestComplexArray.json");
         }
 
-        private void TestSchema(Type type, String Filename)
+        private async Task TestSchema(Type type, String Filename)
         {
             var schemaBuilder = mockup.Get<ISchemaBuilder>();
-            var schema = schemaBuilder.GetSchema(type);
+            var schema = await schemaBuilder.GetSchema(type);
             var converter = mockup.Get<SchemaJsonConverter>();
             var serializer = JsonSerializer.Create(HalcyonConvention.DefaultJsonSerializerSettings);
             String finalJson;
@@ -78,11 +60,7 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
                 }
             }
 
-            if (writeTests)
-            {
-                FileUtils.WriteTestFile(this.GetType(), Filename, finalJson);
-            }
-
+            FileUtils.WriteTestFile(this.GetType(), Filename, finalJson);
             var expected = FileUtils.ReadTestFile(this.GetType(), Filename);
             Assert.Equal(expected, finalJson);
         }

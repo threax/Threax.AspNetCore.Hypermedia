@@ -6,7 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Threax.AspNetCore.Halcyon.Ext</AssemblyName>
     <PackageId>Threax.AspNetCore.Halcyon.Ext</PackageId>
-    <Version>8.0.1</Version>
+    <Version>9.0.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
@@ -14,7 +14,8 @@
     <PackageLicenseUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</PackageProjectUrl>
     <RepositoryUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</RepositoryUrl>
-    <PackageReleaseNotes>Fixed definition names coming out of NJsonSchema.</PackageReleaseNotes>
+    <PackageReleaseNotes>Pushed async things close to system boundaries.
+Anything using the EndpointDocBuilder will need to handle that it is now async.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

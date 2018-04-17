@@ -34,9 +34,9 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
                 var schemaBuilder = s.Get<ISchemaBuilder>();
 
                 var mock = new Mock<IClientGenerator>();
-                var endpoint = new EndpointClientDefinition(typeof(TResult), schemaBuilder.GetSchema(typeof(TResult)));
+                var endpoint = new EndpointClientDefinition(typeof(TResult), schemaBuilder.GetSchema(typeof(TResult)).GetAwaiter().GetResult());
                 var endpointDoc = new EndpointDoc();
-                endpointDoc.RequestSchema = schemaBuilder.GetSchema(typeof(TInput));
+                endpointDoc.RequestSchema = schemaBuilder.GetSchema(typeof(TInput)).GetAwaiter().GetResult();
                 endpoint.AddLink(new EndpointClientLinkDefinition("Save", endpointDoc, false));
                 var mockEndpoints = new List<EndpointClientDefinition>() { endpoint };
                 mock.Setup(i => i.GetEndpointDefinitions()).Returns(mockEndpoints);

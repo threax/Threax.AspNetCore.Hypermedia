@@ -375,7 +375,7 @@ namespace Threax.AspNetCore.Halcyon.Client
             StatusCode = response.StatusCode;
             if ((int)StatusCode > 299)
             {
-                throw new InvalidOperationException($"The HTTP status code {StatusCode} is not a valid response for this client.");
+                throw await HalRemoteException.Create(response);
             }
             var responseString = await response.Content.ReadAsStringAsync();
             var responseData = JObject.Parse(responseString);
