@@ -227,7 +227,7 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                 DeleteFile(settings.AppOutDir, EntryPointGenerator.GetFileName(settings.Schema));
 
                 DeleteFile(settings.AppOutDir, CrudCshtmlInjectorGenerator.GetFileName(settings.Schema));
-                DeleteFile(settings.AppOutDir, CrudCshtmlInjectorGenerator.GetFileName(settings.Schema));
+                DeleteFile(settings.AppOutDir, CrudInjectorGenerator.GetFileName(settings.Schema));
                 DeleteFile(settings.AppOutDir, CrudUiTypescriptGenerator.GetFileName(settings.Schema));
                 DeleteFile(settings.AppOutDir, UiControllerGenerator.GetFileName(settings.Schema));
             }

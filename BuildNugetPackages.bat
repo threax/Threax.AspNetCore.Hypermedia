@@ -1,7 +1,6 @@
 set BASE=%~dp0
 set SEARCH=%BASE%src
 set OUT=%BASE%nuget
-rmdir %OUT%
 mkdir %OUT%
 pushd %BASE%
 rd /s /q src\Threax.ModelGen\bin
