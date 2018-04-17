@@ -11,7 +11,7 @@ namespace Threax.AspNetCore.Models
     /// of the PagedCollectionViewWithQuery that builds the queries with reflection.
     /// By default (including if there is no attribute) this will be true to generate the auto query collections.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class AutoQueryCollectionAttribute : JsonSchemaExtensionDataAttribute
     {
         internal const String Name = "x-auto-query-collection";
