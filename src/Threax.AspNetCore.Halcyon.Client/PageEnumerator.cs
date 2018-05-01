@@ -79,5 +79,21 @@ namespace Threax.AspNetCore.Halcyon.Client
 
             return true;
         }
+
+        /// <summary>
+        /// Load all remaining data into a list. This ideally would be called without doing any interation.
+        /// This will load all pages from the server, so could potentially be a large amount of data depending
+        /// on the source.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<TItem>> ToList()
+        {
+            var list = new List<TItem>();
+            while (await this.MoveNext())
+            {
+                list.Add(this.Current);
+            }
+            return list;
+        }
     }
 }
