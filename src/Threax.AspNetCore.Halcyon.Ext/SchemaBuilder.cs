@@ -16,6 +16,8 @@ namespace Threax.AspNetCore.Halcyon.Ext
 {
     public class SchemaBuilder : ISchemaBuilder
     {
+        private static readonly Newtonsoft.Json.Serialization.JsonProperty DummyProperty = new Newtonsoft.Json.Serialization.JsonProperty();
+
         JsonSchemaGenerator generator;
         IValidSchemaTypeManager validSchemaManager;
 
@@ -71,6 +73,17 @@ namespace Threax.AspNetCore.Halcyon.Ext
             t.SetIsArray(isEnumerable);
 
             return t;
+        }
+
+        /// <summary>
+        /// Get the name of the passed in property reformatted to match what the schema will
+        /// create.
+        /// </summary>
+        /// <param name="memberInfo">The member info to get the name from.</param>
+        /// <returns>The name of the property reformatted to match the schema.</returns>
+        public String GetPropertyName(MemberInfo memberInfo)
+        {
+            return generator.GetPropertyName(DummyProperty, memberInfo);
         }
     }
 }
