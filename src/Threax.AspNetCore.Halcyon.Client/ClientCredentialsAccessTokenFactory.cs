@@ -94,7 +94,7 @@ namespace Threax.AspNetCore.Halcyon.Client
 
                 var expirationTimeSpan = token.ValidTo - token.ValidFrom;
                 var almostExpiredTime = expirationTimeSpan.TotalSeconds * options.ExpirationTimeFraction;
-                this.jwtExpiration = token.ValidTo + TimeSpan.FromSeconds(almostExpiredTime);
+                this.jwtExpiration = token.ValidFrom + TimeSpan.FromSeconds(almostExpiredTime);
 
                 next.AccessToken = tokenResponse.AccessToken;
             }
