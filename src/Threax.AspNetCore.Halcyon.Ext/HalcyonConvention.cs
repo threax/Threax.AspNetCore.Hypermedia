@@ -40,6 +40,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.TryAddScoped<IEndpointDocBuilder, EndpointDocBuilder>();
             services.TryAddScoped<IValidSchemaTypeManager, ValidSchemaTypeManager>();
+            services.TryAddScoped(typeof(PropertyNameValueProvider<>));
             services.TryAddScoped<IValueProviderResolver>(s =>
             {
                 return new ValueProviderResolver(s);

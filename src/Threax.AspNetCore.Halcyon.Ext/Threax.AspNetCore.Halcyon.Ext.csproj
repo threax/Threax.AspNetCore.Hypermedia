@@ -6,7 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Threax.AspNetCore.Halcyon.Ext</AssemblyName>
     <PackageId>Threax.AspNetCore.Halcyon.Ext</PackageId>
-    <Version>9.1.0</Version>
+    <Version>9.2.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
@@ -14,7 +14,7 @@
     <PackageLicenseUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</PackageProjectUrl>
     <RepositoryUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</RepositoryUrl>
-    <PackageReleaseNotes>Added a way to get property names from the SchemaBuilder to make it easier to use schemas with reflection.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added a value provider that will reflect the properties of an object and return them as label value pairs.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
