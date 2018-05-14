@@ -15,7 +15,7 @@ namespace Threax.AspNetCore.Halcyon.Client
 
             StringBuilder query = new StringBuilder();
 
-            foreach(var prop in typeInfo.DeclaredProperties)
+            foreach(var prop in typeInfo.GetProperties())
             {
                 bool notSpecial = true;
                 var value = prop.GetValue(source);
