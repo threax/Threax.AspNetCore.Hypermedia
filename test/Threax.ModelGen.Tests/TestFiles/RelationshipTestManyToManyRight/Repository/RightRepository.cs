@@ -26,7 +26,7 @@ namespace Test.Repository
 
         public async Task<RightCollection> List(RightQuery query)
         {
-            var dbQuery = query.Create(this.Entities);
+            var dbQuery = await query.Create(this.Entities);
 
             var total = await dbQuery.CountAsync();
             dbQuery = dbQuery.Skip(query.SkipTo(total)).Take(query.Limit);

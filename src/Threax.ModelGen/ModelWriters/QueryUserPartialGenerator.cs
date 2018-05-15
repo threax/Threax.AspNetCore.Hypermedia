@@ -15,20 +15,21 @@ namespace Threax.ModelGen
 
         public static String GetQuery(JsonSchema4 schema, String ns)
         {
-            return Get(schema, ns + ".InputModels", "Query", schema.GetExtraNamespaces(StrConstants.FileNewline));
+            return Get(schema, ns + ".InputModels", "Query", schema.GetExtraNamespaces(StrConstants.FileNewline), ns);
         }
 
-        private static String Get(JsonSchema4 schema, String modelNamespace, String modelType, String additionalNs)
+        private static String Get(JsonSchema4 schema, String modelNamespace, String modelType, String additionalNs, String ns)
         {
             String Model, model;
             NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
-            return Create(Model, model, modelNamespace, modelType, additionalNs);
+            return Create(Model, model, modelNamespace, modelType, additionalNs, ns);
         }
 
-        private static String Create(String Model, String model, String modelNamespace, String ModelType, String additionalNs)
+        private static String Create(String Model, String model, String modelNamespace, String ModelType, String additionalNs, String ns)
         {
             return
 $@"using System;
+using {ns}.Database;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -45,12 +46,11 @@ namespace {modelNamespace}
         //See {Model}{ModelType}.Generated for the generated code
 
         /// <summary>
-        /// Populate an IQueryable for values. Does not apply the skip or limit.
+        /// Populate an IQueryable. Does not apply the skip or limit.
         /// </summary>
         /// <param name=""query"">The query to populate.</param>
-        /// <param name=""context"">Additional context for building queries.</param>
         /// <returns>The query passed in populated with additional conditions.</returns>
-        public Task<IQueryable<ValueEntity>> Create(IQueryable<ValueEntity> query)
+        public Task<IQueryable<{Model}Entity>> Create(IQueryable<{Model}Entity> query)
         {{
             if(CreateGenerated(ref query))
             {{

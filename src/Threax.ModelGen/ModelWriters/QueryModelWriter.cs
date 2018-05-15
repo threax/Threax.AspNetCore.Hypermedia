@@ -93,7 +93,6 @@ namespace {ns}.InputModels
         /// be left alone.
         /// </summary>
         /// <param name=""query"">The query to populate.</param>
-        /// <param name=""context"">The context with additional properties needed to build queries.</param>
         /// <returns>True if the query should continue to be built, false if it should be left alone.</returns>
         protected bool CreateGenerated(ref IQueryable<{Model}Entity> query)
         {{

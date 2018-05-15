@@ -23,24 +23,23 @@ namespace Test.InputModels
 
 
         /// <summary>
-        /// Populate an IQueryable for rights. Does not apply the skip or limit.
+        /// Populate an IQueryable for rights. Does not apply the skip or limit. Will return
+        /// true if the query should be modified or false if the entire query was built and should
+        /// be left alone.
         /// </summary>
         /// <param name="query">The query to populate.</param>
-        /// <returns>The query passed in populated with additional conditions.</returns>
-        public IQueryable<RightEntity> Create(IQueryable<RightEntity> query)
+        /// <returns>True if the query should continue to be built, false if it should be left alone.</returns>
+        protected bool CreateGenerated(ref IQueryable<RightEntity> query)
         {
             if (RightId != null)
             {
                 query = query.Where(i => i.RightId == RightId);
+                return true;
             }
             else
             {
-                OnCreate(ref query);
+                return false;
             }
-
-            return query;
         }
-
-        partial void OnCreate(ref IQueryable<RightEntity> query);
     }
 }
