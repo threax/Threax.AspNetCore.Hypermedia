@@ -132,8 +132,8 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                PartialTypeGenerator.GetQueryFileName(await GetSchema()),
-                PartialTypeGenerator.GetQuery(await GetSchema(), AppNamespace)
+                QueryUserPartialGenerator.GetQueryFileName(await GetSchema()),
+                QueryUserPartialGenerator.GetQuery(await GetSchema(), AppNamespace)
             );
         }
 

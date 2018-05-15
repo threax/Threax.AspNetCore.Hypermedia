@@ -54,7 +54,7 @@ namespace {ns}.Repository
 
         public async Task<{Model}Collection> List({Model}Query query)
         {{
-            var dbQuery = query.Create(this.Entities);
+            var dbQuery = await query.Create(this.Entities);
 
             var total = await dbQuery.CountAsync();
             dbQuery = dbQuery.Skip(query.SkipTo(total)).Take(query.Limit);

@@ -148,7 +148,7 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                         WriteFile(settings.AppOutDir, InputModelWriter.GetFileName(settings.Schema), await InputModelWriter.Create(settings.Schema, settings.OtherSchemas, settings.AppNamespace), true);
                     }
 
-                    WriteFile(settings.AppOutDir, PartialTypeGenerator.GetQueryFileName(settings.Schema), PartialTypeGenerator.GetQuery(settings.Schema, settings.AppNamespace), false);
+                    WriteFile(settings.AppOutDir, QueryUserPartialGenerator.GetQueryFileName(settings.Schema), QueryUserPartialGenerator.GetQuery(settings.Schema, settings.AppNamespace), false);
                     WriteFile(settings.AppOutDir, QueryModelWriter.GetFileName(settings.Schema), QueryModelWriter.Get(settings.Schema, settings.AppNamespace), true);
 
                     if (settings.Schema.CreateViewModel())
@@ -210,7 +210,7 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                 }
                 DeleteFile(settings.AppOutDir, PartialTypeGenerator.GetInputFileName(settings.Schema));
                 DeleteFile(settings.AppOutDir, InputModelWriter.GetFileName(settings.Schema));
-                DeleteFile(settings.AppOutDir, PartialTypeGenerator.GetQueryFileName(settings.Schema));
+                DeleteFile(settings.AppOutDir, QueryUserPartialGenerator.GetQueryFileName(settings.Schema));
                 DeleteFile(settings.AppOutDir, QueryModelWriter.GetFileName(settings.Schema));
                 DeleteFile(settings.AppOutDir, ViewModelWriter.GetUserPartialFileName(settings.Schema));
                 DeleteFile(settings.AppOutDir, ViewModelWriter.GetFileName(settings.Schema));

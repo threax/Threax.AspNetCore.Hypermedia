@@ -88,25 +88,25 @@ namespace {ns}.InputModels
 
 {queryProps}
         /// <summary>
-        /// Populate an IQueryable for {models}. Does not apply the skip or limit.
+        /// Populate an IQueryable for {models}. Does not apply the skip or limit. Will return
+        /// true if the query should be modified or false if the entire query was built and should
+        /// be left alone.
         /// </summary>
         /// <param name=""query"">The query to populate.</param>
-        /// <returns>The query passed in populated with additional conditions.</returns>
-        public IQueryable<{Model}Entity> Create(IQueryable<{Model}Entity> query)
+        /// <param name=""context"">The context with additional properties needed to build queries.</param>
+        /// <returns>True if the query should continue to be built, false if it should be left alone.</returns>
+        protected bool CreateGenerated(ref IQueryable<{Model}Entity> query)
         {{
             if ({ModelId} != null)
             {{
                 query = query.Where(i => i.{ModelId} == {ModelId});
+                return true;
             }}
             else
             {{
-{queryCreate}                OnCreate(ref query);
+{queryCreate}                return false;
             }}
-
-            return query;
         }}
-
-        partial void OnCreate(ref IQueryable<{Model}Entity> query);
     }}
 }}";
         }

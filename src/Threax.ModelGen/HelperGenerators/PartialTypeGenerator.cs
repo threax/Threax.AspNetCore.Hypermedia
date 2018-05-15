@@ -27,11 +27,6 @@ namespace Threax.ModelGen
             return $"InputModels/{schema.Title}Input.cs";
         }
 
-        public static String GetQueryFileName(JsonSchema4 schema)
-        {
-            return $"InputModels/{schema.Title}Query.cs";
-        }
-
         public static String GetJoinEntity(JsonSchema4 schema, RelationshipSettings relationship, String ns)
         {
             if (relationship.Kind == RelationKind.ManyToMany)
@@ -49,11 +44,6 @@ namespace Threax.ModelGen
         public static String GetInput(JsonSchema4 schema, String ns)
         {
             return Get(schema, ns + ".InputModels", "Input", schema.GetExtraNamespaces(StrConstants.FileNewline));
-        }
-
-        public static String GetQuery(JsonSchema4 schema, String ns)
-        {
-            return Get(schema, ns + ".InputModels", "Query", schema.GetExtraNamespaces(StrConstants.FileNewline));
         }
 
         private static String Get(JsonSchema4 schema, String modelNamespace, String modelType, String additionalNs)
