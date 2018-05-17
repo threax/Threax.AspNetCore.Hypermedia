@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
-    internal static class Utils
+    public static class HalcyonExtUtils
     {
         public static String GetControllerName(Type controllerType)
         {
@@ -72,7 +72,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
             //Otherwise check the action method and controller for authorize attributes.
             var attributes = methodInfo.GetCustomAttributes<AuthorizeAttribute>(true);
             attributes = attributes.Concat(controllerTypeInfo.GetCustomAttributes<AuthorizeAttribute>(true));
-            return Utils.CheckRoles(principal, attributes);
+            return HalcyonExtUtils.CheckRoles(principal, attributes);
         }
 
         public static bool CheckRoles(ClaimsPrincipal user, IEnumerable<AuthorizeAttribute> authorizeAttrs)
@@ -81,17 +81,21 @@ namespace Threax.AspNetCore.Halcyon.Ext
             bool authenticated = user.Identity.IsAuthenticated;
             foreach (var auth in authorizeAttrs)
             {
-                allowAccess = allowAccess && authenticated;
+                allowAccess = allowAccess && authenticated; //This handles needing to be authenticated at all
                 if (auth.Roles != null)
                 {
+                    //Check the roles, handle comma separated lists as or statements according to the docs
+                    //https://docs.microsoft.com/en-us/aspnet/core/security/authorization/roles?view=aspnetcore-2.0
+                    bool allowAccessOrCheck = false;
                     foreach (var role in auth.Roles.Split(',').Select(i => i.Trim()))
                     {
-                        allowAccess = allowAccess && user.IsInRole(role);
-                        if (!allowAccess)
+                        allowAccessOrCheck |= user.IsInRole(role);
+                        if (allowAccessOrCheck)
                         {
                             break;
                         }
                     }
+                    allowAccess &= allowAccessOrCheck;
                 }
                 if (!allowAccess)
                 {

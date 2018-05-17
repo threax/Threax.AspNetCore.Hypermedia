@@ -73,7 +73,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 var methodInfo = controllerActionDesc.MethodInfo;
 
                 //Check to see if the user can actually access the endpoint we requested
-                if (user != null && !Utils.CanUserAccess(user, methodInfo, controllerActionDesc.ControllerTypeInfo))
+                if (user != null && !HalcyonExtUtils.CanUserAccess(user, methodInfo, controllerActionDesc.ControllerTypeInfo))
                 {
                     throw new UnauthorizedAccessException("User cannot access requested endpoint");
                 }

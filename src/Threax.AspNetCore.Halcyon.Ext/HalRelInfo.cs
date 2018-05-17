@@ -118,7 +118,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
             }
 
             //Remove the * from any route variables that include one
-            this.UrlTemplate = this.UrlTemplate.Replace("{*", "{").Replace("[controller]", Utils.GetControllerName(controllerType)).Replace("[action]", actionMethodName);
+            this.UrlTemplate = this.UrlTemplate.Replace("{*", "{").Replace("[controller]", HalcyonExtUtils.GetControllerName(controllerType)).Replace("[action]", actionMethodName);
 
             if (routeArgs != null)
             {

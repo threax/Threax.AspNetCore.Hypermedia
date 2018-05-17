@@ -55,7 +55,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
             var enumerableValue = model as IEnumerable;
             if (enumerableValue != null)
             {
-                var itemType = Utils.GetEnumerableModelType(enumerableValue);
+                var itemType = HalcyonExtUtils.GetEnumerableModelType(enumerableValue);
                 var response = new HALResponse(new Object());
                 response.AddEmbeddedCollection("values", GetEmbeddedResponses(enumerableValue, httpContext, options));
                 return response;

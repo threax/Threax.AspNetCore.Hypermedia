@@ -96,7 +96,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
         public bool CanUserAccess(ClaimsPrincipal principal)
         {
-            return Utils.CanUserAccess(principal, halRefInfo.ActionMethodInfo, halRefInfo.ControllerType.GetTypeInfo());
+            return HalcyonExtUtils.CanUserAccess(principal, halRefInfo.ActionMethodInfo, halRefInfo.ControllerType.GetTypeInfo());
         }
 
         public HalLinkAttribute GetDocLink(IHalDocEndpointInfo docEndpointInfo)
@@ -130,7 +130,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         {
             get
             {
-                return Utils.GetControllerName(controllerType);
+                return HalcyonExtUtils.GetControllerName(controllerType);
             }
         }
 
