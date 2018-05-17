@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
-    public static class HalcyonExtUtils
+    internal static class HalcyonExtUtils
     {
         public static String GetControllerName(Type controllerType)
         {
