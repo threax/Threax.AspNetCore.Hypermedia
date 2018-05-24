@@ -91,25 +91,31 @@ namespace Threax.ModelGen
                     {
                         assemblyName = assemblyName.Substring(0, commaIndex);
                         var endVersionIndex = a.Name.IndexOf(',', ++commaIndex);
-                        if(endVersionIndex != -1)
+                        if (endVersionIndex != -1)
                         {
                             assemblyVersion = a.Name.Substring(commaIndex, endVersionIndex - commaIndex).Replace("Version=", "").Trim();
                         }
                     }
                     assemblyName += ".dll";
 
+                    Console.WriteLine($"Loading external assembly {assemblyName}.");
+
                     if (a.RequestingAssembly != null)
                     {
                         var sameDirSearch = Path.Combine(Path.GetDirectoryName(a.RequestingAssembly.Location), assemblyName);
+                        Console.WriteLine($"Searching {sameDirSearch}.");
                         if (File.Exists(sameDirSearch))
                         {
+                            Console.WriteLine($"Assembly found at {sameDirSearch}.");
                             return Assembly.LoadFile(sameDirSearch);
                         }
                     }
 
                     var additionalSearch = Path.Combine(additionalSearchPath, assemblyName);
+                    Console.WriteLine($"Searching {additionalSearch}.");
                     if (File.Exists(additionalSearch))
                     {
+                        Console.WriteLine($"Assembly found at {additionalSearch}.");
                         return Assembly.LoadFile(additionalSearch);
                     }
 
@@ -117,12 +123,15 @@ namespace Threax.ModelGen
                     var assemblyFolder = Path.GetFileNameWithoutExtension(assemblyName);
                     var nugetPath = Path.GetFullPath(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".nuget/packages", assemblyFolder));
                     var versionedPath = Path.Combine(nugetPath, assemblyVersion);
+
+                    Console.WriteLine($"Looking for nuget path {versionedPath}.");
                     if (!Directory.Exists(versionedPath))
                     {
                         //Try again without last .0
                         if (versionedPath.EndsWith(".0"))
                         {
                             versionedPath = versionedPath.Substring(0, versionedPath.Length - 2);
+                            Console.WriteLine($"Looking for nuget path {versionedPath}.");
                         }
                     }
 
@@ -131,20 +140,26 @@ namespace Threax.ModelGen
                         //Find netstandard version, hardcoded to netstandard2.0 for now
                         nugetPath = versionedPath;
                         var netStandardPath = Path.Combine(nugetPath, "lib/netstandard2.0", assemblyName);
+                        Console.WriteLine($"Searching {netStandardPath}.");
                         if (File.Exists(netStandardPath))
                         {
+                            Console.WriteLine($"Assembly found at {netStandardPath}.");
                             return Assembly.LoadFile(netStandardPath);
                         }
 
                         //Can't find that version, see if there is only 1 dll in this folder
                         var dllFiles = Directory.GetFiles(nugetPath, assemblyName, SearchOption.AllDirectories);
-                        if(dllFiles.Length == 1)
+                        if (dllFiles.Length == 1)
                         {
+                            Console.WriteLine($"Loading fallback dll {dllFiles[0]}.");
                             return Assembly.LoadFile(dllFiles[0]);
                         }
                     }
                 }
-                catch (Exception) { }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"{ex.GetType().Name} loading {a.Name}. Message: {ex.Message}");
+                }
 
                 return null;
             };
