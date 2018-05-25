@@ -87,7 +87,7 @@ namespace Test
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.10.0 (Newtonsoft.Json v10.0.0.0)")]
     public partial class Input 
     {
-        [Newtonsoft.Json.JsonProperty("Date", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("date", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime Date { get; set; }
     
         public string ToJson() 

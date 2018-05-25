@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using NJsonSchema.Generation;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
                 return mock.Object;
             });
 
-            mockup.Add<JsonSchemaGenerator>(s => new JsonSchemaGenerator(new JsonSchemaGeneratorSettings()));
+            mockup.Add<JsonSchemaGenerator>(s => new JsonSchemaGenerator(HalcyonConvention.DefaultJsonSchemaGeneratorSettings));
 
             mockup.Add<ISchemaBuilder>(s => new SchemaBuilder(s.Get<JsonSchemaGenerator>(), s.Get<IValidSchemaTypeManager>()));
 

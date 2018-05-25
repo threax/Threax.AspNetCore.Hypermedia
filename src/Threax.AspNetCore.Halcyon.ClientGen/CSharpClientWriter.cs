@@ -47,11 +47,10 @@ writer.WriteLine("}");
                 GenerateDataAnnotations = false,
                 ClassStyle = CSharpClassStyle.Poco,  
                 RequiredPropertiesMustBeDefined = false,
-                EnumNameGenerator = new EnumValueEnumNameGenerator(),
                 ArrayType = "List" //This is imported in the using statements above (System.Collections.Generic.List)
             };
 
-            var resolver = new CSharpTypeResolver(settings);
+            var resolver = new CustomCSharpTypeResolver(settings);
             resolver.RegisterSchemaDefinitions(interfacesToWrite.Interfaces);
 
             var schema = interfacesToWrite.FirstSchema;
@@ -357,6 +356,49 @@ writer.WriteLine($@"
                 //Close class
                 //Close class
                 writer.WriteLine("}");
+            }
+        }
+
+        class CustomCSharpTypeResolver : CSharpTypeResolver
+        {
+            private Dictionary<String, JsonSchema4> originalSchemas = new Dictionary<string, JsonSchema4>();
+
+            public CustomCSharpTypeResolver(CSharpGeneratorSettings settings) : base(settings)
+            {
+
+            }
+
+            public override string GetOrGenerateTypeName(JsonSchema4 schema, string typeNameHint)
+            {
+                var realTypeNameHint = typeNameHint;
+                //If there is a parent schema, go to it to see if we can find the original type name since the hint will be butchered
+                var parent = schema.ParentSchema;
+                if (parent != null)
+                {
+                    //Find this schema in the parent definitions
+                    foreach (var def in parent?.Definitions ?? Enumerable.Empty<KeyValuePair<String, JsonSchema4>>())
+                    {
+                        if (def.Value == schema)
+                        {
+                            realTypeNameHint = def.Key;
+                            break;
+                        }
+                    }
+                }
+
+                //Try to get the first schema we saw with the given type name hint.
+                //If it exists pass the first one seen, otherwise add and pass the given schema
+                //This should force types to only be written once
+                JsonSchema4 targetSchema;
+                if (!originalSchemas.TryGetValue(realTypeNameHint, out targetSchema))
+                {
+                    targetSchema = schema.ActualSchema;
+                    originalSchemas.Add(realTypeNameHint, targetSchema);
+                }
+
+                var result = base.GetOrGenerateTypeName(targetSchema, realTypeNameHint);
+
+                return result;
             }
         }
     }

@@ -87,7 +87,7 @@ namespace Test
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.10.0 (Newtonsoft.Json v10.0.0.0)")]
     public partial class Input 
     {
-        [Newtonsoft.Json.JsonProperty("File", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("file", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public byte[] File { get; set; }
     
         public string ToJson() 
