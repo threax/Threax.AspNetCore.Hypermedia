@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using Threax.AspNetCore.Halcyon.Ext;
 using Threax.AspNetCore.Tests;
 using Xunit;
@@ -32,12 +33,12 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
 
                 var mock = new Mock<IClientGenerator>();
 
-                var mockEndpoints = new List<EndpointClientDefinition>()
+                IEnumerable<EndpointClientDefinition> mockEndpoints = new List<EndpointClientDefinition>()
                 {
                     CreateEndpoint<InputWithEnumTest.Input, InputWithEnumTest.Output>(schemaBuilder),
                     CreateEndpoint<InputWithEnumTest.AnotherInput, InputWithEnumTest.Output>(schemaBuilder)
                 };
-                mock.Setup(i => i.GetEndpointDefinitions()).Returns(mockEndpoints);
+                mock.Setup(i => i.GetEndpointDefinitions()).Returns(Task.FromResult(mockEndpoints));
                 return mock.Object;
             });
         }

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using Threax.AspNetCore.Halcyon.Ext;
 using Threax.AspNetCore.Tests;
 using Xunit;
@@ -39,19 +40,19 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
                 var endpointDoc = new EndpointDoc();
                 endpointDoc.RequestSchema = schemaBuilder.GetSchema(typeof(TInput)).GetAwaiter().GetResult();
                 endpoint.AddLink(new EndpointClientLinkDefinition("Save", endpointDoc, false));
-                var mockEndpoints = new List<EndpointClientDefinition>() { endpoint };
-                mock.Setup(i => i.GetEndpointDefinitions()).Returns(mockEndpoints);
+                IEnumerable<EndpointClientDefinition> mockEndpoints = new List<EndpointClientDefinition>() { endpoint };
+                mock.Setup(i => i.GetEndpointDefinitions()).Returns(Task.FromResult(mockEndpoints));
                 return mock.Object;
             });
         }
 
         [Fact]
-        protected void Typescript()
+        protected async Task Typescript()
         {
             var clientWriter = new TypescriptClientWriter(mockup.Get<IClientGenerator>());
             using (var writer = new StreamWriter(new MemoryStream()))
             {
-                clientWriter.CreateClient(writer);
+                await clientWriter.CreateClient(writer);
                 writer.Flush();
                 writer.BaseStream.Seek(0, SeekOrigin.Begin);
                 using (var reader = new StreamReader(writer.BaseStream))
@@ -63,7 +64,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
         }
 
         [Fact]
-        protected void CSharp()
+        protected async Task CSharp()
         {
             var clientWriter = new CSharpClientWriter(mockup.Get<IClientGenerator>(), new CSharpOptions()
             {
@@ -72,7 +73,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
 
             using (var writer = new StreamWriter(new MemoryStream()))
             {
-                clientWriter.CreateClient(writer);
+                await clientWriter.CreateClient(writer);
                 writer.Flush();
                 writer.BaseStream.Seek(0, SeekOrigin.Begin);
                 using (var reader = new StreamReader(writer.BaseStream))

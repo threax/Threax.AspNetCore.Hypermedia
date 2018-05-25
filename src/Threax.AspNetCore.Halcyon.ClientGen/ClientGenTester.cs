@@ -23,9 +23,9 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
         /// Call this function to verify the client generator. It will throw an exception with more information
         /// if there are any errors, otherwise it will appear to do nothing, which means the tests pass.
         /// </summary>
-        public void Verify()
+        public async Task Verify()
         {
-            var list = this.clientGenerator.GetEndpointDefinitions().ToList();
+            var list = (await this.clientGenerator.GetEndpointDefinitions()).ToList();
         }
     }
 }

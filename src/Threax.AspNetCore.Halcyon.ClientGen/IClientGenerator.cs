@@ -7,6 +7,6 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
 {
     public interface IClientGenerator
     {
-        IEnumerable<EndpointClientDefinition> GetEndpointDefinitions();
+        Task<IEnumerable<EndpointClientDefinition>> GetEndpointDefinitions();
     }
 }

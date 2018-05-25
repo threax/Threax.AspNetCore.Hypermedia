@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Threax.AspNetCore.Halcyon.Ext;
 
 namespace Threax.AspNetCore.Halcyon.ClientGen
@@ -19,7 +20,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
             this.clientGenerator = clientGenerator;
         }
 
-        public void CreateClient(TextWriter writer)
+        public async Task CreateClient(TextWriter writer)
         {
             var interfacesToWrite = new InterfaceManager();
 
@@ -27,7 +28,7 @@ writer.WriteLine(
 @"import * as hal from 'hr.halcyon.EndpointClient';"
 );
 
-            WriteClient(interfacesToWrite, writer);
+            await WriteClient(interfacesToWrite, writer);
 
             //Write interfaces, kind of weird, no good docs for this
             var settings = new TypeScriptGeneratorSettings()
@@ -49,9 +50,9 @@ writer.WriteLine(
             //End Write Interfaces
         }
 
-        private void WriteClient(InterfaceManager interfacesToWrite, TextWriter writer)
+        private async Task WriteClient(InterfaceManager interfacesToWrite, TextWriter writer)
         {
-            foreach (var client in clientGenerator.GetEndpointDefinitions())
+            foreach (var client in await clientGenerator.GetEndpointDefinitions())
             {
                 //Write injector
                 if (client.IsEntryPoint)
@@ -330,21 +331,7 @@ writer.WriteLine("}");
 
             public override string GetOrGenerateTypeName(JsonSchema4 schema, string typeNameHint)
             {
-                var realTypeNameHint = typeNameHint;
-                //If there is a parent schema, go to it to see if we can find the original type name since the hint will be butchered
-                var parent = schema.ParentSchema;
-                if(parent != null)
-                {
-                    //Find this schema in the parent definitions
-                    foreach(var def in parent?.Definitions ?? Enumerable.Empty<KeyValuePair<String, JsonSchema4>>())
-                    {
-                        if(def.Value == schema)
-                        {
-                            realTypeNameHint = def.Key;
-                            break;
-                        }
-                    }
-                }
+                var realTypeNameHint = schema.FindSchemaNameInParent(typeNameHint) ?? typeNameHint;
 
                 //Try to get the first schema we saw with the given type name hint.
                 //If it exists pass the first one seen, otherwise add and pass the given schema

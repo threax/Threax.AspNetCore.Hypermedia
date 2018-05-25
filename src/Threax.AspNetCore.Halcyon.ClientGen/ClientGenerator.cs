@@ -20,18 +20,19 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
             this.schemaBuilder = schemaBuilder;
         }
 
-        public IEnumerable<EndpointClientDefinition> GetEndpointDefinitions()
+        public async Task<IEnumerable<EndpointClientDefinition>> GetEndpointDefinitions()
         {
+            var definitions = new List<EndpointClientDefinition>();
             foreach(var type in resultViewProvider.GetResultViewTypes())
             {
-                EndpointClientDefinition clientDef = new EndpointClientDefinition(type, schemaBuilder.GetSchema(type).GetAwaiter().GetResult());
+                EndpointClientDefinition clientDef = new EndpointClientDefinition(type, await schemaBuilder.GetSchema(type));
                 var customAttrs = type.GetTypeInfo().GetCustomAttributes();
                 foreach (var link in customAttrs)
                 {
                     var actionLink = link as HalActionLinkAttribute;
                     if(actionLink != null)
                     {
-                        var doc = endpointDocBuilder.GetDoc(actionLink.GroupName, actionLink.Method, actionLink.UriTemplate.Substring(1)).GetAwaiter().GetResult();
+                        var doc = await endpointDocBuilder.GetDoc(actionLink.GroupName, actionLink.Method, actionLink.UriTemplate.Substring(1));
                         clientDef.AddLink(new EndpointClientLinkDefinition(actionLink.Rel, doc, actionLink.DocsOnly));
                     }
                     else
@@ -42,7 +43,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
                             EndpointDoc doc;
                             if (declaredLink.LinkedToControllerRel)
                             {
-                                doc = endpointDocBuilder.GetDoc(declaredLink.GroupName, declaredLink.Method, declaredLink.UriTemplate.Substring(1)).GetAwaiter().GetResult();
+                                doc = await endpointDocBuilder.GetDoc(declaredLink.GroupName, declaredLink.Method, declaredLink.UriTemplate.Substring(1));
                             }
                             else
                             {
@@ -61,8 +62,9 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
                         }
                     }
                 }
-                yield return clientDef;
+                definitions.Add(clientDef);
             }
+            return definitions;
         }
     }
 }

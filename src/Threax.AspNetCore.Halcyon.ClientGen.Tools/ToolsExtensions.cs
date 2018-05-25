@@ -25,11 +25,11 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
                     {
                         case ".ts":
                             var typescriptWriter = a.Scope.ServiceProvider.GetRequiredService<TypescriptClientWriter>();
-                            typescriptWriter.CreateClient(writer);
+                            await typescriptWriter.CreateClient(writer);
                             break;
                         case ".cs":
                             var csharpWriter = a.Scope.ServiceProvider.GetRequiredService<CSharpClientWriter>();
-                            csharpWriter.CreateClient(writer);
+                            await csharpWriter.CreateClient(writer);
                             break;
                         default:
                             throw new NotSupportedException($"{file} is not supported. Can only generate typescript (.ts) or c# (.cs) clients.");

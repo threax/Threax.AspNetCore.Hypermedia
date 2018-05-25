@@ -22,7 +22,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
             this.options = options;
         }
 
-        public void CreateClient(TextWriter writer)
+        public async Task CreateClient(TextWriter writer)
         {
             var interfacesToWrite = new InterfaceManager();
 
@@ -36,7 +36,7 @@ using System.Linq;
 namespace {options.Namespace} {{"
 );
 
-            WriteClient(interfacesToWrite, writer);
+            await WriteClient(interfacesToWrite, writer);
 
 writer.WriteLine("}");
 
@@ -62,9 +62,9 @@ writer.WriteLine("}");
             //End Write Interfaces
         }
 
-        private void WriteClient(InterfaceManager interfacesToWrite, TextWriter writer)
+        private async Task WriteClient(InterfaceManager interfacesToWrite, TextWriter writer)
         {
-            foreach (var client in clientGenerator.GetEndpointDefinitions())
+            foreach (var client in await clientGenerator.GetEndpointDefinitions())
             {
                 //Write injector
                 if (client.IsEntryPoint)
@@ -370,21 +370,7 @@ writer.WriteLine($@"
 
             public override string GetOrGenerateTypeName(JsonSchema4 schema, string typeNameHint)
             {
-                var realTypeNameHint = typeNameHint;
-                //If there is a parent schema, go to it to see if we can find the original type name since the hint will be butchered
-                var parent = schema.ParentSchema;
-                if (parent != null)
-                {
-                    //Find this schema in the parent definitions
-                    foreach (var def in parent?.Definitions ?? Enumerable.Empty<KeyValuePair<String, JsonSchema4>>())
-                    {
-                        if (def.Value == schema)
-                        {
-                            realTypeNameHint = def.Key;
-                            break;
-                        }
-                    }
-                }
+                var realTypeNameHint = schema.FindSchemaNameInParent(typeNameHint) ?? typeNameHint;
 
                 //Try to get the first schema we saw with the given type name hint.
                 //If it exists pass the first one seen, otherwise add and pass the given schema
