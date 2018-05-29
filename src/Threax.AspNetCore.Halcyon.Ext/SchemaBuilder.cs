@@ -27,7 +27,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
             this.validSchemaManager = validSchemaManager;
         }
 
-        public async Task<JsonSchema4> GetSchema(Type type, bool allowEnumerables = false)
+        public async Task<JsonSchema4> GetSchema(Type type)
         {
             bool isEnumerable = false;
 

@@ -6,7 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Threax.AspNetCore.Halcyon.ClientGen</AssemblyName>
     <PackageId>Threax.AspNetCore.Halcyon.ClientGen</PackageId>
-    <Version>7.1.0</Version>
+    <Version>7.2.0-pre1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
@@ -23,8 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="9.10.10" />
-    <PackageReference Include="NJsonSchema.CodeGeneration.TypeScript" Version="9.10.10" />
+    <PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="9.10.49" />
+    <PackageReference Include="NJsonSchema.CodeGeneration.TypeScript" Version="9.10.49" />
   </ItemGroup>
 
 </Project>

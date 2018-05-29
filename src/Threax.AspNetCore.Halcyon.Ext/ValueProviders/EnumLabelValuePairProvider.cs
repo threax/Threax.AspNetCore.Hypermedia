@@ -9,7 +9,7 @@ using NJsonSchema;
 
 namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
 {
-    public class EnumLabelValuePairProvider : IValueProvider
+    public class EnumLabelValuePairProvider
     {
         Type enumType;
 
@@ -22,19 +22,19 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
             }
         }
 
-        public Task AddExtensions(JsonProperty schemaProp, ValueProviderArgs args)
+        public Task AddExtensions(JsonSchema4 schema, ValueProviderArgs args)
         {
             var sources = GetSourcesSync(args);
 
             foreach(var source in sources)
             {
-                schemaProp.EnumerationNames.Add(source.Label);
-                schemaProp.Enumeration.Add(source.Value);
+                schema.EnumerationNames.Add(source.Label);
+                schema.Enumeration.Add(source.Value);
             }
 
-            if (schemaProp.ExtensionData == null)
+            if (schema.ExtensionData == null)
             {
-                schemaProp.ExtensionData = new Dictionary<String, Object>();
+                schema.ExtensionData = new Dictionary<String, Object>();
             }
 
             return Task.FromResult(0);

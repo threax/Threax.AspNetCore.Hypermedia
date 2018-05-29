@@ -47,6 +47,7 @@ writer.WriteLine("}");
                 GenerateDataAnnotations = false,
                 ClassStyle = CSharpClassStyle.Poco,  
                 RequiredPropertiesMustBeDefined = false,
+                EnumNameGenerator = new EnumValueEnumNameGenerator(),
                 ArrayType = "List" //This is imported in the using statements above (System.Collections.Generic.List)
             };
 

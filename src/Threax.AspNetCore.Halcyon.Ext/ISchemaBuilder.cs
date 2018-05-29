@@ -9,7 +9,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
 {
     public interface ISchemaBuilder
     {
-        Task<JsonSchema4> GetSchema(Type type, bool allowCollections = false);
+        Task<JsonSchema4> GetSchema(Type type);
 
         String GetPropertyName(MemberInfo memberInfo);
     }

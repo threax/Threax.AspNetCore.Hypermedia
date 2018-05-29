@@ -34,6 +34,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         protected override async Task GenerateObjectAsync<TSchemaType>(Type type, TSchemaType schema, JsonSchemaResolver schemaResolver)
         {
             await base.GenerateObjectAsync<TSchemaType>(type, schema, schemaResolver);
+            var processedReferences = new List<JsonSchema4>();
 
             foreach (var prop in type.GetTypeInfo().GetProperties())
             {
@@ -101,18 +102,26 @@ namespace Threax.AspNetCore.Halcyon.Ext
                         schemaProp.Not = null;
                         schemaProp.OneOf.Clear();
 
-                        var labelProvider = new EnumLabelValuePairProvider(propType);
-                        switch (settings.DefaultEnumHandling)
+                        //If the prop is an enum with a reference use our value provider to load the values into the enum definition.
+                        var typeSchema = schemaProp.ActualTypeSchema;
+                        if(typeSchema != null && !processedReferences.Contains(typeSchema))
                         {
-                            case EnumHandling.Integer:
-                                schemaProp.Type = JsonObjectType.Integer;
-                                break;
-                            case EnumHandling.String:
-                            default:
-                                schemaProp.Type = JsonObjectType.String;
-                                break;
+                            processedReferences.Add(typeSchema);
+                            typeSchema.Enumeration?.Clear();
+                            typeSchema.EnumerationNames?.Clear();
+                            var labelProvider = new EnumLabelValuePairProvider(propType);
+                            await labelProvider.AddExtensions(typeSchema, new ValueProviderArgs(new ValueProviderAttribute(typeof(Object)), this, isNullable, prop));
                         }
-                        await labelProvider.AddExtensions(schemaProp, new ValueProviderArgs(new ValueProviderAttribute(typeof(Object)), this, isNullable, prop));
+                        //switch (settings.DefaultEnumHandling)
+                        //{
+                        //    case EnumHandling.Integer:
+                        //        schemaProp.Type = JsonObjectType.Integer;
+                        //        break;
+                        //    case EnumHandling.String:
+                        //    default:
+                        //        schemaProp.Type = JsonObjectType.String;
+                        //        break;
+                        //}
                     }
 
                     //Handle any schema customizations

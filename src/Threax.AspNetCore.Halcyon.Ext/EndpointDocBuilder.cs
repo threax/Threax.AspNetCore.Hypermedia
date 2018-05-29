@@ -91,7 +91,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 {
                     if (param.Source.CanAcceptDataFrom(BindingSource.Body))
                     {
-                        description.RequestSchema = await schemaBuilder.GetSchema(param.Type, true);
+                        description.RequestSchema = await schemaBuilder.GetSchema(param.Type);
                     }
                     else if (param.Source.CanAcceptDataFrom(BindingSource.Query))
                     {
@@ -125,7 +125,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                         
                         if (type != null && validSchemaManager.IsValid(type))
                         {
-                            description.RequestSchema = await schemaBuilder.GetSchema(type, true);
+                            description.RequestSchema = await schemaBuilder.GetSchema(type);
                             description.RequestSchema.SetDataIsForm(true);
                         }
                     }
@@ -134,7 +134,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
             if (queryModelType != null)
             {
-                description.QuerySchema = await schemaBuilder.GetSchema(queryModelType, true);
+                description.QuerySchema = await schemaBuilder.GetSchema(queryModelType);
             }
 
             return description;
