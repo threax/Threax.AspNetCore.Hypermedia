@@ -1,5 +1,7 @@
 ﻿using NJsonSchema;
+using NJsonSchema.CodeGeneration;
 using NJsonSchema.CodeGeneration.TypeScript;
+using NJsonSchema.CodeGeneration.TypeScript.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,9 +26,9 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
         {
             var interfacesToWrite = new InterfaceManager();
 
-writer.WriteLine(
-@"import * as hal from 'hr.halcyon.EndpointClient';"
-);
+            writer.WriteLine(
+            @"import * as hal from 'hr.halcyon.EndpointClient';"
+            );
 
             await WriteClient(interfacesToWrite, writer);
 
@@ -39,15 +41,38 @@ writer.WriteLine(
                 EnumNameGenerator = new EnumValueEnumNameGenerator(),
             };
 
-            var resolver = new CustomTypescriptTypeResolver(settings);
-            resolver.RegisterSchemaDefinitions(interfacesToWrite.Interfaces); //Add all discovered generators
+            //Gather up everything to write, skip duplicate instances of the same thing
+            Dictionary<String, CodeArtifact> codeArtifacts = new Dictionary<String, CodeArtifact>();
+            ExtensionCode lastExtensionCode = null;
+            foreach (var item in interfacesToWrite.Interfaces)
+            {
+                var resolver = new TypeScriptTypeResolver(settings);
+                resolver.RegisterSchemaDefinitions(new Dictionary<String, JsonSchema4>() { { item.Key, item.Value } }); //Add all discovered generators
 
-            var schema = interfacesToWrite.FirstSchema;
-            if (schema != null) {
-                var generator = new TypeScriptGenerator(schema, settings, resolver);
-                var classes = generator.GenerateFile();
-                writer.WriteLine(classes);
+                var generator = new TypeScriptGenerator(item.Value, settings, resolver);
+                var artifacts = generator.GenerateTypes();
+                foreach(var artifact in artifacts.Artifacts)
+                {
+                    if (!codeArtifacts.ContainsKey(artifact.TypeName))
+                    {
+                        codeArtifacts.Add(artifact.TypeName, artifact);
+                    }
+                }
+                lastExtensionCode = artifacts.ExtensionCode;
             }
+            
+            //Write the classes officially
+            //From TypeScriptGenerator.cs GenerateFile, (NJsonSchema 9.10.49)
+            var model = new FileTemplateModel(settings)
+            {
+                Types = ConversionUtilities.TrimWhiteSpaces(string.Join("\n\n", CodeArtifactCollection.OrderByBaseDependency(codeArtifacts.Values).Select(p => p.Code))),
+                ExtensionCode = (TypeScriptExtensionCode)lastExtensionCode
+            };
+
+            var template = settings.TemplateFactory.CreateTemplate("TypeScript", "File", model);
+            var classes = ConversionUtilities.TrimWhiteSpaces(template.Render());
+            writer.WriteLine(classes);
+
             //End Write Interfaces
         }
 
@@ -58,7 +83,7 @@ writer.WriteLine(
                 //Write injector
                 if (client.IsEntryPoint)
                 {
-writer.WriteLine($@"
+                    writer.WriteLine($@"
 export class {client.Name}Injector {{
     private url: string;
     private fetcher: hal.Fetcher;
@@ -82,7 +107,7 @@ export class {client.Name}Injector {{
 }}");
                 }
 
-writer.WriteLine($@"
+                writer.WriteLine($@"
 export class {client.Name}{ResultClassSuffix} {{
     private client: hal.HalEndpointClient;");
 
@@ -102,7 +127,7 @@ export class {client.Name}{ResultClassSuffix} {{
 
                 //Write accessor for data
 
-writer.WriteLine($@"
+                writer.WriteLine($@"
     constructor(client: hal.HalEndpointClient) {{
         this.client = client;
     }}
@@ -119,11 +144,11 @@ writer.WriteLine($@"
                 if (client.IsCollectionView)
                 {
                     var collectionType = client.CollectionType;
-                    if(collectionType == null)
+                    if (collectionType == null)
                     {
                         //No collection type, write out an "any" client.
 
-writer.WriteLine($@"
+                        writer.WriteLine($@"
     private strongItems: any[];
     public get items(): hal.HalEndpointClient[] {{
         if (this.strongItems === undefined) {{
@@ -136,7 +161,7 @@ writer.WriteLine($@"
                     else
                     {
                         //Collection type found, write out results for each data entry.
-writer.WriteLine($@"
+                        writer.WriteLine($@"
     private strongItems: {collectionType}{ResultClassSuffix}[];
     public get items(): {collectionType}{ResultClassSuffix}[] {{
         if (this.strongItems === undefined) {{
@@ -202,7 +227,7 @@ writer.WriteLine($@"
                         }
                     }
 
-                    if(linkReturnType == null)
+                    if (linkReturnType == null)
                     {
                         linkReturnType = VoidReturnType;
                     }
@@ -272,13 +297,14 @@ writer.WriteLine($@"
         return this.client.{fullLoadFunc}(""{link.Rel}""{outArgs})");
 
                         //If the returns are set return r, otherwise void out the promise so we don't leak on void functions
-                        if (returnOpen != null && returnClose != null) {
+                        if (returnOpen != null && returnClose != null)
+                        {
                             writer.WriteLine($@"
                .then(r => {{
                     return {returnOpen}r{returnClose};
                 }});");
                         }
-                        else if(linkReturnType == VoidReturnType) //Write a then that will hide the promise result and become void.
+                        else if (linkReturnType == VoidReturnType) //Write a then that will hide the promise result and become void.
                         {
                             writer.Write(".then(hal.makeVoid);");
                         }
@@ -317,36 +343,7 @@ writer.WriteLine($@"
                 }
 
                 //Close class
-writer.WriteLine("}");
-            }
-        }
-
-        class CustomTypescriptTypeResolver : TypeScriptTypeResolver
-        {
-            private Dictionary<String, JsonSchema4> originalSchemas = new Dictionary<string, JsonSchema4>();
-
-            public CustomTypescriptTypeResolver(TypeScriptGeneratorSettings settings) : base(settings)
-            {
-
-            }
-
-            public override string GetOrGenerateTypeName(JsonSchema4 schema, string typeNameHint)
-            {
-                var realTypeNameHint = schema.FindSchemaNameInParent(typeNameHint) ?? typeNameHint;
-
-                //Try to get the first schema we saw with the given type name hint.
-                //If it exists pass the first one seen, otherwise add and pass the given schema
-                //This should force types to only be written once
-                JsonSchema4 targetSchema;
-                if (!originalSchemas.TryGetValue(realTypeNameHint, out targetSchema))
-                {
-                    targetSchema = schema.ActualSchema;
-                    originalSchemas.Add(realTypeNameHint, targetSchema);
-                }
-
-                var result = base.GetOrGenerateTypeName(targetSchema, realTypeNameHint);
-
-                return result;
+                writer.WriteLine("}");
             }
         }
     }

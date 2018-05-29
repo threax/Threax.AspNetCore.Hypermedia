@@ -1,5 +1,7 @@
 ﻿using NJsonSchema;
+using NJsonSchema.CodeGeneration;
 using NJsonSchema.CodeGeneration.CSharp;
+using NJsonSchema.CodeGeneration.CSharp.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -51,15 +53,35 @@ writer.WriteLine("}");
                 ArrayType = "List" //This is imported in the using statements above (System.Collections.Generic.List)
             };
 
-            var resolver = new CustomCSharpTypeResolver(settings);
-            resolver.RegisterSchemaDefinitions(interfacesToWrite.Interfaces);
+            //Gather up everything to write, skip duplicate instances of the same thing
+            Dictionary<String, CodeArtifact> codeArtifacts = new Dictionary<String, CodeArtifact>();
+            foreach (var item in interfacesToWrite.Interfaces)
+            {
+                var resolver = new CSharpTypeResolver(settings);
+                resolver.RegisterSchemaDefinitions(new Dictionary<String, JsonSchema4>() { { item.Key, item.Value } }); //Add all discovered generators
 
-            var schema = interfacesToWrite.FirstSchema;
-            if (schema != null) {
-                var generator = new CSharpGenerator(schema, settings, resolver);
-                var classes = generator.GenerateFile();
-                writer.WriteLine(classes);
+                var generator = new CSharpGenerator(item.Value, settings, resolver);
+                var artifacts = generator.GenerateTypes();
+                foreach (var artifact in artifacts.Artifacts)
+                {
+                    if (!codeArtifacts.ContainsKey(artifact.TypeName))
+                    {
+                        codeArtifacts.Add(artifact.TypeName, artifact);
+                    }
+                }
             }
+
+            //Write the classes officially
+            //From TypeScriptGenerator.cs GenerateFile, (NJsonSchema 9.10.49)
+            var model = new FileTemplateModel()
+            {
+                Namespace = settings.Namespace ?? string.Empty,
+                TypesCode = ConversionUtilities.TrimWhiteSpaces(string.Join("\n\n", CodeArtifactCollection.OrderByBaseDependency(codeArtifacts.Values).Select(p => p.Code))),
+            };
+
+            var template = settings.TemplateFactory.CreateTemplate("CSharp", "File", model);
+            var classes = ConversionUtilities.TrimWhiteSpaces(template.Render());
+            writer.WriteLine(classes);
             //End Write Interfaces
         }
 
@@ -357,35 +379,6 @@ writer.WriteLine($@"
                 //Close class
                 //Close class
                 writer.WriteLine("}");
-            }
-        }
-
-        class CustomCSharpTypeResolver : CSharpTypeResolver
-        {
-            private Dictionary<String, JsonSchema4> originalSchemas = new Dictionary<string, JsonSchema4>();
-
-            public CustomCSharpTypeResolver(CSharpGeneratorSettings settings) : base(settings)
-            {
-
-            }
-
-            public override string GetOrGenerateTypeName(JsonSchema4 schema, string typeNameHint)
-            {
-                var realTypeNameHint = schema.FindSchemaNameInParent(typeNameHint) ?? typeNameHint;
-
-                //Try to get the first schema we saw with the given type name hint.
-                //If it exists pass the first one seen, otherwise add and pass the given schema
-                //This should force types to only be written once
-                JsonSchema4 targetSchema;
-                if (!originalSchemas.TryGetValue(realTypeNameHint, out targetSchema))
-                {
-                    targetSchema = schema.ActualSchema;
-                    originalSchemas.Add(realTypeNameHint, targetSchema);
-                }
-
-                var result = base.GetOrGenerateTypeName(targetSchema, realTypeNameHint);
-
-                return result;
             }
         }
     }
