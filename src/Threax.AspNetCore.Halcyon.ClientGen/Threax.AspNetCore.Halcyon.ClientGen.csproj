@@ -6,7 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Threax.AspNetCore.Halcyon.ClientGen</AssemblyName>
     <PackageId>Threax.AspNetCore.Halcyon.ClientGen</PackageId>
-    <Version>7.2.1-pre1</Version>
+    <Version>7.2.1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
