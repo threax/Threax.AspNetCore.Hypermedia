@@ -125,9 +125,14 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
             {
                 if (settings.WriteApp)
                 {
-                    WriteFile(settings.AppOutDir, PartialModelInterfaceGenerator.GetFileName(settings.Schema), PartialModelInterfaceGenerator.GetUserPartial(settings.Schema, settings.AppNamespace + ".Models"), false);
-                    WriteFile(settings.AppOutDir, IdInterfaceWriter.GetFileName(settings.Schema), IdInterfaceWriter.Create(settings.Schema, settings.AppNamespace), true);
+                    //Interface
+                    if (settings.Schema.CreateModelInterface())
+                    {
+                        WriteFile(settings.AppOutDir, PartialModelInterfaceGenerator.GetFileName(settings.Schema), PartialModelInterfaceGenerator.GetUserPartial(settings.Schema, settings.AppNamespace + ".Models"), false);
+                        WriteFile(settings.AppOutDir, IdInterfaceWriter.GetFileName(settings.Schema), IdInterfaceWriter.Create(settings.Schema, settings.AppNamespace), true);
+                    }
 
+                    //Entity
                     if (settings.Schema.CreateEntity())
                     {
                         WriteFile(settings.AppOutDir, PartialTypeGenerator.GetEntityFileName(settings.Schema), PartialTypeGenerator.GetEntity(settings.Schema, settings.AppNamespace), false);
@@ -142,53 +147,94 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                         }
                     }
 
+                    //Input Model
                     if (settings.Schema.CreateInputModel())
                     {
                         WriteFile(settings.AppOutDir, PartialTypeGenerator.GetInputFileName(settings.Schema), PartialTypeGenerator.GetInput(settings.Schema, settings.AppNamespace), false);
                         WriteFile(settings.AppOutDir, InputModelWriter.GetFileName(settings.Schema), await InputModelWriter.Create(settings.Schema, settings.OtherSchemas, settings.AppNamespace), true);
                     }
 
-                    WriteFile(settings.AppOutDir, QueryUserPartialGenerator.GetQueryFileName(settings.Schema), QueryUserPartialGenerator.GetQuery(settings.Schema, settings.AppNamespace), false);
-                    WriteFile(settings.AppOutDir, QueryModelWriter.GetFileName(settings.Schema), QueryModelWriter.Get(settings.Schema, settings.AppNamespace), true);
+                    //Query Model
+                    if (settings.Schema.CreateQuery())
+                    {
+                        WriteFile(settings.AppOutDir, QueryUserPartialGenerator.GetQueryFileName(settings.Schema), QueryUserPartialGenerator.GetQuery(settings.Schema, settings.AppNamespace), false);
+                        WriteFile(settings.AppOutDir, QueryModelWriter.GetFileName(settings.Schema), QueryModelWriter.Get(settings.Schema, settings.AppNamespace), true);
+                    }
 
+                    //View Model
                     if (settings.Schema.CreateViewModel())
                     {
                         WriteFile(settings.AppOutDir, ViewModelWriter.GetUserPartialFileName(settings.Schema), ViewModelWriter.GetUserPartial(settings.Schema, settings.AppNamespace), false);
                         WriteFile(settings.AppOutDir, ViewModelWriter.GetFileName(settings.Schema), await ViewModelWriter.Create(settings.Schema, settings.OtherSchemas, settings.AppNamespace), true);
                     }
 
-                    WriteFile(settings.AppOutDir, RepoGenerator.GetFileName(settings.Schema), RepoGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);
-                    WriteFile(settings.AppOutDir, RepoInterfaceGenerator.GetFileName(settings.Schema), RepoInterfaceGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);
-                    WriteFile(settings.AppOutDir, RepoConfigGenerator.GetFileName(settings.Schema), RepoConfigGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);
-                    WriteFile(settings.AppOutDir, ControllerGenerator.GetFileName(settings.Schema), ControllerGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);
-                    WriteFile(settings.AppOutDir, MappingProfileGenerator.GetFileName(settings.Schema), MappingProfileGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);
-                    WriteFile(settings.AppOutDir, MappingProfileGenerator.GetGeneratedFileName(settings.Schema), MappingProfileGenerator.GetGenerated(settings.Schema, settings.AppNamespace), true);
-                    WriteFile(settings.AppOutDir, ModelCollectionGenerator.GetUserPartialFileName(settings.Schema), ModelCollectionGenerator.GetUserPartial(settings.Schema, settings.AppNamespace), false);
-                    WriteFile(settings.AppOutDir, ModelCollectionGenerator.GetFileName(settings.Schema), ModelCollectionGenerator.Get(settings.Schema, settings.AppNamespace), true);
-                    WriteFile(settings.AppOutDir, EntryPointGenerator.GetFileName(settings.Schema), EntryPointGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);
+                    //Repository
+                    if (settings.Schema.CreateRepository())
+                    {
+                        WriteFile(settings.AppOutDir, RepoGenerator.GetFileName(settings.Schema), RepoGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);
+                        WriteFile(settings.AppOutDir, RepoInterfaceGenerator.GetFileName(settings.Schema), RepoInterfaceGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);
+                        WriteFile(settings.AppOutDir, RepoConfigGenerator.GetFileName(settings.Schema), RepoConfigGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);
+                    }
 
-                    var propertyNames = settings.Schema.Properties.Values.Where(i => i.CreateViewModel()).Select(i => NameGenerator.CreatePascal(i.Name));
-                    WriteFile(settings.AppOutDir, CrudCshtmlInjectorGenerator.GetFileName(settings.Schema), CrudCshtmlInjectorGenerator.Get(settings.Schema, propertyNames: propertyNames), settings.ForceWriteUi);
-                    WriteFile(settings.AppOutDir, CrudInjectorGenerator.GetFileName(settings.Schema), CrudInjectorGenerator.Get(settings.Schema), settings.ForceWriteUi);
-                    WriteFile(settings.AppOutDir, CrudUiTypescriptGenerator.GetFileName(settings.Schema), CrudUiTypescriptGenerator.Get(settings.ModelName), settings.ForceWriteUi);
-                    WriteFile(settings.AppOutDir, UiControllerGenerator.GetFileName(settings.Schema), UiControllerGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteUi);
+                    //Controller
+                    if (settings.Schema.CreateController())
+                    {
+                        WriteFile(settings.AppOutDir, ControllerGenerator.GetFileName(settings.Schema), ControllerGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);
+                        WriteFile(settings.AppOutDir, EntryPointGenerator.GetFileName(settings.Schema), EntryPointGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);
+                    }
+
+                    //Mapping Profile
+                    if (settings.Schema.CreateMappingProfile())
+                    {
+                        WriteFile(settings.AppOutDir, MappingProfileGenerator.GetFileName(settings.Schema), MappingProfileGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);
+                        WriteFile(settings.AppOutDir, MappingProfileGenerator.GetGeneratedFileName(settings.Schema), MappingProfileGenerator.GetGenerated(settings.Schema, settings.AppNamespace), true);
+                    }
+
+                    //Model Collection
+                    if (settings.Schema.CreateModelCollection())
+                    {
+                        WriteFile(settings.AppOutDir, ModelCollectionGenerator.GetUserPartialFileName(settings.Schema), ModelCollectionGenerator.GetUserPartial(settings.Schema, settings.AppNamespace), false);
+                        WriteFile(settings.AppOutDir, ModelCollectionGenerator.GetFileName(settings.Schema), ModelCollectionGenerator.Get(settings.Schema, settings.AppNamespace), true);
+                    }
+
+                    //Ui
+                    if (settings.Schema.CreateUi())
+                    {
+                        var propertyNames = settings.Schema.Properties.Values.Where(i => i.CreateViewModel()).Select(i => NameGenerator.CreatePascal(i.Name));
+                        WriteFile(settings.AppOutDir, CrudCshtmlInjectorGenerator.GetFileName(settings.Schema), CrudCshtmlInjectorGenerator.Get(settings.Schema, propertyNames: propertyNames), settings.ForceWriteUi);
+                        WriteFile(settings.AppOutDir, CrudInjectorGenerator.GetFileName(settings.Schema), CrudInjectorGenerator.Get(settings.Schema), settings.ForceWriteUi);
+                        WriteFile(settings.AppOutDir, CrudUiTypescriptGenerator.GetFileName(settings.Schema), CrudUiTypescriptGenerator.Get(settings.ModelName), settings.ForceWriteUi);
+                        WriteFile(settings.AppOutDir, UiControllerGenerator.GetFileName(settings.Schema), UiControllerGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteUi);
+                    }
                 }
 
                 if (settings.WriteTests)
                 {
                     WriteFile(settings.TestOutDir, ModelTestWrapper.GetFileName(settings.Schema), ModelTestWrapper.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteTests);
                     WriteFile(settings.TestOutDir, ModelTestWrapperGenerated.GetFileName(settings.Schema), ModelTestWrapperGenerated.Get(settings.Schema, settings.AppNamespace), true);
-                    if (!File.Exists(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/Controller.cs"))) //Legacy File check
+
+                    if (settings.Schema.CreateController())
                     {
-                        WriteFile(settings.TestOutDir, ControllerTests.GetFileName(settings.Schema), ControllerTests.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteTests);
+                        if (!File.Exists(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/Controller.cs"))) //Legacy File check
+                        {
+                            WriteFile(settings.TestOutDir, ControllerTests.GetFileName(settings.Schema), ControllerTests.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteTests);
+                        }
                     }
-                    if (!File.Exists(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/Profile.cs"))) //Legacy File check
+
+                    if (settings.Schema.CreateMappingProfile())
                     {
-                        WriteFile(settings.TestOutDir, ProfileTests.GetFileName(settings.Schema), ProfileTests.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteTests);
+                        if (!File.Exists(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/Profile.cs"))) //Legacy File check
+                        {
+                            WriteFile(settings.TestOutDir, ProfileTests.GetFileName(settings.Schema), ProfileTests.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteTests);
+                        }
                     }
-                    if (!File.Exists(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/Repository.cs"))) //Legacy File check
+
+                    if (settings.Schema.CreateRepository())
                     {
-                        WriteFile(settings.TestOutDir, RepositoryTests.GetFileName(settings.Schema), RepositoryTests.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteTests);
+                        if (!File.Exists(Path.Combine(settings.TestOutDir, $"{settings.ModelName}/Repository.cs"))) //Legacy File check
+                        {
+                            WriteFile(settings.TestOutDir, RepositoryTests.GetFileName(settings.Schema), RepositoryTests.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteTests);
+                        }
                     }
                 }
             }
