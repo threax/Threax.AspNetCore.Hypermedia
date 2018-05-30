@@ -37,6 +37,15 @@ namespace Threax.AspNetCore.Models
 
         public JsonSchema4 OriginalPropertyDefinition { get; set; }
 
+        public Dictionary<String, Object> CopyExtensionData()
+        {
+            if(OriginalPropertyDefinition?.ExtensionData != null)
+            {
+                return new Dictionary<string, object>(OriginalPropertyDefinition.ExtensionData);
+            }
+            return null;
+        }
+
         /// <summary>
         /// Get the name of the model on the other side of the relationship.
         /// </summary>

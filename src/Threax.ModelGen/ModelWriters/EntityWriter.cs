@@ -126,7 +126,7 @@ $@"using {ns}.Models;"
                             Format = $"Join{relationship.LeftModelName}To{relationship.RightModelName}Entity",
                         },
                         Parent = schema,
-                        ExtensionData = new Dictionary<String, Object>(relationship.OriginalPropertyDefinition.ExtensionData),
+                        ExtensionData = relationship.CopyExtensionData(),
                     }
                 );
             }
@@ -150,7 +150,7 @@ $@"using {ns}.Models;"
                             Format = other.Title,
                         },
                         Parent = schema,
-                        ExtensionData = new Dictionary<String, Object>(relationship.OriginalPropertyDefinition.ExtensionData),
+                        ExtensionData = relationship.CopyExtensionData(),
                     }
                 );
             }
@@ -170,7 +170,7 @@ $@"using {ns}.Models;"
                         Type = JsonObjectType.Object,
                         Format = other.GetKeyType().Name,
                         Parent = schema,
-                        ExtensionData = new Dictionary<String, Object>(relationship.OriginalPropertyDefinition.ExtensionData),
+                        ExtensionData = relationship.CopyExtensionData(),
                     }
                 );
             }
@@ -187,7 +187,7 @@ $@"using {ns}.Models;"
                         Type = JsonObjectType.Object,
                         Format = other.Title,
                         Parent = schema,
-                        ExtensionData = new Dictionary<String, Object>(relationship.OriginalPropertyDefinition.ExtensionData),
+                        ExtensionData = relationship.CopyExtensionData(),
                     }
                 );
             }

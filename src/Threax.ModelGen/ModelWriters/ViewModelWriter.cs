@@ -112,7 +112,7 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
                     Type = JsonObjectType.Array,
                     Item = await TypeToSchemaGenerator.CreateSchema(other.GetKeyType()),
                     Parent = schema,
-                    ExtensionData = new Dictionary<String, Object>(relationship.OriginalPropertyDefinition.ExtensionData),
+                    ExtensionData = relationship.CopyExtensionData(),
                 });
             }
 
@@ -133,7 +133,7 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
                     Type = propSchema.Type,
                     Format = propSchema.Format,
                     Parent = schema,
-                    ExtensionData = new Dictionary<String, Object>(relationship.OriginalPropertyDefinition.ExtensionData),
+                    ExtensionData = relationship.CopyExtensionData(),
                 });
             }
 
