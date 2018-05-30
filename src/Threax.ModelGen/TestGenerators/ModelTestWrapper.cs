@@ -20,10 +20,16 @@ namespace Threax.ModelGen.TestGenerators
             String Models, models;
             NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
 
-            return Create(ns, Model, model, Models, models, schema.GetExtraNamespaces(StrConstants.FileNewline));
+            var repoMockup = "";
+            if (schema.CreateRepository())
+            {
+                repoMockup = $"mockup.Add<I{Model}Repository>(m => new {Model}Repository(m.Get<AppDbContext>(), m.Get<IMapper>()));";
+            }
+
+            return Create(ns, Model, model, Models, models, schema.GetExtraNamespaces(StrConstants.FileNewline), repoMockup);
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models, String additionalNs)
+        private static String Create(String ns, String Model, String model, String Models, String models, String additionalNs, String repoMockup)
         {
             return
 $@"using AutoMapper;
@@ -43,7 +49,7 @@ namespace {ns}.Tests
     {{
         private static Mockup SetupModel(this Mockup mockup)
         {{
-            mockup.Add<I{Model}Repository>(m => new {Model}Repository(m.Get<AppDbContext>(), m.Get<IMapper>()));
+            {repoMockup}
 
             return mockup;
         }}
