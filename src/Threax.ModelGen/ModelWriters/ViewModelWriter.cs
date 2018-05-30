@@ -74,11 +74,11 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
                     {
                         case RelationKind.ManyToMany:
                         case RelationKind.OneToMany:
-                            props = props.Concat(await WriteManySide(schema, others[relationship.OtherModelName]));
+                            props = props.Concat(await WriteManySide(schema, others[relationship.OtherModelName], relationship));
                             break;
                         case RelationKind.OneToOne:
                         case RelationKind.ManyToOne:
-                            props = props.Concat(await WriteOneSide(schema, others[relationship.OtherModelName]));
+                            props = props.Concat(await WriteOneSide(schema, others[relationship.OtherModelName], relationship));
                             break;
                     }
                 }
@@ -88,11 +88,11 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
                     {
                         case RelationKind.ManyToMany:
                         case RelationKind.ManyToOne:
-                            props = props.Concat(await WriteManySide(schema, others[relationship.OtherModelName]));
+                            props = props.Concat(await WriteManySide(schema, others[relationship.OtherModelName], relationship));
                             break;
                         case RelationKind.OneToOne:
                         case RelationKind.OneToMany:
-                            props = props.Concat(await WriteOneSide(schema, others[relationship.OtherModelName]));
+                            props = props.Concat(await WriteOneSide(schema, others[relationship.OtherModelName], relationship));
                             break;
                     }
                 }
@@ -100,7 +100,7 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
             return props;
         }
 
-        private static async Task<Dictionary<String, JsonProperty>> WriteManySide(JsonSchema4 schema, JsonSchema4 other)
+        private static async Task<Dictionary<String, JsonProperty>> WriteManySide(JsonSchema4 schema, JsonSchema4 other, RelationshipSettings relationship)
         {
             var name = other.GetKeyName() + "s"; //Should be xxId so adding s should be fine
             var props = new Dictionary<String, JsonProperty>();
@@ -111,14 +111,15 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
                 {
                     Type = JsonObjectType.Array,
                     Item = await TypeToSchemaGenerator.CreateSchema(other.GetKeyType()),
-                    Parent = schema
+                    Parent = schema,
+                    ExtensionData = new Dictionary<String, Object>(relationship.OriginalPropertyDefinition.ExtensionData),
                 });
             }
 
             return props;
         }
 
-        private static async Task<Dictionary<String, JsonProperty>> WriteOneSide(JsonSchema4 schema, JsonSchema4 other)
+        private static async Task<Dictionary<String, JsonProperty>> WriteOneSide(JsonSchema4 schema, JsonSchema4 other, RelationshipSettings relationship)
         {
             var name = other.Title;
             var props = new Dictionary<String, JsonProperty>();
@@ -131,7 +132,8 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
                 {
                     Type = propSchema.Type,
                     Format = propSchema.Format,
-                    Parent = schema
+                    Parent = schema,
+                    ExtensionData = new Dictionary<String, Object>(relationship.OriginalPropertyDefinition.ExtensionData),
                 });
             }
 

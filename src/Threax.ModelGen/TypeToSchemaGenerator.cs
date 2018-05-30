@@ -133,7 +133,8 @@ namespace Threax.ModelGen
                             RightModelName = right.Name,
                             LeftClrName = left.FullName,
                             RightClrName = right.FullName,
-                            Kind = kind
+                            Kind = kind,
+                            OriginalPropertyDefinition = schemaProp
                         });
                     }
                 }

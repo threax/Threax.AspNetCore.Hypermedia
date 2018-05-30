@@ -78,6 +78,29 @@ namespace Threax.ModelGen.Tests.Models.RelationshipNatural.ManyToMany
     }
 }
 
+namespace Threax.ModelGen.Tests.Models.RelationshipNatural.WithValueProvider
+{
+    public class RightValueProvider //Doesnt really have to define interface for tests
+    {
+
+    }
+
+    public class Left
+    {
+        public String Info { get; set; }
+
+        [DefineValueProvider(typeof(RightValueProvider))]
+        public List<Right> Rights { get; set; }
+    }
+
+    public class Right
+    {
+        public String Info { get; set; }
+
+        public List<Left> Lefts { get; set; }
+    }
+}
+
 namespace Threax.ModelGen.Tests.Models
 {
     public class RelationshipNaturalTestOneToManyLeft : ModelTests<RelationshipNatural.OneToMany.Left, RelationshipNatural.OneToMany.Right>
@@ -116,6 +139,16 @@ namespace Threax.ModelGen.Tests.Models
     }
 
     public class RelationshipNaturalTestManyToManyRight : ModelTests<RelationshipNatural.ManyToMany.Right, RelationshipNatural.ManyToMany.Left>
+    {
+
+    }
+
+    public class RelationshipNaturalTestManyToManyWithValueProviderLeft : ModelTests<RelationshipNatural.WithValueProvider.Left, RelationshipNatural.WithValueProvider.Right>
+    {
+
+    }
+
+    public class RelationshipNaturalTestManyToManyWithValueProviderRight : ModelTests<RelationshipNatural.WithValueProvider.Right, RelationshipNatural.WithValueProvider.Left>
     {
 
     }

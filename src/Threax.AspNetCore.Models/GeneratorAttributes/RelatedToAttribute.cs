@@ -35,6 +35,8 @@ namespace Threax.AspNetCore.Models
 
         public bool IsLeftModel { get; set; }
 
+        public JsonSchema4 OriginalPropertyDefinition { get; set; }
+
         /// <summary>
         /// Get the name of the model on the other side of the relationship.
         /// </summary>
