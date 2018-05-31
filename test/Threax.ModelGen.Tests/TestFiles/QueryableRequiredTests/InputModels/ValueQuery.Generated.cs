@@ -39,13 +39,13 @@ namespace Test.InputModels
             if (ValueId != null)
             {
                 query = query.Where(i => i.ValueId == ValueId);
-                return true;
+                return false;
             }
             else
             {
                 query = query.Where(i => i.Info == Info);
 
-                return false;
+                return true;
             }
         }
     }

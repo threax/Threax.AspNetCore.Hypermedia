@@ -43,7 +43,7 @@ namespace Test.InputModels
             if (ValueId != null)
             {
                 query = query.Where(i => i.ValueId == ValueId);
-                return true;
+                return false;
             }
             else
             {
@@ -52,7 +52,7 @@ namespace Test.InputModels
                     query = query.Where(i => i.Num == Num);
                 }
 
-                return false;
+                return true;
             }
         }
     }

@@ -34,11 +34,11 @@ namespace Test.InputModels
             if (LeftId != null)
             {
                 query = query.Where(i => i.LeftId == LeftId);
-                return true;
+                return false;
             }
             else
             {
-                return false;
+                return true;
             }
         }
     }

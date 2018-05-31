@@ -34,11 +34,11 @@ namespace Test.InputModels
             if (CrazyKey != null)
             {
                 query = query.Where(i => i.CrazyKey == CrazyKey);
-                return true;
+                return false;
             }
             else
             {
-                return false;
+                return true;
             }
         }
     }
