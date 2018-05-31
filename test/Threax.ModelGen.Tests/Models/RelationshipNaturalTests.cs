@@ -101,6 +101,24 @@ namespace Threax.ModelGen.Tests.Models.RelationshipNatural.WithValueProvider
     }
 }
 
+namespace Threax.ModelGen.Tests.Models.RelationshipNatural.ManyToMany.WithDisplayName
+{
+    public class Left
+    {
+        public String Info { get; set; }
+
+        [Display(Name = "The Rights")]
+        public List<Right> Rights { get; set; }
+    }
+
+    public class Right
+    {
+        public String Info { get; set; }
+
+        public List<Left> Lefts { get; set; }
+    }
+}
+
 namespace Threax.ModelGen.Tests.Models
 {
     public class RelationshipNaturalTestOneToManyLeft : ModelTests<RelationshipNatural.OneToMany.Left, RelationshipNatural.OneToMany.Right>
@@ -149,6 +167,16 @@ namespace Threax.ModelGen.Tests.Models
     }
 
     public class RelationshipNaturalTestManyToManyWithValueProviderRight : ModelTests<RelationshipNatural.WithValueProvider.Right, RelationshipNatural.WithValueProvider.Left>
+    {
+
+    }
+
+    public class RelationshipNaturalTestManyToManyWithDisplayNameLeft : ModelTests<RelationshipNatural.ManyToMany.WithDisplayName.Left, RelationshipNatural.ManyToMany.WithDisplayName.Right>
+    {
+
+    }
+
+    public class RelationshipNaturalTestManyToManyWithDisplayNameRight : ModelTests<RelationshipNatural.ManyToMany.WithDisplayName.Right, RelationshipNatural.ManyToMany.WithDisplayName.Left>
     {
 
     }

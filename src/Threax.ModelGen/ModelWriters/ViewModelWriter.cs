@@ -113,6 +113,7 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
                     Item = await TypeToSchemaGenerator.CreateSchema(other.GetKeyType()),
                     Parent = schema,
                     ExtensionData = relationship.CopyExtensionData(),
+                    Title = relationship.OriginalPropertyDefinition?.Title
                 });
             }
 
@@ -134,6 +135,7 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
                     Format = propSchema.Format,
                     Parent = schema,
                     ExtensionData = relationship.CopyExtensionData(),
+                    Title = relationship.OriginalPropertyDefinition?.Title
                 });
             }
 
