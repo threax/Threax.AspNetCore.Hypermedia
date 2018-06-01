@@ -2,17 +2,17 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp2.0;net471</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.1;net471</TargetFrameworks>
     <PackageType>DotNetCliTool</PackageType>
     <AssemblyName>dotnet-threax-modelgen</AssemblyName>
     <PackageId>Threax.ModelGen</PackageId>
-    <Version>5.3.1</Version>
+    <Version>6.0.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Andrew Piper</Authors>
     <PackageLicenseUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</PackageProjectUrl>
     <RepositoryUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</RepositoryUrl>
-    <PackageReleaseNotes>Had generated query backwards for true and false return values. Now correct.</PackageReleaseNotes>
+    <PackageReleaseNotes>Updated to run on netcoreapp2.1.</PackageReleaseNotes>
   </PropertyGroup>
   
   <ItemGroup>
@@ -24,7 +24,7 @@
     <PackageReference Include="System.Text.Encoding.Extensions" Version="4.3.0" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">
     <ProjectReference Include="..\Threax.AspNetCore.Models\Threax.AspNetCore.Models.csproj" />
   </ItemGroup>
 
