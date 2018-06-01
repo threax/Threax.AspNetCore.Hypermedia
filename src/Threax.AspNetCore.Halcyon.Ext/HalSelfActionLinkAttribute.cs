@@ -19,8 +19,8 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
         /// <summary>
         /// Create a new link based on a controller and a function.
-        /// These links will include thier request query and have no docs
-        /// by default. They should also only be placed on get rels.
+        /// These links will include thier request query and 
+        /// they should also only be placed on get rels.
         /// </summary>
         /// <param name="controllerType">The type of the controller.</param>
         /// <param name="funcName">The name of the function on the controller to lookup.</param>
@@ -29,13 +29,13 @@ namespace Threax.AspNetCore.Halcyon.Ext
         public HalSelfActionLinkAttribute(Type controllerType, String funcName, String[] routeArgs = null, string title = null)
             : base(controllerType, funcName, SelfRelName, routeArgs, title)
         {
-            HasDocs = false;
+            
         }
 
         /// <summary>
         /// Create a new link based on a controller and a function.
-        /// These links will include thier request query and have no docs
-        /// by default. They should also only be placed on get rels.
+        /// These links will include thier request query and 
+        /// they should also only be placed on get rels.
         /// </summary>
         /// <param name="rel">The name of the rel to lookup.</param>
         /// <param name="controllerType">The type of the controller.</param>
@@ -44,7 +44,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         public HalSelfActionLinkAttribute(string rel, Type controllerType, String[] routeArgs = null, string title = null)
             :base(SelfRelName, rel, controllerType, routeArgs, title)
         {
-            HasDocs = false;
+            
         }
     }
 }
