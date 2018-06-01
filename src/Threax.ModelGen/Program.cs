@@ -204,7 +204,7 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                         WriteFile(settings.AppOutDir, CrudCshtmlInjectorGenerator.GetFileName(settings.Schema), CrudCshtmlInjectorGenerator.Get(settings.Schema, propertyNames: propertyNames), settings.ForceWriteUi);
                         WriteFile(settings.AppOutDir, CrudInjectorGenerator.GetFileName(settings.Schema), CrudInjectorGenerator.Get(settings.Schema), settings.ForceWriteUi);
                         WriteFile(settings.AppOutDir, CrudUiTypescriptGenerator.GetFileName(settings.Schema), CrudUiTypescriptGenerator.Get(settings.ModelName), settings.ForceWriteUi);
-                        WriteFile(settings.AppOutDir, UiControllerGenerator.GetFileName(settings.Schema), UiControllerGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteUi);
+                        WriteFile(settings.AppOutDir, UiControllerGenerator.GetFileName(settings.Schema), UiControllerGenerator.Get(settings.Schema, settings.AppNamespace), true);
                     }
                 }
 
