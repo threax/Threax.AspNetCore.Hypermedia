@@ -73,11 +73,11 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
                     switch (relationship.Kind)
                     {
                         case RelationKind.ManyToMany:
-                        case RelationKind.OneToMany:
+                        case RelationKind.ManyToOne:
                             props = props.Concat(await WriteManySide(schema, others[relationship.OtherModelName], relationship));
                             break;
                         case RelationKind.OneToOne:
-                        case RelationKind.ManyToOne:
+                        case RelationKind.OneToMany:
                             props = props.Concat(await WriteOneSide(schema, others[relationship.OtherModelName], relationship));
                             break;
                     }
@@ -87,11 +87,11 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
                     switch (relationship.Kind)
                     {
                         case RelationKind.ManyToMany:
-                        case RelationKind.ManyToOne:
+                        case RelationKind.OneToMany:
                             props = props.Concat(await WriteManySide(schema, others[relationship.OtherModelName], relationship));
                             break;
                         case RelationKind.OneToOne:
-                        case RelationKind.OneToMany:
+                        case RelationKind.ManyToOne:
                             props = props.Concat(await WriteOneSide(schema, others[relationship.OtherModelName], relationship));
                             break;
                     }

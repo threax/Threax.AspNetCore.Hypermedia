@@ -78,11 +78,11 @@ $@"using {ns}.Models;"
                         case RelationKind.ManyToMany:
                             props = props.Concat(WriteManyManySide(schema, others[relationship.OtherModelName], relationship));
                             break;
-                        case RelationKind.OneToMany:
+                        case RelationKind.ManyToOne:
                             props = props.Concat(WriteManySide(schema, others[relationship.OtherModelName], relationship));
                             break;
                         case RelationKind.OneToOne:
-                        case RelationKind.ManyToOne:
+                        case RelationKind.OneToMany:
                             props = props.Concat(WriteOneSide(schema, others[relationship.OtherModelName], relationship));
                             break;
 
@@ -95,11 +95,11 @@ $@"using {ns}.Models;"
                         case RelationKind.ManyToMany:
                             props = props.Concat(WriteManyManySide(schema, others[relationship.OtherModelName], relationship));
                             break;
-                        case RelationKind.ManyToOne:
+                        case RelationKind.OneToMany:
                             props = props.Concat(WriteManySide(schema, others[relationship.OtherModelName], relationship));
                             break;
                         case RelationKind.OneToOne:
-                        case RelationKind.OneToMany:
+                        case RelationKind.ManyToOne:
                             props = props.Concat(WriteOneSide(schema, others[relationship.OtherModelName], relationship));
                             break;
                     }
