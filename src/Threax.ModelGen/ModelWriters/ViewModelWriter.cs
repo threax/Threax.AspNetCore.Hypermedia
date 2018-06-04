@@ -122,7 +122,7 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
 
         private static async Task<Dictionary<String, JsonProperty>> WriteOneSide(JsonSchema4 schema, JsonSchema4 other, RelationshipSettings relationship)
         {
-            var name = other.Title;
+            var name = other.GetKeyName();
             var props = new Dictionary<String, JsonProperty>();
 
             if (!schema.Properties.ContainsKey(name)) //Don't write if schema defined property.
