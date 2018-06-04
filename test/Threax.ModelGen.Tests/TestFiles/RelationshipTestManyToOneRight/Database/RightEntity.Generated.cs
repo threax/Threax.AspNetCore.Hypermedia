@@ -20,7 +20,7 @@ namespace Test.Database
 
         public Guid LeftId { get; set; }
 
-        public Left Left { get; set; }
+        public LeftEntity Left { get; set; }
 
         public DateTime Created { get; set; }
 

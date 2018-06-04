@@ -18,7 +18,7 @@ namespace Test.Database
 
         public String Info { get; set; }
 
-        public List<Right> Rights { get; set; }
+        public List<RightEntity> Rights { get; set; }
 
         public DateTime Created { get; set; }
 

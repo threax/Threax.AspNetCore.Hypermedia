@@ -147,7 +147,7 @@ $@"using {ns}.Models;"
                         Item = new JsonSchema4()
                         {
                             Type = JsonObjectType.Object,
-                            Format = other.Title,
+                            Format = other.Title + "Entity",
                         },
                         Parent = schema,
                         ExtensionData = relationship.CopyExtensionData(),
@@ -185,7 +185,7 @@ $@"using {ns}.Models;"
                     value: new JsonProperty()
                     {
                         Type = JsonObjectType.Object,
-                        Format = other.Title,
+                        Format = other.Title + "Entity",
                         Parent = schema,
                         ExtensionData = relationship.CopyExtensionData(),
                     }
