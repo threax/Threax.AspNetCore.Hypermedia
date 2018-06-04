@@ -27,6 +27,27 @@ namespace Threax.ModelGen.Tests.Models.RelationshipNatural.OneToMany
     }
 }
 
+namespace Threax.ModelGen.Tests.Models.RelationshipNatural.OneToMany.WithNoInputViewModel
+{
+    public class Left
+    {
+        public String Info { get; set; }
+
+        [NoInputModel]
+        [NoViewModel]
+        public Right Right { get; set; }
+    }
+
+    public class Right
+    {
+        public String Info { get; set; }
+
+        [NoInputModel]
+        [NoViewModel]
+        public List<Left> Lefts { get; set; }
+    }
+}
+
 namespace Threax.ModelGen.Tests.Models.RelationshipNatural.ManyToOne
 {
     public class Left
@@ -127,6 +148,16 @@ namespace Threax.ModelGen.Tests.Models
     }
 
     public class RelationshipNaturalTestOneToManyRight : ModelTests<RelationshipNatural.OneToMany.Right, RelationshipNatural.OneToMany.Left>
+    {
+
+    }
+
+    public class RelationshipNaturalTestOneToManyLeftNoInputView : ModelTests<RelationshipNatural.OneToMany.WithNoInputViewModel.Left, RelationshipNatural.OneToMany.WithNoInputViewModel.Right>
+    {
+
+    }
+
+    public class RelationshipNaturalTestOneToManyRightNoInputView : ModelTests<RelationshipNatural.OneToMany.WithNoInputViewModel.Right, RelationshipNatural.OneToMany.WithNoInputViewModel.Left>
     {
 
     }

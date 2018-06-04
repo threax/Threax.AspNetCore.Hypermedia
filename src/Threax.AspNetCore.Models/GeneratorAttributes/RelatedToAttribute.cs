@@ -39,11 +39,23 @@ namespace Threax.AspNetCore.Models
 
         public Dictionary<String, Object> CopyExtensionData()
         {
-            if(OriginalPropertyDefinition?.ExtensionData != null)
+            var dictionary = default(Dictionary<string, object>);
+            if (OriginalPropertyDefinition != null)
             {
-                return new Dictionary<string, object>(OriginalPropertyDefinition.ExtensionData);
+                if (OriginalPropertyDefinition.ExtensionData != null)
+                {
+                    dictionary = new Dictionary<string, object>(OriginalPropertyDefinition.ExtensionData);
+                    if (OriginalPropertyDefinition.Type == JsonObjectType.Object && OriginalPropertyDefinition.ActualTypeSchema?.ExtensionData != null)
+                    {
+                        //If this is an object, add any properties from the "ActualTypeSchema" which often has extras
+                        foreach (var item in OriginalPropertyDefinition.ActualTypeSchema.ExtensionData)
+                        {
+                            dictionary[item.Key] = item.Value;
+                        }
+                    }
+                }
             }
-            return null;
+            return dictionary;
         }
 
         /// <summary>
