@@ -126,7 +126,7 @@ $@"using {ns}.Models;"
                             Format = $"Join{relationship.LeftModelName}To{relationship.RightModelName}Entity",
                         },
                         Parent = schema,
-                        ExtensionData = relationship.CopyExtensionData(),
+                        ExtensionData = relationship.CopyExtensions(),
                     }
                 );
             }
@@ -150,7 +150,7 @@ $@"using {ns}.Models;"
                             Format = other.Title + "Entity",
                         },
                         Parent = schema,
-                        ExtensionData = relationship.CopyExtensionData(),
+                        ExtensionData = relationship.CopyExtensions(),
                     }
                 );
             }
@@ -170,7 +170,7 @@ $@"using {ns}.Models;"
                         Type = JsonObjectType.Object,
                         Format = other.GetKeyType().Name,
                         Parent = schema,
-                        ExtensionData = relationship.CopyExtensionData(),
+                        ExtensionData = relationship.CopyExtensions(),
                     }
                 );
             }
@@ -187,7 +187,7 @@ $@"using {ns}.Models;"
                         Type = JsonObjectType.Object,
                         Format = other.Title + "Entity",
                         Parent = schema,
-                        ExtensionData = relationship.CopyExtensionData(),
+                        ExtensionData = relationship.CopyExtensions(),
                     }
                 );
             }
