@@ -3,6 +3,7 @@ using NJsonSchema;
 using NJsonSchema.Annotations;
 using NJsonSchema.Generation;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -39,13 +40,19 @@ namespace Threax.AspNetCore.Halcyon.Ext
             foreach (var prop in type.GetTypeInfo().GetProperties())
             {
                 var propName = GetPropertyName(DummyProperty, prop); //Using dummy property here, the call in the superclass will look at the member info first (v9.9.10)
-                var propType = prop.PropertyType;
-                var propTypeInfo = propType.GetTypeInfo();
-                var isEnum = propTypeInfo.IsEnum;
-                var isNullable = false;
                 NJsonSchema.JsonProperty schemaProp;
                 if (schema.Properties.TryGetValue(propName, out schemaProp))
                 {
+                    var propType = prop.PropertyType;
+                    var propTypeInfo = propType.GetTypeInfo();
+                    var isArray = (schemaProp.Type & JsonObjectType.Array) != 0;
+                    var isNullable = false;
+                    Type enumType = null;
+                    if (propTypeInfo.IsEnum)
+                    {
+                        enumType = propType;
+                    }
+
                     //Always make sure we have extension data declared
                     if (schemaProp.ExtensionData == null)
                     {
@@ -59,16 +66,30 @@ namespace Threax.AspNetCore.Halcyon.Ext
                         //If this is nullable get the generic arg and use that as the prop type
                         propType = propTypeInfo.GetGenericArguments()[0];
                         propTypeInfo = propType.GetTypeInfo();
-                        isEnum = propTypeInfo.IsEnum;
+                        if (propTypeInfo.IsEnum)
+                        {
+                            enumType = propType;
+                        }
                         isNullable = true;
                     }
-                    else if (!isEnum) //Skip enum types, those should be nullable, otherwise they are required.
+                    else if (enumType == null) //Skip enum types, those should be nullable, otherwise they are required.
                     {
                         //Check for the Required attribute, if it is not there consider the property to be nullable
                         var requiredAttr = prop.GetCustomAttributes().FirstOrDefault(i => i.GetType() == typeof(RequiredAttribute)) as RequiredAttribute;
                         if (requiredAttr == null)
                         {
                             isNullable = true;
+                        }
+
+                        //Also, if this item is an array, see if it an array of enums
+                        if (isArray && propTypeInfo.IsGenericType && typeof(ICollection).IsAssignableFrom(propTypeInfo.GetGenericTypeDefinition()))
+                        {
+                            var testEnumType = propTypeInfo.GetGenericArguments()[0];
+                            var testEnumTypeInfo = testEnumType.GetTypeInfo();
+                            if (testEnumTypeInfo.IsEnum)
+                            {
+                                enumType = testEnumType;
+                            }
                         }
                     }
 
@@ -85,7 +106,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                             throw new ValueProviderException($"Cannot find value provider {valueProviderAttr.ProviderType.Name}. It needs to be registered in the IValueProviderResolver or in services by default.");
                         }
                     }
-                    else if (isEnum) //If there is no value provider and the value is an enum, use the enum values automaticaly
+                    else if (enumType != null) //If there is no value provider and the value is an enum, use the enum values automaticaly
                     {
                         //For some reason enums do not get the custom attributes, so do it here
                         foreach (var attr in prop.GetCustomAttributes().Select(i => i as JsonSchemaExtensionDataAttribute).Where(i => i != null))
@@ -103,25 +124,23 @@ namespace Threax.AspNetCore.Halcyon.Ext
                         schemaProp.OneOf.Clear();
 
                         //If the prop is an enum with a reference use our value provider to load the values into the enum definition.
-                        var typeSchema = schemaProp.ActualTypeSchema;
-                        if(typeSchema != null && !processedReferences.Contains(typeSchema))
+                        JsonSchema4 typeSchema;
+                        if (isArray)
+                        {
+                            typeSchema = schemaProp.Item.ActualTypeSchema;
+                        }
+                        else
+                        {
+                            typeSchema = schemaProp.ActualTypeSchema;
+                        }
+                        if (typeSchema != null && !processedReferences.Contains(typeSchema))
                         {
                             processedReferences.Add(typeSchema);
                             typeSchema.Enumeration?.Clear();
                             typeSchema.EnumerationNames?.Clear();
-                            var labelProvider = new EnumLabelValuePairProvider(propType);
+                            var labelProvider = new EnumLabelValuePairProvider(enumType);
                             await labelProvider.AddExtensions(typeSchema, new ValueProviderArgs(new ValueProviderAttribute(typeof(Object)), this, isNullable, prop));
                         }
-                        //switch (settings.DefaultEnumHandling)
-                        //{
-                        //    case EnumHandling.Integer:
-                        //        schemaProp.Type = JsonObjectType.Integer;
-                        //        break;
-                        //    case EnumHandling.String:
-                        //    default:
-                        //        schemaProp.Type = JsonObjectType.String;
-                        //        break;
-                        //}
                     }
 
                     //Handle any schema customizations

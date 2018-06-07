@@ -1,0 +1,35 @@
+{
+  "title": "EnumArrayClass",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "value": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/testEnum"
+      }
+    }
+  },
+  "definitions": {
+    "testEnum": {
+      "type": "string",
+      "description": "",
+      "x-enumNames": [
+        "None",
+        "One (uno)",
+        "Two (dos)",
+        "Three (tres)"
+      ],
+      "enum": [
+        null,
+        "One",
+        "Two",
+        "Three"
+      ]
+    }
+  },
+  "x-is-array": false
+}

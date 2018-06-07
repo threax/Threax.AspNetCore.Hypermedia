@@ -5,6 +5,7 @@ using NJsonSchema;
 using NJsonSchema.Generation;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
 using Threax.AspNetCore.Tests;
@@ -37,6 +38,18 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
         public Task TestComplexArray()
         {
             return TestSchema(typeof(TestComplexArrayType), "TestComplexArray.json");
+        }
+
+        [Fact]
+        public Task TestEnum()
+        {
+            return TestSchema(typeof(EnumClass), "TestEnum.json");
+        }
+
+        [Fact]
+        public Task TestEnumArray()
+        {
+            return TestSchema(typeof(EnumArrayClass), "TestEnumArray.json");
         }
 
         private async Task TestSchema(Type type, String Filename)
@@ -79,5 +92,25 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
     public class TestSimpleArray
     {
         public List<Guid> Ids { get; set; }
+    }
+
+    public enum TestEnum
+    {
+        [Display(Name = "One (uno)")]
+        One,
+        [Display(Name = "Two (dos)")]
+        Two,
+        [Display(Name = "Three (tres)")]
+        Three
+    }
+
+    public class EnumClass
+    {
+        public TestEnum Value { get; set; }
+    }
+
+    public class EnumArrayClass
+    {
+        public List<TestEnum> Value { get; set; }
     }
 }
