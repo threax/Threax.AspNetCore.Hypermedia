@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Threax.AspNetCore.Tests;
 using Xunit;
@@ -50,6 +51,12 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
         public Task TestEnumArray()
         {
             return TestSchema(typeof(EnumArrayClass), "TestEnumArray.json");
+        }
+
+        [Fact]
+        public Task TestDisplayExpression()
+        {
+            return TestSchema(typeof(DisplayExpressionClass), "TestDisplayExpression.json");
         }
 
         private async Task TestSchema(Type type, String Filename)
@@ -112,5 +119,14 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
     public class EnumArrayClass
     {
         public List<TestEnum> Value { get; set; }
+    }
+
+    public class DisplayExpressionClass
+    {
+        private static readonly Expression<Func<DisplayExpressionClass, bool>> IsConditionExpression = i => i.ConditionProperty == 5;
+        [DisplayExpression(nameof(IsConditionExpression))]
+        public Guid? OptionalProperty { get; set; }
+
+        public int ConditionProperty { get; set; }
     }
 }
