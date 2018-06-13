@@ -28,7 +28,7 @@ namespace Threax.AspNetCore.Halcyon.Client
                         {
                             foreach (var i in array)
                             {
-                                query.Append($"&{Uri.EscapeUriString(prop.Name)}[]={Uri.EscapeUriString(i.ToString())}");
+                                query.Append($"&{Uri.EscapeUriString(prop.Name)}={Uri.EscapeUriString(i.ToString())}");
                             }
                             notSpecial = false;
                         }
