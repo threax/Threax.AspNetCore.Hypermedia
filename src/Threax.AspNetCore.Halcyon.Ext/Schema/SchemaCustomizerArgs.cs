@@ -10,20 +10,26 @@ namespace Threax.AspNetCore.Halcyon.Ext
 {
     public class SchemaCustomizerArgs
     {
-        public SchemaCustomizerArgs(string name, PropertyInfo typeProperty, JsonProperty schemaProperty, JsonSchema4 schema)
+        public SchemaCustomizerArgs(string name, PropertyInfo typeProperty, JsonProperty schemaProperty, JsonSchema4 schema, JsonSchemaGenerator schemaGenerator, Type type)
         {
             this.Name = name;
             this.TypeProperty = typeProperty;
             this.SchemaProperty = schemaProperty;
             this.Schema = schema;
+            this.SchemaGenerator = schemaGenerator;
+            this.Type = type;
         }
 
-        public PropertyInfo TypeProperty { get; set; }
+        public Type Type { get; set; }
 
-        public String Name { get; set; }
+        public PropertyInfo TypeProperty { get; private set; }
 
-        public JsonSchema4 Schema { get; set; }
+        public String Name { get; private set; }
 
-        public JsonProperty SchemaProperty { get; set; }
+        public JsonSchema4 Schema { get; private set; }
+
+        public JsonProperty SchemaProperty { get; private set; }
+
+        public JsonSchemaGenerator SchemaGenerator { get; private set; }
     }
 }

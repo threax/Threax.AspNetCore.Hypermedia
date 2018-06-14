@@ -59,6 +59,12 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
             return TestSchema(typeof(DisplayExpressionClass), "TestDisplayExpression.json");
         }
 
+        [Fact]
+        public Task TestSearchAttribute()
+        {
+            return TestSchema(typeof(SearchPropertyClass), "TestSearchAttribute.json");
+        }
+
         private async Task TestSchema(Type type, String Filename)
         {
             var schemaBuilder = mockup.Get<ISchemaBuilder>();
@@ -128,5 +134,13 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
         public Guid? OptionalProperty { get; set; }
 
         public int ConditionProperty { get; set; }
+    }
+
+    public class SearchPropertyClass
+    {
+        [SearchValue("TheProvider", CurrentValuePropertyName = nameof(OtherProperty))]
+        public Guid TheProperty { get; set; }
+
+        public String OtherProperty { get; set; }
     }
 }

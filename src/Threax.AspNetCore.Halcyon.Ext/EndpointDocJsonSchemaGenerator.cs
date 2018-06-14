@@ -144,8 +144,8 @@ namespace Threax.AspNetCore.Halcyon.Ext
                     }
 
                     //Handle any schema customizations
-                    var schemaCustomizerAttr = prop.GetCustomAttributes().FirstOrDefault(i => typeof(CustomizeSchemaAttribute).IsAssignableFrom(i.GetType())) as CustomizeSchemaAttribute;
-                    if (schemaCustomizerAttr != null)
+                    var schemaCusomizerArgs = new SchemaCustomizerArgs(propName, prop, schemaProp, schema, this, type);
+                    foreach (var schemaCustomizerAttr in prop.GetCustomAttributes().Where(i => typeof(CustomizeSchemaAttribute).IsAssignableFrom(i.GetType())).Select(i => i as CustomizeSchemaAttribute))
                     {
                         ISchemaCustomizer customizer = schemaCustomizerAttr as ISchemaCustomizer; //Allow the customizer to also directly implement the ISchemaCustomizer interface, if so use it directly
                         if (customizer == null) //Otherwise look up the customizer, which allows for dependency injection into the customizer
@@ -158,7 +158,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
                         if (customizer != null)
                         {
-                            await customizer.Customize(new SchemaCustomizerArgs(propName, prop, schemaProp, schema));
+                            await customizer.Customize(schemaCusomizerArgs);
                         }
                     }
 

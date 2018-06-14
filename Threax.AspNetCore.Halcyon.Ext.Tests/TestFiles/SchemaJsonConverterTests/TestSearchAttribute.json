@@ -1,0 +1,22 @@
+{
+  "title": "SearchPropertyClass",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "theProperty": {
+      "type": "string",
+      "format": "guid",
+      "x-search": {
+        "provider": "TheProvider",
+        "valueProperty": "otherProperty"
+      }
+    },
+    "otherProperty": {
+      "type": [
+        "null",
+        "string"
+      ]
+    }
+  },
+  "x-is-array": false
+}
