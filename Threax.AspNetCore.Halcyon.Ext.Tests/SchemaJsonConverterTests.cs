@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Newtonsoft.Json;
@@ -63,6 +64,12 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
         public Task TestSearchAttribute()
         {
             return TestSchema(typeof(SearchPropertyClass), "TestSearchAttribute.json");
+        }
+
+        [Fact]
+        public Task TestFileProperty()
+        {
+            return TestSchema(typeof(FileInputClass), "TestFileProperty.json");
         }
 
         private async Task TestSchema(Type type, String Filename)
@@ -142,5 +149,10 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
         public Guid TheProperty { get; set; }
 
         public String OtherProperty { get; set; }
+    }
+
+    public class FileInputClass
+    {
+        public IFormFile FormFile { get; set; }
     }
 }
