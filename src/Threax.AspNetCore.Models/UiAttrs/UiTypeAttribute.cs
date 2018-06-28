@@ -7,6 +7,21 @@ using System.Threading.Tasks;
 
 namespace Threax.AspNetCore.Models
 {
+    public class PropertyUiInfo
+    {
+        public PropertyUiInfo(String type)
+        {
+            this.Type = type;
+        }
+
+        public String Type { get; private set; }
+
+        public virtual String CreateAttribute()
+        {
+            return $@"[UiType(""{Type}"")]";
+        }
+    }
+
     /// <summary>
     /// Use this to alter the type of this a before sending the schema
     /// to the ui for processing.
@@ -14,10 +29,16 @@ namespace Threax.AspNetCore.Models
     [AttributeUsage(AttributeTargets.Property)]
     public class UiTypeAttribute : JsonSchemaExtensionDataAttribute
     {
-        internal const String Name = "x-ui-type";
+        internal const String Name = "xUi";
 
-        public UiTypeAttribute(String value) : base(Name, value)
+        public UiTypeAttribute(String value) : this(new PropertyUiInfo(value))
         {
+
+        }
+
+        public UiTypeAttribute(PropertyUiInfo options) : base(Name, options)
+        {
+
         }
     }
 
@@ -28,12 +49,12 @@ namespace Threax.AspNetCore.Models
         /// </summary>
         /// <param name="prop"></param>
         /// <returns></returns>
-        public static String GetUiType(this JsonProperty prop)
+        public static PropertyUiInfo GetUiTypeInfo(this JsonProperty prop)
         {
             Object val = null;
             if (prop.ExtensionData?.TryGetValue(UiTypeAttribute.Name, out val) == true)
             {
-                return (String)val;
+                return (PropertyUiInfo)val;
             }
             return null;
         }

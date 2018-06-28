@@ -5,6 +5,18 @@ using System.Threading.Tasks;
 
 namespace Threax.AspNetCore.Models
 {
+    public class SelectUiOptions : PropertyUiInfo
+    {
+        public SelectUiOptions(string type) : base(type)
+        {
+        }
+
+        public override string CreateAttribute()
+        {
+            return $@"[SelectUiType]";
+        }
+    }
+
     /// <summary>
     /// Use this to change the ui type of a property to a select. Useful if you are going
     /// to provide values for this property with a value provider and want them displayed in
@@ -14,7 +26,7 @@ namespace Threax.AspNetCore.Models
     {
         public const String UiName = "select";
 
-        public SelectUiTypeAttribute() : base(UiName)
+        public SelectUiTypeAttribute() : base(new SelectUiOptions(UiName))
         {
         }
     }

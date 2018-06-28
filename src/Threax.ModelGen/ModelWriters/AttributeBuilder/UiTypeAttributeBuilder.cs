@@ -13,31 +13,11 @@ namespace Threax.ModelGen.ModelWriters
 
         public override void BuildAttributes(StringBuilder sb, string name, IWriterPropertyInfo prop, string spaces = "        ")
         {
-            if (!String.IsNullOrEmpty(prop.UiType))
+            if (prop.UiType != null)
             {
-                sb.AppendLine(GetAttribute(prop.UiType, spaces));
+                sb.AppendLine($"{spaces}{prop.UiType.CreateAttribute()}");
             }
             base.BuildAttributes(sb, name, prop, spaces);
-        }
-
-        public static String GetAttribute(String uiType, String spaces)
-        {
-            switch (uiType)
-            {
-                case CheckboxUiTypeAttribute.UiName:
-                    return $@"{spaces}[CheckboxUiType]";
-                case DateUiTypeAttribute.UiName:
-                    return $@"{spaces}[DateUiType]";
-                case HiddenUiTypeAttribute.UiName:
-                    return $@"{spaces}[HiddenUiType]";
-                case PasswordUiTypeAttribute.UiName:
-                    return $@"{spaces}[PasswordUiType]";
-                case SelectUiTypeAttribute.UiName:
-                    return $@"{spaces}[SelectUiType]";
-                case TextAreaUiTypeAttribute.UiName:
-                    return $@"{spaces}[TextAreaUiType]";
-            }
-            return $@"{spaces}[UiType(""{uiType}"")]";
         }
     }
 }

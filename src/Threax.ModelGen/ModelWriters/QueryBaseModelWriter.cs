@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Threax.AspNetCore.Models;
 
 namespace Threax.ModelGen.ModelWriters
 {
@@ -54,7 +55,7 @@ namespace Threax.ModelGen.ModelWriters
 
             public string NullValueLabel => wrapped.NullValueLabel;
 
-            public String UiType => wrapped.UiType;
+            public PropertyUiInfo UiType => wrapped.UiType;
 
             public String ValueProviderType => wrapped.ValueProviderType;
         }

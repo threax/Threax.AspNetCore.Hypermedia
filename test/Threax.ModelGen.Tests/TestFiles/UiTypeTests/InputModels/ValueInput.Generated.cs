@@ -14,7 +14,7 @@ namespace Test.InputModels
     [HalModel]
     public partial class ValueInput : IValue
     {
-        [CheckboxUiType]
+        [CheckboxUiType(selectAll: False)]
         public bool Checkbox { get; set; }
 
         [DateUiType]

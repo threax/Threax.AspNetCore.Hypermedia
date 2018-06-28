@@ -28,7 +28,7 @@ namespace Threax.ModelGen
 
         String NullValueLabel { get; }
 
-        String UiType { get; }
+        PropertyUiInfo UiType { get; }
 
         String ValueProviderType { get; }
     }
@@ -62,7 +62,7 @@ namespace Threax.ModelGen
 
         public String NullValueLabel => null;
 
-        public String UiType => null;
+        public PropertyUiInfo UiType => null;
 
         public String ValueProviderType => null;
     }
@@ -103,7 +103,7 @@ namespace Threax.ModelGen
 
         public String NullValueLabel => prop.GetNullValueLabel();
 
-        public String UiType => prop.GetUiType();
+        public PropertyUiInfo UiType => prop.GetUiTypeInfo();
 
         public String ValueProviderType => prop.GetValueProviderType();
     }
@@ -135,7 +135,7 @@ namespace Threax.ModelGen
 
         public String NullValueLabel => null;
 
-        public String UiType => null;
+        public PropertyUiInfo UiType => null;
 
         public String ValueProviderType => null;
     }
