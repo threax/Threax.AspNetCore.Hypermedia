@@ -17,7 +17,7 @@ namespace Test.ViewModels
        {
         public Guid ValueId { get; set; }
 
-        [CheckboxUiType(selectAll: False)]
+        [CheckboxUiType(selectAll: false)]
         public bool Checkbox { get; set; }
 
         [DateUiType]

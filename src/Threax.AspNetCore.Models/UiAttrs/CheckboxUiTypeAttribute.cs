@@ -15,7 +15,7 @@ namespace Threax.AspNetCore.Models
 
         public override string CreateAttribute()
         {
-            return $@"[CheckboxUiType(selectAll: {SelectAll})]";
+            return $@"[CheckboxUiType(selectAll: {(SelectAll ? "true" : "false")})]";
         }
     }
 
