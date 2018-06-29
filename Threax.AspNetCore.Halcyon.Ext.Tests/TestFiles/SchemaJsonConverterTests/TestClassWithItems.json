@@ -1,0 +1,54 @@
+{
+  "title": "ClassWithItems",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "testType": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/definitions/testType"
+        }
+      ]
+    },
+    "myProp": {
+      "type": "boolean"
+    },
+    "acroTest": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/definitions/acroTestCapital"
+        }
+      ]
+    }
+  },
+  "definitions": {
+    "testType": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": [
+            "null",
+            "string"
+          ]
+        }
+      }
+    },
+    "acroTestCapital": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "coolValue": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "x-is-array": false
+}

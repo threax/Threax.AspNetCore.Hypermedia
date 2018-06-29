@@ -31,6 +31,18 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
         }
 
         [Fact]
+        public Task TestACROSimple()
+        {
+            return TestSchema(typeof(ACROTestCapital), "TestACROSimple.json");
+        }
+
+        [Fact]
+        public Task TestClassWithItems()
+        {
+            return TestSchema(typeof(ClassWithItems), "TestClassWithItems.json");
+        }
+
+        [Fact]
         public Task TestSimpleArray()
         {
             return TestSchema(typeof(TestSimpleArray), "TestSimpleArray.json");
@@ -97,6 +109,20 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
             var expected = FileUtils.ReadTestFile(this.GetType(), Filename);
             Assert.Equal(expected, finalJson);
         }
+    }
+
+    public class ClassWithItems
+    {
+        public TestType TestType { get; set; }
+
+        public bool MyProp { get; set; }
+
+        public ACROTestCapital ACROTest { get; set; }
+    }
+
+    public class ACROTestCapital
+    {
+        public bool COOLValue { get; set; }
     }
 
     public class TestComplexArrayType

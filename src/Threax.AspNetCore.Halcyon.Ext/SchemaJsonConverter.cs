@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using NJsonSchema;
 using NJsonSchema.Generation;
 using System;
@@ -33,6 +34,8 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
+            var contractResolver = serializer.ContractResolver as CamelCasePropertyNamesContractResolver;
+
             var jsonSchema = value as JsonSchema4;
             //This would be the ideal way to handle things, but njsonschema is really unpredictable
             //writer.WriteRawValue(jsonSchema.ToJson());
@@ -70,10 +73,12 @@ namespace Threax.AspNetCore.Halcyon.Ext
                     {
                         //Build a JPath from the ref path, (starts with $ and uses . instead of / to separate items
                         var sb = new StringBuilder(refPath.Length);
+                        var lastItem = default(String);
                         sb.Append("$");
                         foreach (var item in splitDef.Skip(1))
                         {
                             sb.AppendFormat(".{0}", item);
+                            lastItem = item;
                         }
 
                         //Check to see if we can find the definition on the original path, if so don't change it
@@ -81,9 +86,10 @@ namespace Threax.AspNetCore.Halcyon.Ext
                         if (definition == null)
                         {
                             //Didn't find definition, look for it with the last item in camelCase, to see if it got mangled
-                            var index = sb.Length - splitDef[splitDef.Length - 1].Length;
-                            var lowered = char.ToLowerInvariant(sb[index]); //Get the lowercase version of the first letter of the last path section.
-                            sb[index] = lowered;
+                            var index = refPath.Length - lastItem.Length;
+                            sb.Remove(index, sb.Length - index);
+                            var camelLastItem = contractResolver.GetResolvedPropertyName(lastItem);
+                            sb.Insert(index, camelLastItem);
                             definition = jObj.SelectToken(sb.ToString());
                             if (definition == null)
                             {
@@ -92,7 +98,8 @@ namespace Threax.AspNetCore.Halcyon.Ext
                             //Update the ref path to use camelCase for the final string, reuse the builder
                             sb.Clear();
                             sb.Append(refPath);
-                            sb[index] = lowered; //Replace the character again, in the original string
+                            sb.Remove(index, sb.Length - index);
+                            sb.Insert(index, camelLastItem);
                             schemaReferencePath.Value = sb.ToString(); //Set the camel cased value back on the schemaReferencePath
                         }
                     }
