@@ -6,7 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Threax.AspNetCore.Halcyon.Ext</AssemblyName>
     <PackageId>Threax.AspNetCore.Halcyon.Ext</PackageId>
-    <Version>9.6.1</Version>
+    <Version>9.7.0-pre1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
@@ -14,7 +14,7 @@
     <PackageLicenseUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</PackageProjectUrl>
     <RepositoryUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</RepositoryUrl>
-    <PackageReleaseNotes>Made the schema json converter handle camel case names better.</PackageReleaseNotes>
+    <PackageReleaseNotes>Include the data mode when building links.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

@@ -239,7 +239,7 @@ export class {client.Name}{ResultClassSuffix} {{
                     if (linkQueryArg != "")
                     {
                         inArgs = linkQueryArg;
-                        loadFunc = "LinkWithQuery";
+                        loadFunc = "LinkWithData";
                         outArgs = ", query";
 
                         if (linkRequestArg != "")
@@ -247,11 +247,11 @@ export class {client.Name}{ResultClassSuffix} {{
                             inArgs += ", ";
                             if (reqIsForm)
                             {
-                                loadFunc = "LinkWithQueryAndForm";
+                                loadFunc = "LinkWithQueryAndData";
                             }
                             else
                             {
-                                loadFunc = "LinkWithQueryAndBody";
+                                loadFunc = "LinkWithQueryAndData";
                             }
                             bothArgs = true;
                         }
@@ -265,11 +265,11 @@ export class {client.Name}{ResultClassSuffix} {{
                         {
                             if (reqIsForm)
                             {
-                                loadFunc = "LinkWithForm";
+                                loadFunc = "LinkWithData";
                             }
                             else
                             {
-                                loadFunc = "LinkWithBody";
+                                loadFunc = "LinkWithData";
                             }
                         }
                     }

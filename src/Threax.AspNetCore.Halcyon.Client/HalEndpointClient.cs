@@ -77,7 +77,7 @@ namespace Threax.AspNetCore.Halcyon.Client
                 var link = links[rel];
                 if (link != null)
                 {
-                    var dataMode = link["dataMode"].Value<String>();
+                    var dataMode = link["datamode"].Value<String>();
                     switch (dataMode)
                     {
                         case DataModes.Body:
@@ -101,7 +101,7 @@ namespace Threax.AspNetCore.Halcyon.Client
                 var link = links[rel];
                 if (link != null)
                 {
-                    var dataMode = link["dataMode"].Value<String>();
+                    var dataMode = link["datamode"].Value<String>();
                     switch (dataMode)
                     {
                         case DataModes.QueryAndBody:
@@ -212,7 +212,7 @@ namespace Threax.AspNetCore.Halcyon.Client
                 var link = links[rel];
                 if (link != null)
                 {
-                    var dataMode = link["dataMode"].Value<String>();
+                    var dataMode = link["datamode"].Value<String>();
                     switch (dataMode)
                     {
                         case DataModes.Body:
@@ -236,7 +236,7 @@ namespace Threax.AspNetCore.Halcyon.Client
                 var link = links[rel];
                 if (link != null)
                 {
-                    var dataMode = link["dataMode"].Value<String>();
+                    var dataMode = link["datamode"].Value<String>();
                     switch (dataMode)
                     {
                         case DataModes.QueryAndBody:

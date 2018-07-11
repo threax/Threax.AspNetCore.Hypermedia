@@ -6,7 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Threax.AspNetCore.Halcyon.Client</AssemblyName>
     <PackageId>Threax.AspNetCore.Halcyon.Client</PackageId>
-    <Version>5.6.3</Version>
+    <Version>5.7.0-pre1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
@@ -14,7 +14,7 @@
     <PackageProjectUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</PackageProjectUrl>
     <RepositoryUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</RepositoryUrl>
     <PackageLicenseUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageReleaseNotes>Fixed format of arrays being added to query strings, there was no need for a trailing [].</PackageReleaseNotes>
+    <PackageReleaseNotes>Added support for data mode coming in from the link info.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

@@ -267,7 +267,7 @@ writer.WriteLine($@"
                     if (linkQueryArg != "")
                     {
                         inArgs = linkQueryArg;
-                        loadFunc = "LinkWithQuery";
+                        loadFunc = "LinkWithData";
                         outArgs = ", query";
 
                         if (linkRequestArg != "")
@@ -275,11 +275,11 @@ writer.WriteLine($@"
                             inArgs += ", ";
                             if (reqIsForm)
                             {
-                                loadFunc = "LinkWithQueryAndForm";
+                                loadFunc = "LinkWithQueryAndData";
                             }
                             else
                             {
-                                loadFunc = "LinkWithQueryAndBody";
+                                loadFunc = "LinkWithQueryAndData";
                             }
                             bothArgs = true;
                         }
@@ -293,11 +293,11 @@ writer.WriteLine($@"
                         {
                             if (reqIsForm)
                             {
-                                loadFunc = "LinkWithForm";
+                                loadFunc = "LinkWithData";
                             }
                             else
                             {
-                                loadFunc = "LinkWithBody";
+                                loadFunc = "LinkWithData";
                             }
                         }
                     }
