@@ -205,6 +205,52 @@ namespace Threax.AspNetCore.Halcyon.Client
             throw new InvalidOperationException($"Cannot find a link named {rel}.");
         }
 
+        public Task<RawEndpointResult> LoadRawLinkWithData<DataType>(String rel, DataType data)
+        {
+            if (links != null)
+            {
+                var link = links[rel];
+                if (link != null)
+                {
+                    var dataMode = link["dataMode"].Value<String>();
+                    switch (dataMode)
+                    {
+                        case DataModes.Body:
+                            return LoadRawLinkWithBody(rel, data);
+                        case DataModes.Form:
+                            return LoadRawLinkWithForm(rel, data);
+                        case DataModes.Query:
+                            return LoadRawLinkWithQuery(rel, data);
+                        default:
+                            throw new InvalidOperationException($"Cannot load link {rel} it needs its data passed by {dataMode}, which cannot be done with this client. Does it need to be regenerated or updated?");
+                    }
+                }
+            }
+            throw new InvalidOperationException($"Cannot find a link named {rel}.");
+        }
+
+        public Task<RawEndpointResult> LoadRawLinkWithQueryAndData<QueryType, DataType>(String rel, QueryType query, DataType data)
+        {
+            if (links != null)
+            {
+                var link = links[rel];
+                if (link != null)
+                {
+                    var dataMode = link["dataMode"].Value<String>();
+                    switch (dataMode)
+                    {
+                        case DataModes.QueryAndBody:
+                            return LoadRawLinkWithQueryAndBody(rel, query, data);
+                        case DataModes.QueryAndForm:
+                            return LoadRawLinkWithQueryAndForm(rel, query, data);
+                        default:
+                            throw new InvalidOperationException($"Cannot load link {rel} it needs its data passed by {dataMode}, which cannot be done with this client. Does it need to be regenerated or updated?");
+                    }
+                }
+            }
+            throw new InvalidOperationException($"Cannot find a link named {rel}.");
+        }
+
         public Task<RawEndpointResult> LoadRawLinkWithQuery<QueryType>(string rel, QueryType query)
         {
             if (links != null)
