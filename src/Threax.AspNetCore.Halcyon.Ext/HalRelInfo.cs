@@ -8,6 +8,16 @@ using System.Threading.Tasks;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
+    public static class DataModes
+    {
+        public const String NoData = null;
+        public const String Query = "query";
+        public const String Body = "body";
+        public const String Form = "form";
+        public const String QueryAndBody = "queryandbody";
+        public const String QueryAndForm = "queryandform";
+    }
+
     /// <summary>
     /// This class is used by HalActionLinkAttribute to lookup info about the action link provided.
     /// </summary>
@@ -137,6 +147,52 @@ namespace Threax.AspNetCore.Halcyon.Ext
                     }
                 }
             }
+
+            //Find data mode
+            bool isQuery = false;
+            bool isBody = false;
+            bool isForm = false;
+            foreach (var arg in this.ActionMethodInfo.GetParameters())
+            {
+                isQuery = isQuery || arg.GetCustomAttribute<FromQueryAttribute>(true) != null;
+                isBody = isBody || arg.GetCustomAttribute<FromBodyAttribute>(true) != null;
+                isForm = isForm || arg.GetCustomAttribute<FromFormAttribute>(true) != null;
+            }
+
+            if (isQuery && isBody && isForm)
+            {
+                throw new InvalidOperationException($"Invalid action method {this.ActionMethodInfo.Name} on {controllerType.Name}. Please choose either FromForm or FromBody, you can combine these with FromQuery.");
+            }
+            else if (isQuery)
+            {
+                if (isBody)
+                {
+                    this.DataMode = DataModes.QueryAndBody;
+                }
+                else if (isForm)
+                {
+                    this.DataMode = DataModes.QueryAndForm;
+                }
+                else
+                {
+                    this.DataMode = DataModes.Query;
+                }
+            }
+            else
+            {
+                if (isBody)
+                {
+                    this.DataMode = DataModes.Body;
+                }
+                else if (isForm)
+                {
+                    this.DataMode = DataModes.Form;
+                }
+                else
+                {
+                    this.DataMode = DataModes.NoData;
+                }
+            }
         }
 
         private void EnsureTrailingUrlTemplateSlash()
@@ -158,6 +214,8 @@ namespace Threax.AspNetCore.Halcyon.Ext
         public string HttpMethod { get; internal set; } = "GET";
 
         public string UrlTemplate { get; internal set; } = "";
+
+        public string DataMode { get; internal set; } = DataModes.NoData;
 
         /// <summary>
         /// The discovered method info, prevents a second lookup later in the request.

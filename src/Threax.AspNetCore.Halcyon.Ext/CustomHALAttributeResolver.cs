@@ -76,7 +76,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                                 queryProvider.AddQuery(actionLinkAttribute.Rel, builder);
                                 href = builder.AddToUrl(href);
                             }
-                            yield return new Link(actionLinkAttribute.Rel, href, actionLinkAttribute.Title, actionLinkAttribute.Method);
+                            yield return new Link(actionLinkAttribute.Rel, href, actionLinkAttribute.Title, actionLinkAttribute.Method, dataMode: actionLinkAttribute.DataMode);
                         }
 
                         if (endpointInfo != null && actionLinkAttribute.HasDocs)
@@ -84,7 +84,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                             var docLink = actionLinkAttribute.GetDocLink(endpointInfo);
                             if (docLink != null)
                             {
-                                yield return new Link(docLink.Rel, docLink.Href, docLink.Title, docLink.Method, false); //Don't replace parameters for these, already done
+                                yield return new Link(docLink.Rel, docLink.Href, docLink.Title, docLink.Method, false, dataMode: docLink.DataMode); //Don't replace parameters for these, already done
                             }
                         }
                     }
@@ -94,7 +94,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                     var linkAttribute = attribute as HalLinkAttribute;
                     if (linkAttribute != null)
                     {
-                        yield return new Link(linkAttribute.Rel, linkAttribute.Href, linkAttribute.Title, linkAttribute.Method);
+                        yield return new Link(linkAttribute.Rel, linkAttribute.Href, linkAttribute.Title, linkAttribute.Method, dataMode: linkAttribute.DataMode);
                     }
                 }
             }
@@ -112,7 +112,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                     {
                         if (actionLinkAttribute.CanUserAccess(context.User))
                         {
-                            yield return new Link(linkAttribute.Rel, linkAttribute.Href, linkAttribute.Title, linkAttribute.Method);
+                            yield return new Link(linkAttribute.Rel, linkAttribute.Href, linkAttribute.Title, linkAttribute.Method, dataMode: linkAttribute.DataMode);
 
                             //Include doc links for link provider links
                             if (endpointInfo != null && actionLinkAttribute.HasDocs)
@@ -120,14 +120,14 @@ namespace Threax.AspNetCore.Halcyon.Ext
                                 var docLink = actionLinkAttribute.GetDocLink(endpointInfo);
                                 if (docLink != null)
                                 {
-                                    yield return new Link(docLink.Rel, docLink.Href, docLink.Title, docLink.Method, false); //Don't replace parameters for these, already done
+                                    yield return new Link(docLink.Rel, docLink.Href, docLink.Title, docLink.Method, false, dataMode: docLink.DataMode); //Don't replace parameters for these, already done
                                 }
                             }
                         }
                     }
                     else //Otherwise just include the link
                     {
-                        yield return new Link(linkAttribute.Rel, linkAttribute.Href, linkAttribute.Title, linkAttribute.Method);
+                        yield return new Link(linkAttribute.Rel, linkAttribute.Href, linkAttribute.Title, linkAttribute.Method, dataMode: linkAttribute.DataMode);
                     }
                 }
             }

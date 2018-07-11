@@ -13,7 +13,8 @@ namespace Halcyon.HAL {
 
         private readonly bool replaceParameters;
 
-        public Link(string rel, string href, string title = null, string method = null, bool replaceParameters = true, bool isRelArray = false, String dataMode = null) {
+        public Link(string rel, string href, string title = null, string method = null, bool replaceParameters = true, bool isRelArray = false, String dataMode = null)
+        {
             this.Rel = rel;
             this.Href = href;
             this.Title = title;

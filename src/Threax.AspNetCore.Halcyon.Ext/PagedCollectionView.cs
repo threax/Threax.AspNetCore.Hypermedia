@@ -68,7 +68,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                         var builder = new QueryStringBuilder();
                         AddPageQuery(Rels.Next, builder, Offset + 1, Limit);
                         var next = builder.AddToUrl(pageLinkAttr.Href);
-                        yield return new HalLinkAttribute(Rels.Next, next, null, pageLinkAttr.Method);
+                        yield return new HalLinkAttribute(Rels.Next, next, null, pageLinkAttr.Method, pageLinkAttr.DataMode);
                     }
                     //Previous link
                     if (Offset - 1 > -1)
@@ -76,14 +76,14 @@ namespace Threax.AspNetCore.Halcyon.Ext
                         var builder = new QueryStringBuilder();
                         AddPageQuery(Rels.Previous, builder, Offset - 1, Limit);
                         var prev = builder.AddToUrl(pageLinkAttr.Href);
-                        yield return new HalLinkAttribute(Rels.Previous, prev, null, pageLinkAttr.Method);
+                        yield return new HalLinkAttribute(Rels.Previous, prev, null, pageLinkAttr.Method, pageLinkAttr.DataMode);
                     }
 
                     //First link
                     var firstBuilder = new QueryStringBuilder();
                     AddPageQuery(Rels.First, firstBuilder, 0, Limit);
                     var first = firstBuilder.AddToUrl(pageLinkAttr.Href);
-                    yield return new HalLinkAttribute(Rels.First, first, null, pageLinkAttr.Method);
+                    yield return new HalLinkAttribute(Rels.First, first, null, pageLinkAttr.Method, pageLinkAttr.DataMode);
 
                     //Last link
                     if (Limit != 0)
@@ -98,7 +98,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                         var builder = new QueryStringBuilder();
                         AddPageQuery(Rels.Last, builder, lastIndex, Limit);
                         var last = builder.AddToUrl(pageLinkAttr.Href);
-                        yield return new HalLinkAttribute(Rels.Last, last, null, pageLinkAttr.Method);
+                        yield return new HalLinkAttribute(Rels.Last, last, null, pageLinkAttr.Method, pageLinkAttr.DataMode);
                     }
                 }
             }

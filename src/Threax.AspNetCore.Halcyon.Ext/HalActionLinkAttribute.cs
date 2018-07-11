@@ -33,6 +33,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
             this.Href = this.halRefInfo.UrlTemplate;
             this.Title = title;
             this.Method = this.halRefInfo.HttpMethod;
+            this.DataMode = this.halRefInfo.DataMode;
             this.controllerType = controllerType;
         }
 
@@ -91,6 +92,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
             this.Href = this.halRefInfo.UrlTemplate;
             this.Title = title;
             this.Method = this.halRefInfo.HttpMethod;
+            this.DataMode = this.halRefInfo.DataMode;
             this.controllerType = controllerType;
         }
 
