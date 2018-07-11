@@ -42,22 +42,13 @@ namespace Threax.AspNetCore.Halcyon.Ext
             }
 
             //If the object is an ICollectionView, use that to parse.
+            //This is a bit of a special case in this system, so parse it separately
             var dataCollection = model as ICollectionView;
             if(dataCollection != null)
             {
                 var itemType = dataCollection.CollectionType;
                 var response = ConvertInstance(model, httpContext, options);
                 response.AddEmbeddedCollection("values", GetEmbeddedResponses(dataCollection.AsObjects, httpContext, options));
-                return response;
-            }
-
-            //If the object is an IEnumerable try to identify properties from that.
-            var enumerableValue = model as IEnumerable;
-            if (enumerableValue != null)
-            {
-                var itemType = HalcyonExtUtils.GetEnumerableModelType(enumerableValue);
-                var response = new HALResponse(new Object());
-                response.AddEmbeddedCollection("values", GetEmbeddedResponses(enumerableValue, httpContext, options));
                 return response;
             }
 
@@ -69,8 +60,6 @@ namespace Threax.AspNetCore.Halcyon.Ext
         {
             //If this is called for a collection it will scan all the links for each item, but
             //each one needs to be customized to work anyway.
-
-            var resolver = new CustomHALAttributeResolver();
 
             //If the options provide a model, use that, otherwise get it from the resolver.
             IHALModelConfig halConfig;
@@ -95,12 +84,14 @@ namespace Threax.AspNetCore.Halcyon.Ext
             }
             else
             {
-                halConfig = resolver.GetConfig(model);
+                halConfig = CustomHALAttributeResolver.GetConfig(model);
             }
 
             var response = new HALResponse(model, halConfig);
-            response.AddLinks(resolver.GetUserLinks(model, context, options.HalDocEndpointInfo));
-            response.AddEmbeddedCollections(resolver.GetEmbeddedCollections(model, halConfig));
+            response.AddLinks(CustomHALAttributeResolver.GetUserLinks(model, context, options.HalDocEndpointInfo));
+            var embeddedCollections = CustomHALAttributeResolver.GetEmbeddedCollectionValues(model)
+                .Select(i => new KeyValuePair<String, IEnumerable<HALResponse>>(i.Key, GetEmbeddedResponses(i.Value, context, options)));
+            response.AddEmbeddedCollections(embeddedCollections);
 
             return response;
         }

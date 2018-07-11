@@ -2,7 +2,9 @@
 using Halcyon.HAL.Attributes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -11,8 +13,38 @@ using System.Threading.Tasks;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
-    public class CustomHALAttributeResolver : HALAttributeResolver
+    public class CustomHALAttributeResolver
     {
+        public static IHALModelConfig GetConfig(object model)
+        {
+            var type = model.GetType();
+
+            // is it worth caching this?
+            var classAttributes = type.GetTypeInfo().GetCustomAttributes();
+
+            foreach (var attribute in classAttributes)
+            {
+                var modelAttribute = attribute as HalModelAttribute;
+                if (modelAttribute != null)
+                {
+                    if (modelAttribute.ForceHal.HasValue || modelAttribute.LinkBase != null)
+                    {
+                        var config = new HALModelConfig();
+                        if (modelAttribute.ForceHal.HasValue)
+                        {
+                            config.ForceHAL = modelAttribute.ForceHal.Value;
+                        }
+                        if (modelAttribute.LinkBase != null)
+                        {
+                            config.LinkBase = modelAttribute.LinkBase;
+                        }
+                        return config;
+                    }
+                }
+            }
+            return null;
+        }
+
         /// <summary>
         /// Get the links that the current user is allowed to use.
         /// </summary>
@@ -20,7 +52,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// <param name="context">The curren httpcontext.</param>
         /// <param name="endpointInfo">The info for this endpoint.</param>
         /// <returns></returns>
-        public IEnumerable<Link> GetUserLinks(object model, HttpContext context, IHalDocEndpointInfo endpointInfo)
+        public static IEnumerable<Link> GetUserLinks(object model, HttpContext context, IHalDocEndpointInfo endpointInfo)
         {
             var type = model.GetType();
             var classAttributes = type.GetTypeInfo().GetCustomAttributes();
@@ -97,6 +129,24 @@ namespace Threax.AspNetCore.Halcyon.Ext
                     {
                         yield return new Link(linkAttribute.Rel, linkAttribute.Href, linkAttribute.Title, linkAttribute.Method);
                     }
+                }
+            }
+        }
+
+        public static IEnumerable<KeyValuePair<string, IEnumerable>> GetEmbeddedCollectionValues(object model)
+        {
+            var type = model.GetType();
+            var embeddedModelProperties = type.GetTypeInfo().GetProperties().Where(x => x.IsDefined(typeof(HalEmbeddedAttribute), true));
+
+            foreach (var propertyInfo in embeddedModelProperties)
+            {
+                var embeddAttribute = propertyInfo.GetCustomAttribute(typeof(HalEmbeddedAttribute)) as HalEmbeddedAttribute;
+                if (embeddAttribute == null) continue;
+
+                var modelValue = propertyInfo.GetValue(model) as IEnumerable;
+                if (modelValue != null)
+                {
+                    yield return new KeyValuePair<string, IEnumerable>(embeddAttribute.CollectionName, modelValue);
                 }
             }
         }
