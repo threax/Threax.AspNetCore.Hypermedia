@@ -30,7 +30,7 @@ public class OutputResult
 
     public async Task Save(Input data) 
     {
-        var result = await this.client.LoadLinkWithBody("Save", data);
+        var result = await this.client.LoadLinkWithData("Save", data);
     }
 
     public bool CanSave 

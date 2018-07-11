@@ -14,7 +14,7 @@ export class OutputResult {
     }
 
     public save(data: Input): Promise<void> {
-        return this.client.LoadLinkWithBody("Save", data).then(hal.makeVoid);
+        return this.client.LoadLinkWithData("Save", data).then(hal.makeVoid);
     }
 
     public canSave(): boolean {
@@ -51,7 +51,7 @@ export class OutputResult {
     }
 
     public save(data: AnotherInput): Promise<void> {
-        return this.client.LoadLinkWithBody("Save", data).then(hal.makeVoid);
+        return this.client.LoadLinkWithData("Save", data).then(hal.makeVoid);
     }
 
     public canSave(): boolean {
