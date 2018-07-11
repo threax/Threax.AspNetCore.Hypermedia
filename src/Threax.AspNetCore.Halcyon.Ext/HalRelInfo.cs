@@ -8,16 +8,6 @@ using System.Threading.Tasks;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
-    public static class DataModes
-    {
-        public const String NoData = null;
-        public const String Query = "query";
-        public const String Body = "body";
-        public const String Form = "form";
-        public const String QueryAndBody = "queryandbody";
-        public const String QueryAndForm = "queryandform";
-    }
-
     /// <summary>
     /// This class is used by HalActionLinkAttribute to lookup info about the action link provided.
     /// </summary>

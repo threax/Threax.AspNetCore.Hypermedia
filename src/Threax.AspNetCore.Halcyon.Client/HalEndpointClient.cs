@@ -70,6 +70,52 @@ namespace Threax.AspNetCore.Halcyon.Client
             throw new InvalidOperationException($"Cannot find a link named {rel}.");
         }
 
+        public Task<HalEndpointClient> LoadLinkWithData<DataType>(String rel, DataType data)
+        {
+            if (links != null)
+            {
+                var link = links[rel];
+                if (link != null)
+                {
+                    var dataMode = link["dataMode"].Value<String>();
+                    switch (dataMode)
+                    {
+                        case DataModes.Body:
+                            return LoadLinkWithBody(rel, data);
+                        case DataModes.Form:
+                            return LoadLinkWithForm(rel, data);
+                        case DataModes.Query:
+                            return LoadLinkWithQuery(rel, data);
+                        default:
+                            throw new InvalidOperationException($"Cannot load link {rel} it needs its data passed by {dataMode}, which cannot be done with this client. Does it need to be regenerated or updated?");
+                    }
+                }
+            }
+            throw new InvalidOperationException($"Cannot find a link named {rel}.");
+        }
+
+        public Task<HalEndpointClient> LoadLinkWithQueryAndData<QueryType, DataType>(String rel, QueryType query, DataType data)
+        {
+            if (links != null)
+            {
+                var link = links[rel];
+                if (link != null)
+                {
+                    var dataMode = link["dataMode"].Value<String>();
+                    switch (dataMode)
+                    {
+                        case DataModes.QueryAndBody:
+                            return LoadLinkWithQueryAndBody(rel, query, data);
+                        case DataModes.QueryAndForm:
+                            return LoadLinkWithQueryAndForm(rel, query, data);
+                        default:
+                            throw new InvalidOperationException($"Cannot load link {rel} it needs its data passed by {dataMode}, which cannot be done with this client. Does it need to be regenerated or updated?");
+                    }
+                }
+            }
+            throw new InvalidOperationException($"Cannot find a link named {rel}.");
+        }
+
         public async Task<HalEndpointClient> LoadLinkWithQuery<QueryType>(String rel, QueryType query)
         {
             if (links != null)

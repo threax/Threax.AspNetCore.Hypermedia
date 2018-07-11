@@ -16,5 +16,7 @@ namespace Threax.AspNetCore.Halcyon.Client
         public String Href { get; set; }
 
         public String Method { get; set; }
+
+        public String DataMode { get; set; }
     }
 }
