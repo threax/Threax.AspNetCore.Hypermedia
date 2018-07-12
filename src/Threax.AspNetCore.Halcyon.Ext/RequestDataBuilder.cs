@@ -14,16 +14,19 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
         }
 
-        private Dictionary<String, Object> query = new Dictionary<string, object>();
+        private Dictionary<String, Object> data = new Dictionary<string, object>();
 
-        internal Dictionary<String,Object> Data { get => query; }
+        /// <summary>
+        /// Get the dictionary that backs the data. Use this to pass the data onward, don't modify the dictionary yourself.
+        /// </summary>
+        public Dictionary<String,Object> Data { get => data; }
 
         public void AppendItem(String name, Object value)
         {
             Object current;
-            if(!query.TryGetValue(name, out current))
+            if(!data.TryGetValue(name, out current))
             {
-                query[name] = value;
+                data[name] = value;
                 return;
             }
 
@@ -37,7 +40,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
             itemList = new QueryList();
             itemList.Add(current);
             itemList.Add(value);
-            query[name] = itemList;
+            data[name] = itemList;
         }
     }
 }
