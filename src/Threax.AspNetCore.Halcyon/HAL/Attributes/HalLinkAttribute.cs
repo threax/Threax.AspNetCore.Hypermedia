@@ -10,20 +10,28 @@ namespace Halcyon.HAL.Attributes
         public string Title { get; protected set; }
         public string Method { get; protected set; }
         public string DataMode { get; protected set; }
+        public Object RequestData { get; protected set; }
 
         public HalLinkAttribute(string rel, string href, string title = null, string method = null)
-        : this(rel, href, title, method, dataMode: null)
+        : this(rel, href, title, method, dataMode: null, requestData: null)
         {
 
         }
 
         public HalLinkAttribute(string rel, string href, string title = null, string method = null, string dataMode = null)
+            : this(rel, href, title, method, dataMode: dataMode, requestData: null)
+        {
+            
+        }
+
+        public HalLinkAttribute(string rel, string href, string title = null, string method = null, string dataMode = null, Object requestData = null)
         {
             Rel = rel;
             Href = href;
             Title = title;
             Method = method;
             DataMode = dataMode;
+            this.RequestData = requestData;
         }
 
         protected HalLinkAttribute()

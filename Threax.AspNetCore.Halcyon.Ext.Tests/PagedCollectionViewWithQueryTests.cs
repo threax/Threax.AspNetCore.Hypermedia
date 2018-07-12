@@ -25,16 +25,61 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
         }
 
         [Fact]
-        public void Query()
+        public void RequestData()
         {
             TestCollection collection = CreateCollection();
-            var queryStringBuilder = new QueryStringBuilder();
+            var queryStringBuilder = new RequestDataBuilder();
             collection.AddQuery(HalSelfActionLinkAttribute.SelfRelName, queryStringBuilder);
-            var query = queryStringBuilder.AddToUrl("");
-            var filename = $"{nameof(Query)}.txt";
-            FileUtils.WriteTestFile(this.GetType(), filename, query);
-            var expected = FileUtils.ReadTestFile(this.GetType(), filename);
-            Assert.Equal(expected, query);
+
+            var serializer = mockup.Get<JsonSerializer>();
+            using (var stream = new MemoryStream())
+            {
+                using (var writer = new JsonTextWriter(new StreamWriter(stream, Encoding.Default, 4096, true)))
+                {
+                    serializer.Serialize(writer, queryStringBuilder.Data);
+                }
+
+                stream.Seek(0, SeekOrigin.Begin);
+
+                using (var reader = new StreamReader(stream))
+                {
+                    var json = reader.ReadToEnd();
+                    var filename = $"{nameof(RequestData)}.json";
+                    FileUtils.WriteTestFile(this.GetType(), filename, json);
+                    var expected = FileUtils.ReadTestFile(this.GetType(), filename);
+                    Assert.Equal(expected, json);
+                }
+            }
+        }
+
+        [Fact]
+        public void RequestDataWithCollection()
+        {
+            var queryStringBuilder = new RequestDataBuilder();
+            queryStringBuilder.AppendItem("ArrayOfThings", 1);
+            queryStringBuilder.AppendItem("ArrayOfThings", 2);
+            queryStringBuilder.AppendItem("ArrayOfThings", 3);
+            queryStringBuilder.AppendItem("SingleThing", "hi");
+
+            var serializer = mockup.Get<JsonSerializer>();
+            using (var stream = new MemoryStream())
+            {
+                using (var writer = new JsonTextWriter(new StreamWriter(stream, Encoding.Default, 4096, true)))
+                {
+                    serializer.Serialize(writer, queryStringBuilder.Data);
+                }
+
+                stream.Seek(0, SeekOrigin.Begin);
+
+                using (var reader = new StreamReader(stream))
+                {
+                    var json = reader.ReadToEnd();
+                    var filename = $"{nameof(RequestDataWithCollection)}.json";
+                    FileUtils.WriteTestFile(this.GetType(), filename, json);
+                    var expected = FileUtils.ReadTestFile(this.GetType(), filename);
+                    Assert.Equal(expected, json);
+                }
+            }
         }
 
         [Fact]

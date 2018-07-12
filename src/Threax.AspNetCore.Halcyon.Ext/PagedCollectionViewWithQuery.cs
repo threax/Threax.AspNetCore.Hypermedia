@@ -59,7 +59,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// <param name="rel">The input rel.</param>
         /// <param name="queryString">The query builder.</param>
         /// <returns>The customized query string.</returns>
-        protected override void AddCustomQuery(String rel, QueryStringBuilder queryString)
+        protected override void AddCustomQuery(String rel, RequestDataBuilder queryString)
         {
             //Get all properties except offset and limit
             foreach(var prop in typeof(TQuery).GetTypeInfo().GetProperties().Where(i => i.Name != nameof(IPagedCollectionQuery.Offset) && i.Name != nameof(IPagedCollectionQuery.Limit)))

@@ -13,6 +13,6 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// <param name="rel">The current rel.</param>
         /// <param name="queryString">The query builder.</param>
         /// <returns>The url with the query appended.</returns>
-        void AddQuery(String rel, QueryStringBuilder queryString);
+        void AddQuery(String rel, RequestDataBuilder queryString);
     }
 }

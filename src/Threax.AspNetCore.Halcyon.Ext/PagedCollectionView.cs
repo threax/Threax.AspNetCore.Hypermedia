@@ -65,25 +65,25 @@ namespace Threax.AspNetCore.Halcyon.Ext
                     //Next link
                     if ((Offset + 1) * Limit < Total)
                     {
-                        var builder = new QueryStringBuilder();
+                        var builder = new RequestDataBuilder();
                         AddPageQuery(Rels.Next, builder, Offset + 1, Limit);
-                        var next = builder.AddToUrl(pageLinkAttr.Href);
-                        yield return new HalLinkAttribute(Rels.Next, next, null, pageLinkAttr.Method, pageLinkAttr.DataMode);
+                        var next = pageLinkAttr.Href;
+                        yield return new HalLinkAttribute(Rels.Next, next, null, pageLinkAttr.Method, pageLinkAttr.DataMode, requestData: builder.Data);
                     }
                     //Previous link
                     if (Offset - 1 > -1)
                     {
-                        var builder = new QueryStringBuilder();
+                        var builder = new RequestDataBuilder();
                         AddPageQuery(Rels.Previous, builder, Offset - 1, Limit);
-                        var prev = builder.AddToUrl(pageLinkAttr.Href);
-                        yield return new HalLinkAttribute(Rels.Previous, prev, null, pageLinkAttr.Method, pageLinkAttr.DataMode);
+                        var prev = pageLinkAttr.Href;
+                        yield return new HalLinkAttribute(Rels.Previous, prev, null, pageLinkAttr.Method, pageLinkAttr.DataMode, requestData: builder.Data);
                     }
 
                     //First link
-                    var firstBuilder = new QueryStringBuilder();
+                    var firstBuilder = new RequestDataBuilder();
                     AddPageQuery(Rels.First, firstBuilder, 0, Limit);
-                    var first = firstBuilder.AddToUrl(pageLinkAttr.Href);
-                    yield return new HalLinkAttribute(Rels.First, first, null, pageLinkAttr.Method, pageLinkAttr.DataMode);
+                    var first = pageLinkAttr.Href;
+                    yield return new HalLinkAttribute(Rels.First, first, null, pageLinkAttr.Method, pageLinkAttr.DataMode, requestData: firstBuilder.Data);
 
                     //Last link
                     if (Limit != 0)
@@ -95,16 +95,16 @@ namespace Threax.AspNetCore.Halcyon.Ext
                         {
                             --lastIndex;
                         }
-                        var builder = new QueryStringBuilder();
+                        var builder = new RequestDataBuilder();
                         AddPageQuery(Rels.Last, builder, lastIndex, Limit);
-                        var last = builder.AddToUrl(pageLinkAttr.Href);
-                        yield return new HalLinkAttribute(Rels.Last, last, null, pageLinkAttr.Method, pageLinkAttr.DataMode);
+                        var last = pageLinkAttr.Href;
+                        yield return new HalLinkAttribute(Rels.Last, last, null, pageLinkAttr.Method, pageLinkAttr.DataMode, requestData: builder.Data);
                     }
                 }
             }
         }
 
-        public void AddQuery(String rel, QueryStringBuilder queryString)
+        public void AddQuery(String rel, RequestDataBuilder queryString)
         {
             if (rel == HalSelfActionLinkAttribute.SelfRelName)
             {
@@ -112,11 +112,12 @@ namespace Threax.AspNetCore.Halcyon.Ext
             }
         }
 
-        private void AddPageQuery(String rel, QueryStringBuilder queryString, int? offset, int? limit)
+        private void AddPageQuery(String rel, RequestDataBuilder queryString, int? offset, int? limit)
         {
             if (offset.HasValue && limit.HasValue)
             {
-                queryString.AppendQueryString($"offset={offset}&limit={limit}");
+                queryString.AppendItem("offset", offset);
+                queryString.AppendItem("limit", limit);
             }
             AddCustomQuery(rel, queryString);
         }
@@ -129,7 +130,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// <param name="rel">The input rel.</param>
         /// <param name="queryString">The query builder.</param>
         /// <returns>The customized query string.</returns>
-        protected virtual void AddCustomQuery(String rel, QueryStringBuilder queryString)
+        protected virtual void AddCustomQuery(String rel, RequestDataBuilder queryString)
         {
             
         }
