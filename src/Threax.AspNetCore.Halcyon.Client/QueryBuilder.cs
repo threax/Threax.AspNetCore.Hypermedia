@@ -10,35 +10,16 @@ namespace Threax.AspNetCore.Halcyon.Client
     {
         public static String BuildQueryString(Object source)
         {
-            var type = source.GetType();
-            var typeInfo = type.GetTypeInfo();
-
             StringBuilder query = new StringBuilder();
 
-            foreach(var prop in typeInfo.GetProperties())
+            var dictionary = source as Dictionary<String, Object>;
+            if(dictionary != null)
             {
-                bool notSpecial = true;
-                var value = prop.GetValue(source);
-                if (value != null)
-                {
-                    if (value.GetType() != typeof(String))
-                    {
-                        var array = value as IEnumerable;
-                        if (array != null)
-                        {
-                            foreach (var i in array)
-                            {
-                                query.Append($"&{Uri.EscapeUriString(prop.Name)}={Uri.EscapeUriString(i.ToString())}");
-                            }
-                            notSpecial = false;
-                        }
-                    }
-
-                    if (notSpecial)
-                    {
-                        query.Append($"&{Uri.EscapeUriString(prop.Name)}={Uri.EscapeUriString(value.ToString())}");
-                    }
-                }
+                BuildQueryStringFromDictionary(dictionary, query);
+            }
+            else
+            {
+                BuildQueryStringFromObject(source, query);
             }
 
             if (query.Length > 0)
@@ -47,6 +28,50 @@ namespace Threax.AspNetCore.Halcyon.Client
             }
 
             return query.ToString();
+        }
+
+        private static void BuildQueryStringFromDictionary(Dictionary<String, Object> source, StringBuilder query)
+        {
+            foreach (var prop in source)
+            {
+                WriteValue(query, prop.Key, prop.Value);
+            }
+        }
+
+        private static void BuildQueryStringFromObject(Object source, StringBuilder query)
+        {
+            var type = source.GetType();
+            var typeInfo = type.GetTypeInfo();
+
+            foreach(var prop in typeInfo.GetProperties())
+            {
+                WriteValue(query, prop.Name, prop.GetValue(source));
+            }
+        }
+
+        private static void WriteValue(StringBuilder query, String name, object value)
+        {
+            bool notSpecial = true;
+            if (value != null)
+            {
+                if (value.GetType() != typeof(String))
+                {
+                    var array = value as IEnumerable;
+                    if (array != null)
+                    {
+                        foreach (var i in array)
+                        {
+                            query.Append($"&{Uri.EscapeUriString(name)}={Uri.EscapeUriString(i.ToString())}");
+                        }
+                        notSpecial = false;
+                    }
+                }
+
+                if (notSpecial)
+                {
+                    query.Append($"&{Uri.EscapeUriString(name)}={Uri.EscapeUriString(value.ToString())}");
+                }
+            }
         }
     }
 }

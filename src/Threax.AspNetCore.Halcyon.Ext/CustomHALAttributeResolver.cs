@@ -70,7 +70,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                         if (!actionLinkAttribute.DocsOnly)
                         {
                             var href = actionLinkAttribute.Href;
-                            Object requestData = null;
+                            Dictionary<String, Object> requestData = null;
                             if (queryProvider != null)
                             {
                                 var builder = new RequestDataBuilder();

@@ -12,39 +12,66 @@ namespace Threax.AspNetCore.Halcyon.Client
     {
         public static void BuildFormContent(Object source, MultipartFormDataContent form)
         {
+            var dictionary = source as Dictionary<String, Object>;
+            if (dictionary != null)
+            {
+                BuildFormContentFromObject(dictionary, form);
+            }
+            else
+            {
+                BuildFormContentFromObject(source, form);
+            }
+        }
+
+        private static void BuildFormContentFromObject(Dictionary<String, Object> source, MultipartFormDataContent form)
+        {
+            foreach (var prop in source)
+            {
+                WriteValue(form, prop.Value, prop.Key);
+            }
+        }
+
+        private static void BuildFormContentFromObject(Object source, MultipartFormDataContent form)
+        {
             var type = source.GetType();
             var typeInfo = type.GetTypeInfo();
 
-            foreach (var prop in typeInfo.DeclaredProperties)
+            foreach (var prop in typeInfo.GetProperties())
             {
-                bool addAsString = true;
                 var value = prop.GetValue(source);
-                if (value.GetType() != typeof(String))
-                {
-                    var array = value as IEnumerable;
-                    if (array != null)
-                    {
-                        var sb = new StringBuilder();
-                        foreach (var i in array)
-                        {
-                            sb.Append($",{i.ToString()}");
-                        }
-                        form.Add(new StringContent(sb.ToString()), $"\"{prop.Name}\"");
-                        addAsString = false;
-                    }
-                }
+                var name = prop.Name;
+                WriteValue(form, value, name);
+            }
+        }
 
-                var stream = value as Stream;
-                if(stream != null)
+        private static void WriteValue(MultipartFormDataContent form, object value, string name)
+        {
+            bool addAsString = true;
+            if (value.GetType() != typeof(String))
+            {
+                var array = value as IEnumerable;
+                if (array != null)
                 {
-                    form.Add(new StreamContent(stream), $"\"{prop.Name}\"");
+                    var sb = new StringBuilder();
+                    foreach (var i in array)
+                    {
+                        sb.Append($",{i.ToString()}");
+                    }
+                    form.Add(new StringContent(sb.ToString()), $"\"{name}\"");
                     addAsString = false;
                 }
+            }
 
-                if (addAsString)
-                {
-                    form.Add(new StringContent(value.ToString()), $"\"{prop.Name}\"");
-                }
+            var stream = value as Stream;
+            if (stream != null)
+            {
+                form.Add(new StreamContent(stream), $"\"{name}\"");
+                addAsString = false;
+            }
+
+            if (addAsString)
+            {
+                form.Add(new StringContent(value.ToString()), $"\"{name}\"");
             }
         }
     }

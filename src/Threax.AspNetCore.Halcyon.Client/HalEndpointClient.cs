@@ -59,10 +59,17 @@ namespace Threax.AspNetCore.Halcyon.Client
         {
             if (links != null)
             {
-                var link = links[rel];
-                if (link != null)
+                var jObjLink = links[rel];
+                if (jObjLink != null)
                 {
-                    var client = new HalEndpointClient(link.ToObject<HalLink>(), clientFactory);
+                    var link = jObjLink.ToObject<HalLink>();
+                    //Since this is a no arg request add any request data
+                    if(link.RequestData != null && link.RequestData.Count > 0)
+                    {
+                        return await LoadLinkWithData(rel, link.RequestData);
+                    }
+
+                    var client = new HalEndpointClient(link, clientFactory);
                     await client.Load(default(Object), default(Object));
                     return client;
                 }
@@ -195,10 +202,17 @@ namespace Threax.AspNetCore.Halcyon.Client
         {
             if (links != null)
             {
-                var link = links[rel];
-                if (link != null)
+                var jObjLink = links[rel];
+                if (jObjLink != null)
                 {
-                    var client = new HalEndpointClient(link.ToObject<HalLink>(), clientFactory);
+                    var link = jObjLink.ToObject<HalLink>();
+                    //Since this is a no arg request add any request data
+                    if (link.RequestData != null && link.RequestData.Count > 0)
+                    {
+                        return LoadRawLinkWithData(rel, link.RequestData);
+                    }
+
+                    var client = new HalEndpointClient(link, clientFactory);
                     return client.LoadRaw(default(Object), default(Object));
                 }
             }

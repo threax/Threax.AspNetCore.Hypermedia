@@ -18,5 +18,7 @@ namespace Threax.AspNetCore.Halcyon.Client
         public String Method { get; set; }
 
         public String DataMode { get; set; }
+
+        public Dictionary<String, Object> RequestData { get; set; }
     }
 }

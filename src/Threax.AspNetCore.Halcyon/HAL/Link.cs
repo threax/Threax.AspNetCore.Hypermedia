@@ -13,7 +13,7 @@ namespace Halcyon.HAL {
 
         private readonly bool replaceParameters;
 
-        public Link(string rel, string href, string title = null, string method = null, bool replaceParameters = true, bool isRelArray = false, String dataMode = null, Object requestData = null)
+        public Link(string rel, string href, string title = null, string method = null, bool replaceParameters = true, bool isRelArray = false, String dataMode = null, Dictionary<String, Object> requestData = null)
         {
             this.Rel = rel;
             this.Href = href;
@@ -66,7 +66,7 @@ namespace Halcyon.HAL {
         public string DataMode { get; set; }
 
         [JsonProperty("requestdata", NullValueHandling = NullValueHandling.Ignore)]
-        public object RequestData { get; set; }
+        public Dictionary<String, Object> RequestData { get; set; }
 
         internal Link CreateLink(IDictionary<string, object> parameters) {
             var clone = Clone();

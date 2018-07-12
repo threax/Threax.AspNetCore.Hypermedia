@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace Threax.AspNetCore.Halcyon.Client.Tests
@@ -59,6 +60,17 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
             {
                 Name = "Bob",
                 Numbers = new int[] { 1, 15, 20 }
+            });
+            Assert.Equal("?Name=Bob&Numbers=1&Numbers=15&Numbers=20", query);
+        }
+
+        [Fact]
+        public void DictionaryQuery()
+        {
+            var query = QueryBuilder.BuildQueryString(new Dictionary<String, Object>()
+            {
+                { "Name", "Bob" },
+                { "Numbers", new List<int>() { 1, 15, 20 } }
             });
             Assert.Equal("?Name=Bob&Numbers=1&Numbers=15&Numbers=20", query);
         }

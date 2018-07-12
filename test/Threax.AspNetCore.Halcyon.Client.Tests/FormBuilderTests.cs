@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using Xunit;
 
@@ -27,6 +29,7 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
                     Name = "Bob",
                     Number = 1
                 }, form);
+                Assert.Equal(2, form.Count());
             }
         }
 
@@ -40,6 +43,7 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
                     Name = "Bob Smith & The Crew / Other Peeps",
                     Number = 1
                 }, form);
+                Assert.Equal(2, form.Count());
             }
         }
 
@@ -60,6 +64,7 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
                     Name = "Bob",
                     Numbers = new int[] { 1, 15, 20 }
                 }, form);
+                Assert.Equal(2, form.Count());
             }
         }
 
@@ -75,7 +80,7 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
         {
             using (var form = new MultipartFormDataContent())
             {
-                using(var streamWriter = new StreamWriter(new MemoryStream()))
+                using (var streamWriter = new StreamWriter(new MemoryStream()))
                 {
                     streamWriter.WriteLine("This is a test of a stream");
                     FormContentBuilder.BuildFormContent(new FileTest()
@@ -84,6 +89,21 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
                         Stream = streamWriter.BaseStream
                     }, form);
                 }
+                Assert.Equal(2, form.Count());
+            }
+        }
+
+        [Fact]
+        public void DictionaryForm()
+        {
+            using (var form = new MultipartFormDataContent())
+            {
+                FormContentBuilder.BuildFormContent(new Dictionary<String, Object>()
+                {
+                    { "Name", "Bob" },
+                    { "Numbers", new List<int>() { 1, 15, 20 } }
+                }, form);
+                Assert.Equal(2, form.Count());
             }
         }
     }
