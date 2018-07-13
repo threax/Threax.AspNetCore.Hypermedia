@@ -1,0 +1,15 @@
+{
+  "title": "ReadOnlyClass",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "theProp": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "x-readOnly": true
+    }
+  },
+  "x-is-array": false
+}

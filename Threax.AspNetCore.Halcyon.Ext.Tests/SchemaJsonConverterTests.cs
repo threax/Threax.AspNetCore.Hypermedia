@@ -6,6 +6,7 @@ using NJsonSchema;
 using NJsonSchema.Generation;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq.Expressions;
@@ -82,6 +83,12 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
         public Task TestFileProperty()
         {
             return TestSchema(typeof(FileInputClass), "TestFileProperty.json");
+        }
+
+        [Fact]
+        public Task TestReadOnly()
+        {
+            return TestSchema(typeof(ReadOnlyClass), "TestReadOnly.json");
         }
 
         private async Task TestSchema(Type type, String Filename)
@@ -180,5 +187,11 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
     public class FileInputClass
     {
         public IFormFile FormFile { get; set; }
+    }
+
+    public class ReadOnlyClass
+    {
+        [ReadOnly(true)]
+        public String TheProp { get; set; }
     }
 }
