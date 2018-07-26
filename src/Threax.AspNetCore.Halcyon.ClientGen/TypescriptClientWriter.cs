@@ -187,17 +187,6 @@ export class {client.Name}{ResultClassSuffix} {{
                     var reqIsForm = false;
                     var loadFuncType = "Load";
 
-                    //Extract any interfaces that need to be written
-                    if (link.EndpointDoc.QuerySchema != null)
-                    {
-                        interfacesToWrite.Add(link.EndpointDoc.QuerySchema);
-                        linkQueryArg = $"query: {link.EndpointDoc.QuerySchema.Title}";
-                        if (link.EndpointDoc.QuerySchema.IsArray())
-                        {
-                            linkQueryArg += "[]";
-                        }
-                    }
-
                     //Only take a request or upload, prefer requests
                     if (link.EndpointDoc.RequestSchema != null)
                     {

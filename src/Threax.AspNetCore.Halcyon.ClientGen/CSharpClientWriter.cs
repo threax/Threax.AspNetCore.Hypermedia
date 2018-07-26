@@ -208,21 +208,6 @@ writer.WriteLine($@"
                     var reqIsForm = false;
                     var loadFuncType = "Load";
 
-                    //Extract any interfaces that need to be written
-                    if (link.EndpointDoc.QuerySchema != null)
-                    {
-                        interfacesToWrite.Add(link.EndpointDoc.QuerySchema);
-                        linkQueryArg = $"{link.EndpointDoc.QuerySchema.Title} query";
-                        if (link.EndpointDoc.QuerySchema.IsArray())
-                        {
-                            linkQueryArg = $"IEnumerable<{link.EndpointDoc.QuerySchema.Title}> query";
-                        }
-                        else
-                        {
-                            linkQueryArg = $"{link.EndpointDoc.QuerySchema.Title} query";
-                        }
-                    }
-
                     //Only take a request or upload, prefer requests
                     if (link.EndpointDoc.RequestSchema != null)
                     {

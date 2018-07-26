@@ -64,7 +64,6 @@ namespace Threax.AspNetCore.Halcyon.Ext
             }
 
             var description = new EndpointDoc();
-            Type queryModelType = null;
             bool handleFormData = true;
 
             var controllerActionDesc = action.ActionDescriptor as ControllerActionDescriptor;
@@ -95,14 +94,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                     }
                     else if (param.Source.CanAcceptDataFrom(BindingSource.Query))
                     {
-                        if (queryModelType == null)
-                        {
-                            queryModelType = param.ModelMetadata.ContainerType;
-                        }
-                        else if (queryModelType != param.ModelMetadata.ContainerType)
-                        {
-                            throw new InvalidOperationException($"Cannot build a query parameter for multiple different models for group: {groupName} method: {method} relativePath: {relativePath}");
-                        }
+                        description.RequestSchema = await schemaBuilder.GetSchema(param.ModelMetadata.ContainerType);
                     }
                     else if(handleFormData && param.Source.CanAcceptDataFrom(BindingSource.Form))
                     {
@@ -130,11 +122,6 @@ namespace Threax.AspNetCore.Halcyon.Ext
                         }
                     }
                 }
-            }
-
-            if (queryModelType != null)
-            {
-                description.QuerySchema = await schemaBuilder.GetSchema(queryModelType);
             }
 
             return description;

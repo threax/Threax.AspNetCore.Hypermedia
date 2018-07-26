@@ -15,12 +15,6 @@ namespace Threax.AspNetCore.Halcyon.Ext
     public class EndpointDoc
     {
         /// <summary>
-        /// The json schema for an object that represents the query to the request.
-        /// </summary>
-        [JsonConverter(typeof(SchemaJsonConverter))]
-        public JsonSchema4 QuerySchema { get; set; }
-
-        /// <summary>
         /// The json schema for an object that is the body to the request.
         /// </summary>
         [JsonConverter(typeof(SchemaJsonConverter))]
@@ -40,7 +34,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         {
             get
             {
-                return QuerySchema != null || RequestSchema != null || ResponseSchema != null;
+                return RequestSchema != null || ResponseSchema != null;
             }
         }
     }

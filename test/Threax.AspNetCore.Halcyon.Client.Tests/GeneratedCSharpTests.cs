@@ -60,7 +60,6 @@
 //                var entryPointInjector = new EntryPointsInjector("http://localhost:65405/", clientFactory);
 //                var entryPoint = await entryPointInjector.Load();
 //                var addThingyDocs = await entryPoint.GetAddThingyDocs();
-//                Assert.Null(addThingyDocs.QuerySchema);
 //                Assert.NotNull(addThingyDocs);
 //                Assert.NotNull(addThingyDocs.RequestSchema);
 //                Assert.NotNull(addThingyDocs.ResponseSchema);

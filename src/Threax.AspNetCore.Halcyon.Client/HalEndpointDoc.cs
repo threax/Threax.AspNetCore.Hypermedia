@@ -14,12 +14,6 @@ namespace Threax.AspNetCore.Halcyon.Client
         }
 
         /// <summary>
-        /// The json schema for an object that represents the query to the request.
-        /// </summary>
-        [JsonConverter(typeof(JsonSchema4Converter))]
-        public JsonSchema4 QuerySchema { get; set; }
-
-        /// <summary>
         /// The json schema for an object that is the body to the request.
         /// </summary>
         [JsonConverter(typeof(JsonSchema4Converter))]
