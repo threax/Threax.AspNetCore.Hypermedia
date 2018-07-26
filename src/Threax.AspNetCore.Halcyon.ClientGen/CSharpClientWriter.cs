@@ -203,9 +203,7 @@ writer.WriteLine($@"
                     String returnOpen = null;
                     String returnClose = null;
                     String linkReturnType = null;
-                    var linkQueryArg = "";
                     var linkRequestArg = "";
-                    var reqIsForm = false;
                     var loadFuncType = "Load";
 
                     //Only take a request or upload, prefer requests
@@ -220,8 +218,6 @@ writer.WriteLine($@"
                         {
                             linkRequestArg = $"{link.EndpointDoc.RequestSchema.Title} data";
                         }
-
-                        reqIsForm = link.EndpointDoc.RequestSchema.DataIsForm();
                     }
 
                     if (link.EndpointDoc.ResponseSchema != null)
@@ -248,43 +244,12 @@ writer.WriteLine($@"
                     var loadFunc = "Link";
                     var inArgs = "";
                     var outArgs = "";
-                    bool bothArgs = false;
-                    if (linkQueryArg != "")
-                    {
-                        inArgs = linkQueryArg;
-                        loadFunc = "LinkWithData";
-                        outArgs = ", query";
-
-                        if (linkRequestArg != "")
-                        {
-                            inArgs += ", ";
-                            if (reqIsForm)
-                            {
-                                loadFunc = "LinkWithQueryAndData";
-                            }
-                            else
-                            {
-                                loadFunc = "LinkWithQueryAndData";
-                            }
-                            bothArgs = true;
-                        }
-                    }
 
                     if (linkRequestArg != "")
                     {
                         inArgs += linkRequestArg;
                         outArgs += ", data";
-                        if (!bothArgs)
-                        {
-                            if (reqIsForm)
-                            {
-                                loadFunc = "LinkWithData";
-                            }
-                            else
-                            {
-                                loadFunc = "LinkWithData";
-                            }
-                        }
+                        loadFunc = "LinkWithData";
                     }
 
                     var funcName = link.Rel;

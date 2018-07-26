@@ -300,11 +300,6 @@ namespace TestHalcyonApi.ServiceClient
             return this.client.HasLinkDoc("FileInputMultiple");
         }
 
-        public async Task FileInputQuery(PagedCollectionQuery query, SingleFileInput data)
-        {
-            var result = await this.client.LoadLinkWithQueryAndForm("FileInputQuery", query, data);
-        }
-
         public bool CanFileInputQuery
         {
             get
@@ -330,11 +325,6 @@ namespace TestHalcyonApi.ServiceClient
         public bool HasFileInputQueryDocs()
         {
             return this.client.HasLinkDoc("FileInputQuery");
-        }
-
-        public async Task FileInputMultipleQuery(PagedCollectionQuery query, MultiFileInput data)
-        {
-            var result = await this.client.LoadLinkWithQueryAndForm("FileInputMultipleQuery", query, data);
         }
 
         public bool CanFileInputMultipleQuery

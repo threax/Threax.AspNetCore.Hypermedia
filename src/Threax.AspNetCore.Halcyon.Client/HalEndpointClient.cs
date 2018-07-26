@@ -101,28 +101,6 @@ namespace Threax.AspNetCore.Halcyon.Client
             throw new InvalidOperationException($"Cannot find a link named {rel}.");
         }
 
-        public Task<HalEndpointClient> LoadLinkWithQueryAndData<QueryType, DataType>(String rel, QueryType query, DataType data)
-        {
-            if (links != null)
-            {
-                var link = links[rel];
-                if (link != null)
-                {
-                    var dataMode = link["datamode"].Value<String>();
-                    switch (dataMode)
-                    {
-                        case DataModes.QueryAndBody:
-                            return LoadLinkWithQueryAndBody(rel, query, data);
-                        case DataModes.QueryAndForm:
-                            return LoadLinkWithQueryAndForm(rel, query, data);
-                        default:
-                            throw new InvalidOperationException($"Cannot load link {rel} it needs its data passed by {dataMode}, which cannot be done with this client. Does it need to be regenerated or updated?");
-                    }
-                }
-            }
-            throw new InvalidOperationException($"Cannot find a link named {rel}.");
-        }
-
         public async Task<HalEndpointClient> LoadLinkWithQuery<QueryType>(String rel, QueryType query)
         {
             if (links != null)
@@ -153,21 +131,6 @@ namespace Threax.AspNetCore.Halcyon.Client
             throw new InvalidOperationException($"Cannot find a link named {rel}.");
         }
 
-        public async Task<HalEndpointClient> LoadLinkWithQueryAndBody<QueryType, BodyType>(String rel, QueryType query, BodyType data)
-        {
-            if (links != null)
-            {
-                var link = links[rel];
-                if (link != null)
-                {
-                    var client = new HalEndpointClient(link.ToObject<HalLink>(), clientFactory);
-                    await client.Load(data, query);
-                    return client;
-                }
-            }
-            throw new InvalidOperationException($"Cannot find a link named {rel}.");
-        }
-
         public async Task<HalEndpointClient> LoadLinkWithForm<FormType>(String rel, FormType data)
         {
             if (links != null)
@@ -177,21 +140,6 @@ namespace Threax.AspNetCore.Halcyon.Client
                 {
                     var client = new HalEndpointClient(link.ToObject<HalLink>(), clientFactory);
                     await client.LoadWithForm(data, null);
-                    return client;
-                }
-            }
-            throw new InvalidOperationException($"Cannot find a link named {rel}.");
-        }
-
-        public async Task<HalEndpointClient> LoadLinkWithQueryAndForm<QueryType, FormType>(String rel, QueryType query, FormType data)
-        {
-            if (links != null)
-            {
-                var link = links[rel];
-                if (link != null)
-                {
-                    var client = new HalEndpointClient(link.ToObject<HalLink>(), clientFactory);
-                    await client.LoadWithForm(data, query);
                     return client;
                 }
             }
@@ -243,28 +191,6 @@ namespace Threax.AspNetCore.Halcyon.Client
             throw new InvalidOperationException($"Cannot find a link named {rel}.");
         }
 
-        public Task<RawEndpointResult> LoadRawLinkWithQueryAndData<QueryType, DataType>(String rel, QueryType query, DataType data)
-        {
-            if (links != null)
-            {
-                var link = links[rel];
-                if (link != null)
-                {
-                    var dataMode = link["datamode"].Value<String>();
-                    switch (dataMode)
-                    {
-                        case DataModes.QueryAndBody:
-                            return LoadRawLinkWithQueryAndBody(rel, query, data);
-                        case DataModes.QueryAndForm:
-                            return LoadRawLinkWithQueryAndForm(rel, query, data);
-                        default:
-                            throw new InvalidOperationException($"Cannot load link {rel} it needs its data passed by {dataMode}, which cannot be done with this client. Does it need to be regenerated or updated?");
-                    }
-                }
-            }
-            throw new InvalidOperationException($"Cannot find a link named {rel}.");
-        }
-
         public Task<RawEndpointResult> LoadRawLinkWithQuery<QueryType>(string rel, QueryType query)
         {
             if (links != null)
@@ -293,20 +219,6 @@ namespace Threax.AspNetCore.Halcyon.Client
             throw new InvalidOperationException($"Cannot find a link named {rel}.");
         }
 
-        public Task<RawEndpointResult> LoadRawLinkWithQueryAndBody<QueryType, BodyType>(string rel, QueryType query, BodyType data)
-        {
-            if (links != null)
-            {
-                var link = links[rel];
-                if (link != null)
-                {
-                    var client = new HalEndpointClient(link.ToObject<HalLink>(), clientFactory);
-                    return client.LoadRaw(data, query);
-                }
-            }
-            throw new InvalidOperationException($"Cannot find a link named {rel}.");
-        }
-
         public Task<RawEndpointResult> LoadRawLinkWithForm<FormType>(string rel, FormType data)
         {
             if (links != null)
@@ -316,20 +228,6 @@ namespace Threax.AspNetCore.Halcyon.Client
                 {
                     var client = new HalEndpointClient(link.ToObject<HalLink>(), clientFactory);
                     return client.LoadWithFormRaw(data, default(Object));
-                }
-            }
-            throw new InvalidOperationException($"Cannot find a link named {rel}.");
-        }
-
-        public Task<RawEndpointResult> LoadRawLinkWithQueryAndForm<QueryType, FormType>(string rel, QueryType query, FormType data)
-        {
-            if (links != null)
-            {
-                var link = links[rel];
-                if (link != null)
-                {
-                    var client = new HalEndpointClient(link.ToObject<HalLink>(), clientFactory);
-                    return client.LoadWithFormRaw(data, query);
                 }
             }
             throw new InvalidOperationException($"Cannot find a link named {rel}.");
