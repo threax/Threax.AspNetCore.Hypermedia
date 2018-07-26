@@ -10,7 +10,5 @@ namespace Threax.AspNetCore.Halcyon.Client
         public const String Query = "query";
         public const String Body = "body";
         public const String Form = "form";
-        public const String QueryAndBody = "queryandbody";
-        public const String QueryAndForm = "queryandform";
     }
 }

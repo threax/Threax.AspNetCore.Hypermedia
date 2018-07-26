@@ -28,10 +28,10 @@ namespace Threax.AspNetCore.Halcyon.Ext
             foreach (var item in controllerTypeInfo.DeclaredMethods.Concat(controllerTypeInfo.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy)))
             {
                 //This loop will search the DeclaredMethods first since we are most likely to find the method there, then all of them
-                if(item.Name == funcName)
+                if (item.Name == funcName)
                 {
                     this.HalRelAttr = item.GetCustomAttribute<HalRelAttribute>();
-                    if(this.HalRelAttr == null)
+                    if (this.HalRelAttr == null)
                     {
                         throw new InvalidOperationException($"Cannot find HalRel attribute on {controllerType.Name}.{funcName}. Do you need to define a HalRel attribute on your target method?");
                     }
@@ -149,39 +149,21 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 isForm = isForm || arg.GetCustomAttribute<FromFormAttribute>(true) != null;
             }
 
-            if (isQuery && isBody && isForm)
+            if (isQuery)
             {
-                throw new InvalidOperationException($"Invalid action method {this.ActionMethodInfo.Name} on {controllerType.Name}. Please choose either FromForm or FromBody, you can combine these with FromQuery.");
+                this.DataMode = DataModes.Query;
             }
-            else if (isQuery)
+            else if (isBody)
             {
-                if (isBody)
-                {
-                    this.DataMode = DataModes.QueryAndBody;
-                }
-                else if (isForm)
-                {
-                    this.DataMode = DataModes.QueryAndForm;
-                }
-                else
-                {
-                    this.DataMode = DataModes.Query;
-                }
+                this.DataMode = DataModes.Body;
+            }
+            else if (isForm)
+            {
+                this.DataMode = DataModes.Form;
             }
             else
             {
-                if (isBody)
-                {
-                    this.DataMode = DataModes.Body;
-                }
-                else if (isForm)
-                {
-                    this.DataMode = DataModes.Form;
-                }
-                else
-                {
-                    this.DataMode = DataModes.NoData;
-                }
+                this.DataMode = DataModes.NoData;
             }
         }
 
