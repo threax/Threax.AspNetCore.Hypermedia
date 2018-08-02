@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <Version>6.1.0-pre2</Version>
+    <Version>6.1.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IncludeSymbols>True</IncludeSymbols>
@@ -11,7 +11,7 @@
     <PackageLicenseUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</PackageProjectUrl>
     <RepositoryUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</RepositoryUrl>
-    <PackageReleaseNotes>Changed how UiType attributes work.</PackageReleaseNotes>
+    <PackageReleaseNotes>Changed how UiType attributes work. Can now override the component type for the ui.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
