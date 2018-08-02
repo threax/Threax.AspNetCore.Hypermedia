@@ -35,6 +35,30 @@ namespace Threax.ModelGen.Tests.Models
 
             [UiType("custom")]
             public String CustomType { get; set; }
+
+            [CheckboxUiType(OverrideComponent = "CustomComponent")]
+            public bool CheckboxOverride { get; set; }
+
+            [DateUiType(OverrideComponent = "CustomComponent")]
+            public DateTime DateOnlyOverride { get; set; }
+
+            [HiddenUiType(OverrideComponent = "CustomComponent")]
+            public String HiddenOverride { get; set; }
+
+            [PasswordUiType(OverrideComponent = "CustomComponent")]
+            public String PasswordOverride { get; set; }
+
+            [SelectUiType(OverrideComponent = "CustomComponent")]
+            public String SelectOverride { get; set; }
+
+            [TextAreaUiType(OverrideComponent = "CustomComponent")]
+            public String TextAreaOverride { get; set; }
+
+            [UiType("custom", OverrideComponent = "CustomComponent")]
+            public String CustomTypeOverride { get; set; }
+
+            [CheckboxUiType(OverrideComponent = "CustomComponent", SelectAll = true)]
+            public bool CheckboxOverrideSelectAll { get; set; }
         }
     }
 }

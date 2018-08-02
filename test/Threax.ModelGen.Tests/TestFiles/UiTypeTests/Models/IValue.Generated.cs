@@ -25,6 +25,22 @@ namespace Test.Models
 
         String CustomType { get; set; }
 
+        bool CheckboxOverride { get; set; }
+
+        DateTime DateOnlyOverride { get; set; }
+
+        String HiddenOverride { get; set; }
+
+        String PasswordOverride { get; set; }
+
+        String SelectOverride { get; set; }
+
+        String TextAreaOverride { get; set; }
+
+        String CustomTypeOverride { get; set; }
+
+        bool CheckboxOverrideSelectAll { get; set; }
+
     }
 
     public partial interface IValueId

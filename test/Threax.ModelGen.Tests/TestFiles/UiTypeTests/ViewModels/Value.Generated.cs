@@ -17,26 +17,50 @@ namespace Test.ViewModels
        {
         public Guid ValueId { get; set; }
 
-        [CheckboxUiType(selectAll: false)]
+        [CheckboxUiType()]
         public bool Checkbox { get; set; }
 
-        [DateUiType]
+        [DateUiType()]
         public DateTime DateOnly { get; set; }
 
-        [HiddenUiType]
+        [HiddenUiType()]
         public String Hidden { get; set; }
 
-        [PasswordUiType]
+        [PasswordUiType()]
         public String Password { get; set; }
 
-        [SelectUiType]
+        [SelectUiType()]
         public String Select { get; set; }
 
-        [TextAreaUiType]
+        [TextAreaUiType()]
         public String TextArea { get; set; }
 
         [UiType("custom")]
         public String CustomType { get; set; }
+
+        [CheckboxUiType(OverrideComponent = "CustomComponent")]
+        public bool CheckboxOverride { get; set; }
+
+        [DateUiType(OverrideComponent = "CustomComponent")]
+        public DateTime DateOnlyOverride { get; set; }
+
+        [HiddenUiType(OverrideComponent = "CustomComponent")]
+        public String HiddenOverride { get; set; }
+
+        [PasswordUiType(OverrideComponent = "CustomComponent")]
+        public String PasswordOverride { get; set; }
+
+        [SelectUiType(OverrideComponent = "CustomComponent")]
+        public String SelectOverride { get; set; }
+
+        [TextAreaUiType(OverrideComponent = "CustomComponent")]
+        public String TextAreaOverride { get; set; }
+
+        [UiType("custom", OverrideComponent = "CustomComponent")]
+        public String CustomTypeOverride { get; set; }
+
+        [CheckboxUiType(OverrideComponent = "CustomComponent", SelectAll = true)]
+        public bool CheckboxOverrideSelectAll { get; set; }
 
         [UiOrder(0, 2147483646)]
         public DateTime Created { get; set; }

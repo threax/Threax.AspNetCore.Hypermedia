@@ -30,6 +30,22 @@ namespace Test.Database
 
         public String CustomType { get; set; }
 
+        public bool CheckboxOverride { get; set; }
+
+        public DateTime DateOnlyOverride { get; set; }
+
+        public String HiddenOverride { get; set; }
+
+        public String PasswordOverride { get; set; }
+
+        public String SelectOverride { get; set; }
+
+        public String TextAreaOverride { get; set; }
+
+        public String CustomTypeOverride { get; set; }
+
+        public bool CheckboxOverrideSelectAll { get; set; }
+
         public DateTime Created { get; set; }
 
         public DateTime Modified { get; set; }

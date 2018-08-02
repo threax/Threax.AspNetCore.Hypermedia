@@ -15,7 +15,20 @@ namespace Threax.AspNetCore.Models
 
         public override string CreateAttribute()
         {
-            return $@"[CheckboxUiType(selectAll: {(SelectAll ? "true" : "false")})]";
+            return $@"[CheckboxUiType({AddSharedProperties(false)})]";
+        }
+
+        protected override IEnumerable<string> GetSharedProperties()
+        {
+            return base.GetSharedProperties().Concat(CheckboxSharedProperties());
+        }
+
+        private IEnumerable<String> CheckboxSharedProperties()
+        {
+            if (SelectAll)
+            {
+                yield return "SelectAll = true";
+            }
         }
     }
 
@@ -28,12 +41,33 @@ namespace Threax.AspNetCore.Models
     {
         public const String UiName = "checkbox";
 
-        public CheckboxUiTypeAttribute(bool selectAll = false) 
+        public CheckboxUiTypeAttribute()
+            : base(new CheckboxUiOptions(UiName))
+        {
+        }
+
+        /// <summary>
+        /// This is here for backward compatibility
+        /// </summary>
+        /// <param name="selectAll"></param>
+        public CheckboxUiTypeAttribute(bool selectAll) 
             : base(new CheckboxUiOptions(UiName)
+                       {
+                           SelectAll = selectAll
+                       })
         {
-            SelectAll = selectAll
-        })
+        }
+
+        public bool SelectAll
         {
+            get
+            {
+                return ((CheckboxUiOptions)this.Value).SelectAll;
+            }
+            set
+            {
+                ((CheckboxUiOptions)this.Value).SelectAll = value;
+            }
         }
     }
 }

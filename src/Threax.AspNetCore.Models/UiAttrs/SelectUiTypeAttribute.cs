@@ -13,7 +13,7 @@ namespace Threax.AspNetCore.Models
 
         public override string CreateAttribute()
         {
-            return $@"[SelectUiType]";
+            return $@"[SelectUiType({AddSharedProperties(false)})]";
         }
     }
 
