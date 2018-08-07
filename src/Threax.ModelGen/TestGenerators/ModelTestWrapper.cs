@@ -23,7 +23,7 @@ namespace Threax.ModelGen.TestGenerators
             var repoMockup = "";
             if (schema.CreateRepository())
             {
-                repoMockup = $"mockup.Add<I{Model}Repository>(m => new {Model}Repository(m.Get<AppDbContext>(), m.Get<IMapper>()));";
+                repoMockup = $"mockup.Add<I{Model}Repository>(m => new {Model}Repository(m.Get<AppDbContext>(), m.Get<AppMapper>()));";
             }
 
             return Create(ns, Model, model, Models, models, schema.GetExtraNamespaces(StrConstants.FileNewline), repoMockup);
@@ -38,6 +38,7 @@ using {ns}.InputModels;
 using {ns}.Repository;
 using {ns}.Models;
 using {ns}.ViewModels;
+using {ns}.Mappers;
 using System;
 using Threax.AspNetCore.Tests;
 using Xunit;

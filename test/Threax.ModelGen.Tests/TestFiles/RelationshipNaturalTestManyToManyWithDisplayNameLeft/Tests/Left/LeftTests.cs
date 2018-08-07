@@ -4,6 +4,7 @@ using Test.InputModels;
 using Test.Repository;
 using Test.Models;
 using Test.ViewModels;
+using Test.Mappers;
 using System;
 using Threax.AspNetCore.Tests;
 using Xunit;
@@ -15,7 +16,7 @@ namespace Test.Tests
     {
         private static Mockup SetupModel(this Mockup mockup)
         {
-            mockup.Add<ILeftRepository>(m => new LeftRepository(m.Get<AppDbContext>(), m.Get<IMapper>()));
+            mockup.Add<ILeftRepository>(m => new LeftRepository(m.Get<AppDbContext>(), m.Get<AppMapper>()));
 
             return mockup;
         }
