@@ -31,10 +31,9 @@ namespace Test.Repository
 
             var total = await dbQuery.CountAsync();
             dbQuery = dbQuery.Skip(query.SkipTo(total)).Take(query.Limit);
-            var resultQuery = dbQuery.Select(i => mapper.MapValue(i, new Value()));
-            var results = await resultQuery.ToListAsync();
+            var results = await dbQuery.ToListAsync();
 
-            return new ValueCollection(query, total, results);
+            return new ValueCollection(query, total, results.Select(i => mapper.MapValue(i, new Value())));
         }
 
         public async Task<Value> Get(String valueId)

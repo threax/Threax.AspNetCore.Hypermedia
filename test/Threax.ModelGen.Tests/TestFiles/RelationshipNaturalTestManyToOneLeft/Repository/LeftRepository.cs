@@ -31,10 +31,9 @@ namespace Test.Repository
 
             var total = await dbQuery.CountAsync();
             dbQuery = dbQuery.Skip(query.SkipTo(total)).Take(query.Limit);
-            var resultQuery = dbQuery.Select(i => mapper.MapLeft(i, new Left()));
-            var results = await resultQuery.ToListAsync();
+            var results = await dbQuery.ToListAsync();
 
-            return new LeftCollection(query, total, results);
+            return new LeftCollection(query, total, results.Select(i => mapper.MapLeft(i, new Left())));
         }
 
         public async Task<Left> Get(Guid leftId)

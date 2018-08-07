@@ -6,7 +6,7 @@
     <PackageType>DotNetCliTool</PackageType>
     <AssemblyName>dotnet-threax-modelgen</AssemblyName>
     <PackageId>Threax.ModelGen</PackageId>
-    <Version>8.0.0-pre3</Version>
+    <Version>8.0.0-pre4</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Andrew Piper</Authors>
     <PackageLicenseUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia/blob/master/LICENSE</PackageLicenseUrl>
