@@ -32,6 +32,7 @@ using {ns}.Database;
 using {ns}.InputModels;
 using {ns}.ViewModels;
 using {ns}.Models;
+using {ns}.Mappers;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -44,9 +45,9 @@ namespace {ns}.Repository
     public partial class {Model}Repository : I{Model}Repository
     {{
         private AppDbContext dbContext;
-        private IMapper mapper;
+        private AppMapper mapper;
 
-        public {Model}Repository(AppDbContext dbContext, IMapper mapper)
+        public {Model}Repository(AppDbContext dbContext, AppMapper mapper)
         {{
             this.dbContext = dbContext;
             this.mapper = mapper;
@@ -58,7 +59,7 @@ namespace {ns}.Repository
 
             var total = await dbQuery.CountAsync();
             dbQuery = dbQuery.Skip(query.SkipTo(total)).Take(query.Limit);
-            var resultQuery = dbQuery.Select(i => mapper.Map<{Model}>(i));
+            var resultQuery = dbQuery.Select(i => mapper.Map{Model}(i, new {Model}()));
             var results = await resultQuery.ToListAsync();
 
             return new {Model}Collection(query, total, results);
@@ -67,15 +68,15 @@ namespace {ns}.Repository
         public async Task<{Model}> Get({modelIdType} {modelId})
         {{
             var entity = await this.Entity({modelId});
-            return mapper.Map<{Model}>(entity);
+            return mapper.Map{Model}(entity, new {Model}());
         }}
 
         public async Task<{Model}> Add({Model}Input {model})
         {{
-            var entity = mapper.Map<{Model}Entity>({model});
+            var entity = mapper.Map{Model}({model}, new {Model}Entity());
             this.dbContext.Add(entity);
             await SaveChanges();
-            return mapper.Map<{Model}>(entity);
+            return mapper.Map{Model}(entity, new {Model}());
         }}
 
         public async Task<{Model}> Update({modelIdType} {modelId}, {Model}Input {model})
@@ -83,9 +84,9 @@ namespace {ns}.Repository
             var entity = await this.Entity({modelId});
             if (entity != null)
             {{
-                mapper.Map({model}, entity);
+                mapper.Map{Model}({model}, entity);
                 await SaveChanges();
-                return mapper.Map<{Model}>(entity);
+                return mapper.Map{Model}(entity, new {Model}());
             }}
             throw new KeyNotFoundException($""Cannot find {model} {{{modelId}.ToString()}}"");
         }}
@@ -107,7 +108,7 @@ namespace {ns}.Repository
 
         public virtual async Task AddRange(IEnumerable<{Model}Input> {models})
         {{
-            var entities = {models}.Select(i => mapper.Map<{Model}Entity>(i));
+            var entities = {models}.Select(i => mapper.Map{Model}(i, new {Model}Entity()));
             this.dbContext.{Models}.AddRange(entities);
             await SaveChanges();
         }}

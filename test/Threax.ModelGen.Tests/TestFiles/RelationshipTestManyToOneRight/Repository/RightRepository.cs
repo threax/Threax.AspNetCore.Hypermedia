@@ -4,6 +4,7 @@ using Test.Database;
 using Test.InputModels;
 using Test.ViewModels;
 using Test.Models;
+using Test.Mappers;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -16,9 +17,9 @@ namespace Test.Repository
     public partial class RightRepository : IRightRepository
     {
         private AppDbContext dbContext;
-        private IMapper mapper;
+        private AppMapper mapper;
 
-        public RightRepository(AppDbContext dbContext, IMapper mapper)
+        public RightRepository(AppDbContext dbContext, AppMapper mapper)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
@@ -30,7 +31,7 @@ namespace Test.Repository
 
             var total = await dbQuery.CountAsync();
             dbQuery = dbQuery.Skip(query.SkipTo(total)).Take(query.Limit);
-            var resultQuery = dbQuery.Select(i => mapper.Map<Right>(i));
+            var resultQuery = dbQuery.Select(i => mapper.MapRight(i, new Right()));
             var results = await resultQuery.ToListAsync();
 
             return new RightCollection(query, total, results);
@@ -39,15 +40,15 @@ namespace Test.Repository
         public async Task<Right> Get(Guid rightId)
         {
             var entity = await this.Entity(rightId);
-            return mapper.Map<Right>(entity);
+            return mapper.MapRight(entity, new Right());
         }
 
         public async Task<Right> Add(RightInput right)
         {
-            var entity = mapper.Map<RightEntity>(right);
+            var entity = mapper.MapRight(right, new RightEntity());
             this.dbContext.Add(entity);
             await SaveChanges();
-            return mapper.Map<Right>(entity);
+            return mapper.MapRight(entity, new Right());
         }
 
         public async Task<Right> Update(Guid rightId, RightInput right)
@@ -55,9 +56,9 @@ namespace Test.Repository
             var entity = await this.Entity(rightId);
             if (entity != null)
             {
-                mapper.Map(right, entity);
+                mapper.MapRight(right, entity);
                 await SaveChanges();
-                return mapper.Map<Right>(entity);
+                return mapper.MapRight(entity, new Right());
             }
             throw new KeyNotFoundException($"Cannot find right {rightId.ToString()}");
         }
@@ -79,7 +80,7 @@ namespace Test.Repository
 
         public virtual async Task AddRange(IEnumerable<RightInput> rights)
         {
-            var entities = rights.Select(i => mapper.Map<RightEntity>(i));
+            var entities = rights.Select(i => mapper.MapRight(i, new RightEntity()));
             this.dbContext.Rights.AddRange(entities);
             await SaveChanges();
         }

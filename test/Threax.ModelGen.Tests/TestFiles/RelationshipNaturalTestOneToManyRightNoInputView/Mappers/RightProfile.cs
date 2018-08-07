@@ -10,6 +10,19 @@ using Test.ViewModels;
 
 namespace Test.Mappers
 {
+    public partial class AppMapper
+    {
+        public RightEntity MapRight(RightInput src, RightEntity dest)
+        {
+            return mapper.Map(src, dest);
+        }
+
+        public Right MapRight(RightEntity src, Right dest)
+        {
+            return mapper.Map(src, dest);
+        }
+    }
+
     public partial class RightProfile : Profile
     {
         public RightProfile()

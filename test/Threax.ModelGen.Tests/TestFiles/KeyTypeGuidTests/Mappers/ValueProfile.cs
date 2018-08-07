@@ -10,6 +10,19 @@ using Test.ViewModels;
 
 namespace Test.Mappers
 {
+    public partial class AppMapper
+    {
+        public ValueEntity MapValue(ValueInput src, ValueEntity dest)
+        {
+            return mapper.Map(src, dest);
+        }
+
+        public Value MapValue(ValueEntity src, Value dest)
+        {
+            return mapper.Map(src, dest);
+        }
+    }
+
     public partial class ValueProfile : Profile
     {
         public ValueProfile()

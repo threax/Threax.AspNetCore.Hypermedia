@@ -35,6 +35,19 @@ using {ns}.ViewModels;{additionalNs}
 
 namespace {ns}.Mappers
 {{
+    public partial class AppMapper
+    {{
+        public {Model}Entity Map{Model}({Model}Input src, {Model}Entity dest)
+        {{
+            return mapper.Map(src, dest);
+        }}
+
+        public {Model} Map{Model}({Model}Entity src, {Model} dest)
+        {{
+            return mapper.Map(src, dest);
+        }}
+    }}
+
     public partial class {Model}Profile : Profile
     {{
         public {Model}Profile()

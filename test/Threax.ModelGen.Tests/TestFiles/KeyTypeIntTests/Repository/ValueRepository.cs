@@ -4,6 +4,7 @@ using Test.Database;
 using Test.InputModels;
 using Test.ViewModels;
 using Test.Models;
+using Test.Mappers;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -16,9 +17,9 @@ namespace Test.Repository
     public partial class ValueRepository : IValueRepository
     {
         private AppDbContext dbContext;
-        private IMapper mapper;
+        private AppMapper mapper;
 
-        public ValueRepository(AppDbContext dbContext, IMapper mapper)
+        public ValueRepository(AppDbContext dbContext, AppMapper mapper)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
@@ -30,7 +31,7 @@ namespace Test.Repository
 
             var total = await dbQuery.CountAsync();
             dbQuery = dbQuery.Skip(query.SkipTo(total)).Take(query.Limit);
-            var resultQuery = dbQuery.Select(i => mapper.Map<Value>(i));
+            var resultQuery = dbQuery.Select(i => mapper.MapValue(i, new Value()));
             var results = await resultQuery.ToListAsync();
 
             return new ValueCollection(query, total, results);
@@ -39,15 +40,15 @@ namespace Test.Repository
         public async Task<Value> Get(Int32 valueId)
         {
             var entity = await this.Entity(valueId);
-            return mapper.Map<Value>(entity);
+            return mapper.MapValue(entity, new Value());
         }
 
         public async Task<Value> Add(ValueInput value)
         {
-            var entity = mapper.Map<ValueEntity>(value);
+            var entity = mapper.MapValue(value, new ValueEntity());
             this.dbContext.Add(entity);
             await SaveChanges();
-            return mapper.Map<Value>(entity);
+            return mapper.MapValue(entity, new Value());
         }
 
         public async Task<Value> Update(Int32 valueId, ValueInput value)
@@ -55,9 +56,9 @@ namespace Test.Repository
             var entity = await this.Entity(valueId);
             if (entity != null)
             {
-                mapper.Map(value, entity);
+                mapper.MapValue(value, entity);
                 await SaveChanges();
-                return mapper.Map<Value>(entity);
+                return mapper.MapValue(entity, new Value());
             }
             throw new KeyNotFoundException($"Cannot find value {valueId.ToString()}");
         }
@@ -79,7 +80,7 @@ namespace Test.Repository
 
         public virtual async Task AddRange(IEnumerable<ValueInput> values)
         {
-            var entities = values.Select(i => mapper.Map<ValueEntity>(i));
+            var entities = values.Select(i => mapper.MapValue(i, new ValueEntity()));
             this.dbContext.Values.AddRange(entities);
             await SaveChanges();
         }
