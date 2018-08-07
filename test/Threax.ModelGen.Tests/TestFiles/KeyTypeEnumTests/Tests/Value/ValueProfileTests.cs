@@ -1,6 +1,7 @@
 using AutoMapper;
 using Test.Database;
 using Test.ViewModels;
+using Test.Mappers;
 using Test.Models;
 using System;
 using Threax.AspNetCore.Tests;
@@ -27,9 +28,9 @@ namespace Test.Tests
             [Fact]
             void InputToEntity()
             {
-                var mapper = mockup.Get<IMapper>();
+                var mapper = mockup.Get<AppMapper>();
                 var input = ValueTests.CreateInput();
-                var entity = mapper.Map<ValueEntity>(input);
+                var entity = mapper.MapValue(input, new ValueEntity());
 
                 //Make sure the id does not copy over
                 Assert.Equal(default(KeyEnum), entity.ValueId);
@@ -39,9 +40,9 @@ namespace Test.Tests
             [Fact]
             void EntityToView()
             {
-                var mapper = mockup.Get<IMapper>();
+                var mapper = mockup.Get<AppMapper>();
                 var entity = ValueTests.CreateEntity();
-                var view = mapper.Map<Value>(entity);
+                var view = mapper.MapValue(entity, new Value());
 
                 Assert.Equal(entity.ValueId, view.ValueId);
                 AssertEqual(entity, view);

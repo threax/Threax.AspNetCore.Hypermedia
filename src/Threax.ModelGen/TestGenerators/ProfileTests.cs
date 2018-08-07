@@ -28,6 +28,7 @@ namespace Threax.ModelGen.TestGenerators
 $@"using AutoMapper;
 using {ns}.Database;
 using {ns}.ViewModels;
+using {ns}.Mappers;
 using {ns}.Models;
 using System;
 using Threax.AspNetCore.Tests;
@@ -54,9 +55,9 @@ namespace {ns}.Tests
             [Fact]
             void InputToEntity()
             {{
-                var mapper = mockup.Get<IMapper>();
+                var mapper = mockup.Get<AppMapper>();
                 var input = {Model}Tests.CreateInput();
-                var entity = mapper.Map<{Model}Entity>(input);
+                var entity = mapper.Map{Model}(input, new {Model}Entity());
 
                 //Make sure the id does not copy over
                 Assert.Equal(default({modelIdType}), entity.{ModelId});
@@ -66,9 +67,9 @@ namespace {ns}.Tests
             [Fact]
             void EntityToView()
             {{
-                var mapper = mockup.Get<IMapper>();
+                var mapper = mockup.Get<AppMapper>();
                 var entity = {Model}Tests.CreateEntity();
-                var view = mapper.Map<{Model}>(entity);
+                var view = mapper.Map{Model}(entity, new {Model}());
 
                 Assert.Equal(entity.{ModelId}, view.{ModelId});
                 AssertEqual(entity, view);
