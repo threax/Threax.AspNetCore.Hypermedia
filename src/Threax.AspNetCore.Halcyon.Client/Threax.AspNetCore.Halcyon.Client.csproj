@@ -6,7 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Threax.AspNetCore.Halcyon.Client</AssemblyName>
     <PackageId>Threax.AspNetCore.Halcyon.Client</PackageId>
-    <Version>6.0.0</Version>
+    <Version>6.1.0-pre1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
@@ -14,7 +14,7 @@
     <PackageProjectUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</PackageProjectUrl>
     <RepositoryUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</RepositoryUrl>
     <PackageLicenseUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageReleaseNotes>Removed QuerySchema from requests since that no longer makes sense with the new abstractions.</PackageReleaseNotes>
+    <PackageReleaseNotes>Changed to use the Threax.SharedHttpClient library instead of creating its own HttpClient instance.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,5 +23,9 @@
     <PackageReference Include="IdentityModel" Version="3.3.1" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="NJsonSchema" Version="9.10.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Threax.SharedHttpClient\Threax.SharedHttpClient.csproj" />
   </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Threax.SharedHttpClient;
 
 namespace Threax.AspNetCore.Halcyon.Client
 {
@@ -12,18 +13,11 @@ namespace Threax.AspNetCore.Halcyon.Client
     /// through its entire lifetime. If you use dependency injection this will be regisered as DefaultHttpClientFactory
     /// in the services, which can be recovered by anything you wish to make a chain out of.
     /// </summary>
-    public class DefaultHttpClientFactory : IHttpClientFactory, IDisposable
+    public class DefaultHttpClientFactory : IHttpClientFactory
     {
-        private HttpClient httpClient = new HttpClient();
-
-        public void Dispose()
-        {
-            httpClient.Dispose();
-        }
-
         public HttpClient GetClient()
         {
-            return httpClient;
+            return SharedHttpClientManager.SharedClient;
         }
 
         public Task<HttpRequestMessage> GetRequestMessage()
