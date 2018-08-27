@@ -8,7 +8,7 @@ namespace Threax.SharedHttpClient
     /// <summary>
     /// This class contains a single HttpClient. It allows you to gain access to this client 2 ways.
     /// The first is to use the shared client property to access the shared instance directly. The other is
-    /// to call UseThreaxSharedHttpClient on your dependency injector, which is the reccomended approach. This 
+    /// to call AddThreaxSharedHttpClient on your dependency injector, which is the reccomended approach. This 
     /// will register an ISharedHttpClient instance that contains the same HttpClient that this class returns through
     /// SharedClient. You can also inject the SharedClient instance into your own dependency injector if needed.
     /// Everything will use the same instance.
@@ -31,9 +31,9 @@ namespace Threax.SharedHttpClient
         /// </summary>
         /// <param name="services">The service collection.</param>
         /// <returns>The service collection.</returns>
-        public static IServiceCollection UseThreaxSharedHttpClient(this IServiceCollection services)
+        public static IServiceCollection AddThreaxSharedHttpClient(this IServiceCollection services)
         {
-            return SharedHttpClientManager.UseThreaxSharedHttpClient(services, null);
+            return SharedHttpClientManager.AddThreaxSharedHttpClient(services, null);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Threax.SharedHttpClient
         /// <param name="services">The service collection.</param>
         /// <param name="configure">A configuration callback.</param>
         /// <returns>The service collection.</returns>
-        public static IServiceCollection UseThreaxSharedHttpClient(this IServiceCollection services, Action<SharedHttpClientOptions> configure)
+        public static IServiceCollection AddThreaxSharedHttpClient(this IServiceCollection services, Action<SharedHttpClientOptions> configure)
         {
             var options = new SharedHttpClientOptions();
             configure?.Invoke(options);
