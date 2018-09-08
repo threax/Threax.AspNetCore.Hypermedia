@@ -22,6 +22,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         IValueProviderResolver valueProviders;
         ISchemaCustomizerResolver schemaCustomizers;
         IAutoTitleGenerator titleGenerator;
+        private bool useValueProviders = true;
 
         public EndpointDocJsonSchemaGenerator(JsonSchemaGeneratorSettings settings, IValueProviderResolver valueProviders, ISchemaCustomizerResolver schemaCustomizers, IAutoTitleGenerator titleGenerator)
             : base(settings)
@@ -31,6 +32,8 @@ namespace Threax.AspNetCore.Halcyon.Ext
             this.schemaCustomizers = schemaCustomizers;
             this.titleGenerator = titleGenerator;
         }
+
+        public bool UseValueProviders { get => useValueProviders; set => useValueProviders = value; }
 
         protected override async Task GenerateObjectAsync<TSchemaType>(Type type, TSchemaType schema, JsonSchemaResolver schemaResolver)
         {
@@ -94,7 +97,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                     }
 
                     var valueProviderAttr = prop.GetCustomAttributes().FirstOrDefault(i => i.GetType() == typeof(ValueProviderAttribute)) as ValueProviderAttribute;
-                    if (valueProviderAttr != null) //If the user gives a value provider, use it
+                    if (valueProviderAttr != null && useValueProviders) //If the user gives a value provider, use it
                     {
                         ValueProviders.IValueProvider valueProvider;
                         if (valueProviders.TryGetValueProvider(valueProviderAttr.ProviderType, out valueProvider))

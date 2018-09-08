@@ -43,5 +43,12 @@ namespace Microsoft.Extensions.DependencyInjection
         /// Otherwise you must manually add these attributes to controllers that send hal results.
         /// </summary>
         public bool MakeAllControllersHalcyon { get; set; } = true;
+
+        /// <summary>
+        /// Set this to true (default) to use value providers when creating schemas. This can be useful to disable in tools
+        /// mode to make running tools a bit faster if you have heavy value providers. If this is set to false value providers
+        /// will never be used.
+        /// </summary>
+        public bool EnableValueProviders { get; set; } = true;
     }
 }
