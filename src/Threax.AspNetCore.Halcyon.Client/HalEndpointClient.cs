@@ -34,6 +34,8 @@ namespace Threax.AspNetCore.Halcyon.Client
         internal HalEndpointClient(JToken data, IHttpClientFactory clientFactory)
         {
             this.data = data;
+            this.links = data["_links"];
+            this.embeds = data["_embedded"];
             this.clientFactory = clientFactory;
         }
 
