@@ -1,0 +1,12 @@
+{
+  "title": "ValueTypeClass",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "valueType": {
+      "type": "integer",
+      "format": "int32"
+    }
+  },
+  "x-is-array": false
+}

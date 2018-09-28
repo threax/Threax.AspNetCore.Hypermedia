@@ -1,0 +1,29 @@
+{
+  "title": "OptionalValueProviderClass",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "theProp": {
+      "title": "The Prop",
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "x-values": [
+        {
+          "label": "None",
+          "value": null
+        },
+        {
+          "label": "No",
+          "value": false
+        },
+        {
+          "label": "Yes",
+          "value": true
+        }
+      ]
+    }
+  },
+  "x-is-array": false
+}

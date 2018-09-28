@@ -1,0 +1,14 @@
+{
+  "title": "ReferenceTypeClass",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "referenceType": {
+      "type": [
+        "null",
+        "string"
+      ]
+    }
+  },
+  "x-is-array": false
+}

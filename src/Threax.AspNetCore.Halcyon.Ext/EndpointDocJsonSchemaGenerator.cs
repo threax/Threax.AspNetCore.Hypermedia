@@ -77,11 +77,11 @@ namespace Threax.AspNetCore.Halcyon.Ext
                     }
                     else if (enumType == null) //Skip enum types, those should be nullable, otherwise they are required.
                     {
-                        //Check for the Required attribute, if it is not there consider the property to be nullable
+                        //Check for the Required attribute, if it is not there consider the property to be nullable if it is not a value type
                         var requiredAttr = prop.GetCustomAttributes().FirstOrDefault(i => i.GetType() == typeof(RequiredAttribute)) as RequiredAttribute;
                         if (requiredAttr == null)
                         {
-                            isNullable = true;
+                            isNullable = !propTypeInfo.IsValueType;
                         }
 
                         //Also, if this item is an array, see if it an array of enums

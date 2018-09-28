@@ -11,6 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Threax.AspNetCore.Halcyon.Ext.ValueProviders;
 using Threax.AspNetCore.Tests;
 using Xunit;
 
@@ -62,6 +63,12 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
         }
 
         [Fact]
+        public Task TestOptionalEnum()
+        {
+            return TestSchema(typeof(OptionalEnumClass), "TestOptionalEnum.json");
+        }
+
+        [Fact]
         public Task TestEnumArray()
         {
             return TestSchema(typeof(EnumArrayClass), "TestEnumArray.json");
@@ -89,6 +96,46 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
         public Task TestReadOnly()
         {
             return TestSchema(typeof(ReadOnlyClass), "TestReadOnly.json");
+        }
+
+        [Fact]
+        public Task TestRequiredValueProvider()
+        {
+            mockup.MockServiceCollection.AddConventionalHalcyon(new HalcyonConventionOptions());
+            mockup.MockServiceCollection.AddScoped<TestValueProvider>();
+            return TestSchema(typeof(RequiredValueProviderClass), "TestRequiredValueProvider.json");
+        }
+
+        [Fact]
+        public Task TestOptionalValueProvider()
+        {
+            mockup.MockServiceCollection.AddConventionalHalcyon(new HalcyonConventionOptions());
+            mockup.MockServiceCollection.AddScoped<TestValueProvider>();
+            return TestSchema(typeof(OptionalValueProviderClass), "TestOptionalValueProvider.json");
+        }
+
+        [Fact]
+        public Task TestValueType()
+        {
+            return TestSchema(typeof(ValueTypeClass), "TestValueType.json");
+        }
+
+        [Fact]
+        public Task TestValueTypeNullable()
+        {
+            return TestSchema(typeof(ValueTypeNullableClass), "TestValueTypeNullable.json");
+        }
+
+        [Fact]
+        public Task TestValueTypeNullableRequired()
+        {
+            return TestSchema(typeof(ValueTypeNullableRequiredClass), "TestValueTypeNullableRequired.json");
+        }
+
+        [Fact]
+        public Task TestReferenceType()
+        {
+            return TestSchema(typeof(ReferenceTypeClass), "TestReferenceType.json");
         }
 
         private async Task TestSchema(Type type, String Filename)
@@ -162,6 +209,11 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
         public TestEnum Value { get; set; }
     }
 
+    public class OptionalEnumClass
+    {
+        public TestEnum? Value { get; set; }
+    }
+
     public class EnumArrayClass
     {
         public List<TestEnum> Value { get; set; }
@@ -193,5 +245,46 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
     {
         [ReadOnly(true)]
         public String TheProp { get; set; }
+    }
+
+    public class TestValueProvider : LabelValuePairProviderSync
+    {
+        protected override IEnumerable<ILabelValuePair> GetSourcesSync()
+        {
+            return new List<ILabelValuePair<bool>>() { new LabelValuePair<bool>("No", false), new LabelValuePair<bool>("Yes", true) };
+        }
+    }
+
+    public class RequiredValueProviderClass
+    {
+        [ValueProvider(typeof(TestValueProvider))]
+        public bool TheProp { get; set; }
+    }
+
+    public class OptionalValueProviderClass
+    {
+        [ValueProvider(typeof(TestValueProvider))]
+        public bool? TheProp { get; set; }
+    }
+
+    public class ValueTypeClass
+    {
+        public int ValueType { get; set; }
+    }
+
+    public class ValueTypeNullableClass
+    {
+        public int? ValueType { get; set; }
+    }
+
+    public class ValueTypeNullableRequiredClass
+    {
+        [Required]
+        public int? ValueType { get; set; }
+    }
+
+    public class ReferenceTypeClass
+    {
+        public String ReferenceType { get; set; }
     }
 }
