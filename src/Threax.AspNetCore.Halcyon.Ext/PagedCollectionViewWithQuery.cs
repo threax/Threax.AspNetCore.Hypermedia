@@ -1,4 +1,5 @@
-﻿using Halcyon.HAL.Attributes;
+﻿using Halcyon;
+using Halcyon.HAL.Attributes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using NJsonSchema;
@@ -18,7 +19,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
     /// <typeparam name="TQuery">The type of the query for the collection.</typeparam>
     [JsonConverter(typeof(CustomJsonSerializerConverter))]
     [EndpointDocJsonSchemaCustomizer(typeof(PagedCollectionViewWithQueryEndpointDocJsonSchemaCustomizer))]
-    public class PagedCollectionViewWithQuery<TItem, TQuery> : PagedCollectionView<TItem>, ICustomJsonSerializer
+    public class PagedCollectionViewWithQuery<TItem, TQuery> : PagedCollectionView<TItem>, ICustomJsonSerializer, ICustomVardicPropertyProvider
         where TQuery : IPagedCollectionQuery
     {
         //Use the newtonsoft camel case conversion, this way we are consistent when generating camel case names
@@ -30,6 +31,18 @@ namespace Threax.AspNetCore.Halcyon.Ext
             :base(query, total, items)
         {
             this.query = query;
+        }
+
+        public void AddCustomVardicProperties(IDictionary<string, object> vardic)
+        {
+            var properties = query.GetType().GetTypeInfo().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            foreach (var prop in properties)
+            {
+                var objValue = prop.GetValue(query, null);
+
+                vardic[prop.Name] = objValue;
+            }
         }
 
         public void WriteJson(JsonWriter writer, JsonSerializer serializer)
