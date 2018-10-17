@@ -6,7 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Threax.AspNetCore.Halcyon.Ext</AssemblyName>
     <PackageId>Threax.AspNetCore.Halcyon.Ext</PackageId>
-    <Version>11.1.2</Version>
+    <Version>12.0.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
@@ -14,14 +14,8 @@
     <PackageLicenseUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</PackageProjectUrl>
     <RepositoryUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</RepositoryUrl>
-    <PackageReleaseNotes>Added a way to disable value providers.
-11.1.1 - Fixed bug where value types were being set to nullable even if they weren't nullable.
-11.1.2 - Fixed bug where PagedCollectionViewWithQuery would not include its query properties when creating links.</PackageReleaseNotes>
+    <PackageReleaseNotes>Combined Halcyon and Halcyon.Ext libraries. This will require a rebuild of any dependent assemblies. Also changed how templates are generated to reduce third party libraries.</PackageReleaseNotes>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Threax.AspNetCore.Halcyon\Threax.AspNetCore.Halcyon.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.1" />
