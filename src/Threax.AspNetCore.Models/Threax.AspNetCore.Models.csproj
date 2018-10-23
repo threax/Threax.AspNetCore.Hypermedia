@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <Version>6.2.0-pre1</Version>
+    <Version>6.2.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IncludeSymbols>True</IncludeSymbols>
@@ -12,6 +12,7 @@
     <PackageProjectUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</PackageProjectUrl>
     <RepositoryUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</RepositoryUrl>
     <PackageReleaseNotes>Added a TextUiTypeAttribute, this allows an Autocomplete option to be set.</PackageReleaseNotes>
+    <PackageId>Threax.AspNetCore.Models</PackageId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
