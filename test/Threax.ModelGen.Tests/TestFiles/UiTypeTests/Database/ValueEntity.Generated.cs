@@ -18,6 +18,8 @@ namespace Test.Database
 
         public bool Checkbox { get; set; }
 
+        public bool CheckboxSelectAll { get; set; }
+
         public DateTime DateOnly { get; set; }
 
         public String Hidden { get; set; }
@@ -27,6 +29,10 @@ namespace Test.Database
         public String Select { get; set; }
 
         public String TextArea { get; set; }
+
+        public String Text { get; set; }
+
+        public String TextAutocomplete { get; set; }
 
         public String CustomType { get; set; }
 
@@ -42,9 +48,13 @@ namespace Test.Database
 
         public String TextAreaOverride { get; set; }
 
+        public String TextOverride { get; set; }
+
         public String CustomTypeOverride { get; set; }
 
         public bool CheckboxOverrideSelectAll { get; set; }
+
+        public String TextOverrideAutocomplete { get; set; }
 
         public DateTime Created { get; set; }
 

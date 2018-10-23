@@ -13,6 +13,8 @@ namespace Test.Models
     {
         bool Checkbox { get; set; }
 
+        bool CheckboxSelectAll { get; set; }
+
         DateTime DateOnly { get; set; }
 
         String Hidden { get; set; }
@@ -22,6 +24,10 @@ namespace Test.Models
         String Select { get; set; }
 
         String TextArea { get; set; }
+
+        String Text { get; set; }
+
+        String TextAutocomplete { get; set; }
 
         String CustomType { get; set; }
 
@@ -37,9 +43,13 @@ namespace Test.Models
 
         String TextAreaOverride { get; set; }
 
+        String TextOverride { get; set; }
+
         String CustomTypeOverride { get; set; }
 
         bool CheckboxOverrideSelectAll { get; set; }
+
+        String TextOverrideAutocomplete { get; set; }
 
     }
 

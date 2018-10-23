@@ -17,6 +17,9 @@ namespace Test.InputModels
         [CheckboxUiType()]
         public bool Checkbox { get; set; }
 
+        [CheckboxUiType(SelectAll = true)]
+        public bool CheckboxSelectAll { get; set; }
+
         [DateUiType()]
         public DateTime DateOnly { get; set; }
 
@@ -31,6 +34,12 @@ namespace Test.InputModels
 
         [TextAreaUiType()]
         public String TextArea { get; set; }
+
+        [TextUiType()]
+        public String Text { get; set; }
+
+        [TextUiType(Autocomplete = true)]
+        public String TextAutocomplete { get; set; }
 
         [UiType("custom")]
         public String CustomType { get; set; }
@@ -53,11 +62,17 @@ namespace Test.InputModels
         [TextAreaUiType(OverrideComponent = "CustomComponent")]
         public String TextAreaOverride { get; set; }
 
+        [TextUiType(OverrideComponent = "CustomComponent")]
+        public String TextOverride { get; set; }
+
         [UiType("custom", OverrideComponent = "CustomComponent")]
         public String CustomTypeOverride { get; set; }
 
         [CheckboxUiType(OverrideComponent = "CustomComponent", SelectAll = true)]
         public bool CheckboxOverrideSelectAll { get; set; }
+
+        [TextUiType(OverrideComponent = "CustomComponent", Autocomplete = true)]
+        public String TextOverrideAutocomplete { get; set; }
 
     }
 }
