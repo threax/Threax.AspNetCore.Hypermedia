@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
+namespace Threax.AspNetCore.Halcyon.Ext
 {
     public static class OrderByQueryExtensions
     {

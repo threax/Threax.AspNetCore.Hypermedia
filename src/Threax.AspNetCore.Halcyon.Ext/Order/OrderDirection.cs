@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
+namespace Threax.AspNetCore.Halcyon.Ext
 {
     public enum OrderDirection
     {
