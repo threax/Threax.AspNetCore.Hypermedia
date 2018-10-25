@@ -1,0 +1,36 @@
+{
+  "title": "OptionalEnumClassNoNullLabel",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "value": {
+      "x-enumNames": [
+        "One (uno)",
+        "Two (dos)",
+        "Three (tres)"
+      ],
+      "enum": [
+        "One",
+        "Two",
+        "Three"
+      ]
+    }
+  },
+  "definitions": {
+    "testEnum": {
+      "type": "string",
+      "description": "",
+      "x-enumNames": [
+        "One",
+        "Two",
+        "Three"
+      ],
+      "enum": [
+        "One",
+        "Two",
+        "Three"
+      ]
+    }
+  },
+  "x-is-array": false
+}

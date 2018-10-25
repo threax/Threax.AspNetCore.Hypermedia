@@ -69,6 +69,18 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
         }
 
         [Fact]
+        public Task TestOptionalEnumClassCustomNullLabel()
+        {
+            return TestSchema(typeof(OptionalEnumClassCustomNullLabel), "TestOptionalEnumClassCustomNullLabel.json");
+        }
+
+        [Fact]
+        public Task TestOptionalEnumClassNoNullLabel()
+        {
+            return TestSchema(typeof(OptionalEnumClassNoNullLabel), "TestOptionalEnumClassNoNullLabel.json");
+        }
+
+        [Fact]
         public Task TestEnumArray()
         {
             return TestSchema(typeof(EnumArrayClass), "TestEnumArray.json");
@@ -112,6 +124,38 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
             mockup.MockServiceCollection.AddConventionalHalcyon(new HalcyonConventionOptions());
             mockup.MockServiceCollection.AddScoped<TestValueProvider>();
             return TestSchema(typeof(OptionalValueProviderClass), "TestOptionalValueProvider.json");
+        }
+
+        [Fact]
+        public Task TestRequiredReferenceTypeValueProviderClass()
+        {
+            mockup.MockServiceCollection.AddConventionalHalcyon(new HalcyonConventionOptions());
+            mockup.MockServiceCollection.AddScoped<TestValueProvider>();
+            return TestSchema(typeof(RequiredReferenceTypeValueProviderClass), "RequiredReferenceTypeValueProviderClass.json");
+        }
+
+        [Fact]
+        public Task TestOptionalReferenceTypeValueProviderClass()
+        {
+            mockup.MockServiceCollection.AddConventionalHalcyon(new HalcyonConventionOptions());
+            mockup.MockServiceCollection.AddScoped<TestValueProvider>();
+            return TestSchema(typeof(OptionalReferenceTypeValueProviderClass), "OptionalReferenceTypeValueProviderClass.json");
+        }
+
+        [Fact]
+        public Task TestCustomNullValueLabel()
+        {
+            mockup.MockServiceCollection.AddConventionalHalcyon(new HalcyonConventionOptions());
+            mockup.MockServiceCollection.AddScoped<TestValueProvider>();
+            return TestSchema(typeof(CustomNullValueLabel), "CustomNullValueLabel.json");
+        }
+
+        [Fact]
+        public Task TestSkipNullValueLabel()
+        {
+            mockup.MockServiceCollection.AddConventionalHalcyon(new HalcyonConventionOptions());
+            mockup.MockServiceCollection.AddScoped<TestValueProvider>();
+            return TestSchema(typeof(SkipNullValueLabel), "SkipNullValueLabel.json");
         }
 
         [Fact]
@@ -214,6 +258,18 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
         public TestEnum? Value { get; set; }
     }
 
+    public class OptionalEnumClassCustomNullLabel
+    {
+        [NullValueLabel("Custom")]
+        public TestEnum? Value { get; set; }
+    }
+
+    public class OptionalEnumClassNoNullLabel
+    {
+        [NullValueLabel(IncludeNullValueLabel = false)]
+        public TestEnum? Value { get; set; }
+    }
+
     public class EnumArrayClass
     {
         public List<TestEnum> Value { get; set; }
@@ -265,6 +321,33 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
     {
         [ValueProvider(typeof(TestValueProvider))]
         public bool? TheProp { get; set; }
+    }
+
+    public class RequiredReferenceTypeValueProviderClass
+    {
+        [ValueProvider(typeof(TestValueProvider))]
+        [Required]
+        public String TheProp { get; set; }
+    }
+
+    public class OptionalReferenceTypeValueProviderClass
+    {
+        [ValueProvider(typeof(TestValueProvider))]
+        public String TheProp { get; set; }
+    }
+
+    public class CustomNullValueLabel
+    {
+        [ValueProvider(typeof(TestValueProvider))]
+        [NullValueLabel("Custom")]
+        public String TheProp { get; set; }
+    }
+
+    public class SkipNullValueLabel
+    {
+        [ValueProvider(typeof(TestValueProvider))]
+        [NullValueLabel(IncludeNullValueLabel = false)]
+        public String TheProp { get; set; }
     }
 
     public class ValueTypeClass

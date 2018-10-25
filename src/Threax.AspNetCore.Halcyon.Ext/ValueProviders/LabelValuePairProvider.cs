@@ -59,11 +59,14 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
                     nullLabel = new NullValueLabelAttribute();
                 }
 
-                yield return new LabelValuePair()
+                if (nullLabel.IncludeNullValueLabel)
                 {
-                    Label = nullLabel.Label,
-                    Value = null
-                };
+                    yield return new LabelValuePair()
+                    {
+                        Label = nullLabel.Label,
+                        Value = null
+                    };
+                }
             }
         }
     }

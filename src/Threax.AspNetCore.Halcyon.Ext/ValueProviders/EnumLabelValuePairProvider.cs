@@ -56,11 +56,14 @@ namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders
                     nullLabel = new NullValueLabelAttribute();
                 }
 
-                yield return new LabelValuePair()
+                if (nullLabel.IncludeNullValueLabel)
                 {
-                    Label = nullLabel.Label,
-                    Value = null
-                };
+                    yield return new LabelValuePair()
+                    {
+                        Label = nullLabel.Label,
+                        Value = null
+                    };
+                }
             }
 
             foreach (var member in enumType.GetTypeInfo().DeclaredFields.Where(i => i.IsStatic)) //The static decalared fields are our enum values
