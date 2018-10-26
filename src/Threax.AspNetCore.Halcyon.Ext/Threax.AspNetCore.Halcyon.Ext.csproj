@@ -6,7 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Threax.AspNetCore.Halcyon.Ext</AssemblyName>
     <PackageId>Threax.AspNetCore.Halcyon.Ext</PackageId>
-    <Version>12.2.1</Version>
+    <Version>12.3.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
@@ -14,8 +14,7 @@
     <PackageLicenseUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</PackageProjectUrl>
     <RepositoryUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</RepositoryUrl>
-    <PackageReleaseNotes>Added some helper classes for setting up ordering in a standardized way.
-12.2.1 - Moved namespace for OrderDirection and OrderByQueryExtensions.</PackageReleaseNotes>
+    <PackageReleaseNotes>Minimized json schema size.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

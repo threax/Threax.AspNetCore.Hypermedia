@@ -105,7 +105,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                     }
                 }
             }
-            var json = JsonSchemaReferenceUtilities.ConvertPropertyReferences(jObj.ToString());
+            var json = JsonSchemaReferenceUtilities.ConvertPropertyReferences(jObj.ToString(Formatting.None));
             writer.WriteRawValue(json);
         }
     }

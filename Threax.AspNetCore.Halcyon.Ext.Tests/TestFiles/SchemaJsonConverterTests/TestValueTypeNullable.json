@@ -1,15 +1,1 @@
-{
-  "title": "ValueTypeNullableClass",
-  "type": "object",
-  "additionalProperties": false,
-  "properties": {
-    "valueType": {
-      "type": [
-        "integer",
-        "null"
-      ],
-      "format": "int32"
-    }
-  },
-  "x-is-array": false
-}
+{"title":"ValueTypeNullableClass","type":"object","additionalProperties":false,"properties":{"valueType":{"type":["integer","null"],"format":"int32"}},"x-is-array":false}

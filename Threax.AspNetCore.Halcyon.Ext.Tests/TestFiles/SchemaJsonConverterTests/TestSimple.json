@@ -1,14 +1,1 @@
-{
-  "title": "TestType",
-  "type": "object",
-  "additionalProperties": false,
-  "properties": {
-    "name": {
-      "type": [
-        "null",
-        "string"
-      ]
-    }
-  },
-  "x-is-array": false
-}
+{"title":"TestType","type":"object","additionalProperties":false,"properties":{"name":{"type":["null","string"]}},"x-is-array":false}

@@ -1,18 +1,1 @@
-{
-  "title": "TestSimpleArray",
-  "type": "object",
-  "additionalProperties": false,
-  "properties": {
-    "ids": {
-      "type": [
-        "array",
-        "null"
-      ],
-      "items": {
-        "type": "string",
-        "format": "guid"
-      }
-    }
-  },
-  "x-is-array": false
-}
+{"title":"TestSimpleArray","type":"object","additionalProperties":false,"properties":{"ids":{"type":["array","null"],"items":{"type":"string","format":"guid"}}},"x-is-array":false}

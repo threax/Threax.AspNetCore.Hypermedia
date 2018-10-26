@@ -1,14 +1,1 @@
-{
-  "title": "FileInputClass",
-  "type": "object",
-  "additionalProperties": false,
-  "properties": {
-    "formFile": {
-      "type": [
-        "null",
-        "file"
-      ]
-    }
-  },
-  "x-is-array": false
-}
+{"title":"FileInputClass","type":"object","additionalProperties":false,"properties":{"formFile":{"type":["null","file"]}},"x-is-array":false}

@@ -1,11 +1,1 @@
-{
-  "title": "ACROTestCapital",
-  "type": "object",
-  "additionalProperties": false,
-  "properties": {
-    "coolValue": {
-      "type": "boolean"
-    }
-  },
-  "x-is-array": false
-}
+{"title":"ACROTestCapital","type":"object","additionalProperties":false,"properties":{"coolValue":{"type":"boolean"}},"x-is-array":false}

@@ -1,16 +1,1 @@
-{
-  "title": "ValueTypeNullableRequiredClass",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "valueType"
-  ],
-  "properties": {
-    "valueType": {
-      "type": "integer",
-      "format": "int32",
-      "minLength": 1
-    }
-  },
-  "x-is-array": false
-}
+{"title":"ValueTypeNullableRequiredClass","type":"object","additionalProperties":false,"required":["valueType"],"properties":{"valueType":{"type":"integer","format":"int32","minLength":1}},"x-is-array":false}
