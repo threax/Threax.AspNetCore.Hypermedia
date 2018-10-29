@@ -25,8 +25,8 @@ export class OutputResult {
         return this.client.GetLink("Save");
     }
 
-    public getSaveDocs(): Promise<hal.HalEndpointDoc> {
-        return this.client.LoadLinkDoc("Save")
+    public getSaveDocs(query?: HalEndpointDocQuery): Promise<hal.HalEndpointDoc> {
+        return this.client.LoadLinkDoc("Save", query)
             .then(r => {
                 return r.GetData<hal.HalEndpointDoc>();
             });
@@ -51,4 +51,9 @@ export interface Output {
 
 export interface Input {
     date?: string;
+}
+
+export interface HalEndpointDocQuery {
+    includeRequest?: boolean;
+    includeResponse?: boolean;
 }

@@ -314,9 +314,9 @@ writer.WriteLine($@"
                     {
                         //Write link docs
                         writer.WriteLine($@"
-    public async Task<HalEndpointDoc> Get{upperFuncName}Docs() 
+    public async Task<HalEndpointDoc> Get{upperFuncName}Docs(HalEndpointDocQuery query = null) 
     {{
-        var result = await this.client.LoadLinkDoc(""{link.Rel}"");
+        var result = await this.client.LoadLinkDoc(""{link.Rel}"", query);
         return result.GetData<HalEndpointDoc>();
     }}
 

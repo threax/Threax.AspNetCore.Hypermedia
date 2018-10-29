@@ -73,6 +73,13 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
             var classes = ConversionUtilities.TrimWhiteSpaces(template.Render());
             writer.WriteLine(classes);
 
+            //Write out common interfaces we reuse in all clients
+            writer.WriteLine(@"
+export interface HalEndpointDocQuery {
+    includeRequest?: boolean;
+    includeResponse?: boolean;
+}");
+
             //End Write Interfaces
         }
 
@@ -280,8 +287,8 @@ export class {client.Name}{ResultClassSuffix} {{
                     {
                         //Write link docs
                         writer.WriteLine($@"
-    public get{upperFuncName}Docs(): Promise<hal.HalEndpointDoc> {{
-        return this.client.LoadLinkDoc(""{link.Rel}"")
+    public get{upperFuncName}Docs(query?: HalEndpointDocQuery): Promise<hal.HalEndpointDoc> {{
+        return this.client.LoadLinkDoc(""{link.Rel}"", query)
             .then(r => {{
                 return r.GetData<hal.HalEndpointDoc>();
             }});

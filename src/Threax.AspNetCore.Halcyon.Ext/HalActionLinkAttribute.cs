@@ -111,7 +111,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                     $"{docEndpointInfo.RelativePathArg}={UriTemplate.TrimStart('\\', '/')}"
                 });
 
-            return new HalLinkAttribute($"{this.Rel}.Docs", docHalRefInfo.UrlTemplate, null, docHalRefInfo.HttpMethod);
+            return new HalLinkAttribute($"{this.Rel}.Docs", docHalRefInfo.UrlTemplate, null, docHalRefInfo.HttpMethod, dataMode: DataModes.Query);
         }
 
         /// <summary>

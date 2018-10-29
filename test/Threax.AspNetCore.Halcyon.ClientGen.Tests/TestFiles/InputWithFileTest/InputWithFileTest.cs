@@ -49,9 +49,9 @@ public class OutputResult
         }
     }
 
-    public async Task<HalEndpointDoc> GetSaveDocs() 
+    public async Task<HalEndpointDoc> GetSaveDocs(HalEndpointDocQuery query = null) 
     {
-        var result = await this.client.LoadLinkDoc("Save");
+        var result = await this.client.LoadLinkDoc("Save", query);
         return result.GetData<HalEndpointDoc>();
     }
 

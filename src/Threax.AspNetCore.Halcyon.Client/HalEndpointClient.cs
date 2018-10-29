@@ -249,18 +249,21 @@ namespace Threax.AspNetCore.Halcyon.Client
             return new Embed(name, embeds[name], this.clientFactory);
         }
 
-        public async Task<HalEndpointClient> LoadLinkDoc(string rel)
+        public Task<HalEndpointClient> LoadLinkDoc(string rel)
+        {
+            return LoadLinkDoc(rel, null);
+        }
+
+        public async Task<HalEndpointClient> LoadLinkDoc(string rel, HalEndpointDocQuery query)
         {
             rel += ".Docs";
-            if (links != null)
+            if(query == null)
             {
-                var link = links[rel];
-                if (link != null)
-                {
-                    var client = new HalEndpointClient(link.ToObject<HalLink>(), clientFactory);
-                    await client.Load(default(Object), default(Object));
-                    return client;
-                }
+                return await this.LoadLink(rel);
+            }
+            else
+            {
+                return await this.LoadLinkWithData(rel, query);
             }
             throw new InvalidOperationException($"Cannot find a link named {rel}.");
         }

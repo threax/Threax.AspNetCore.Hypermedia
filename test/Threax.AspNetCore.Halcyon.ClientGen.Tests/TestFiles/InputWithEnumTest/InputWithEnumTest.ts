@@ -25,8 +25,8 @@ export class OutputResult {
         return this.client.GetLink("Save");
     }
 
-    public getSaveDocs(): Promise<hal.HalEndpointDoc> {
-        return this.client.LoadLinkDoc("Save")
+    public getSaveDocs(query?: HalEndpointDocQuery): Promise<hal.HalEndpointDoc> {
+        return this.client.LoadLinkDoc("Save", query)
             .then(r => {
                 return r.GetData<hal.HalEndpointDoc>();
             });
@@ -62,8 +62,8 @@ export class OutputResult {
         return this.client.GetLink("Save");
     }
 
-    public getSaveDocs(): Promise<hal.HalEndpointDoc> {
-        return this.client.LoadLinkDoc("Save")
+    public getSaveDocs(query?: HalEndpointDocQuery): Promise<hal.HalEndpointDoc> {
+        return this.client.LoadLinkDoc("Save", query)
             .then(r => {
                 return r.GetData<hal.HalEndpointDoc>();
             });
@@ -98,4 +98,9 @@ export interface Input {
 
 export interface AnotherInput {
     enumValue?: TestEnum;
+}
+
+export interface HalEndpointDocQuery {
+    includeRequest?: boolean;
+    includeResponse?: boolean;
 }
