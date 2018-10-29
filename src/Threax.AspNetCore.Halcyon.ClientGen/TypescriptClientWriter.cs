@@ -87,7 +87,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
 export class {client.Name}Injector {{
     private url: string;
     private fetcher: hal.Fetcher;
-    private instance: {client.Name}{ResultClassSuffix};
+    private instancePromise: Promise<{client.Name}{ResultClassSuffix}>;
 
     constructor(url: string, fetcher: hal.Fetcher) {{
         this.url = url;
@@ -95,14 +95,11 @@ export class {client.Name}Injector {{
     }}
 
     public load(): Promise<{client.Name}{ResultClassSuffix}> {{
-        if (!this.instance) {{
-            return {client.Name}{ResultClassSuffix}.Load(this.url, this.fetcher).then((r) => {{
-                this.instance = r;
-                return r;
-            }});
+        if (!this.instancePromise) {{
+            this.instancePromise = {client.Name}{ResultClassSuffix}.Load(this.url, this.fetcher);
         }}
 
-        return Promise.resolve(this.instance);
+        return this.instancePromise;
     }}
 }}");
                 }

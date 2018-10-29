@@ -97,7 +97,7 @@ public class {client.Name}Injector
 {{
     private string url;
     private IHttpClientFactory fetcher;
-    private {client.Name}{ResultClassSuffix} instance = default({client.Name}{ResultClassSuffix});
+    private Task<{client.Name}{ResultClassSuffix}> instanceTask = default(Task<{client.Name}{ResultClassSuffix}>);
 
     public {client.Name}Injector(string url, IHttpClientFactory fetcher)
     {{
@@ -105,13 +105,13 @@ public class {client.Name}Injector
         this.fetcher = fetcher;
     }}
 
-    public async Task<{client.Name}{ResultClassSuffix}> Load()
+    public Task<{client.Name}{ResultClassSuffix}> Load()
     {{
-        if (this.instance == default({client.Name}{ResultClassSuffix}))
+        if (this.instanceTask == default(Task<{client.Name}{ResultClassSuffix}>))
         {{
-            this.instance = await {client.Name}{ResultClassSuffix}.Load(this.url, this.fetcher);
+            this.instanceTask = {client.Name}{ResultClassSuffix}.Load(this.url, this.fetcher);
         }}
-        return this.instance;
+        return this.instanceTask;
     }}
 }}");
                 }
