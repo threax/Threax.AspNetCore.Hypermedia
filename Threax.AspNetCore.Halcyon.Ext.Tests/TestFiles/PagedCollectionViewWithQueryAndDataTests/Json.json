@@ -1,0 +1,10 @@
+{
+  "optionalGuid": null,
+  "anInt": 1,
+  "fancyString": null,
+  "preTest": "Woot",
+  "offset": 0,
+  "limit": 10,
+  "collectionWideData": 42,
+  "total": 3
+}

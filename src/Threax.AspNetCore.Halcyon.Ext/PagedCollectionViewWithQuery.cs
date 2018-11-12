@@ -35,9 +35,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
         public void AddCustomVardicProperties(IDictionary<string, object> vardic)
         {
-            var properties = query.GetType().GetTypeInfo().GetProperties(BindingFlags.Public | BindingFlags.Instance);
-
-            foreach (var prop in properties)
+            foreach (var prop in GetQueryProperties())
             {
                 var objValue = prop.GetValue(query, null);
 
@@ -54,14 +52,33 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 naming = camelNaming;
             }
             writer.WriteStartObject();
-            foreach (var prop in typeof(TQuery).GetTypeInfo().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            foreach (var prop in GetQueryProperties())
             {
                 writer.WritePropertyName(naming.GetPropertyName(prop.Name, false));
                 serializer.Serialize(writer, prop.GetValue(this.query));
             }
-            writer.WritePropertyName(naming.GetPropertyName(nameof(Total), false));
-            serializer.Serialize(writer, Total);
+            foreach (var prop in GetCollectionProperties())
+            {
+                writer.WritePropertyName(naming.GetPropertyName(prop.Name, false));
+                serializer.Serialize(writer, prop.GetValue(this));
+            }
             writer.WriteEndObject();
+        }
+
+        protected IEnumerable<PropertyInfo> GetQueryProperties()
+        {
+            return typeof(TQuery).GetTypeInfo().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+        }
+
+        protected IEnumerable<PropertyInfo> GetCollectionProperties()
+        {
+            //All properties on this class except offset and limit, which are already in the query
+            return this.GetType().GetTypeInfo().GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(i => i.Name != nameof(PagedCollectionView<Object>.Offset) && 
+                       i.Name != nameof(PagedCollectionView<Object>.Limit) && 
+                       i.Name != nameof(PagedCollectionView<Object>.Items) &&
+                       i.Name != nameof(PagedCollectionView<Object>.AsObjects) &&
+                       i.Name != nameof(PagedCollectionView<Object>.CollectionType));
         }
 
         /// <summary>
