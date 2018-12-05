@@ -182,6 +182,14 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
             return TestSchema(typeof(ReferenceTypeClass), "TestReferenceType.json");
         }
 
+        [Fact]
+        public Task TestEnumWithValueProvider()
+        {
+            mockup.MockServiceCollection.AddConventionalHalcyon(new HalcyonConventionOptions());
+            mockup.MockServiceCollection.AddScoped<TestValueProvider>();
+            return TestSchema(typeof(EnumWithValueProvider), "TestEnumWithValueProvider.json");
+        }
+
         private async Task TestSchema(Type type, String Filename)
         {
             var schemaBuilder = mockup.Get<ISchemaBuilder>();
@@ -369,5 +377,11 @@ namespace Threax.AspNetCore.Halcyon.Ext.Tests
     public class ReferenceTypeClass
     {
         public String ReferenceType { get; set; }
+    }
+
+    public class EnumWithValueProvider
+    {
+        [ValueProvider(typeof(TestValueProvider))]
+        public TestEnum TestEnum { get; set; }
     }
 }

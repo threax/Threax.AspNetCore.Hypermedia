@@ -96,8 +96,10 @@ namespace Threax.AspNetCore.Halcyon.Ext
                         }
                     }
 
+                    //Check for value providers
+                    //These are always used, if the user does this on an enum these values override the ones in the definition.
                     var valueProviderAttr = prop.GetCustomAttributes().FirstOrDefault(i => i.GetType() == typeof(ValueProviderAttribute)) as ValueProviderAttribute;
-                    if (valueProviderAttr != null && useValueProviders) //If the user gives a value provider, use it
+                    if (valueProviderAttr != null && useValueProviders)
                     {
                         ValueProviders.IValueProvider valueProvider;
                         if (valueProviders.TryGetValueProvider(valueProviderAttr.ProviderType, out valueProvider))
@@ -109,9 +111,11 @@ namespace Threax.AspNetCore.Halcyon.Ext
                             throw new ValueProviderException($"Cannot find value provider {valueProviderAttr.ProviderType.Name}. It needs to be registered in the IValueProviderResolver or in services by default.");
                         }
                     }
-                    else if (enumType != null) //If there is no value provider and the value is an enum, use the enum values automaticaly
+
+                    //If the type is an enum, load it correctly
+                    if (enumType != null) 
                     {
-                        //For some reason enums do not get the custom attributes, so do it here
+                        //The enum typeSchema gets these properties, so load them again here onto the actual schema prop
                         foreach (var attr in prop.GetCustomAttributes().Select(i => i as JsonSchemaExtensionDataAttribute).Where(i => i != null))
                         {
                             if (!schemaProp.ExtensionData.ContainsKey(attr.Property))
@@ -136,6 +140,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                         {
                             typeSchema = schemaProp.ActualTypeSchema;
                         }
+
                         if (typeSchema != null && !processedReferences.Contains(typeSchema))
                         {
                             processedReferences.Add(typeSchema);
