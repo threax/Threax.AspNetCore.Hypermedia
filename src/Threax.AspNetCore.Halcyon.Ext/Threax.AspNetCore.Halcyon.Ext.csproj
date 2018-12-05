@@ -6,7 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Threax.AspNetCore.Halcyon.Ext</AssemblyName>
     <PackageId>Threax.AspNetCore.Halcyon.Ext</PackageId>
-    <Version>12.4.1</Version>
+    <Version>12.5.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
@@ -14,8 +14,7 @@
     <PackageLicenseUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</PackageProjectUrl>
     <RepositoryUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</RepositoryUrl>
-    <PackageReleaseNotes>Added ability to only get the request or response docs when requesting docs.
-12.4.1 - Fixed serializing PagedCollectionViewWithQuery so that it includes any properties added by the user to the collection object itself since these are included in the schema anyway.</PackageReleaseNotes>
+    <PackageReleaseNotes>Determined how enums with value providers should be handled.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
