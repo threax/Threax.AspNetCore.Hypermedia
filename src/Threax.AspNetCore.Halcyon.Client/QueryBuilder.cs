@@ -13,7 +13,7 @@ namespace Threax.AspNetCore.Halcyon.Client
             StringBuilder query = new StringBuilder();
 
             var dictionary = source as Dictionary<String, Object>;
-            if(dictionary != null)
+            if (dictionary != null)
             {
                 BuildQueryStringFromDictionary(dictionary, query);
             }
@@ -22,19 +22,19 @@ namespace Threax.AspNetCore.Halcyon.Client
                 BuildQueryStringFromObject(source, query);
             }
 
-            if (query.Length > 0)
-            {
-                query[0] = '?';
-            }
-
             return query.ToString();
         }
 
         private static void BuildQueryStringFromDictionary(Dictionary<String, Object> source, StringBuilder query)
         {
+            var leading = "";
             foreach (var prop in source)
             {
-                WriteValue(query, prop.Key, prop.Value);
+                if (prop.Value != null)
+                {
+                    WriteValue(query, prop.Key, prop.Value, leading);
+                    leading = "&";
+                }
             }
         }
 
@@ -42,35 +42,39 @@ namespace Threax.AspNetCore.Halcyon.Client
         {
             var type = source.GetType();
             var typeInfo = type.GetTypeInfo();
+            var leading = "";
 
-            foreach(var prop in typeInfo.GetProperties())
+            foreach (var prop in typeInfo.GetProperties())
             {
-                WriteValue(query, prop.Name, prop.GetValue(source));
+                var value = prop.GetValue(source);
+                if (value != null)
+                {
+                    WriteValue(query, prop.Name, value, leading);
+                    leading = "&";
+                }
             }
         }
 
-        private static void WriteValue(StringBuilder query, String name, object value)
+        private static void WriteValue(StringBuilder query, String name, object value, String leading)
         {
             bool notSpecial = true;
-            if (value != null)
-            {
-                if (value.GetType() != typeof(String))
-                {
-                    var array = value as IEnumerable;
-                    if (array != null)
-                    {
-                        foreach (var i in array)
-                        {
-                            query.Append($"&{Uri.EscapeUriString(name)}={Uri.EscapeUriString(i.ToString())}");
-                        }
-                        notSpecial = false;
-                    }
-                }
 
-                if (notSpecial)
+            if (value.GetType() != typeof(String))
+            {
+                var array = value as IEnumerable;
+                if (array != null)
                 {
-                    query.Append($"&{Uri.EscapeUriString(name)}={Uri.EscapeUriString(value.ToString())}");
+                    foreach (var i in array)
+                    {
+                        query.Append($"{leading}{Uri.EscapeUriString(name)}={Uri.EscapeUriString(i.ToString())}");
+                    }
+                    notSpecial = false;
                 }
+            }
+
+            if (notSpecial)
+            {
+                query.Append($"{leading}{Uri.EscapeUriString(name)}={Uri.EscapeUriString(value.ToString())}");
             }
         }
     }

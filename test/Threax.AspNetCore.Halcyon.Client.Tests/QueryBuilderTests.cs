@@ -21,7 +21,7 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
                 Name = "Bob",
                 Number = 1
             });
-            Assert.Equal("?Name=Bob&Number=1", query);
+            Assert.Equal("Name=Bob&Number=1", query);
         }
 
         [Fact]
@@ -32,7 +32,7 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
                 Name = "Bob Smith & The Crew / Other Peeps",
                 Number = 1
             });
-            Assert.Equal("?Name=Bob%20Smith%20&%20The%20Crew%20/%20Other%20Peeps&Number=1", query);
+            Assert.Equal("Name=Bob%20Smith%20&%20The%20Crew%20/%20Other%20Peeps&Number=1", query);
         }
 
         [Fact]
@@ -43,7 +43,7 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
                 Name = null,
                 Number = 1
             });
-            Assert.Equal("?Number=1", query);
+            Assert.Equal("Number=1", query);
         }
 
         class ArrayQueryTest
@@ -61,7 +61,18 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
                 Name = "Bob",
                 Numbers = new int[] { 1, 15, 20 }
             });
-            Assert.Equal("?Name=Bob&Numbers=1&Numbers=15&Numbers=20", query);
+            Assert.Equal("Name=Bob&Numbers=1&Numbers=15&Numbers=20", query);
+        }
+
+        [Fact]
+        public void ArrayQueryOneItem()
+        {
+            var query = QueryBuilder.BuildQueryString(new ArrayQueryTest()
+            {
+                Name = "Bob",
+                Numbers = new int[] { 1 }
+            });
+            Assert.Equal("Name=Bob&Numbers=1", query);
         }
 
         [Fact]
@@ -72,7 +83,7 @@ namespace Threax.AspNetCore.Halcyon.Client.Tests
                 { "Name", "Bob" },
                 { "Numbers", new List<int>() { 1, 15, 20 } }
             });
-            Assert.Equal("?Name=Bob&Numbers=1&Numbers=15&Numbers=20", query);
+            Assert.Equal("Name=Bob&Numbers=1&Numbers=15&Numbers=20", query);
         }
     }
 }
