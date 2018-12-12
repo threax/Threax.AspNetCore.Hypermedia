@@ -67,6 +67,7 @@ namespace Threax.AspNetCore.Halcyon.Client
                     foreach (var i in array)
                     {
                         query.Append($"{leading}{Uri.EscapeUriString(name)}={Uri.EscapeUriString(i.ToString())}");
+                        leading = "&";
                     }
                     notSpecial = false;
                 }
