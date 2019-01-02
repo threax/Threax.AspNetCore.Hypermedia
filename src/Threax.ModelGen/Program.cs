@@ -132,6 +132,10 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                         {
                             WriteFile(settings.AppOutDir, IdInterfaceWriter.GetFileName(settings.Schema, false), PartialModelInterfaceGenerator.GetUserPartial(settings.Schema, settings.AppNamespace + ".Models"), false);
                         }
+                        else
+                        {
+                            DeleteFile(settings.AppOutDir, IdInterfaceWriter.GetFileName(settings.Schema, true));
+                        }
                         WriteFile(settings.AppOutDir, IdInterfaceWriter.GetFileName(settings.Schema, settings.CreateGeneratedFiles), IdInterfaceWriter.Create(settings.Schema, settings.AppNamespace), true);
                     }
 
@@ -141,6 +145,10 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                         if (settings.CreateGeneratedFiles)
                         {
                             WriteFile(settings.AppOutDir, EntityWriter.GetFileName(settings.Schema, false), PartialTypeGenerator.GetEntity(settings.Schema, settings.AppNamespace), false);
+                        }
+                        else
+                        {
+                            DeleteFile(settings.AppOutDir, EntityWriter.GetFileName(settings.Schema, true));
                         }
                         WriteFile(settings.AppOutDir, AppDbContextGenerator.GetFileName(settings.Schema), AppDbContextGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);
                         WriteFile(settings.AppOutDir, EntityWriter.GetFileName(settings.Schema, settings.CreateGeneratedFiles), EntityWriter.Create(settings.Schema, settings.OtherSchemas, settings.AppNamespace), true);
@@ -152,6 +160,10 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                                 if (settings.CreateGeneratedFiles)
                                 {
                                     WriteFile(settings.AppOutDir, JoinEntityWriter.GetFileName(relationship, false), PartialTypeGenerator.GetJoinEntity(settings.Schema, relationship, settings.AppNamespace), false);
+                                }
+                                else
+                                {
+                                    DeleteFile(settings.AppOutDir, JoinEntityWriter.GetFileName(relationship, true));
                                 }
                                 WriteFile(settings.AppOutDir, AppDbContextGenerator.GetManyToManyEntityDbContextFileName(relationship), AppDbContextGenerator.GetManyToManyEntityDbContext(relationship, settings.AppNamespace), settings.ForceWriteApi);
                                 WriteFile(settings.AppOutDir, JoinEntityWriter.GetFileName(relationship, settings.CreateGeneratedFiles), JoinEntityWriter.Get(settings.Schema, settings.OtherSchemas, relationship, settings.AppNamespace), true);
@@ -166,6 +178,10 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                         {
                             WriteFile(settings.AppOutDir, InputModelWriter.GetFileName(settings.Schema, false), PartialTypeGenerator.GetInput(settings.Schema, settings.AppNamespace), false);
                         }
+                        else
+                        {
+                            DeleteFile(settings.AppOutDir, InputModelWriter.GetFileName(settings.Schema, true));
+                        }
                         WriteFile(settings.AppOutDir, InputModelWriter.GetFileName(settings.Schema, settings.CreateGeneratedFiles), await InputModelWriter.Create(settings.Schema, settings.OtherSchemas, settings.AppNamespace), true);
                     }
 
@@ -176,6 +192,10 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                         {
                             WriteFile(settings.AppOutDir, QueryModelWriter.GetFileName(settings.Schema, false), QueryUserPartialGenerator.GetQuery(settings.Schema, settings.AppNamespace), false);
                         }
+                        else
+                        {
+                            DeleteFile(settings.AppOutDir, QueryModelWriter.GetFileName(settings.Schema, true));
+                        }
                         WriteFile(settings.AppOutDir, QueryModelWriter.GetFileName(settings.Schema, settings.CreateGeneratedFiles), QueryModelWriter.Get(settings.Schema, settings.AppNamespace, settings.CreateGeneratedFiles), true);
                     }
 
@@ -185,6 +205,10 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                         if (settings.CreateGeneratedFiles)
                         {
                             WriteFile(settings.AppOutDir, ViewModelWriter.GetFileName(settings.Schema, false), ViewModelWriter.GetUserPartial(settings.Schema, settings.AppNamespace), false);
+                        }
+                        else
+                        {
+                            DeleteFile(settings.AppOutDir, ViewModelWriter.GetFileName(settings.Schema, true));
                         }
                         WriteFile(settings.AppOutDir, ViewModelWriter.GetFileName(settings.Schema, settings.CreateGeneratedFiles), await ViewModelWriter.Create(settings.Schema, settings.OtherSchemas, settings.AppNamespace), true);
                     }
@@ -207,11 +231,16 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                     //Mapping Profile
                     if (settings.Schema.CreateMappingProfile())
                     {
-                        if (settings.CreateGeneratedFiles)
+                        if (settings.CreateGeneratedFiles) //This if is more complicated because the generator is backward compared to the others
                         {
+                            WriteFile(settings.AppOutDir, MappingProfileGenerator.GetFileName(settings.Schema, false), MappingProfileGenerator.Get(settings.Schema, settings.AppNamespace, true), settings.ForceWriteApi);
                             WriteFile(settings.AppOutDir, MappingProfileGenerator.GetFileName(settings.Schema, true), MappingProfileGenerator.GetGenerated(settings.Schema, settings.AppNamespace), true);
                         }
-                        WriteFile(settings.AppOutDir, MappingProfileGenerator.GetFileName(settings.Schema, !settings.CreateGeneratedFiles), MappingProfileGenerator.Get(settings.Schema, settings.AppNamespace, settings.CreateGeneratedFiles), settings.ForceWriteApi);
+                        else
+                        {
+                            WriteFile(settings.AppOutDir, MappingProfileGenerator.GetFileName(settings.Schema, false), MappingProfileGenerator.Get(settings.Schema, settings.AppNamespace, false), true);
+                            DeleteFile(settings.AppOutDir, MappingProfileGenerator.GetFileName(settings.Schema, true));
+                        }
                     }
 
                     //Model Collection
@@ -220,6 +249,10 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                         if (settings.CreateGeneratedFiles)
                         {
                             WriteFile(settings.AppOutDir, ModelCollectionGenerator.GetFileName(settings.Schema, false), ModelCollectionGenerator.GetUserPartial(settings.Schema, settings.AppNamespace), false);
+                        }
+                        else
+                        {
+                            DeleteFile(settings.AppOutDir, ModelCollectionGenerator.GetFileName(settings.Schema, true));
                         }
                         WriteFile(settings.AppOutDir, ModelCollectionGenerator.GetFileName(settings.Schema, settings.CreateGeneratedFiles), ModelCollectionGenerator.Get(settings.Schema, settings.AppNamespace, settings.CreateGeneratedFiles), true);
                     }
