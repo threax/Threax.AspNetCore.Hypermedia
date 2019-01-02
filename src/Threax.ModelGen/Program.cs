@@ -214,8 +214,11 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                     //Model Collection
                     if (settings.Schema.CreateModelCollection())
                     {
-                        WriteFile(settings.AppOutDir, ModelCollectionGenerator.GetUserPartialFileName(settings.Schema), ModelCollectionGenerator.GetUserPartial(settings.Schema, settings.AppNamespace), false);
-                        WriteFile(settings.AppOutDir, ModelCollectionGenerator.GetFileName(settings.Schema), ModelCollectionGenerator.Get(settings.Schema, settings.AppNamespace), true);
+                        if (settings.CreateGeneratedFiles)
+                        {
+                            WriteFile(settings.AppOutDir, ModelCollectionGenerator.GetFileName(settings.Schema, false), ModelCollectionGenerator.GetUserPartial(settings.Schema, settings.AppNamespace), false);
+                        }
+                        WriteFile(settings.AppOutDir, ModelCollectionGenerator.GetFileName(settings.Schema, settings.CreateGeneratedFiles), ModelCollectionGenerator.Get(settings.Schema, settings.AppNamespace), true);
                     }
 
                     //Ui
@@ -289,8 +292,8 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                 DeleteFile(settings.AppOutDir, MappingProfileGenerator.GetFileName(settings.Schema));
                 DeleteFile(settings.AppOutDir, MappingProfileGenerator.GetGeneratedFileName(settings.Schema));
                 DeleteFile(settings.AppOutDir, AppDbContextGenerator.GetFileName(settings.Schema));
-                DeleteFile(settings.AppOutDir, ModelCollectionGenerator.GetUserPartialFileName(settings.Schema));
-                DeleteFile(settings.AppOutDir, ModelCollectionGenerator.GetFileName(settings.Schema));
+                DeleteFile(settings.AppOutDir, ModelCollectionGenerator.GetFileName(settings.Schema, false));
+                DeleteFile(settings.AppOutDir, ModelCollectionGenerator.GetFileName(settings.Schema, true));
                 DeleteFile(settings.AppOutDir, EntryPointGenerator.GetFileName(settings.Schema));
 
                 DeleteFile(settings.AppOutDir, CrudCshtmlInjectorGenerator.GetFileName(settings.Schema));

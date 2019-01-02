@@ -21,9 +21,10 @@ namespace Threax.ModelGen
             }
         }
 
-        public static String GetFileName(JsonSchema4 schema)
+        public static String GetFileName(JsonSchema4 schema, bool generated)
         {
-            return $"ViewModels/{schema.Title}Collection.Generated.cs";
+            var genStr = generated ? ".Generated" : "";
+            return $"ViewModels/{schema.Title}Collection{genStr}.cs";
         }
 
         public static String GetUserPartial(JsonSchema4 schema, String ns, String generatedSuffix = ".Generated")
@@ -36,11 +37,6 @@ namespace Threax.ModelGen
             {
                 return ManualModelCollectionGenerator.GetUserPartial(schema, ns, generatedSuffix);
             }
-        }
-
-        public static String GetUserPartialFileName(JsonSchema4 schema)
-        {
-            return $"ViewModels/{schema.Title}Collection.cs";
         }
     }
 }

@@ -242,7 +242,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                ModelCollectionGenerator.GetUserPartialFileName(await GetSchema()),
+                ModelCollectionGenerator.GetFileName(await GetSchema(), false),
                 ModelCollectionGenerator.GetUserPartial(await GetSchema(), AppNamespace)
             );
         }
@@ -252,7 +252,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                ModelCollectionGenerator.GetFileName(await GetSchema()),
+                ModelCollectionGenerator.GetFileName(await GetSchema(), true),
                 ModelCollectionGenerator.Get(await GetSchema(), AppNamespace)
             );
         }
