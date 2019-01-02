@@ -253,7 +253,17 @@ namespace Threax.ModelGen.Tests
             TestCode
             (
                 ModelCollectionGenerator.GetFileName(await GetSchema(), true),
-                ModelCollectionGenerator.Get(await GetSchema(), AppNamespace)
+                ModelCollectionGenerator.Get(await GetSchema(), AppNamespace, true)
+            );
+        }
+
+        [Fact]
+        public virtual async Task ModelCollectionComplete()
+        {
+            TestCode
+            (
+                ModelCollectionGenerator.GetFileName(await GetSchema(), false) + ".Complete.cs",
+                ModelCollectionGenerator.Get(await GetSchema(), AppNamespace, false)
             );
         }
 

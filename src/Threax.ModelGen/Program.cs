@@ -218,7 +218,7 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                         {
                             WriteFile(settings.AppOutDir, ModelCollectionGenerator.GetFileName(settings.Schema, false), ModelCollectionGenerator.GetUserPartial(settings.Schema, settings.AppNamespace), false);
                         }
-                        WriteFile(settings.AppOutDir, ModelCollectionGenerator.GetFileName(settings.Schema, settings.CreateGeneratedFiles), ModelCollectionGenerator.Get(settings.Schema, settings.AppNamespace), true);
+                        WriteFile(settings.AppOutDir, ModelCollectionGenerator.GetFileName(settings.Schema, settings.CreateGeneratedFiles), ModelCollectionGenerator.Get(settings.Schema, settings.AppNamespace, settings.CreateGeneratedFiles), true);
                     }
 
                     //Ui

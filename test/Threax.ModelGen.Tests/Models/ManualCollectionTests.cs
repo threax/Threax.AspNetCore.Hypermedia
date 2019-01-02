@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Threax.AspNetCore.Models;
 using Threax.AspNetCore.Tests;
 using Threax.ModelGen.TestGenerators;
@@ -19,6 +20,11 @@ namespace Threax.ModelGen.Tests.Models
         {
             [Queryable]
             public String Info { get; set; }
+        }
+
+        public override Task ModelCollectionComplete()
+        {
+            return Assert.ThrowsAsync<NotImplementedException>(async () => await base.ModelCollectionComplete());
         }
     }
 }

@@ -9,14 +9,25 @@ namespace Threax.ModelGen
 {
     public static class ModelCollectionGenerator
     {
-        public static String Get(JsonSchema4 schema, String ns)
+        public static String Get(JsonSchema4 schema, String ns, bool generated)
         {
             if (schema.CreateWithAutoQueryCollection())
             {
-                return AutoModelCollectionGenerator.Get(schema, ns);
+                if (generated)
+                {
+                    return AutoModelCollectionGenerator.Get(schema, ns);
+                }
+                else
+                {
+                    return AutoModelCollectionGenerator.GetComplete(schema, ns);
+                }
             }
             else
             {
+                if (!generated)
+                {
+                    throw new NotImplementedException("Non generated template not available for manual mode collections. Please use an auto collection.");
+                }
                 return ManualModelCollectionGenerator.Get(schema, ns);
             }
         }
