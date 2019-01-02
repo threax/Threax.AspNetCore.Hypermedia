@@ -77,12 +77,12 @@ namespace {ns}.Mappers
             else
             {
                 result += $@"
-        partial void MapInputToEntity(IMappingExpression<{Model}Input, {Model}Entity> mapExpr)
+        void MapInputToEntity(IMappingExpression<{Model}Input, {Model}Entity> mapExpr)
         {{
             {inputToEntity}
         }}
 
-        partial void MapEntityToView(IMappingExpression<{Model}Entity, {Model}> mapExpr)
+        void MapEntityToView(IMappingExpression<{Model}Entity, {Model}> mapExpr)
         {{
             {entityToViews}
         }}";

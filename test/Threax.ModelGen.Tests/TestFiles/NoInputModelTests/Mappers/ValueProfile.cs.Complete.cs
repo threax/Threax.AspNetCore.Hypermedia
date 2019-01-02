@@ -34,7 +34,7 @@ namespace Test.Mappers
             MapEntityToView(CreateMap<ValueEntity, Value>());
         }
 
-        partial void MapInputToEntity(IMappingExpression<ValueInput, ValueEntity> mapExpr)
+        void MapInputToEntity(IMappingExpression<ValueInput, ValueEntity> mapExpr)
         {
             mapExpr.ForMember(d => d.ValueId, opt => opt.Ignore())
                 .ForMember(d => d.Info, opt => opt.Ignore())
@@ -42,7 +42,7 @@ namespace Test.Mappers
                 .ForMember(d => d.Modified, opt => opt.MapFrom<IModifiedResolver>());
         }
 
-        partial void MapEntityToView(IMappingExpression<ValueEntity, Value> mapExpr)
+        void MapEntityToView(IMappingExpression<ValueEntity, Value> mapExpr)
         {
             
         }

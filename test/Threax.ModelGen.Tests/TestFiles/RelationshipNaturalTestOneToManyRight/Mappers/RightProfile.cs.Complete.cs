@@ -34,14 +34,14 @@ namespace Test.Mappers
             MapEntityToView(CreateMap<RightEntity, Right>());
         }
 
-        partial void MapInputToEntity(IMappingExpression<RightInput, RightEntity> mapExpr)
+        void MapInputToEntity(IMappingExpression<RightInput, RightEntity> mapExpr)
         {
             mapExpr.ForMember(d => d.RightId, opt => opt.Ignore())
                 .ForMember(d => d.Created, opt => opt.MapFrom<ICreatedResolver>())
                 .ForMember(d => d.Modified, opt => opt.MapFrom<IModifiedResolver>());
         }
 
-        partial void MapEntityToView(IMappingExpression<RightEntity, Right> mapExpr)
+        void MapEntityToView(IMappingExpression<RightEntity, Right> mapExpr)
         {
             
         }

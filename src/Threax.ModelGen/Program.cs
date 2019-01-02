@@ -176,7 +176,7 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                         {
                             WriteFile(settings.AppOutDir, QueryModelWriter.GetFileName(settings.Schema, false), QueryUserPartialGenerator.GetQuery(settings.Schema, settings.AppNamespace), false);
                         }
-                        WriteFile(settings.AppOutDir, QueryModelWriter.GetFileName(settings.Schema, settings.CreateGeneratedFiles), QueryModelWriter.Get(settings.Schema, settings.AppNamespace), true);
+                        WriteFile(settings.AppOutDir, QueryModelWriter.GetFileName(settings.Schema, settings.CreateGeneratedFiles), QueryModelWriter.Get(settings.Schema, settings.AppNamespace, settings.CreateGeneratedFiles), true);
                     }
 
                     //View Model

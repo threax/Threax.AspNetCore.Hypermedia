@@ -143,7 +143,17 @@ namespace Threax.ModelGen.Tests
             TestCode
             (
                 QueryModelWriter.GetFileName(await GetSchema(), true),
-                QueryModelWriter.Get(await GetSchema(), AppNamespace)
+                QueryModelWriter.Get(await GetSchema(), AppNamespace, true)
+            );
+        }
+
+        [Fact]
+        public async Task QueryComplete()
+        {
+            TestCode
+            (
+                QueryModelWriter.GetFileName(await GetSchema(), false) + ".Complete.cs",
+                QueryModelWriter.Get(await GetSchema(), AppNamespace, false)
             );
         }
 

@@ -15,7 +15,7 @@ namespace Threax.ModelGen
             return $"InputModels/{schema.Title}Query{genStr}.cs";
         }
 
-        public static String Get(JsonSchema4 schema, String ns)
+        public static String Get(JsonSchema4 schema, String ns, bool generated)
         {
             bool hasBase = false;
 
@@ -58,12 +58,12 @@ namespace Threax.ModelGen
             {
                 return p.IsQueryable();
             });
-            return Create(ns, Model, model, Models, models, queryProps, queryCreate, schema.GetKeyType().GetTypeAsNullable(), baseClass, baseClassName, NameGenerator.CreatePascal(schema.GetKeyName()), schema.GetExtraNamespaces(StrConstants.FileNewline));
+            return Create(ns, Model, model, Models, models, queryProps, queryCreate, schema.GetKeyType().GetTypeAsNullable(), baseClass, baseClassName, NameGenerator.CreatePascal(schema.GetKeyName()), schema.GetExtraNamespaces(StrConstants.FileNewline), generated);
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models, String queryProps, String queryCreate, String nullableModelIdType, String baseClass, String baseClassName, String ModelId, String additionalNs)
+        private static String Create(String ns, String Model, String model, String Models, String models, String queryProps, String queryCreate, String nullableModelIdType, String baseClass, String baseClassName, String ModelId, String additionalNs, bool generated)
         {
-            return
+            var result = 
 $@"using Halcyon.HAL.Attributes;
 using {ns}.Controllers;
 using {ns}.Models;
@@ -86,7 +86,11 @@ namespace {ns}.InputModels
         /// Lookup a {model} by id.
         /// </summary>
         public {nullableModelIdType} {ModelId} {{ get; set; }}
+";
 
+            if (generated)
+            {
+                result += $@"
 {queryProps}
         /// <summary>
         /// Populate an IQueryable for {models}. Does not apply the skip or limit. Will return
@@ -106,9 +110,35 @@ namespace {ns}.InputModels
             {{
 {queryCreate}                return true;
             }}
-        }}
+        }}";
+            }
+            else
+            {
+                result += $@"
+        /// <summary>
+        /// Populate an IQueryable. Does not apply the skip or limit.
+        /// </summary>
+        /// <param name=""query"">The query to populate.</param>
+        /// <returns>The query passed in populated with additional conditions.</returns>
+        public Task<IQueryable<{Model}Entity>> Create(IQueryable<{Model}Entity> query)
+        {{
+            if ({ModelId} != null)
+            {{
+                query = query.Where(i => i.{ModelId} == {ModelId});
+                return false;
+            }}
+            else
+            {{
+{queryCreate}                //Customize query further
+            }}
+
+            return Task.FromResult(query);
+        }}";
+            }
+            result += $@"
     }}
 }}";
+            return result;
         }
     }
 }
