@@ -212,8 +212,8 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                MappingProfileGenerator.GetFileName(await GetSchema()),
-                MappingProfileGenerator.Get(await GetSchema(), AppNamespace)
+                MappingProfileGenerator.GetFileName(await GetSchema(), false),
+                MappingProfileGenerator.Get(await GetSchema(), AppNamespace, true)
             );
         }
 
@@ -222,7 +222,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                MappingProfileGenerator.GetGeneratedFileName(await GetSchema()),
+                MappingProfileGenerator.GetFileName(await GetSchema(), true),
                 MappingProfileGenerator.GetGenerated(await GetSchema(), AppNamespace)
             );
         }

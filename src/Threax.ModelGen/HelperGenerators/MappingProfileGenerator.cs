@@ -9,20 +9,28 @@ namespace Threax.ModelGen
 {
     public static class MappingProfileGenerator
     {
-        public static String GetFileName(JsonSchema4 schema)
+        public static String GetFileName(JsonSchema4 schema, bool generated)
         {
-            return $"Mappers/{schema.Title}Profile.cs";
+            var genStr = generated ? ".Generated" : "";
+            return $"Mappers/{schema.Title}Profile{genStr}.cs";
         }
 
-        public static String Get(JsonSchema4 schema, String ns)
+        public static String Get(JsonSchema4 schema, String ns, bool generated)
         {
             String Model = NameGenerator.CreatePascal(schema.Title);
-            return Create(ns, Model, schema.AllowCreated(), schema.AllowModified(), schema.GetExtraNamespaces(StrConstants.FileNewline));
+            return Create(ns, Model, NameGenerator.CreatePascal(schema.GetKeyName()), schema.AllowCreated(), schema.AllowModified(), generated, schema.Properties.Values, schema.GetExtraNamespaces(StrConstants.FileNewline));
         }
 
-        private static String Create(String ns, String Model, bool hasCreated, bool hasModified, String additionalNs)
+        private static String Create(String ns, String Model, String ModelId, bool hasCreated, bool hasModified, bool generated, IEnumerable<JsonProperty> props, String additionalNs)
         {
-            return
+            String inputToEntity = null;
+            String entityToViews = null;
+            if (generated)
+            {
+                CreateMaps(ModelId, hasCreated, hasModified, props, out inputToEntity, out entityToViews);
+            }
+
+            var result = 
 $@"using System;
 using System.Collections.Generic;
 using System.Text;
@@ -58,17 +66,31 @@ namespace {ns}.Mappers
             //Map the entity to the view model.
             MapEntityToView(CreateMap<{Model}Entity, {Model}>());
         }}
-
+";
+            if (generated)
+            {
+                result += $@"
         partial void MapInputToEntity(IMappingExpression<{Model}Input, {Model}Entity> mapExpr);
 
-        partial void MapEntityToView(IMappingExpression<{Model}Entity, {Model}> mapExpr);
+        partial void MapEntityToView(IMappingExpression<{Model}Entity, {Model}> mapExpr);";
+            }
+            else
+            {
+                result += $@"
+        partial void MapInputToEntity(IMappingExpression<{Model}Input, {Model}Entity> mapExpr)
+        {{
+            {inputToEntity}
+        }}
+
+        partial void MapEntityToView(IMappingExpression<{Model}Entity, {Model}> mapExpr)
+        {{
+            {entityToViews}
+        }}";
+            }
+            result += $@"
     }}
 }}";
-        }
-
-        public static String GetGeneratedFileName(JsonSchema4 schema)
-        {
-            return $"Mappers/{schema.Title}Profile.Generated.cs";
+            return result;
         }
 
         public static String GetGenerated(JsonSchema4 schema, String ns)
@@ -79,15 +101,47 @@ namespace {ns}.Mappers
 
         private static String CreateGenerated(String ns, String Model, String ModelId, bool hasCreated, bool hasModified, IEnumerable<JsonProperty> props, String additionalNs)
         {
+            CreateMaps(ModelId, hasCreated, hasModified, props, out var inputToEntity, out var entityToViews);
+
+            return
+$@"using System;
+using System.Collections.Generic;
+using System.Text;
+using AutoMapper;
+using Threax.AspNetCore.Models;
+using Threax.AspNetCore.Tracking;
+using {ns}.InputModels;
+using {ns}.Database;
+using {ns}.ViewModels;{additionalNs}
+
+namespace {ns}.Mappers
+{{
+    public partial class {Model}Profile : Profile
+    {{
+        partial void MapInputToEntity(IMappingExpression<{Model}Input, {Model}Entity> mapExpr)
+        {{
+            {inputToEntity}
+        }}
+
+        partial void MapEntityToView(IMappingExpression<{Model}Entity, {Model}> mapExpr)
+        {{
+            {entityToViews}
+        }}
+    }}
+}}";
+        }
+
+        private static void CreateMaps(string ModelId, bool hasCreated, bool hasModified, IEnumerable<JsonProperty> props, out string inputToEntity, out string entityToViews)
+        {
             StringBuilder inputToEntityMaps = new StringBuilder($"mapExpr.ForMember(d => d.{ModelId}, opt => opt.Ignore())");
             StringBuilder entityToViewMaps = new StringBuilder("mapExpr");
 
             bool customEntityToView = false;
-            foreach(var prop in props)
+            foreach (var prop in props)
             {
                 if (!prop.OnAllModelTypes())
                 {
-                    if(!prop.CreateInputModel() && prop.CreateEntity())
+                    if (!prop.CreateInputModel() && prop.CreateEntity())
                     {
                         inputToEntityMaps.AppendLine();
                         inputToEntityMaps.Append($"                .ForMember(d => d.{NameGenerator.CreatePascal(prop.Name)}, opt => opt.Ignore())");
@@ -117,38 +171,12 @@ namespace {ns}.Mappers
             inputToEntityMaps.Append(";");
             entityToViewMaps.Append(";");
 
-            var entityToViews = "";
+            entityToViews = "";
             if (customEntityToView) //Only take the string if we added customizations to it
             {
                 entityToViews = entityToViewMaps.ToString();
             }
-
-            return
-$@"using System;
-using System.Collections.Generic;
-using System.Text;
-using AutoMapper;
-using Threax.AspNetCore.Models;
-using Threax.AspNetCore.Tracking;
-using {ns}.InputModels;
-using {ns}.Database;
-using {ns}.ViewModels;{additionalNs}
-
-namespace {ns}.Mappers
-{{
-    public partial class {Model}Profile : Profile
-    {{
-        partial void MapInputToEntity(IMappingExpression<{Model}Input, {Model}Entity> mapExpr)
-        {{
-            {inputToEntityMaps.ToString()}
-        }}
-
-        partial void MapEntityToView(IMappingExpression<{Model}Entity, {Model}> mapExpr)
-        {{
-            {entityToViews}
-        }}
-    }}
-}}";
+            inputToEntity = inputToEntityMaps.ToString();
         }
     }
 }

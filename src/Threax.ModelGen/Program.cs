@@ -207,8 +207,11 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                     //Mapping Profile
                     if (settings.Schema.CreateMappingProfile())
                     {
-                        WriteFile(settings.AppOutDir, MappingProfileGenerator.GetFileName(settings.Schema), MappingProfileGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);
-                        WriteFile(settings.AppOutDir, MappingProfileGenerator.GetGeneratedFileName(settings.Schema), MappingProfileGenerator.GetGenerated(settings.Schema, settings.AppNamespace), true);
+                        if (settings.CreateGeneratedFiles)
+                        {
+                            WriteFile(settings.AppOutDir, MappingProfileGenerator.GetFileName(settings.Schema, false), MappingProfileGenerator.GetGenerated(settings.Schema, settings.AppNamespace), true);
+                        }
+                        WriteFile(settings.AppOutDir, MappingProfileGenerator.GetFileName(settings.Schema, settings.CreateGeneratedFiles), MappingProfileGenerator.Get(settings.Schema, settings.AppNamespace, settings.CreateGeneratedFiles), settings.ForceWriteApi);
                     }
 
                     //Model Collection
@@ -289,8 +292,8 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                 DeleteFile(settings.AppOutDir, RepoInterfaceGenerator.GetFileName(settings.Schema));
                 DeleteFile(settings.AppOutDir, RepoConfigGenerator.GetFileName(settings.Schema));
                 DeleteFile(settings.AppOutDir, ControllerGenerator.GetFileName(settings.Schema));
-                DeleteFile(settings.AppOutDir, MappingProfileGenerator.GetFileName(settings.Schema));
-                DeleteFile(settings.AppOutDir, MappingProfileGenerator.GetGeneratedFileName(settings.Schema));
+                DeleteFile(settings.AppOutDir, MappingProfileGenerator.GetFileName(settings.Schema, false));
+                DeleteFile(settings.AppOutDir, MappingProfileGenerator.GetFileName(settings.Schema, true));
                 DeleteFile(settings.AppOutDir, AppDbContextGenerator.GetFileName(settings.Schema));
                 DeleteFile(settings.AppOutDir, ModelCollectionGenerator.GetFileName(settings.Schema, false));
                 DeleteFile(settings.AppOutDir, ModelCollectionGenerator.GetFileName(settings.Schema, true));
