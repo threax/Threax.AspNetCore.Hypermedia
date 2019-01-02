@@ -132,7 +132,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                QueryUserPartialGenerator.GetQueryFileName(await GetSchema()),
+                QueryModelWriter.GetFileName(await GetSchema(), false),
                 QueryUserPartialGenerator.GetQuery(await GetSchema(), AppNamespace)
             );
         }
@@ -142,7 +142,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                QueryModelWriter.GetFileName(await GetSchema()),
+                QueryModelWriter.GetFileName(await GetSchema(), true),
                 QueryModelWriter.Get(await GetSchema(), AppNamespace)
             );
         }

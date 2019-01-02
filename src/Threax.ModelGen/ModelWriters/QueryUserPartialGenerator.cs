@@ -8,11 +8,6 @@ namespace Threax.ModelGen
 {
     public class QueryUserPartialGenerator
     {
-        public static String GetQueryFileName(JsonSchema4 schema)
-        {
-            return $"InputModels/{schema.Title}Query.cs";
-        }
-
         public static String GetQuery(JsonSchema4 schema, String ns)
         {
             return Get(schema, ns + ".InputModels", "Query", schema.GetExtraNamespaces(StrConstants.FileNewline), ns);

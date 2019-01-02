@@ -172,8 +172,11 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                     //Query Model
                     if (settings.Schema.CreateQuery())
                     {
-                        WriteFile(settings.AppOutDir, QueryUserPartialGenerator.GetQueryFileName(settings.Schema), QueryUserPartialGenerator.GetQuery(settings.Schema, settings.AppNamespace), false);
-                        WriteFile(settings.AppOutDir, QueryModelWriter.GetFileName(settings.Schema), QueryModelWriter.Get(settings.Schema, settings.AppNamespace), true);
+                        if (settings.CreateGeneratedFiles)
+                        {
+                            WriteFile(settings.AppOutDir, QueryModelWriter.GetFileName(settings.Schema, false), QueryUserPartialGenerator.GetQuery(settings.Schema, settings.AppNamespace), false);
+                        }
+                        WriteFile(settings.AppOutDir, QueryModelWriter.GetFileName(settings.Schema, settings.CreateGeneratedFiles), QueryModelWriter.Get(settings.Schema, settings.AppNamespace), true);
                     }
 
                     //View Model
@@ -271,8 +274,8 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                 }
                 DeleteFile(settings.AppOutDir, InputModelWriter.GetFileName(settings.Schema, false));
                 DeleteFile(settings.AppOutDir, InputModelWriter.GetFileName(settings.Schema, true));
-                DeleteFile(settings.AppOutDir, QueryUserPartialGenerator.GetQueryFileName(settings.Schema));
-                DeleteFile(settings.AppOutDir, QueryModelWriter.GetFileName(settings.Schema));
+                DeleteFile(settings.AppOutDir, QueryModelWriter.GetFileName(settings.Schema, false));
+                DeleteFile(settings.AppOutDir, QueryModelWriter.GetFileName(settings.Schema, true));
                 DeleteFile(settings.AppOutDir, ViewModelWriter.GetUserPartialFileName(settings.Schema));
                 DeleteFile(settings.AppOutDir, ViewModelWriter.GetFileName(settings.Schema));
 

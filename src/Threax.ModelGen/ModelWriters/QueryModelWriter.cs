@@ -9,9 +9,10 @@ namespace Threax.ModelGen
 {
     public static class QueryModelWriter
     {
-        public static String GetFileName(JsonSchema4 schema)
+        public static String GetFileName(JsonSchema4 schema, bool generated)
         {
-            return $"InputModels/{schema.Title}Query.Generated.cs";
+            var genStr = generated ? ".Generated" : "";
+            return $"InputModels/{schema.Title}Query{genStr}.cs";
         }
 
         public static String Get(JsonSchema4 schema, String ns)
