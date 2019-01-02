@@ -209,9 +209,9 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                     {
                         if (settings.CreateGeneratedFiles)
                         {
-                            WriteFile(settings.AppOutDir, MappingProfileGenerator.GetFileName(settings.Schema, false), MappingProfileGenerator.GetGenerated(settings.Schema, settings.AppNamespace), true);
+                            WriteFile(settings.AppOutDir, MappingProfileGenerator.GetFileName(settings.Schema, true), MappingProfileGenerator.GetGenerated(settings.Schema, settings.AppNamespace), true);
                         }
-                        WriteFile(settings.AppOutDir, MappingProfileGenerator.GetFileName(settings.Schema, settings.CreateGeneratedFiles), MappingProfileGenerator.Get(settings.Schema, settings.AppNamespace, settings.CreateGeneratedFiles), settings.ForceWriteApi);
+                        WriteFile(settings.AppOutDir, MappingProfileGenerator.GetFileName(settings.Schema, !settings.CreateGeneratedFiles), MappingProfileGenerator.Get(settings.Schema, settings.AppNamespace, settings.CreateGeneratedFiles), settings.ForceWriteApi);
                     }
 
                     //Model Collection

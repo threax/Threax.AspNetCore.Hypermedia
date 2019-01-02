@@ -126,8 +126,14 @@ namespace Threax.ModelGen
         public bool ForceWriteTests { get; set; } = false;
 
         /// <summary>
-        /// Set this to true to create .Generated files with the generated code. Otherwise put that code into the main file.
+        /// This will be true to create .Generated files with the generated code. Otherwise put that code into the main file.
         /// </summary>
-        public bool CreateGeneratedFiles { get; set; }
+        public bool CreateGeneratedFiles
+        {
+            get
+            {
+                return Schema.CreateGeneratedFiles();
+            }
+        }
     }
 }
