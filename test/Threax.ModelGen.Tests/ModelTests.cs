@@ -72,7 +72,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                PartialModelInterfaceGenerator.GetFileName(await GetSchema()),
+                IdInterfaceWriter.GetFileName(await GetSchema(), false),
                 PartialModelInterfaceGenerator.GetUserPartial(await GetSchema(), AppNamespace + ".Models")
             );
         }
@@ -82,7 +82,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                IdInterfaceWriter.GetFileName(await GetSchema()),
+                IdInterfaceWriter.GetFileName(await GetSchema(), true),
                 IdInterfaceWriter.Create(await GetSchema(), AppNamespace)
             );
         }
@@ -92,7 +92,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                PartialTypeGenerator.GetEntityFileName(await GetSchema()),
+                EntityWriter.GetFileName(await GetSchema(), false),
                 PartialTypeGenerator.GetEntity(await GetSchema(), AppNamespace)
             );
         }
@@ -102,7 +102,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                EntityWriter.GetFileName(await GetSchema()),
+                EntityWriter.GetFileName(await GetSchema(), true),
                 EntityWriter.Create(await GetSchema(), await GetOtherSchema(), AppNamespace)
             );
         }
@@ -112,7 +112,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                PartialTypeGenerator.GetInputFileName(await GetSchema()),
+                InputModelWriter.GetFileName(await GetSchema(), false),
                 PartialTypeGenerator.GetInput(await GetSchema(), AppNamespace)
             );
         }
@@ -122,7 +122,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                InputModelWriter.GetFileName(await GetSchema()),
+                InputModelWriter.GetFileName(await GetSchema(), true),
                 await InputModelWriter.Create(await GetSchema(), await GetOtherSchema(), AppNamespace)
             );
         }

@@ -128,16 +128,22 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                     //Interface
                     if (settings.Schema.CreateModelInterface())
                     {
-                        WriteFile(settings.AppOutDir, PartialModelInterfaceGenerator.GetFileName(settings.Schema), PartialModelInterfaceGenerator.GetUserPartial(settings.Schema, settings.AppNamespace + ".Models"), false);
-                        WriteFile(settings.AppOutDir, IdInterfaceWriter.GetFileName(settings.Schema), IdInterfaceWriter.Create(settings.Schema, settings.AppNamespace), true);
+                        if (settings.CreateGeneratedFiles)
+                        {
+                            WriteFile(settings.AppOutDir, IdInterfaceWriter.GetFileName(settings.Schema, false), PartialModelInterfaceGenerator.GetUserPartial(settings.Schema, settings.AppNamespace + ".Models"), false);
+                        }
+                        WriteFile(settings.AppOutDir, IdInterfaceWriter.GetFileName(settings.Schema, settings.CreateGeneratedFiles), IdInterfaceWriter.Create(settings.Schema, settings.AppNamespace), true);
                     }
 
                     //Entity
                     if (settings.Schema.CreateEntity())
                     {
-                        WriteFile(settings.AppOutDir, PartialTypeGenerator.GetEntityFileName(settings.Schema), PartialTypeGenerator.GetEntity(settings.Schema, settings.AppNamespace), false);
+                        if (settings.CreateGeneratedFiles)
+                        {
+                            WriteFile(settings.AppOutDir, EntityWriter.GetFileName(settings.Schema, false), PartialTypeGenerator.GetEntity(settings.Schema, settings.AppNamespace), false);
+                        }
                         WriteFile(settings.AppOutDir, AppDbContextGenerator.GetFileName(settings.Schema), AppDbContextGenerator.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteApi);
-                        WriteFile(settings.AppOutDir, EntityWriter.GetFileName(settings.Schema), EntityWriter.Create(settings.Schema, settings.OtherSchemas, settings.AppNamespace), true);
+                        WriteFile(settings.AppOutDir, EntityWriter.GetFileName(settings.Schema, settings.CreateGeneratedFiles), EntityWriter.Create(settings.Schema, settings.OtherSchemas, settings.AppNamespace), true);
 
                         foreach (var relationship in settings.Schema.GetRelationshipSettings())
                         {
@@ -153,8 +159,11 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                     //Input Model
                     if (settings.Schema.CreateInputModel())
                     {
-                        WriteFile(settings.AppOutDir, PartialTypeGenerator.GetInputFileName(settings.Schema), PartialTypeGenerator.GetInput(settings.Schema, settings.AppNamespace), false);
-                        WriteFile(settings.AppOutDir, InputModelWriter.GetFileName(settings.Schema), await InputModelWriter.Create(settings.Schema, settings.OtherSchemas, settings.AppNamespace), true);
+                        if (settings.CreateGeneratedFiles)
+                        {
+                            WriteFile(settings.AppOutDir, InputModelWriter.GetFileName(settings.Schema, false), PartialTypeGenerator.GetInput(settings.Schema, settings.AppNamespace), false);
+                        }
+                        WriteFile(settings.AppOutDir, InputModelWriter.GetFileName(settings.Schema, settings.CreateGeneratedFiles), await InputModelWriter.Create(settings.Schema, settings.OtherSchemas, settings.AppNamespace), true);
                     }
 
                     //Query Model
@@ -247,18 +256,18 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
         {
             if (settings.WriteApp)
             {
-                DeleteFile(settings.AppOutDir, PartialModelInterfaceGenerator.GetFileName(settings.Schema));
-                DeleteFile(settings.AppOutDir, IdInterfaceWriter.GetFileName(settings.Schema));
-                DeleteFile(settings.AppOutDir, PartialTypeGenerator.GetEntityFileName(settings.Schema));
-                DeleteFile(settings.AppOutDir, EntityWriter.GetFileName(settings.Schema));
+                DeleteFile(settings.AppOutDir, IdInterfaceWriter.GetFileName(settings.Schema, false));
+                DeleteFile(settings.AppOutDir, IdInterfaceWriter.GetFileName(settings.Schema, true));
+                DeleteFile(settings.AppOutDir, EntityWriter.GetFileName(settings.Schema, false));
+                DeleteFile(settings.AppOutDir, EntityWriter.GetFileName(settings.Schema, true));
                 foreach (var relationship in settings.Schema.GetRelationshipSettings())
                 {
                     DeleteFile(settings.AppOutDir, JoinEntityWriter.GetFileName(relationship));
                     DeleteFile(settings.AppOutDir, PartialTypeGenerator.GetJoinEntityFileName(relationship));
                     DeleteFile(settings.AppOutDir, AppDbContextGenerator.GetManyToManyEntityDbContextFileName(relationship));
                 }
-                DeleteFile(settings.AppOutDir, PartialTypeGenerator.GetInputFileName(settings.Schema));
-                DeleteFile(settings.AppOutDir, InputModelWriter.GetFileName(settings.Schema));
+                DeleteFile(settings.AppOutDir, InputModelWriter.GetFileName(settings.Schema, false));
+                DeleteFile(settings.AppOutDir, InputModelWriter.GetFileName(settings.Schema, true));
                 DeleteFile(settings.AppOutDir, QueryUserPartialGenerator.GetQueryFileName(settings.Schema));
                 DeleteFile(settings.AppOutDir, QueryModelWriter.GetFileName(settings.Schema));
                 DeleteFile(settings.AppOutDir, ViewModelWriter.GetUserPartialFileName(settings.Schema));

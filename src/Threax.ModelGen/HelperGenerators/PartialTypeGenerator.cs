@@ -8,11 +8,6 @@ namespace Threax.ModelGen
 {
     public class PartialTypeGenerator
     {
-        public static String GetEntityFileName(JsonSchema4 schema)
-        {
-            return $"Database/{schema.Title}Entity.cs";
-        }
-
         public static String GetJoinEntityFileName(RelationshipSettings relationship)
         {
             if (relationship.Kind == RelationKind.ManyToMany)
@@ -20,11 +15,6 @@ namespace Threax.ModelGen
                 return $"Database/Join{relationship.LeftModelName}To{relationship.RightModelName}Entity.cs";
             }
             return $"Does__Not_____Exist.dne";
-        }
-
-        public static String GetInputFileName(JsonSchema4 schema)
-        {
-            return $"InputModels/{schema.Title}Input.cs";
         }
 
         public static String GetJoinEntity(JsonSchema4 schema, RelationshipSettings relationship, String ns)

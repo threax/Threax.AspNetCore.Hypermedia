@@ -11,9 +11,10 @@ namespace Threax.ModelGen
 {
     public static class InputModelWriter
     {
-        public static String GetFileName(JsonSchema4 schema)
+        public static String GetFileName(JsonSchema4 schema, bool generated)
         {
-            return $"InputModels/{schema.Title}Input.Generated.cs";
+            var genStr = generated ? ".Generated" : "";
+            return $"InputModels/{schema.Title}Input{genStr}.cs";
         }
 
         public static async Task<String> Create(JsonSchema4 schema, Dictionary<String, JsonSchema4> others, String ns)

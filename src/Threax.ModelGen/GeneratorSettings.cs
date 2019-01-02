@@ -124,5 +124,10 @@ namespace Threax.ModelGen
         /// Set this to true to force write the tests, which will override all files.
         /// </summary>
         public bool ForceWriteTests { get; set; } = false;
+
+        /// <summary>
+        /// Set this to true to create .Generated files with the generated code. Otherwise put that code into the main file.
+        /// </summary>
+        public bool CreateGeneratedFiles { get; set; }
     }
 }

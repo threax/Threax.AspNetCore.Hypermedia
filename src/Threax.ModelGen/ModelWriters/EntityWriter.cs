@@ -10,9 +10,10 @@ namespace Threax.ModelGen
 {
     public static class EntityWriter
     {
-        public static String GetFileName(JsonSchema4 schema)
+        public static String GetFileName(JsonSchema4 schema, bool generated)
         {
-            return $"Database/{schema.Title}Entity.Generated.cs";
+            var genStr = generated ? ".Generated" : "";
+            return $"Database/{schema.Title}Entity{genStr}.cs";
         }
 
         public static String Create(JsonSchema4 schema, Dictionary<String, JsonSchema4> others, String ns)
