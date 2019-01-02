@@ -13,35 +13,37 @@ namespace Threax.AspNetCore.Halcyon.Client
     {
         public static async Task<HalRemoteException> Create(HttpResponseMessage response)
         {
+            var uri = response.RequestMessage.RequestUri;
             try
             {
                 //Try to read the response as a string
                 var responseString = await response.Content.ReadAsStringAsync();
                 if (responseString == null)
                 {
-                    return new HalRemoteException($"An unknown server error occured with error code: {(int)response.StatusCode}", response.StatusCode, responseString, null);
+                    return new HalRemoteException(uri, $"An unknown server error occured with error code: {(int)response.StatusCode}", response.StatusCode, responseString, null);
                 }
                 try
                 {
                     //Try to read the message as an understandable error.
                     var responseData = JObject.Parse(responseString);
                     var error = responseData["message"]?.Value<String>() ?? $"An unknown server error occured with error code: {(int)response.StatusCode}";
-                    var exception = new HalRemoteException(error, response.StatusCode, responseString, responseData);
+                    var exception = new HalRemoteException(uri, error, response.StatusCode, responseString, responseData);
                     return exception;
                 }
                 catch (Exception)
                 {
-                    return new HalRemoteException($"An unknown server error occured with error code: {(int)response.StatusCode}", response.StatusCode, responseString, null);
+                    return new HalRemoteException(uri, $"An unknown server error occured with error code: {(int)response.StatusCode}", response.StatusCode, responseString, null);
                 }
             }
             catch (Exception)
             {
-                return new HalRemoteException($"An unknown server error occured with error code: {(int)response.StatusCode}", response.StatusCode, null, null);
+                return new HalRemoteException(uri, $"An unknown server error occured with error code: {(int)response.StatusCode}", response.StatusCode, null, null);
             }
         }
 
-        protected HalRemoteException(String message, HttpStatusCode statusCode, String errorString, JToken errorData) : base(message)
+        protected HalRemoteException(Uri uri, String message, HttpStatusCode statusCode, String errorString, JToken errorData) : base(message)
         {
+            this.Uri = uri;
             this.ErrorString = errorString;
             this.StatusCode = statusCode;
             this.ErrorData = errorData;
@@ -58,6 +60,11 @@ namespace Threax.AspNetCore.Halcyon.Client
         /// The error data as a JToken. Will be null if no data could be parsed.
         /// </summary>
         public JToken ErrorData { get; private set; }
+
+        /// <summary>
+        /// The Uri from the request that generated this exception.
+        /// </summary>
+        public Uri Uri { get; set; }
 
         /// <summary>
         /// Get a particular validation error. This will only be possible if ErrorData is not null.
