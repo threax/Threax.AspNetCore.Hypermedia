@@ -365,7 +365,7 @@ namespace Threax.ModelGen.Tests
             {
                 TestCode
                 (
-                    JoinEntityWriter.GetFileName(relationship),
+                    JoinEntityWriter.GetFileName(relationship, true),
                     JoinEntityWriter.Get(await GetSchema(), await GetOtherSchema(), relationship, AppNamespace)
                 );
             }
@@ -378,7 +378,7 @@ namespace Threax.ModelGen.Tests
             {
                 TestCode
                 (
-                    PartialTypeGenerator.GetJoinEntityFileName(relationship),
+                    JoinEntityWriter.GetFileName(relationship, false),
                     PartialTypeGenerator.GetJoinEntity(await GetSchema(), relationship, AppNamespace)
                 );
             }

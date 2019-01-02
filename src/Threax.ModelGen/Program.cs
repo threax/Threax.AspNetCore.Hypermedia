@@ -149,9 +149,12 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                         {
                             if (relationship.Kind == RelationKind.ManyToMany)
                             {
-                                WriteFile(settings.AppOutDir, PartialTypeGenerator.GetJoinEntityFileName(relationship), PartialTypeGenerator.GetJoinEntity(settings.Schema, relationship, settings.AppNamespace), false);
+                                if (settings.CreateGeneratedFiles)
+                                {
+                                    WriteFile(settings.AppOutDir, JoinEntityWriter.GetFileName(relationship, false), PartialTypeGenerator.GetJoinEntity(settings.Schema, relationship, settings.AppNamespace), false);
+                                }
                                 WriteFile(settings.AppOutDir, AppDbContextGenerator.GetManyToManyEntityDbContextFileName(relationship), AppDbContextGenerator.GetManyToManyEntityDbContext(relationship, settings.AppNamespace), settings.ForceWriteApi);
-                                WriteFile(settings.AppOutDir, JoinEntityWriter.GetFileName(relationship), JoinEntityWriter.Get(settings.Schema, settings.OtherSchemas, relationship, settings.AppNamespace), true);
+                                WriteFile(settings.AppOutDir, JoinEntityWriter.GetFileName(relationship, settings.CreateGeneratedFiles), JoinEntityWriter.Get(settings.Schema, settings.OtherSchemas, relationship, settings.AppNamespace), true);
                             }
                         }
                     }
@@ -262,8 +265,8 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                 DeleteFile(settings.AppOutDir, EntityWriter.GetFileName(settings.Schema, true));
                 foreach (var relationship in settings.Schema.GetRelationshipSettings())
                 {
-                    DeleteFile(settings.AppOutDir, JoinEntityWriter.GetFileName(relationship));
-                    DeleteFile(settings.AppOutDir, PartialTypeGenerator.GetJoinEntityFileName(relationship));
+                    DeleteFile(settings.AppOutDir, JoinEntityWriter.GetFileName(relationship, false));
+                    DeleteFile(settings.AppOutDir, JoinEntityWriter.GetFileName(relationship, true));
                     DeleteFile(settings.AppOutDir, AppDbContextGenerator.GetManyToManyEntityDbContextFileName(relationship));
                 }
                 DeleteFile(settings.AppOutDir, InputModelWriter.GetFileName(settings.Schema, false));

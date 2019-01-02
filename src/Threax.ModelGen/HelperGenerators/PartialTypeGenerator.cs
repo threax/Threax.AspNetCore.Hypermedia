@@ -8,15 +8,6 @@ namespace Threax.ModelGen
 {
     public class PartialTypeGenerator
     {
-        public static String GetJoinEntityFileName(RelationshipSettings relationship)
-        {
-            if (relationship.Kind == RelationKind.ManyToMany)
-            {
-                return $"Database/Join{relationship.LeftModelName}To{relationship.RightModelName}Entity.cs";
-            }
-            return $"Does__Not_____Exist.dne";
-        }
-
         public static String GetJoinEntity(JsonSchema4 schema, RelationshipSettings relationship, String ns)
         {
             if (relationship.Kind == RelationKind.ManyToMany)

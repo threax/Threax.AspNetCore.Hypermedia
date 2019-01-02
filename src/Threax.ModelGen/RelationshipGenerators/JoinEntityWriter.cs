@@ -8,11 +8,12 @@ namespace Threax.ModelGen
 {
     public static class JoinEntityWriter
     {
-        public static String GetFileName(RelationshipSettings relationship)
+        public static String GetFileName(RelationshipSettings relationship, bool generated)
         {
+            var genStr = generated ? ".Generated" : "";
             if (relationship.Kind == RelationKind.ManyToMany)
             {
-                return $"Database/Join{relationship.LeftModelName}To{relationship.RightModelName}Entity.Generated.cs";
+                return $"Database/Join{relationship.LeftModelName}To{relationship.RightModelName}Entity{genStr}.cs";
             }
             return "Does__Not_____Exist.dne";
         }
