@@ -105,13 +105,13 @@ namespace {ns}.Mappers
             if (hasCreated)
             {
                 inputToEntityMaps.AppendLine();
-                inputToEntityMaps.Append("                .ForMember(d => d.Created, opt => opt.ResolveUsing<ICreatedResolver>())");
+                inputToEntityMaps.Append("                .ForMember(d => d.Created, opt => opt.MapFrom<ICreatedResolver>())");
             }
 
             if (hasModified)
             {
                 inputToEntityMaps.AppendLine();
-                inputToEntityMaps.Append("                .ForMember(d => d.Modified, opt => opt.ResolveUsing<IModifiedResolver>())");
+                inputToEntityMaps.Append("                .ForMember(d => d.Modified, opt => opt.MapFrom<IModifiedResolver>())");
             }
 
             inputToEntityMaps.Append(";");
