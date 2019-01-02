@@ -125,7 +125,6 @@ namespace {ns}.InputModels
             if ({ModelId} != null)
             {{
                 query = query.Where(i => i.{ModelId} == {ModelId});
-                return false;
             }}
             else
             {{

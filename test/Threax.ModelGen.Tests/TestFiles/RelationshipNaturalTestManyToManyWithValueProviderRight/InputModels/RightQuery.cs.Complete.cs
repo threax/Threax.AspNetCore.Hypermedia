@@ -31,7 +31,6 @@ namespace Test.InputModels
             if (RightId != null)
             {
                 query = query.Where(i => i.RightId == RightId);
-                return false;
             }
             else
             {
