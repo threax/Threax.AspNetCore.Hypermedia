@@ -182,8 +182,11 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                     //View Model
                     if (settings.Schema.CreateViewModel())
                     {
-                        WriteFile(settings.AppOutDir, ViewModelWriter.GetUserPartialFileName(settings.Schema), ViewModelWriter.GetUserPartial(settings.Schema, settings.AppNamespace), false);
-                        WriteFile(settings.AppOutDir, ViewModelWriter.GetFileName(settings.Schema), await ViewModelWriter.Create(settings.Schema, settings.OtherSchemas, settings.AppNamespace), true);
+                        if (settings.CreateGeneratedFiles)
+                        {
+                            WriteFile(settings.AppOutDir, ViewModelWriter.GetFileName(settings.Schema, false), ViewModelWriter.GetUserPartial(settings.Schema, settings.AppNamespace), false);
+                        }
+                        WriteFile(settings.AppOutDir, ViewModelWriter.GetFileName(settings.Schema, settings.CreateGeneratedFiles), await ViewModelWriter.Create(settings.Schema, settings.OtherSchemas, settings.AppNamespace), true);
                     }
 
                     //Repository
@@ -276,8 +279,8 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                 DeleteFile(settings.AppOutDir, InputModelWriter.GetFileName(settings.Schema, true));
                 DeleteFile(settings.AppOutDir, QueryModelWriter.GetFileName(settings.Schema, false));
                 DeleteFile(settings.AppOutDir, QueryModelWriter.GetFileName(settings.Schema, true));
-                DeleteFile(settings.AppOutDir, ViewModelWriter.GetUserPartialFileName(settings.Schema));
-                DeleteFile(settings.AppOutDir, ViewModelWriter.GetFileName(settings.Schema));
+                DeleteFile(settings.AppOutDir, ViewModelWriter.GetFileName(settings.Schema, false));
+                DeleteFile(settings.AppOutDir, ViewModelWriter.GetFileName(settings.Schema, true));
 
                 DeleteFile(settings.AppOutDir, RepoGenerator.GetFileName(settings.Schema));
                 DeleteFile(settings.AppOutDir, RepoInterfaceGenerator.GetFileName(settings.Schema));

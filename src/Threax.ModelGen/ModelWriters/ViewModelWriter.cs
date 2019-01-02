@@ -11,9 +11,10 @@ namespace Threax.ModelGen
 {
     public static class ViewModelWriter
     {
-        public static String GetFileName(JsonSchema4 schema)
+        public static String GetFileName(JsonSchema4 schema, bool generated)
         {
-            return $"ViewModels/{schema.Title}.Generated.cs";
+            var genStr = generated ? ".Generated" : "";
+            return $"ViewModels/{schema.Title}{genStr}.cs";
         }
 
         public static async Task<String> Create(JsonSchema4 schema, Dictionary<String, JsonSchema4> others, String ns)
@@ -148,11 +149,6 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
                 new DisplayAttributeBuilder(
                     new UiTypeAttributeBuilder(
                         new ValueProviderAttributeBuilder()))));
-        }
-
-        public static String GetUserPartialFileName(JsonSchema4 schema)
-        {
-            return $"ViewModels/{schema.Title}.cs";
         }
 
         public static String GetUserPartial(JsonSchema4 schema, String ns, String generatedSuffix = ".Generated")

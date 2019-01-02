@@ -152,7 +152,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                ViewModelWriter.GetUserPartialFileName(await GetSchema()),
+                ViewModelWriter.GetFileName(await GetSchema(), false),
                 ViewModelWriter.GetUserPartial(await GetSchema(), AppNamespace)
             );
         }
@@ -162,7 +162,7 @@ namespace Threax.ModelGen.Tests
         {
             TestCode
             (
-                ViewModelWriter.GetFileName(await GetSchema()),
+                ViewModelWriter.GetFileName(await GetSchema(), true),
                 await ViewModelWriter.Create(await GetSchema(), await GetOtherSchema(), AppNamespace)
             );
         }
