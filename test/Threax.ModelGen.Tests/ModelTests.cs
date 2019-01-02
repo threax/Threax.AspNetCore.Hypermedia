@@ -228,6 +228,16 @@ namespace Threax.ModelGen.Tests
         }
 
         [Fact]
+        public async Task ProfileComplete()
+        {
+            TestCode
+            (
+                MappingProfileGenerator.GetFileName(await GetSchema(), false) + ".Complete.cs",
+                MappingProfileGenerator.Get(await GetSchema(), AppNamespace, false)
+            );
+        }
+
+        [Fact]
         public async Task AppDbContext()
         {
             TestCode

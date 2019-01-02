@@ -25,7 +25,7 @@ namespace Threax.ModelGen
         {
             String inputToEntity = null;
             String entityToViews = null;
-            if (generated)
+            if (!generated)
             {
                 CreateMaps(ModelId, hasCreated, hasModified, props, out inputToEntity, out entityToViews);
             }
