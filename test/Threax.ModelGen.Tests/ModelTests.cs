@@ -173,7 +173,17 @@ namespace Threax.ModelGen.Tests
             TestCode
             (
                 ViewModelWriter.GetFileName(await GetSchema(), true),
-                await ViewModelWriter.Create(await GetSchema(), await GetOtherSchema(), AppNamespace)
+                await ViewModelWriter.Create(await GetSchema(), await GetOtherSchema(), AppNamespace, true)
+            );
+        }
+
+        [Fact]
+        public async Task ViewModelComplete()
+        {
+            TestCode
+            (
+                ViewModelWriter.GetFileName(await GetSchema(), false) + ".Complete.cs",
+                await ViewModelWriter.Create(await GetSchema(), await GetOtherSchema(), AppNamespace, false)
             );
         }
 

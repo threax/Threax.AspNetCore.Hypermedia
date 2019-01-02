@@ -13,8 +13,8 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;
 
 namespace Test.ViewModels 
 {
-       public partial class Value : IValue, IValueId, ICreatedModified
-       {
+    public partial class Value : IValue, IValueId, ICreatedModified
+    {
         public Guid ValueId { get; set; }
 
         [NullValueLabel("Any")]

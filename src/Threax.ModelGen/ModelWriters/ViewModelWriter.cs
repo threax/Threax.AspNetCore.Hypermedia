@@ -17,7 +17,7 @@ namespace Threax.ModelGen
             return $"ViewModels/{schema.Title}{genStr}.cs";
         }
 
-        public static async Task<String> Create(JsonSchema4 schema, Dictionary<String, JsonSchema4> others, String ns)
+        public static async Task<String> Create(JsonSchema4 schema, Dictionary<String, JsonSchema4> others, String ns, bool generated)
         {
             bool hasBase = false;
 
@@ -39,9 +39,14 @@ namespace Threax.ModelGen
                         .Concat(IdInterfaceWriter.GetInterfaces(schema, true, p => !p.OnAllModelTypes() && p.CreateViewModel()))
                         .Concat(a.Writer.GetAdditionalInterfaces());
 
+                    if (!generated)
+                    {
+                        a.Builder.AppendLine(GetLinks(schema.GetPluralName()));
+                    }
+
                     a.Builder.AppendLine(
-$@"       public partial class {a.Name}{InterfaceListBuilder.Build(interfaces)}
-       {{");
+$@"    public partial class {a.Name}{InterfaceListBuilder.Build(interfaces)}
+    {{");
 
                     a.Writer.CreateProperty(a.Builder, NameGenerator.CreatePascal(schema.GetKeyName()), new TypeWriterPropertyInfo(schema.GetKeyType()));
                 }
@@ -160,6 +165,14 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
             return CreateUserPartial(ns, Model, model, Models, generatedSuffix, schema.GetExtraNamespaces(StrConstants.FileNewline));
         }
 
+        private static String GetLinks(String Models)
+        {
+            return $@"    [HalModel]
+    [HalSelfActionLink(typeof({Models}Controller), nameof({Models}Controller.Get))]
+    [HalActionLink(typeof({Models}Controller), nameof({Models}Controller.Update))]
+    [HalActionLink(typeof({Models}Controller), nameof({Models}Controller.Delete))]";
+        }
+
         private static String CreateUserPartial(String ns, String Model, String model, String Models, String generatedSuffix, String additionalNs)
         {
             return
@@ -176,10 +189,7 @@ using {ns}.Controllers.Api;{additionalNs}
 
 namespace {ns}.ViewModels
 {{
-    [HalModel]
-    [HalSelfActionLink(typeof({Models}Controller), nameof({Models}Controller.Get))]
-    [HalActionLink(typeof({Models}Controller), nameof({Models}Controller.Update))]
-    [HalActionLink(typeof({Models}Controller), nameof({Models}Controller.Delete))]
+{GetLinks(Models)}
     public partial class {Model}
     {{
         //You can add your own customizations here. These will not be overwritten by the model generator.

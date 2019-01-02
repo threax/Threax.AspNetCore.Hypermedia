@@ -19,8 +19,8 @@ namespace Test.ViewModels
 
     }
 
-       public partial class Value : ValueBase, IValue, IValueId, ICreatedModified
-       {
+    public partial class Value : ValueBase, IValue, IValueId, ICreatedModified
+    {
         public Guid ValueId { get; set; }
 
         [UiOrder(0, 2147483646)]

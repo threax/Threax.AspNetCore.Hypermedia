@@ -210,7 +210,7 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
                         {
                             DeleteFile(settings.AppOutDir, ViewModelWriter.GetFileName(settings.Schema, true));
                         }
-                        WriteFile(settings.AppOutDir, ViewModelWriter.GetFileName(settings.Schema, settings.CreateGeneratedFiles), await ViewModelWriter.Create(settings.Schema, settings.OtherSchemas, settings.AppNamespace), true);
+                        WriteFile(settings.AppOutDir, ViewModelWriter.GetFileName(settings.Schema, settings.CreateGeneratedFiles), await ViewModelWriter.Create(settings.Schema, settings.OtherSchemas, settings.AppNamespace, settings.CreateGeneratedFiles), true);
                     }
 
                     //Repository
