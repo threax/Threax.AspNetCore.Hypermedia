@@ -34,7 +34,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var contractResolver = serializer.ContractResolver as CamelCasePropertyNamesContractResolver;
+            var contractResolver = serializer.ContractResolver as DefaultContractResolver;
 
             var jsonSchema = value as JsonSchema4;
             //This would be the ideal way to handle things, but njsonschema is really unpredictable

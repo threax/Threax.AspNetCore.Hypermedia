@@ -6,7 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Threax.AspNetCore.Halcyon.ClientGen</AssemblyName>
     <PackageId>Threax.AspNetCore.Halcyon.ClientGen</PackageId>
-    <Version>11.0.0</Version>
+    <Version>11.1.0-pre1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
@@ -15,7 +15,7 @@
     <PackageProjectUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</PackageProjectUrl>
     <RepositoryUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</RepositoryUrl>
     <Description>Client generator for halcyon apis.</Description>
-    <PackageReleaseNotes>Add doc query when loading docs. This requires Threax.AspNetCore.Halcyon.Client &gt;=6.2.0 or generated code will not compile.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added support for HalEmbedded collections when generating clients.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

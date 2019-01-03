@@ -120,7 +120,14 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>The settings.</returns>
         public static JsonSerializerSettings SetToHalcyonDefault(this JsonSerializerSettings settings)
         {
-            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            settings.ContractResolver = new IgnoreEmbedsJsonContractResolver()
+            {
+                NamingStrategy = new CamelCaseNamingStrategy
+                {
+                    ProcessDictionaryKeys = true,
+                    OverrideSpecifiedNames = true
+                }
+            };
             settings.Converters.Add(new StringEnumConverter());
             settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             settings.DefaultValueHandling = DefaultValueHandling.Include; //Reccomended default to allow use of DefaultValue attribute, want to serialize the value no matter what, and not set the value when deserializing.

@@ -1,6 +1,7 @@
 ﻿using Halcyon.HAL.Json;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -59,7 +60,8 @@ namespace Halcyon.HAL {
             var output = GetBaseJObject(serializer);
 
             if(this.embedded.Any()) {
-                var embeddedOutput = EmbeddedToJObject((m) => m.ToPlainResponse(serializer));
+                var resolver = serializer.ContractResolver as DefaultContractResolver;
+                var embeddedOutput = EmbeddedToJObject((m) => m.ToJObject(serializer), n => resolver.GetResolvedPropertyName(n));
                 output.Merge(embeddedOutput);
             }
 
@@ -89,21 +91,22 @@ namespace Halcyon.HAL {
             }
 
             if(this.embedded.Any()) {
-                var embeddedOutput = EmbeddedToJObject((m) => m.ToJObject(serializer));
+                var resolver = serializer.ContractResolver as DefaultContractResolver;
+                var embeddedOutput = EmbeddedToJObject((m) => m.ToJObject(serializer), n => resolver.GetResolvedPropertyName(n));
                 output.Add(EmbeddedKey, embeddedOutput);
             }
 
             return output;
         }
 
-        private JObject EmbeddedToJObject(Func<HALResponse, JObject> converter) {
+        private JObject EmbeddedToJObject(Func<HALResponse, JObject> converter, Func<String, String> getPropertyName) {
             var embeddedOutput = new JObject();
             foreach(var embedPair in this.embedded) {
 
                 if(embedPair.Value is IEnumerable<HALResponse>) {
-                    embeddedOutput.Add(embedPair.Key, JArray.FromObject(((IEnumerable<HALResponse>)embedPair.Value).Select(m => converter(m))));
+                    embeddedOutput.Add(getPropertyName(embedPair.Key), JArray.FromObject(((IEnumerable<HALResponse>)embedPair.Value).Select(m => converter(m))));
                 } else if(embedPair.Value is HALResponse) {
-                    embeddedOutput.Add(embedPair.Key, JObject.FromObject(converter((HALResponse)embedPair.Value)));
+                    embeddedOutput.Add(getPropertyName(embedPair.Key), JObject.FromObject(converter((HALResponse)embedPair.Value)));
                 } else {
                     throw new NotImplementedException();
                 }
