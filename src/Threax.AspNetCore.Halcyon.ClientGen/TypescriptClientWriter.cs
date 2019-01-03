@@ -155,7 +155,7 @@ export class {client.Name}{ResultClassSuffix} {{
 
                 if (client.IsCollectionView)
                 {
-                    WriteEmbedAccessor(writer, "items", client.CollectionType);
+                    WriteEmbedAccessor(writer, "items", "values", client.CollectionType);
                 }
 
                 //Write out any embedded properties
@@ -167,7 +167,7 @@ export class {client.Name}{ResultClassSuffix} {{
                         var reference = embeddedItem.Reference; //Get the reference
                         var def = client.Schema.Definitions.First(i => i.Value == reference); //Find reference in definitions, njsonschema will have the objects the same, so this is a valid way to look this up
                         var typeHint = def.Key.Replace('\\', '/').Split('/').Last();
-                        WriteEmbedAccessor(writer, embedded.Key, typeHint);
+                        WriteEmbedAccessor(writer, embedded.Key, embedded.Key, typeHint);
                     }
                 }
 
@@ -295,7 +295,7 @@ export class {client.Name}{ResultClassSuffix} {{
             }
         }
 
-        private static void WriteEmbedAccessor(TextWriter writer, String propertyName, string collectionType)
+        private static void WriteEmbedAccessor(TextWriter writer, String propertyName, String embedName, string collectionType)
         {
             if (collectionType == null)
             {
@@ -305,7 +305,7 @@ export class {client.Name}{ResultClassSuffix} {{
     private {propertyName}Strong: any[];
     public get {propertyName}(): hal.HalEndpointClient[] {{
         if (this.{propertyName}Strong === undefined) {{
-            var embeds = this.client.GetEmbed(""values"");
+            var embeds = this.client.GetEmbed(""{embedName}"");
             this.{propertyName}Strong = embeds.GetAllClients();
         }}
         return this.{propertyName}Strong;
@@ -318,7 +318,7 @@ export class {client.Name}{ResultClassSuffix} {{
     private {propertyName}Strong: {collectionType}{ResultClassSuffix}[];
     public get {propertyName}(): {collectionType}{ResultClassSuffix}[] {{
         if (this.{propertyName}Strong === undefined) {{
-            var embeds = this.client.GetEmbed(""values"");
+            var embeds = this.client.GetEmbed(""{embedName}"");
             var clients = embeds.GetAllClients();
             this.{propertyName}Strong = [];
             for (var i = 0; i < clients.length; ++i) {{

@@ -329,7 +329,7 @@ writer.WriteLine($@"
         {{
             if (this.{propertyName}Strong == null) 
             {{
-                var embeds = this.client.GetEmbed(""values"");
+                var embeds = this.client.GetEmbed(""{propertyName}"");
                 this.{propertyName}Strong = embeds.GetAllClients();
             }}
             return this.{propertyName}Strong;
@@ -347,7 +347,7 @@ writer.WriteLine($@"
         {{
             if (this.{propertyName}Strong == null) 
             {{
-                var embeds = this.client.GetEmbed(""values"");
+                var embeds = this.client.GetEmbed(""{propertyName}"");
                 var clients = embeds.GetAllClients();
                 this.{propertyName}Strong = new List<{collectionType}{ResultClassSuffix}>(clients.Select(i => new {collectionType}{ResultClassSuffix}(i)));
             }}

@@ -35,7 +35,7 @@ public class OutputResult
         {
             if (this.embedsStrong == null) 
             {
-                var embeds = this.client.GetEmbed("values");
+                var embeds = this.client.GetEmbed("embeds");
                 var clients = embeds.GetAllClients();
                 this.embedsStrong = new List<EmbeddedObjectResult>(clients.Select(i => new EmbeddedObjectResult(i)));
             }

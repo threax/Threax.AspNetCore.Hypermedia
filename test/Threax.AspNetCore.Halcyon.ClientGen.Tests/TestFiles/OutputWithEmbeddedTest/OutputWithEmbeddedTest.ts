@@ -16,7 +16,7 @@ export class OutputResult {
     private embedsStrong: EmbeddedObjectResult[];
     public get embeds(): EmbeddedObjectResult[] {
         if (this.embedsStrong === undefined) {
-            var embeds = this.client.GetEmbed("values");
+            var embeds = this.client.GetEmbed("embeds");
             var clients = embeds.GetAllClients();
             this.embedsStrong = [];
             for (var i = 0; i < clients.length; ++i) {
