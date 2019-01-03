@@ -1,4 +1,5 @@
-﻿using NJsonSchema;
+﻿using Halcyon.HAL.Attributes;
+using NJsonSchema;
 using NJsonSchema.CodeGeneration;
 using NJsonSchema.CodeGeneration.CSharp;
 using NJsonSchema.CodeGeneration.CSharp.Models;
@@ -57,6 +58,13 @@ writer.WriteLine("}");
             Dictionary<String, CodeArtifact> codeArtifacts = new Dictionary<String, CodeArtifact>();
             foreach (var item in interfacesToWrite.Interfaces)
             {
+                //Remove any properties from item that are hal embeds
+                var propertiesToRemove = item.Value.Properties.Where(i => i.Value.IsHalEmbedded()).ToList();
+                foreach (var remove in propertiesToRemove)
+                {
+                    item.Value.Properties.Remove(remove.Key);
+                }
+
                 var resolver = new CSharpTypeResolver(settings);
                 resolver.RegisterSchemaDefinitions(new Dictionary<String, JsonSchema4>() { { item.Key, item.Value } }); //Add all discovered generators
 
@@ -157,44 +165,19 @@ writer.WriteLine($@"
 
                 if (client.IsCollectionView)
                 {
-                    var collectionType = client.CollectionType;
-                    if(collectionType == null)
-                    {
-                        //No collection type, write out an "any" client.
+                    WriteEmbedAccessor(writer, "items", client.CollectionType);
+                }
 
-writer.WriteLine($@"
-    private List<HalEndpointClient> strongItems;
-    public List<HalEndpointClient> Items
-    {{
-        get
-        {{
-            if (this.strongItems == null) 
-            {{
-                var embeds = this.client.GetEmbed(""values"");
-                this.strongItems = embeds.GetAllClients();
-            }}
-            return this.strongItems;
-        }}
-    }}");
-                    }
-                    else
+                //Write out any embedded properties
+                foreach (var embedded in client.Schema.Properties.Where(i => i.Value.IsHalEmbedded()))
+                {
+                    var embeddedItem = embedded.Value.Item;
+                    if (embeddedItem.HasReference)
                     {
-                        //Collection type found, write out results for each data entry.
-writer.WriteLine($@"
-    private List<{collectionType}{ResultClassSuffix}> strongItems = null;
-    public List<{collectionType}{ResultClassSuffix}> Items
-    {{
-        get
-        {{
-            if (this.strongItems == null) 
-            {{
-                var embeds = this.client.GetEmbed(""values"");
-                var clients = embeds.GetAllClients();
-                this.strongItems = new List<{collectionType}{ResultClassSuffix}>(clients.Select(i => new {collectionType}{ResultClassSuffix}(i)));
-            }}
-            return this.strongItems;
-        }}
-    }}");
+                        var reference = embeddedItem.Reference; //Get the reference
+                        var def = client.Schema.Definitions.First(i => i.Value == reference); //Find reference in definitions, njsonschema will have the objects the same, so this is a valid way to look this up
+                        var typeHint = def.Key.Replace('\\', '/').Split('/').Last();
+                        WriteEmbedAccessor(writer, embedded.Key, typeHint);
                     }
                 }
 
@@ -329,6 +312,48 @@ writer.WriteLine($@"
                 //Close class
                 //Close class
                 writer.WriteLine("}");
+            }
+        }
+
+        private static void WriteEmbedAccessor(TextWriter writer, String propertyName, string collectionType)
+        {
+            if (collectionType == null)
+            {
+                //No collection type, write out an "any" client.
+
+                writer.WriteLine($@"
+    private List<HalEndpointClient> {propertyName}Strong;
+    public List<HalEndpointClient> {propertyName}
+    {{
+        get
+        {{
+            if (this.{propertyName}Strong == null) 
+            {{
+                var embeds = this.client.GetEmbed(""values"");
+                this.{propertyName}Strong = embeds.GetAllClients();
+            }}
+            return this.{propertyName}Strong;
+        }}
+    }}");
+            }
+            else
+            {
+                //Collection type found, write out results for each data entry.
+                writer.WriteLine($@"
+    private List<{collectionType}{ResultClassSuffix}> {propertyName}Strong = null;
+    public List<{collectionType}{ResultClassSuffix}> {propertyName}
+    {{
+        get
+        {{
+            if (this.{propertyName}Strong == null) 
+            {{
+                var embeds = this.client.GetEmbed(""values"");
+                var clients = embeds.GetAllClients();
+                this.{propertyName}Strong = new List<{collectionType}{ResultClassSuffix}>(clients.Select(i => new {collectionType}{ResultClassSuffix}(i)));
+            }}
+            return this.{propertyName}Strong;
+        }}
+    }}");
             }
         }
     }

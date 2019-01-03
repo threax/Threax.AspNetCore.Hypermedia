@@ -147,7 +147,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 var modelValue = propertyInfo.GetValue(model) as IEnumerable;
                 if (modelValue != null)
                 {
-                    yield return new KeyValuePair<string, IEnumerable>(embeddAttribute.CollectionName, modelValue);
+                    yield return new KeyValuePair<string, IEnumerable>(propertyInfo.Name, modelValue);
                 }
             }
         }
