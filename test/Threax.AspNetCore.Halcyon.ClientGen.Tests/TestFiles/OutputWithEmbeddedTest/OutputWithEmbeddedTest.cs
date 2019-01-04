@@ -29,7 +29,7 @@ public class OutputResult
     }
 
     private List<EmbeddedObjectResult> embedsStrong = null;
-    public List<EmbeddedObjectResult> embeds
+    public List<EmbeddedObjectResult> Embeds
     {
         get
         {

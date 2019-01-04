@@ -317,13 +317,17 @@ writer.WriteLine($@"
 
         private static void WriteEmbedAccessor(TextWriter writer, String propertyName, string collectionType)
         {
+            //This is a lame way to convert to pascal case, but there isn't really any choice.
+            //The users have a lot of control over this variable name, so they can adjust as needed.
+            var pascalPropertyName = Char.ToUpperInvariant(propertyName[0]) + propertyName.Substring(1);
+
             if (collectionType == null)
             {
                 //No collection type, write out an "any" client.
 
                 writer.WriteLine($@"
     private List<HalEndpointClient> {propertyName}Strong;
-    public List<HalEndpointClient> {propertyName}
+    public List<HalEndpointClient> {pascalPropertyName}
     {{
         get
         {{
@@ -341,7 +345,7 @@ writer.WriteLine($@"
                 //Collection type found, write out results for each data entry.
                 writer.WriteLine($@"
     private List<{collectionType}{ResultClassSuffix}> {propertyName}Strong = null;
-    public List<{collectionType}{ResultClassSuffix}> {propertyName}
+    public List<{collectionType}{ResultClassSuffix}> {pascalPropertyName}
     {{
         get
         {{
