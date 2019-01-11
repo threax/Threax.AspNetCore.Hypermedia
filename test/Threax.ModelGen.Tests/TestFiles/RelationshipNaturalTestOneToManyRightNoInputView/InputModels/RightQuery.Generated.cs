@@ -21,7 +21,6 @@ namespace Test.InputModels
         /// </summary>
         public Guid? RightId { get; set; }
 
-
         /// <summary>
         /// Populate an IQueryable for rights. Does not apply the skip or limit. Will return
         /// true if the query should be modified or false if the entire query was built and should

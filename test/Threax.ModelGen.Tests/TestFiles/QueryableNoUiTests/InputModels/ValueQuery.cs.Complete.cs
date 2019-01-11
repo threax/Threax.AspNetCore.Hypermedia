@@ -21,6 +21,10 @@ namespace Test.InputModels
         /// </summary>
         public Guid? ValueId { get; set; }
 
+        [UiOrder]
+        public String Info { get; set; }
+
+
         /// <summary>
         /// Populate an IQueryable. Does not apply the skip or limit.
         /// </summary>

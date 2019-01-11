@@ -88,10 +88,15 @@ namespace {ns}.InputModels
         public {nullableModelIdType} {ModelId} {{ get; set; }}
 ";
 
+            if (!String.IsNullOrWhiteSpace(queryProps))
+            {
+                result += $@"
+{queryProps}";
+            }
+
             if (generated)
             {
                 result += $@"
-{queryProps}
         /// <summary>
         /// Populate an IQueryable for {models}. Does not apply the skip or limit. Will return
         /// true if the query should be modified or false if the entire query was built and should

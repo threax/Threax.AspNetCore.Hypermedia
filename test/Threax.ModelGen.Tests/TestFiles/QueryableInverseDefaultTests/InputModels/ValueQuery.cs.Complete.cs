@@ -21,6 +21,11 @@ namespace Test.InputModels
         /// </summary>
         public Guid? ValueId { get; set; }
 
+        [UiOrder]
+        [Required(ErrorMessage = "Info must have a value.")]
+        public String Info { get; set; }
+
+
         /// <summary>
         /// Populate an IQueryable. Does not apply the skip or limit.
         /// </summary>
