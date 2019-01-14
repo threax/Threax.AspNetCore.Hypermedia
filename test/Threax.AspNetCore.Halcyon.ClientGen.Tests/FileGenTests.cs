@@ -84,6 +84,24 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
             }
         }
 
+        [Fact]
+        protected async Task Php()
+        {
+            var clientWriter = new PhpClientWriter(mockup.Get<IClientGenerator>());
+
+            using (var writer = new StreamWriter(new MemoryStream()))
+            {
+                await clientWriter.CreateClient(writer);
+                writer.Flush();
+                writer.BaseStream.Seek(0, SeekOrigin.Begin);
+                using (var reader = new StreamReader(writer.BaseStream))
+                {
+                    var code = reader.ReadToEnd();
+                    TestCode($"{GetType().Name}.php", code);
+                }
+            }
+        }
+
         private void TestCode(String fileName, String code)
         {
             code = code.Replace("\r\n", "\n");
