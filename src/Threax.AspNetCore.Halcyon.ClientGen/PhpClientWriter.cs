@@ -44,53 +44,7 @@ use threax\halcyonclient\CurlHelper;"
 
             await WriteClient(interfacesToWrite, writer);
 
-            //Write interfaces, kind of weird, no good docs for this
-            //var settings = new TypeScriptGeneratorSettings()
-            //{
-            //    TypeStyle = TypeScriptTypeStyle.Interface,
-            //    MarkOptionalProperties = true,
-            //    DateTimeType = TypeScriptDateTimeType.String,
-            //    EnumNameGenerator = new EnumValueEnumNameGenerator(),
-            //};
-
-            ////Gather up everything to write, skip duplicate instances of the same thing
-            //Dictionary<String, CodeArtifact> codeArtifacts = new Dictionary<String, CodeArtifact>();
-            //ExtensionCode lastExtensionCode = null;
-            //foreach (var item in interfacesToWrite.Interfaces)
-            //{
-            //    //Remove any properties from item that are hal embeds
-            //    var propertiesToRemove = item.Value.Properties.Where(i => i.Value.IsHalEmbedded()).ToList();
-            //    foreach (var remove in propertiesToRemove)
-            //    {
-            //        item.Value.Properties.Remove(remove.Key);
-            //    }
-
-            //    var resolver = new TypeScriptTypeResolver(settings);
-            //    resolver.RegisterSchemaDefinitions(new Dictionary<String, JsonSchema4>() { { item.Key, item.Value } }); //Add all discovered generators
-
-            //    var generator = new TypeScriptGenerator(item.Value, settings, resolver);
-            //    var artifacts = generator.GenerateTypes();
-            //    foreach(var artifact in artifacts.Artifacts)
-            //    {
-            //        if (!codeArtifacts.ContainsKey(artifact.TypeName))
-            //        {
-            //            codeArtifacts.Add(artifact.TypeName, artifact);
-            //        }
-            //    }
-            //    lastExtensionCode = artifacts.ExtensionCode;
-            //}
-
-            ////Write the classes officially
-            ////From TypeScriptGenerator.cs GenerateFile, (NJsonSchema 9.10.49)
-            //var model = new FileTemplateModel(settings)
-            //{
-            //    Types = ConversionUtilities.TrimWhiteSpaces(string.Join("\n\n", CodeArtifactCollection.OrderByBaseDependency(codeArtifacts.Values).Select(p => p.Code))),
-            //    ExtensionCode = (TypeScriptExtensionCode)lastExtensionCode
-            //};
-
-            //var template = settings.TemplateFactory.CreateTemplate("TypeScript", "File", model);
-            //var classes = ConversionUtilities.TrimWhiteSpaces(template.Render());
-            //writer.WriteLine(classes);
+            //PHP does not include any interfaces / classes for the data
 
             //Write out common interfaces we reuse in all clients
             writer.WriteLine(@"
