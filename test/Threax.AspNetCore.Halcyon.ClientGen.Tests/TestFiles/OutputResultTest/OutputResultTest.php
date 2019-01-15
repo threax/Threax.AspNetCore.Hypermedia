@@ -1,3 +1,6 @@
+<?php
+
+namespace phptest\client;
 use threax\halcyonclient\HalEndpointClient;
 use threax\halcyonclient\CurlHelper;
 

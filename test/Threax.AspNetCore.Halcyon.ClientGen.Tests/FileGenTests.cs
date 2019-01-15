@@ -107,7 +107,10 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
         protected async Task Php()
         {
             await CreateAsyncMocks();
-            var clientWriter = new PhpClientWriter(mockup.Get<IClientGenerator>());
+            var clientWriter = new PhpClientWriter(mockup.Get<IClientGenerator>(), new PhpOptions()
+            {
+                Namespace = "phptest\\client"
+            });
 
             using (var writer = new StreamWriter(new MemoryStream()))
             {

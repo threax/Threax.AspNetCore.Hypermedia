@@ -17,15 +17,25 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
         private IClientGenerator clientGenerator;
         private const String ResultClassSuffix = "Result";
         private const string VoidReturnType = ": void";
+        private PhpOptions phpOptions;
 
-        public PhpClientWriter(IClientGenerator clientGenerator)
+        public PhpClientWriter(IClientGenerator clientGenerator, PhpOptions phpOptions)
         {
             this.clientGenerator = clientGenerator;
+            this.phpOptions = phpOptions;
         }
 
         public async Task CreateClient(TextWriter writer)
         {
             var interfacesToWrite = new InterfaceManager();
+
+            writer.WriteLine($"<?php");
+            writer.WriteLine();
+
+            if (phpOptions.Namespace != null)
+            {
+                writer.WriteLine($"namespace {phpOptions.Namespace};");
+            }
 
             writer.WriteLine(
             @"use threax\halcyonclient\HalEndpointClient;

@@ -11,5 +11,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
         public IEnumerable<Assembly> SourceAssemblies { get; set; }
 
         public CSharpOptions CSharp { get; set; } = new CSharpOptions();
+
+        public PhpOptions Php { get; set; } = new PhpOptions();
     }
 }
