@@ -120,9 +120,9 @@ class {client.Name}Injector {{
         $this->fetcher = $fetcher;
     }}
 
-    public load(): {client.Name}{ResultClassSuffix} {{
-        if ($this->$instance === NULL) {{
-            $this->$instance = {client.Name}{ResultClassSuffix}::Load($this->url, $this->fetcher);
+    public function load(): {client.Name}{ResultClassSuffix} {{
+        if ($this->instance === NULL) {{
+            $this->instance = {client.Name}{ResultClassSuffix}::Load($this->url, $this->fetcher);
         }}
 
         return $this->$instance;
@@ -138,7 +138,7 @@ class {client.Name}{ResultClassSuffix} {{
                 {
                     writer.WriteLine($@"
     public static function Load(string $url, CurlHelper $fetcher): {client.Name}{ResultClassSuffix} {{
-        $result = HalEndpointClient::Load($url, $fetcher)
+        $result = HalEndpointClient::Load($url, $fetcher);
         return new {client.Name}{ResultClassSuffix}($result);
     }}");
                 }

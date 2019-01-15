@@ -14,9 +14,9 @@ class EntryPointInjector {
         $this->fetcher = $fetcher;
     }
 
-    public load(): EntryPointResult {
-        if ($this->$instance === NULL) {
-            $this->$instance = EntryPointResult::Load($this->url, $this->fetcher);
+    public function load(): EntryPointResult {
+        if ($this->instance === NULL) {
+            $this->instance = EntryPointResult::Load($this->url, $this->fetcher);
         }
 
         return $this->$instance;
@@ -27,7 +27,7 @@ class EntryPointResult {
     private $client;
 
     public static function Load(string $url, CurlHelper $fetcher): EntryPointResult {
-        $result = HalEndpointClient::Load($url, $fetcher)
+        $result = HalEndpointClient::Load($url, $fetcher);
         return new EntryPointResult($result);
     }
 
