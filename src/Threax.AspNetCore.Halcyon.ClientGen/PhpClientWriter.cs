@@ -242,17 +242,13 @@ class {client.Name}{ResultClassSuffix} {{
                         //Write link
                         writer.Write($@"
     public function {lowerFuncName}({inArgs}){linkReturnType} {{
-        $r = $this->client->{fullLoadFunc}(""{link.Rel}""{outArgs})");
+        $r = $this->client->{fullLoadFunc}(""{link.Rel}""{outArgs});");
 
                         //If the returns are set return r, otherwise void out the promise so we don't leak on void functions
                         if (returnOpen != null && returnClose != null)
                         {
                             writer.Write($@"
         return {returnOpen}$r{returnClose};");
-                        }
-                        else //Returning the respose directly
-                        {
-                            writer.Write(";");
                         }
 
                         writer.WriteLine($@"

@@ -16,7 +16,7 @@ class OutputResult {
     }
 
     public function save($data): OutputResult {
-        $r = $this->client->loadLinkWithData("Save", $data)
+        $r = $this->client->loadLinkWithData("Save", $data);
         return new OutputResult($r);
     }
 
