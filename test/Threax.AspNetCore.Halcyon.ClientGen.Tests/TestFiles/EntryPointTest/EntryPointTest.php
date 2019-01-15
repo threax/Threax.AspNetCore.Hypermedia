@@ -9,7 +9,7 @@ class EntryPointInjector {
     private $fetcher;
     private $instance = NULL;
 
-    constructor(string $url, CurlHelper $fetcher) {
+    public function __construct(string $url, CurlHelper $fetcher) {
         $this->url = $url;
         $this->fetcher = $fetcher;
     }
