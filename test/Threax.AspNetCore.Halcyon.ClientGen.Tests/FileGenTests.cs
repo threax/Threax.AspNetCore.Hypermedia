@@ -20,6 +20,11 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
 
         public FileGenTests()
         {
+            
+        }
+
+        protected virtual async Task CreateAsyncMocks()
+        {
             mockup.Add<IValidSchemaTypeManager>(s =>
             {
                 var mock = new Mock<IValidSchemaTypeManager>();
@@ -31,15 +36,20 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
 
             mockup.Add<ISchemaBuilder>(s => new SchemaBuilder(s.Get<JsonSchemaGenerator>(), s.Get<IValidSchemaTypeManager>()));
 
+            //This is setup outside the mock callbacks, so we can do async properly
+            var schemaBuilder = mockup.Get<ISchemaBuilder>();
+            var endpoint = new EndpointClientDefinition(typeof(TResult), await schemaBuilder.GetSchema(typeof(TResult)));
+            var endpointDoc = new EndpointDoc();
+            //If the input type is object, don't include it in the schema, this is just for code reuse
+            if (typeof(TInput) != typeof(Object))
+            {
+                endpointDoc.RequestSchema = await schemaBuilder.GetSchema(typeof(TInput));
+            }
+            endpoint.AddLink(new EndpointClientLinkDefinition("Save", endpointDoc, false));
+
             mockup.Add<IClientGenerator>(s =>
             {
-                var schemaBuilder = s.Get<ISchemaBuilder>();
-
                 var mock = new Mock<IClientGenerator>();
-                var endpoint = new EndpointClientDefinition(typeof(TResult), schemaBuilder.GetSchema(typeof(TResult)).GetAwaiter().GetResult());
-                var endpointDoc = new EndpointDoc();
-                endpointDoc.RequestSchema = schemaBuilder.GetSchema(typeof(TInput)).GetAwaiter().GetResult();
-                endpoint.AddLink(new EndpointClientLinkDefinition("Save", endpointDoc, false));
                 IEnumerable<EndpointClientDefinition> mockEndpoints = new List<EndpointClientDefinition>() { endpoint };
                 mock.Setup(i => i.GetEndpointDefinitions()).Returns(Task.FromResult(mockEndpoints));
                 return mock.Object;
@@ -49,6 +59,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
         [Fact]
         protected async Task Typescript()
         {
+            await CreateAsyncMocks();
             var clientWriter = new TypescriptClientWriter(mockup.Get<IClientGenerator>());
             using (var writer = new StreamWriter(new MemoryStream()))
             {
@@ -66,6 +77,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
         [Fact]
         protected async Task CSharp()
         {
+            await CreateAsyncMocks();
             var clientWriter = new CSharpClientWriter(mockup.Get<IClientGenerator>(), new CSharpOptions()
             {
                 Namespace = "Test"
@@ -87,6 +99,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
         [Fact]
         protected async Task Php()
         {
+            await CreateAsyncMocks();
             var clientWriter = new PhpClientWriter(mockup.Get<IClientGenerator>());
 
             using (var writer = new StreamWriter(new MemoryStream()))

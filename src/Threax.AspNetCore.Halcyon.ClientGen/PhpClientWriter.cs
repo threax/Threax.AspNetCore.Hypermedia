@@ -128,9 +128,9 @@ class {client.Name}{ResultClassSuffix} {{
                 {
                     writer.WriteLine($@"
     public static function Load(string $url, CurlHelper $fetcher): {client.Name}{ResultClassSuffix} {{
-                $result = HalEndpointClient::Load($url, $fetcher)
-                return new {client.Name}{ResultClassSuffix}($result);
-            }}");
+        $result = HalEndpointClient::Load($url, $fetcher)
+        return new {client.Name}{ResultClassSuffix}($result);
+    }}");
                 }
 
                 //Write accessor for data

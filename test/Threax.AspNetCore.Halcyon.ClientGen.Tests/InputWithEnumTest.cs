@@ -25,29 +25,31 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
 
     public class InputWithEnumTest : FileGenTests<InputWithEnumTest.Input, InputWithEnumTest.Output>
     {
-        public InputWithEnumTest()
+        protected override async Task CreateAsyncMocks()
         {
+            await base.CreateAsyncMocks();
+
+            var schemaBuilder = mockup.Get<ISchemaBuilder>();
+
+            IEnumerable<EndpointClientDefinition> mockEndpoints = new List<EndpointClientDefinition>()
+            {
+                await CreateEndpoint<InputWithEnumTest.Input, InputWithEnumTest.Output>(schemaBuilder),
+                await CreateEndpoint<InputWithEnumTest.AnotherInput, InputWithEnumTest.Output>(schemaBuilder)
+            };
+
             mockup.Add<IClientGenerator>(s =>
             {
-                var schemaBuilder = s.Get<ISchemaBuilder>();
-
                 var mock = new Mock<IClientGenerator>();
-
-                IEnumerable<EndpointClientDefinition> mockEndpoints = new List<EndpointClientDefinition>()
-                {
-                    CreateEndpoint<InputWithEnumTest.Input, InputWithEnumTest.Output>(schemaBuilder),
-                    CreateEndpoint<InputWithEnumTest.AnotherInput, InputWithEnumTest.Output>(schemaBuilder)
-                };
                 mock.Setup(i => i.GetEndpointDefinitions()).Returns(Task.FromResult(mockEndpoints));
                 return mock.Object;
             });
         }
 
-        private static EndpointClientDefinition CreateEndpoint<TInput, TResult>(ISchemaBuilder schemaBuilder)
+        private static async Task<EndpointClientDefinition> CreateEndpoint<TInput, TResult>(ISchemaBuilder schemaBuilder)
         {
-            var endpoint = new EndpointClientDefinition(typeof(TResult), schemaBuilder.GetSchema(typeof(TResult)).GetAwaiter().GetResult());
+            var endpoint = new EndpointClientDefinition(typeof(TResult), await schemaBuilder.GetSchema(typeof(TResult)));
             var endpointDoc = new EndpointDoc();
-            endpointDoc.RequestSchema = schemaBuilder.GetSchema(typeof(TInput)).GetAwaiter().GetResult();
+            endpointDoc.RequestSchema = await schemaBuilder.GetSchema(typeof(TInput));
             endpoint.AddLink(new EndpointClientLinkDefinition("Save", endpointDoc, false));
             return endpoint;
         }
