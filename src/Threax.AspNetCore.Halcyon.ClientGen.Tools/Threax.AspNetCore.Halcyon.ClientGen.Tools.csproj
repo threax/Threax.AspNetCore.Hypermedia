@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
@@ -6,7 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Threax.AspNetCore.Halcyon.ClientGen.Tools</AssemblyName>
     <PackageId>Threax.AspNetCore.Halcyon.ClientGen.Tools</PackageId>
-    <Version>5.0.0</Version>
+    <Version>5.1.0-pre01</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
@@ -14,8 +14,8 @@
     <PackageLicenseUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</PackageProjectUrl>
     <RepositoryUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</RepositoryUrl>
-    <PackageReleaseNotes>Require latest Threax.AspNetCore.Halcyon.Ext 12.2.1 or newer.</PackageReleaseNotes>
-    <Description>Updated reference to Threax.AspNetCore.Halcyon.Ext to version 9.0.0.</Description>
+    <PackageReleaseNotes>Added php client generation.</PackageReleaseNotes>
+    <Description>Tools plugin to use the client generator.</Description>
   </PropertyGroup>
 
   <ItemGroup>

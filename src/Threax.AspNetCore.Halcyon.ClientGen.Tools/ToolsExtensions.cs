@@ -31,8 +31,12 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
                             var csharpWriter = a.Scope.ServiceProvider.GetRequiredService<CSharpClientWriter>();
                             await csharpWriter.CreateClient(writer);
                             break;
+                        case ".php":
+                            var phpWriter = a.Scope.ServiceProvider.GetRequiredService<PhpClientWriter>();
+                            await phpWriter.CreateClient(writer);
+                            break;
                         default:
-                            throw new NotSupportedException($"{file} is not supported. Can only generate typescript (.ts) or c# (.cs) clients.");
+                            throw new NotSupportedException($"{file} is not supported. Can only generate typescript (.ts), c# (.cs) or php (.php) clients.");
                     }
 
                     await writer.FlushAsync();
