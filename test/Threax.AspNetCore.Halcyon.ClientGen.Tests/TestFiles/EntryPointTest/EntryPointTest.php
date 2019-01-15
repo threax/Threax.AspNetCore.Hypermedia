@@ -19,7 +19,7 @@ class EntryPointInjector {
             $this->instance = EntryPointResult::Load($this->url, $this->fetcher);
         }
 
-        return $this->$instance;
+        return $this->instance;
     }
 }
 

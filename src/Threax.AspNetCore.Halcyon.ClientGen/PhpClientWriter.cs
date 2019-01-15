@@ -125,7 +125,7 @@ class {client.Name}Injector {{
             $this->instance = {client.Name}{ResultClassSuffix}::Load($this->url, $this->fetcher);
         }}
 
-        return $this->$instance;
+        return $this->instance;
     }}
 }}");
                 }
