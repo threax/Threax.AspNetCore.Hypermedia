@@ -208,7 +208,7 @@ class {client.Name}{ResultClassSuffix} {{
                         writer.WriteLine($@"
     }}
 
-    public function can{upperFuncName}(): boolean {{
+    public function can{upperFuncName}(): bool {{
         return $this->client->hasLink(""{link.Rel}"");
     }}
 
@@ -225,7 +225,7 @@ class {client.Name}{ResultClassSuffix} {{
         return $this->client->loadLinkDoc(""{link.Rel}"", $query)->getData();
     }}
 
-    public function has{upperFuncName}Docs(): boolean {{
+    public function has{upperFuncName}Docs(): bool {{
         return $this->client->hasLinkDoc(""{link.Rel}"");
     }}");
                     }

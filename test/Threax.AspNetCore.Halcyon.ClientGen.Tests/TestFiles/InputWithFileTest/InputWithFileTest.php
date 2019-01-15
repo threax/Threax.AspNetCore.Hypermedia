@@ -19,7 +19,7 @@ class OutputResult {
         $r = $this->client->loadLinkWithData("Save", $data);
     }
 
-    public function canSave(): boolean {
+    public function canSave(): bool {
         return $this->client->hasLink("Save");
     }
 
@@ -31,7 +31,7 @@ class OutputResult {
         return $this->client->loadLinkDoc("Save", $query)->getData();
     }
 
-    public function hasSaveDocs(): boolean {
+    public function hasSaveDocs(): bool {
         return $this->client->hasLinkDoc("Save");
     }
 }

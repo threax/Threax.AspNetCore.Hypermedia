@@ -44,7 +44,7 @@ class EntryPointResult {
         return new EntryPointResult($r);
     }
 
-    public function canRefresh(): boolean {
+    public function canRefresh(): bool {
         return $this->client->hasLink("self");
     }
 
@@ -56,7 +56,7 @@ class EntryPointResult {
         return $this->client->loadLinkDoc("self", $query)->getData();
     }
 
-    public function hasRefreshDocs(): boolean {
+    public function hasRefreshDocs(): bool {
         return $this->client->hasLinkDoc("self");
     }
 }
