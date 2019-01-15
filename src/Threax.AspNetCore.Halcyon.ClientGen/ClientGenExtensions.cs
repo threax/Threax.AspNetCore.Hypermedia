@@ -16,6 +16,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
             services.AddScoped<IClientGenerator, ClientGenerator>();
             services.AddScoped<TypescriptClientWriter>();
             services.AddScoped<CSharpClientWriter>();
+            services.AddScoped<PhpClientWriter>();
 
             return services;
         }
