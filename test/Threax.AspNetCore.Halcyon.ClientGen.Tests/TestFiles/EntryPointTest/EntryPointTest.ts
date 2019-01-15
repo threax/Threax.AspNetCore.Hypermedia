@@ -42,8 +42,12 @@ export class EntryPointResult {
         return this.strongData;
     }
 
-    public refresh(): Promise<void> {
-        return this.client.LoadLink("self").then(hal.makeVoid);
+    public refresh(): Promise<EntryPointResult> {
+        return this.client.LoadLink("self")
+               .then(r => {
+                    return new EntryPointResult(r);
+                });
+
     }
 
     public canRefresh(): boolean {
@@ -52,6 +56,17 @@ export class EntryPointResult {
 
     public linkForRefresh(): hal.HalLink {
         return this.client.GetLink("self");
+    }
+
+    public getRefreshDocs(query?: HalEndpointDocQuery): Promise<hal.HalEndpointDoc> {
+        return this.client.LoadLinkDoc("self", query)
+            .then(r => {
+                return r.GetData<hal.HalEndpointDoc>();
+            });
+    }
+
+    public hasRefreshDocs(): boolean {
+        return this.client.HasLinkDoc("self");
     }
 }
 //----------------------

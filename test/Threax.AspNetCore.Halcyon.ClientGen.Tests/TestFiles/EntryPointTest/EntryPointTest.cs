@@ -56,9 +56,11 @@ public class EntryPointResult
         }
     }
 
-    public async Task Refresh() 
+    public async Task<EntryPointResult> Refresh() 
     {
         var result = await this.client.LoadLink("self");
+        return new EntryPointResult(result);
+
     }
 
     public bool CanRefresh 
@@ -75,6 +77,16 @@ public class EntryPointResult
         {
             return this.client.GetLink("self");
         }
+    }
+
+    public async Task<HalEndpointDoc> GetRefreshDocs(HalEndpointDocQuery query = null) 
+    {
+        var result = await this.client.LoadLinkDoc("self", query);
+        return result.GetData<HalEndpointDoc>();
+    }
+
+    public bool HasRefreshDocs() {
+        return this.client.HasLinkDoc("self");
     }
 }
 }

@@ -39,8 +39,9 @@ class EntryPointResult {
         return $this->client->getData();
     }
 
-    public function refresh(): void {
+    public function refresh(): EntryPointResult {
         $r = $this->client->loadLink("self");
+        return new EntryPointResult($r);
     }
 
     public function canRefresh(): boolean {
@@ -49,6 +50,14 @@ class EntryPointResult {
 
     public function linkForRefresh() {
         return $this->client->getLink("self");
+    }
+
+    public function getRefreshDocs(HalEndpointDocQuery $query = NULL) {
+        return $this->client->loadLinkDoc("self", $query)->getData();
+    }
+
+    public function hasRefreshDocs(): boolean {
+        return $this->client->hasLinkDoc("self");
     }
 }
 

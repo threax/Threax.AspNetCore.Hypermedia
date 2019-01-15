@@ -20,6 +20,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
         {
             var endpoint = new EndpointClientDefinition(typeof(EntryPoint), await schemaBuilder.GetSchema(typeof(EntryPoint)));
             var endpointDoc = new EndpointDoc();
+            endpointDoc.ResponseSchema = await schemaBuilder.GetSchema(typeof(EntryPoint));
             endpoint.AddLink(new EndpointClientLinkDefinition("self", endpointDoc, false));
             return endpoint;
         }
