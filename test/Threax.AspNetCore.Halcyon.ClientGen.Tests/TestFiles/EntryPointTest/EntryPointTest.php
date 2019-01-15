@@ -16,7 +16,7 @@ class EntryPointInjector {
 
     public load(): EntryPointResult {
         if ($this->$instance === NULL) {
-            $this->$instance = EntryPointResult.Load(this.url, this.fetcher);
+            $this->$instance = EntryPointResult::Load($this->url, $this->fetcher);
         }
 
         return $this->$instance;

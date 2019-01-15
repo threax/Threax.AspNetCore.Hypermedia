@@ -18,7 +18,7 @@ class OutputResult {
     private $embedsStrong = NULL;
     public function getEmbeds(): array {
         if ($this->embedsStrong === NULL) {
-            $embeds = $this->client->GetEmbed("embeds");
+            $embeds = $this->client->getEmbed("embeds");
             $clients = $embeds->getAllClients();
             $this->embedsStrong = [];
             foreach ($clients as $client) {

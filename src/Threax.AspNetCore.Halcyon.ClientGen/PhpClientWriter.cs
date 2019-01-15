@@ -122,7 +122,7 @@ class {client.Name}Injector {{
 
     public load(): {client.Name}{ResultClassSuffix} {{
         if ($this->$instance === NULL) {{
-            $this->$instance = {client.Name}{ResultClassSuffix}.Load(this.url, this.fetcher);
+            $this->$instance = {client.Name}{ResultClassSuffix}::Load($this->url, $this->fetcher);
         }}
 
         return $this->$instance;
@@ -295,7 +295,7 @@ class {client.Name}{ResultClassSuffix} {{
     private ${propertyName}Strong = NULL;
     public function get{pascalPropertyName}(): array {{
         if ($this->{propertyName}Strong === NULL) {{
-            $embeds = $this->client->GetEmbed(""{embedName}"");
+            $embeds = $this->client->getEmbed(""{embedName}"");
             $this->{propertyName}Strong = $embeds->getAllClients();
         }}
         return $this->{propertyName}Strong;
@@ -308,7 +308,7 @@ class {client.Name}{ResultClassSuffix} {{
     private ${propertyName}Strong = NULL;
     public function get{pascalPropertyName}(): array {{
         if ($this->{propertyName}Strong === NULL) {{
-            $embeds = $this->client->GetEmbed(""{embedName}"");
+            $embeds = $this->client->getEmbed(""{embedName}"");
             $clients = $embeds->getAllClients();
             $this->{propertyName}Strong = [];
             foreach ($clients as $client) {{
