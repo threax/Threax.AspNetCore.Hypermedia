@@ -284,13 +284,16 @@ class {client.Name}{ResultClassSuffix} {{
 
         private static void WriteEmbedAccessor(TextWriter writer, String propertyName, String embedName, string collectionType)
         {
+            //This is a lame way to convert to pascal case, but there isn't really any choice.
+            //The users have a lot of control over this variable name, so they can adjust as needed.
+            var pascalPropertyName = Char.ToUpperInvariant(propertyName[0]) + propertyName.Substring(1);
+
             if (collectionType == null)
             {
                 //No collection type, write out an "any" client.
-
                 writer.WriteLine($@"
     private ${propertyName}Strong = NULL;
-    public get{propertyName}(): array {{
+    public function get{pascalPropertyName}(): array {{
         if ($this->{propertyName}Strong === NULL) {{
             $embeds = $this->client->GetEmbed(""{embedName}"");
             $this->{propertyName}Strong = $embeds->getAllClients();
@@ -303,7 +306,7 @@ class {client.Name}{ResultClassSuffix} {{
                 //Collection type found, write out results for each data entry.
                 writer.WriteLine($@"
     private ${propertyName}Strong = NULL;
-    public get{propertyName}(): array {{
+    public function get{pascalPropertyName}(): array {{
         if ($this->{propertyName}Strong === NULL) {{
             $embeds = $this->client->GetEmbed(""{embedName}"");
             $clients = $embeds->getAllClients();
