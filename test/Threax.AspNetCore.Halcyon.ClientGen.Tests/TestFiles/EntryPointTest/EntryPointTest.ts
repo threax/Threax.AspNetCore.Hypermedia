@@ -42,16 +42,16 @@ export class EntryPointResult {
         return this.strongData;
     }
 
-    public save(): Promise<void> {
-        return this.client.LoadLink("Save").then(hal.makeVoid);
+    public refresh(): Promise<void> {
+        return this.client.LoadLink("self").then(hal.makeVoid);
     }
 
-    public canSave(): boolean {
-        return this.client.HasLink("Save");
+    public canRefresh(): boolean {
+        return this.client.HasLink("self");
     }
 
-    public linkForSave(): hal.HalLink {
-        return this.client.GetLink("Save");
+    public linkForRefresh(): hal.HalLink {
+        return this.client.GetLink("self");
     }
 }
 //----------------------

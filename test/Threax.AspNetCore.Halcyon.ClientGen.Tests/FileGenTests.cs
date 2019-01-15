@@ -38,14 +38,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
 
             //This is setup outside the mock callbacks, so we can do async properly
             var schemaBuilder = mockup.Get<ISchemaBuilder>();
-            var endpoint = new EndpointClientDefinition(typeof(TResult), await schemaBuilder.GetSchema(typeof(TResult)));
-            var endpointDoc = new EndpointDoc();
-            //If the input type is object, don't include it in the schema, this is just for code reuse
-            if (typeof(TInput) != typeof(Object))
-            {
-                endpointDoc.RequestSchema = await schemaBuilder.GetSchema(typeof(TInput));
-            }
-            endpoint.AddLink(new EndpointClientLinkDefinition("Save", endpointDoc, false));
+            EndpointClientDefinition endpoint = await CreateEndpointDefinition(schemaBuilder);
 
             mockup.Add<IClientGenerator>(s =>
             {
@@ -54,6 +47,20 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
                 mock.Setup(i => i.GetEndpointDefinitions()).Returns(Task.FromResult(mockEndpoints));
                 return mock.Object;
             });
+        }
+
+        /// <summary>
+        /// This is a generic endpoint definition generator, you can override it in your test class if you want to send something different.
+        /// </summary>
+        /// <param name="schemaBuilder"></param>
+        /// <returns></returns>
+        protected virtual async Task<EndpointClientDefinition> CreateEndpointDefinition(ISchemaBuilder schemaBuilder)
+        {
+            var endpoint = new EndpointClientDefinition(typeof(TResult), await schemaBuilder.GetSchema(typeof(TResult)));
+            var endpointDoc = new EndpointDoc();
+            endpointDoc.RequestSchema = await schemaBuilder.GetSchema(typeof(TInput));
+            endpoint.AddLink(new EndpointClientLinkDefinition("Save", endpointDoc, false));
+            return endpoint;
         }
 
         [Fact]

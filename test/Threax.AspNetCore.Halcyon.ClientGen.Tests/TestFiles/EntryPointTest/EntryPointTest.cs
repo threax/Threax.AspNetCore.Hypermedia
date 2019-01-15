@@ -56,24 +56,24 @@ public class EntryPointResult
         }
     }
 
-    public async Task Save() 
+    public async Task Refresh() 
     {
-        var result = await this.client.LoadLink("Save");
+        var result = await this.client.LoadLink("self");
     }
 
-    public bool CanSave 
+    public bool CanRefresh 
     {
         get 
         {
-            return this.client.HasLink("Save");
+            return this.client.HasLink("self");
         }
     }
 
-    public HalLink LinkForSave 
+    public HalLink LinkForRefresh 
     {
         get 
         {
-            return this.client.GetLink("Save");
+            return this.client.GetLink("self");
         }
     }
 }

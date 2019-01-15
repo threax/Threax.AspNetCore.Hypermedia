@@ -36,16 +36,16 @@ class EntryPointResult {
         return $this->client->getData();
     }
 
-    public function save(): void {
-        $r = $this->client->loadLink("Save");
+    public function refresh(): void {
+        $r = $this->client->loadLink("self");
     }
 
-    public function canSave(): boolean {
-        return $this->client->hasLink("Save");
+    public function canRefresh(): boolean {
+        return $this->client->hasLink("self");
     }
 
-    public function linkForSave(): hal.HalLink {
-        return $this->client->getLink("Save");
+    public function linkForRefresh(): hal.HalLink {
+        return $this->client->getLink("self");
     }
 }
 
