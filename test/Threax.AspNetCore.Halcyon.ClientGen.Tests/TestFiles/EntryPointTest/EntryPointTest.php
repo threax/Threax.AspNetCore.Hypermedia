@@ -47,7 +47,7 @@ class EntryPointResult {
         return $this->client->hasLink("self");
     }
 
-    public function linkForRefresh(): hal.HalLink {
+    public function linkForRefresh() {
         return $this->client->getLink("self");
     }
 }

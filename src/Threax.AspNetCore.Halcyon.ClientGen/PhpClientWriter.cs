@@ -258,7 +258,7 @@ class {client.Name}{ResultClassSuffix} {{
         return $this->client->hasLink(""{link.Rel}"");
     }}
 
-    public function linkFor{upperFuncName}(): hal.HalLink {{
+    public function linkFor{upperFuncName}() {{
         return $this->client->getLink(""{link.Rel}"");
     }}");
                     }

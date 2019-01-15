@@ -24,7 +24,7 @@ class OutputResult {
         return $this->client->hasLink("Save");
     }
 
-    public function linkForSave(): hal.HalLink {
+    public function linkForSave() {
         return $this->client->getLink("Save");
     }
 
