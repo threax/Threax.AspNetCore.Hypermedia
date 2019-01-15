@@ -208,7 +208,7 @@ class {client.Name}{ResultClassSuffix} {{
                     if (linkRequestArg != "")
                     {
                         inArgs += linkRequestArg;
-                        outArgs += ", data";
+                        outArgs += ", $data";
                         loadFunc = "LinkWithData";
                     }
 
@@ -261,8 +261,8 @@ class {client.Name}{ResultClassSuffix} {{
                     {
                         //Write link docs
                         writer.WriteLine($@"
-    public function get{upperFuncName}Docs(HalEndpointDocQuery query = NULL) {{
-        return $this->client->loadLinkDoc(""{link.Rel}"", query)->getData();
+    public function get{upperFuncName}Docs(HalEndpointDocQuery $query = NULL) {{
+        return $this->client->loadLinkDoc(""{link.Rel}"", $query)->getData();
     }}
 
     public function has{upperFuncName}Docs(): boolean {{

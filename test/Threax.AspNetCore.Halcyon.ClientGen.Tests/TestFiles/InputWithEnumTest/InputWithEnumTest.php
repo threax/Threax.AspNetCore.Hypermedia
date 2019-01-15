@@ -13,7 +13,7 @@ class OutputResult {
     }
 
     public function save($data): void {
-        $r = $this->client->loadLinkWithData("Save", data);
+        $r = $this->client->loadLinkWithData("Save", $data);
     }
 
     public function canSave(): boolean {
@@ -24,8 +24,8 @@ class OutputResult {
         return $this->client->getLink("Save");
     }
 
-    public function getSaveDocs(HalEndpointDocQuery query = NULL) {
-        return $this->client->loadLinkDoc("Save", query)->getData();
+    public function getSaveDocs(HalEndpointDocQuery $query = NULL) {
+        return $this->client->loadLinkDoc("Save", $query)->getData();
     }
 
     public function hasSaveDocs(): boolean {
@@ -45,7 +45,7 @@ class OutputResult {
     }
 
     public function save($data): void {
-        $r = $this->client->loadLinkWithData("Save", data);
+        $r = $this->client->loadLinkWithData("Save", $data);
     }
 
     public function canSave(): boolean {
@@ -56,8 +56,8 @@ class OutputResult {
         return $this->client->getLink("Save");
     }
 
-    public function getSaveDocs(HalEndpointDocQuery query = NULL) {
-        return $this->client->loadLinkDoc("Save", query)->getData();
+    public function getSaveDocs(HalEndpointDocQuery $query = NULL) {
+        return $this->client->loadLinkDoc("Save", $query)->getData();
     }
 
     public function hasSaveDocs(): boolean {

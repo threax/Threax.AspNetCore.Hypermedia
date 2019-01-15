@@ -12,8 +12,9 @@ class OutputResult {
         return $this->client->getData();
     }
 
-    public function save($data): void {
-        $r = $this->client->loadLinkWithData("Save", $data);
+    public function save($data): OutputResult {
+        $r = $this->client->loadLinkWithData("Save", $data)
+        return new OutputResult($r);
     }
 
     public function canSave(): boolean {
