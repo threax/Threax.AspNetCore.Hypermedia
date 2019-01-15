@@ -24,7 +24,7 @@ class EntryPointInjector {
 }
 
 class EntryPointResult {
-    private $client
+    private $client;
 
     public static function Load(string $url, CurlHelper $fetcher): EntryPointResult {
         $result = HalEndpointClient::Load($url, $fetcher)

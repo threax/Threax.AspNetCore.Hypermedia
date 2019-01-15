@@ -5,7 +5,7 @@ use threax\halcyonclient\HalEndpointClient;
 use threax\halcyonclient\CurlHelper;
 
 class OutputResult {
-    private $client
+    private $client;
 
     public function __construct(HalEndpointClient $client) {
         $this->client = $client;

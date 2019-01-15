@@ -132,7 +132,7 @@ class {client.Name}Injector {{
 
                 writer.WriteLine($@"
 class {client.Name}{ResultClassSuffix} {{
-    private $client");
+    private $client;");
 
                 if (client.IsEntryPoint)
                 {
