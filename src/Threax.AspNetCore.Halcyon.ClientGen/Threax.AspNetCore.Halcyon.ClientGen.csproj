@@ -6,7 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Threax.AspNetCore.Halcyon.ClientGen</AssemblyName>
     <PackageId>Threax.AspNetCore.Halcyon.ClientGen</PackageId>
-    <Version>11.2.1</Version>
+    <Version>11.2.2-pre1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
@@ -16,7 +16,8 @@
     <RepositoryUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</RepositoryUrl>
     <Description>Client generator for halcyon apis.</Description>
     <PackageReleaseNotes>Added php client generation.
-11.2.1 - Fixed bug where boolean was written instead of bool.</PackageReleaseNotes>
+11.2.1 - Fixed bug where boolean was written instead of bool.
+11.2.2 - Fixed bug in c# client generator where the incorrect embed name was written for collection results.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

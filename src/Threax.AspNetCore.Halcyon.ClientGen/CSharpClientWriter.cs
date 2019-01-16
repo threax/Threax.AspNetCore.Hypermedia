@@ -165,7 +165,7 @@ writer.WriteLine($@"
 
                 if (client.IsCollectionView)
                 {
-                    WriteEmbedAccessor(writer, "items", client.CollectionType);
+                    WriteEmbedAccessor(writer, "items", "values", client.CollectionType);
                 }
 
                 //Write out any embedded properties
@@ -177,7 +177,7 @@ writer.WriteLine($@"
                         var reference = embeddedItem.Reference; //Get the reference
                         var def = client.Schema.Definitions.First(i => i.Value == reference); //Find reference in definitions, njsonschema will have the objects the same, so this is a valid way to look this up
                         var typeHint = def.Key.Replace('\\', '/').Split('/').Last();
-                        WriteEmbedAccessor(writer, embedded.Key, typeHint);
+                        WriteEmbedAccessor(writer, embedded.Key, embedded.Key, typeHint);
                     }
                 }
 
@@ -315,7 +315,7 @@ writer.WriteLine($@"
             }
         }
 
-        private static void WriteEmbedAccessor(TextWriter writer, String propertyName, string collectionType)
+        private static void WriteEmbedAccessor(TextWriter writer, String propertyName, String embedName, string collectionType)
         {
             //This is a lame way to convert to pascal case, but there isn't really any choice.
             //The users have a lot of control over this variable name, so they can adjust as needed.
@@ -333,7 +333,7 @@ writer.WriteLine($@"
         {{
             if (this.{propertyName}Strong == null) 
             {{
-                var embeds = this.client.GetEmbed(""{propertyName}"");
+                var embeds = this.client.GetEmbed(""{embedName}"");
                 this.{propertyName}Strong = embeds.GetAllClients();
             }}
             return this.{propertyName}Strong;
@@ -351,7 +351,7 @@ writer.WriteLine($@"
         {{
             if (this.{propertyName}Strong == null) 
             {{
-                var embeds = this.client.GetEmbed(""{propertyName}"");
+                var embeds = this.client.GetEmbed(""{embedName}"");
                 var clients = embeds.GetAllClients();
                 this.{propertyName}Strong = new List<{collectionType}{ResultClassSuffix}>(clients.Select(i => new {collectionType}{ResultClassSuffix}(i)));
             }}
