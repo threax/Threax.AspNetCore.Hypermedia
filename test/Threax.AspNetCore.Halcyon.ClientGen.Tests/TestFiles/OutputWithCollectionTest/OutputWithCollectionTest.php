@@ -28,7 +28,7 @@ class OutputCollectionResult {
         return $this->itemsStrong;
     }
 
-    public function save($data): void {
+    public function save($data) {
         $r = $this->client->loadLinkWithData("Save", $data);
     }
 

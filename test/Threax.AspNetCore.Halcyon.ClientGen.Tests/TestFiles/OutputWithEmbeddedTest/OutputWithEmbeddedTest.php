@@ -28,7 +28,7 @@ class OutputResult {
         return $this->embedsStrong;
     }
 
-    public function save($data): void {
+    public function save($data) {
         $r = $this->client->loadLinkWithData("Save", $data);
     }
 

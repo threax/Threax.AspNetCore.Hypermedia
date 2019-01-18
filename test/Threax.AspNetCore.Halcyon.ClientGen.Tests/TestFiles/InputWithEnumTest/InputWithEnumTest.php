@@ -15,7 +15,7 @@ class OutputResult {
         return $this->client->getData();
     }
 
-    public function save($data): void {
+    public function save($data) {
         $r = $this->client->loadLinkWithData("Save", $data);
     }
 
@@ -47,7 +47,7 @@ class OutputResult {
         return $this->client->getData();
     }
 
-    public function save($data): void {
+    public function save($data) {
         $r = $this->client->loadLinkWithData("Save", $data);
     }
 

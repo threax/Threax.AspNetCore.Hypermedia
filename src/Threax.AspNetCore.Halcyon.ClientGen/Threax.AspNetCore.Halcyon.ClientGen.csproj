@@ -6,7 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Threax.AspNetCore.Halcyon.ClientGen</AssemblyName>
     <PackageId>Threax.AspNetCore.Halcyon.ClientGen</PackageId>
-    <Version>11.2.2</Version>
+    <Version>11.2.3</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
@@ -17,7 +17,8 @@
     <Description>Client generator for halcyon apis.</Description>
     <PackageReleaseNotes>Added php client generation.
 11.2.1 - Fixed bug where boolean was written instead of bool.
-11.2.2 - Fixed bug in c# client generator where the incorrect embed name was written for collection results.</PackageReleaseNotes>
+11.2.2 - Fixed bug in c# client generator where the incorrect embed name was written for collection results.
+11.2.3 - Anti-Lerdofing - Removed writing void returns for php 7.0.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

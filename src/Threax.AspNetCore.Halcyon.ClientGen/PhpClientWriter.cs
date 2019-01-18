@@ -16,7 +16,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
     {
         private IClientGenerator clientGenerator;
         private const String ResultClassSuffix = "Result";
-        private const string VoidReturnType = ": void";
+        private const string VoidReturnType = "";//": void"; //PHP 7.1+ supports void, but 7 does not, disabling this for now.
         private PhpOptions phpOptions;
 
         public PhpClientWriter(IClientGenerator clientGenerator, PhpOptions phpOptions)
