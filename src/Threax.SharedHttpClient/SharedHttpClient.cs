@@ -11,6 +11,9 @@ namespace Threax.SharedHttpClient
     /// </summary>
     public interface ISharedHttpClient
     {
+        /// <summary>
+        /// The shared http client.
+        /// </summary>
         HttpClient Client { get; }
     }
 
@@ -19,6 +22,9 @@ namespace Threax.SharedHttpClient
     /// </summary>
     public class DefaultSharedHttpClient : ISharedHttpClient
     {
+        /// <summary>
+        /// The shared http client.
+        /// </summary>
         public HttpClient Client { get => SharedHttpClientManager.SharedClient; }
     }
 }

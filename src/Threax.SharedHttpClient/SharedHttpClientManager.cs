@@ -21,7 +21,7 @@ namespace Threax.SharedHttpClient
         /// The shared static instance of HttpClient that this library manages. This instance is used here and in the ISharedHttpClient
         /// instances. Be careful to only use the thread safe functions of HttpClient. Those methods are CancelPendingRequests, DeleteAsync
         /// GetAsync, GetByteArrayAsync, GetStreamAsync, GetStringAsync, PostAsync, PutAsync, SendAsync. This is according to 
-        /// https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpclient?redirectedfrom=MSDN&view=netframework-4.7.2#remarks
+        /// https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpclient?redirectedfrom=MSDN&amp;view=netframework-4.7.2#remarks
         /// </summary>
         public static HttpClient SharedClient { get => httpClient; }
 

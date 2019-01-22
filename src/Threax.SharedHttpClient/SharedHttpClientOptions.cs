@@ -1,5 +1,8 @@
 ﻿namespace Threax.SharedHttpClient
 {
+    /// <summary>
+    /// Options for the shared client.
+    /// </summary>
     public class SharedHttpClientOptions
     {
         /// <summary>

@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Threax.SharedHttpClient;
 
 namespace Threax.AspNetCore.Halcyon.Client
 {
@@ -62,7 +63,11 @@ namespace Threax.AspNetCore.Halcyon.Client
                 if (discoveryClient == null)
                 {
                     // discover endpoints from metadata
-                    discoveryClient = await DiscoveryClient.GetAsync(options.IdServerHost);
+                    discoveryClient = await SharedHttpClientManager.SharedClient.GetDiscoveryDocumentAsync(options.IdServerHost);
+                    if (discoveryClient.IsError)
+                    {
+                        throw new InvalidOperationException($"Error discovering endpoints from '{options.IdServerHost}' type: '{discoveryClient.ErrorType}' message: '{discoveryClient.Error}'");
+                    }
                     await RefreshToken();
                 }
                 else if (DateTime.UtcNow > jwtExpiration)
@@ -80,24 +85,27 @@ namespace Threax.AspNetCore.Halcyon.Client
 
         private async Task RefreshToken()
         {
-            using (var tokenClient = new TokenClient(discoveryClient.TokenEndpoint, options.ClientId, options.ClientSecret))
+            var tokenResponse = await SharedHttpClientManager.SharedClient.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest()
             {
-                var tokenResponse = await tokenClient.RequestClientCredentialsAsync(options.Scope);
-                if (tokenResponse.IsError)
-                {
-                    throw new InvalidOperationException($"{tokenResponse.Error} Error logging into id server '{options.IdServerHost}'. Message: {tokenResponse.ErrorDescription}");
-                }
-
-                //This is not for validation of any kind, just need a way to get the expiration date
-                var jwt = new JwtSecurityTokenHandler();
-                var token = jwt.ReadJwtToken(tokenResponse.AccessToken);
-
-                var expirationTimeSpan = token.ValidTo - token.ValidFrom;
-                var almostExpiredTime = expirationTimeSpan.TotalSeconds * options.ExpirationTimeFraction;
-                this.jwtExpiration = token.ValidFrom + TimeSpan.FromSeconds(almostExpiredTime);
-
-                next.AccessToken = tokenResponse.AccessToken;
+                Address = discoveryClient.TokenEndpoint,
+                ClientId = options.ClientId,
+                ClientSecret = options.ClientSecret,
+                Scope = options.Scope
+            });
+            if (tokenResponse.IsError)
+            {
+                throw new InvalidOperationException($"{tokenResponse.Error} Error logging into id server '{options.IdServerHost}'. Message: {tokenResponse.ErrorDescription}");
             }
+
+            //This is not for validation of any kind, just need a way to get the expiration date
+            var jwt = new JwtSecurityTokenHandler();
+            var token = jwt.ReadJwtToken(tokenResponse.AccessToken);
+
+            var expirationTimeSpan = token.ValidTo - token.ValidFrom;
+            var almostExpiredTime = expirationTimeSpan.TotalSeconds * options.ExpirationTimeFraction;
+            this.jwtExpiration = token.ValidFrom + TimeSpan.FromSeconds(almostExpiredTime);
+
+            next.AccessToken = tokenResponse.AccessToken;
         }
     }
 }
