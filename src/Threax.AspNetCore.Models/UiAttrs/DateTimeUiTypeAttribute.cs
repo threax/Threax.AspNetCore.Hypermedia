@@ -48,6 +48,9 @@ namespace Threax.AspNetCore.Models
     /// </summary>
     public class DateTimeUiTypeAttribute : UiTypeAttribute
     {
+        /// <summary>
+        /// Timezones for the DateTimeUiType. This list comes from moment-timezone.js.
+        /// </summary>
         public class Timezones
         {
             internal static String GetTimezoneCodeName(String timezone)
