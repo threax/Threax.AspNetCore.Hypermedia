@@ -48,6 +48,15 @@ namespace Test.ViewModels
         [TextUiType(Autocomplete = true)]
         public String TextAutocomplete { get; set; }
 
+        [DateTimeUiType(dataTimezone: DateTimeUiTypeAttribute.Timezones.UTC, displayTimezone: DateTimeUiTypeAttribute.Timezones.America_New_York)]
+        public DateTime DateTimeWithTimezones { get; set; }
+
+        [DateTimeUiType(dataTimezone: DateTimeUiTypeAttribute.Timezones.UTC)]
+        public DateTime DateTimeWithDataTimezone { get; set; }
+
+        [DateTimeUiType()]
+        public DateTime DateTimeWithNoTimezone { get; set; }
+
         [UiType("custom")]
         public String CustomType { get; set; }
 

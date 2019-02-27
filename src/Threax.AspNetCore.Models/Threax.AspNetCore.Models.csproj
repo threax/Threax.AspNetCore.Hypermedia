@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <Version>6.3.0</Version>
+    <Version>6.4.0-pre01</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IncludeSymbols>True</IncludeSymbols>
@@ -11,7 +11,7 @@
     <PackageLicenseUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</PackageProjectUrl>
     <RepositoryUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</RepositoryUrl>
-    <PackageReleaseNotes>Added a TextUiTypeAttribute, this allows an Autocomplete option to be set.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added a DateTimeUiTypeAttribute that allows the user to specify the timezone information for the date.</PackageReleaseNotes>
     <PackageId>Threax.AspNetCore.Models</PackageId>
   </PropertyGroup>
 

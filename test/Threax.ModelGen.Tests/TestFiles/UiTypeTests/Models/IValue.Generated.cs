@@ -29,6 +29,12 @@ namespace Test.Models
 
         String TextAutocomplete { get; set; }
 
+        DateTime DateTimeWithTimezones { get; set; }
+
+        DateTime DateTimeWithDataTimezone { get; set; }
+
+        DateTime DateTimeWithNoTimezone { get; set; }
+
         String CustomType { get; set; }
 
         bool CheckboxOverride { get; set; }

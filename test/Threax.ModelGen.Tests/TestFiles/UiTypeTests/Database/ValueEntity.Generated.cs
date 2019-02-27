@@ -34,6 +34,12 @@ namespace Test.Database
 
         public String TextAutocomplete { get; set; }
 
+        public DateTime DateTimeWithTimezones { get; set; }
+
+        public DateTime DateTimeWithDataTimezone { get; set; }
+
+        public DateTime DateTimeWithNoTimezone { get; set; }
+
         public String CustomType { get; set; }
 
         public bool CheckboxOverride { get; set; }
