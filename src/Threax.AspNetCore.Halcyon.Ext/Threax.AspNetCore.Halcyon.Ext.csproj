@@ -6,7 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Threax.AspNetCore.Halcyon.Ext</AssemblyName>
     <PackageId>Threax.AspNetCore.Halcyon.Ext</PackageId>
-    <Version>12.6.1</Version>
+    <Version>12.6.2</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
@@ -15,7 +15,8 @@
     <PackageProjectUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</PackageProjectUrl>
     <RepositoryUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</RepositoryUrl>
     <PackageReleaseNotes>Proper support for HalEmbedded attribute.
-12.6.1 - Rebuild package.</PackageReleaseNotes>
+12.6.1 - Rebuild package.
+12.6.2 - Url encode variables written to links.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

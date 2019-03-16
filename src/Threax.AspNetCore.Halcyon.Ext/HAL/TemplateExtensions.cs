@@ -62,7 +62,7 @@ namespace Halcyon.Templates
                                 if (parameters.TryGetValue(variable, out value))
                                 {
                                     //Only output something if it is found
-                                    output.Append(value);
+                                    output.Append(System.Net.WebUtility.UrlEncode(value?.ToString()));
                                     //throw new InvalidOperationException($"Tried to add a variable {variable} that was not found in the source data.");
                                 }
 
