@@ -6,7 +6,7 @@
     <PackageType>DotNetCliTool</PackageType>
     <AssemblyName>dotnet-threax-modelgen</AssemblyName>
     <PackageId>Threax.ModelGen</PackageId>
-    <Version>10.0.3</Version>
+    <Version>10.0.4</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Andrew Piper</Authors>
     <PackageLicenseUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia/blob/master/LICENSE</PackageLicenseUrl>
@@ -15,7 +15,8 @@
     <PackageReleaseNotes>Added option to not use .Generated files (new default).
 10.0.1 - Created complete view model.
 10.0.2 - Fixed query generation, it was not including properties.
-10.0.3 - Rebuild package.</PackageReleaseNotes>
+10.0.3 - Rebuild package.
+10.0.4 - Rebuild package.</PackageReleaseNotes>
   </PropertyGroup>
   
   <ItemGroup>
