@@ -58,9 +58,9 @@ namespace {ns}.Repository
 
             var total = await dbQuery.CountAsync();
             dbQuery = dbQuery.Skip(query.SkipTo(total)).Take(query.Limit);
-            var results = await dbQuery.ToListAsync();
+            var results = await mapper.Project{Model}(dbQuery).ToListAsync();
 
-            return new {Model}Collection(query, total, results.Select(i => mapper.Map{Model}(i, new {Model}())));
+            return new {Model}Collection(query, total, results);
         }}
 
         public async Task<{Model}> Get({modelIdType} {modelId})

@@ -40,6 +40,7 @@ using Threax.AspNetCore.Tracking;
 using {ns}.InputModels;
 using {ns}.Database;
 using {ns}.ViewModels;{additionalNs}
+using System.Linq;
 
 namespace {ns}.Mappers
 {{
@@ -53,6 +54,11 @@ namespace {ns}.Mappers
         public {Model} Map{Model}({Model}Entity src, {Model} dest)
         {{
             return mapper.Map(src, dest);
+        }}
+
+        public IQueryable<{Model}> Project{Model}(IQueryable<{Model}Entity> query)
+        {{
+            return mapper.ProjectTo<{Model}>(query);
         }}
     }}
 

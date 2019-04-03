@@ -6,12 +6,12 @@
     <PackageType>DotNetCliTool</PackageType>
     <AssemblyName>dotnet-threax-modelgen</AssemblyName>
     <PackageId>Threax.ModelGen</PackageId>
-    <Version>11.0.0</Version>
+    <Version>11.1.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Andrew Piper</Authors>
     <PackageProjectUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</PackageProjectUrl>
     <RepositoryUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</RepositoryUrl>
-    <PackageReleaseNotes>Removed Interfaces in the Models folder. Fixed tests to not use .generated files if that is disabled.</PackageReleaseNotes>
+    <PackageReleaseNotes>Use the automapper project method when listing.</PackageReleaseNotes>
   </PropertyGroup>
   
   <ItemGroup>

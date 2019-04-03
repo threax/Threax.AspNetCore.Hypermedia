@@ -30,9 +30,9 @@ namespace Test.Repository
 
             var total = await dbQuery.CountAsync();
             dbQuery = dbQuery.Skip(query.SkipTo(total)).Take(query.Limit);
-            var results = await dbQuery.ToListAsync();
+            var results = await mapper.ProjectRight(dbQuery).ToListAsync();
 
-            return new RightCollection(query, total, results.Select(i => mapper.MapRight(i, new Right())));
+            return new RightCollection(query, total, results);
         }
 
         public async Task<Right> Get(Guid rightId)
