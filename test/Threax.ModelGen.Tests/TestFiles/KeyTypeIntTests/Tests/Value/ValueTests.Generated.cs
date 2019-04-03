@@ -20,7 +20,6 @@ namespace Test.Tests
             };
         }
 
-
         private static Int32 currentEntityId = 0;
         private static Object entityIdLock = new Object();
         private static Int32 GetNextEntityId()
@@ -42,7 +41,6 @@ namespace Test.Tests
                 ValueId = ValueId.HasValue ? ValueId.Value : GetNextId(),
             };
         }
-
 
         private static Int32 currentViewModelId = 0;
         private static Object viewModelIdLock = new Object();
@@ -66,11 +64,9 @@ namespace Test.Tests
             };
         }
 
-
         public static void AssertEqual(ValueInput expected, ValueEntity actual)
         {
         }
-
 
         public static void AssertEqual(ValueEntity expected, Value actual)
         {

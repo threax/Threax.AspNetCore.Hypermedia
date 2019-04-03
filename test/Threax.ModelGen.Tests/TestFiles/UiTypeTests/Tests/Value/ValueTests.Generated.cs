@@ -43,7 +43,6 @@ namespace Test.Tests
             };
         }
 
-
         public static ValueEntity CreateEntity(String seed = "", Guid? ValueId = default(Guid?), bool Checkbox = default(bool), bool CheckboxSelectAll = default(bool), DateTime DateOnly = default(DateTime), String Hidden = default(String), String Password = default(String), String Select = default(String), String TextArea = default(String), String Text = default(String), String TextAutocomplete = default(String), DateTime DateTimeWithTimezones = default(DateTime), DateTime DateTimeWithDataTimezone = default(DateTime), DateTime DateTimeWithNoTimezone = default(DateTime), String CustomType = default(String), bool CheckboxOverride = default(bool), DateTime DateOnlyOverride = default(DateTime), String HiddenOverride = default(String), String PasswordOverride = default(String), String SelectOverride = default(String), String TextAreaOverride = default(String), String TextOverride = default(String), String CustomTypeOverride = default(String), bool CheckboxOverrideSelectAll = default(bool), String TextOverrideAutocomplete = default(String))
         {
             return new ValueEntity()
@@ -74,7 +73,6 @@ namespace Test.Tests
                 TextOverrideAutocomplete = TextOverrideAutocomplete != null ? TextOverrideAutocomplete : $"TextOverrideAutocomplete {seed}",
             };
         }
-
 
         public static Value CreateView(String seed = "", Guid? ValueId = default(Guid?), bool Checkbox = default(bool), bool CheckboxSelectAll = default(bool), DateTime DateOnly = default(DateTime), String Hidden = default(String), String Password = default(String), String Select = default(String), String TextArea = default(String), String Text = default(String), String TextAutocomplete = default(String), DateTime DateTimeWithTimezones = default(DateTime), DateTime DateTimeWithDataTimezone = default(DateTime), DateTime DateTimeWithNoTimezone = default(DateTime), String CustomType = default(String), bool CheckboxOverride = default(bool), DateTime DateOnlyOverride = default(DateTime), String HiddenOverride = default(String), String PasswordOverride = default(String), String SelectOverride = default(String), String TextAreaOverride = default(String), String TextOverride = default(String), String CustomTypeOverride = default(String), bool CheckboxOverrideSelectAll = default(bool), String TextOverrideAutocomplete = default(String))
         {
@@ -107,7 +105,6 @@ namespace Test.Tests
             };
         }
 
-
         public static void AssertEqual(ValueInput expected, ValueEntity actual)
         {
            Assert.Equal(expected.Checkbox, actual.Checkbox);
@@ -134,7 +131,6 @@ namespace Test.Tests
            Assert.Equal(expected.CheckboxOverrideSelectAll, actual.CheckboxOverrideSelectAll);
            Assert.Equal(expected.TextOverrideAutocomplete, actual.TextOverrideAutocomplete);
         }
-
 
         public static void AssertEqual(ValueEntity expected, Value actual)
         {

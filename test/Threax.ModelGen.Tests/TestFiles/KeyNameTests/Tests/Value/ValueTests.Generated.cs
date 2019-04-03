@@ -20,7 +20,6 @@ namespace Test.Tests
             };
         }
 
-
         public static ValueEntity CreateEntity(String seed = "", Guid? CrazyKey = default(Guid?))
         {
             return new ValueEntity()
@@ -28,7 +27,6 @@ namespace Test.Tests
                 CrazyKey = CrazyKey.HasValue ? CrazyKey.Value : Guid.NewGuid(),
             };
         }
-
 
         public static Value CreateView(String seed = "", Guid? CrazyKey = default(Guid?))
         {
@@ -38,11 +36,9 @@ namespace Test.Tests
             };
         }
 
-
         public static void AssertEqual(ValueInput expected, ValueEntity actual)
         {
         }
-
 
         public static void AssertEqual(ValueEntity expected, Value actual)
         {

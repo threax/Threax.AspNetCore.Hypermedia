@@ -20,7 +20,6 @@ namespace Test.Tests
             };
         }
 
-
         public static ValueEntity CreateEntity(KeyEnum? ValueId = default(KeyEnum?), String seed = "")
         {
             return new ValueEntity()
@@ -28,7 +27,6 @@ namespace Test.Tests
                 ValueId = ValueId != null ? (KeyEnum)ValueId : default(KeyEnum),
             };
         }
-
 
         public static Value CreateView(KeyEnum? ValueId = default(KeyEnum?), String seed = "")
         {
@@ -38,11 +36,9 @@ namespace Test.Tests
             };
         }
 
-
         public static void AssertEqual(ValueInput expected, ValueEntity actual)
         {
         }
-
 
         public static void AssertEqual(ValueEntity expected, Value actual)
         {

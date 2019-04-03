@@ -21,7 +21,6 @@ namespace Test.Tests
             };
         }
 
-
         public static ValueEntity CreateEntity(String seed = "", Guid? ValueId = default(Guid?), Guid? OptionalId = default(Guid?))
         {
             return new ValueEntity()
@@ -30,7 +29,6 @@ namespace Test.Tests
                 OptionalId = OptionalId,
             };
         }
-
 
         public static Value CreateView(String seed = "", Guid? ValueId = default(Guid?), Guid? OptionalId = default(Guid?))
         {
@@ -41,12 +39,10 @@ namespace Test.Tests
             };
         }
 
-
         public static void AssertEqual(ValueInput expected, ValueEntity actual)
         {
            Assert.Equal(expected.OptionalId, actual.OptionalId);
         }
-
 
         public static void AssertEqual(ValueEntity expected, Value actual)
         {

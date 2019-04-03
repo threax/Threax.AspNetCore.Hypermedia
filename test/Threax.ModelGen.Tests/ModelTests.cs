@@ -334,7 +334,7 @@ namespace Threax.ModelGen.Tests
             TestCode
             (
                 Path.Combine("Tests", ModelTestWrapper.GetFileName(await GetSchema())),
-                ModelTestWrapper.Get(await GetSchema(), AppNamespace)
+                ModelTestWrapper.Get(await GetSchema(), AppNamespace, true)
             );
         }
 
@@ -345,6 +345,16 @@ namespace Threax.ModelGen.Tests
             (
                 Path.Combine("Tests", ModelTestWrapperGenerated.GetFileName(await GetSchema())),
                 ModelTestWrapperGenerated.Get(await GetSchema(), AppNamespace)
+            );
+        }
+
+        [Fact]
+        public async Task TestWrapperComplete()
+        {
+            TestCode
+            (
+                Path.Combine("Tests", ModelTestWrapper.GetFileName(await GetSchema())) + ".Complete.cs",
+                ModelTestWrapper.Get(await GetSchema(), AppNamespace, false)
             );
         }
 

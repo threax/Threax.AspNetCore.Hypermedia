@@ -21,7 +21,6 @@ namespace Test.Tests
             };
         }
 
-
         public static ValueEntity CreateEntity(String seed = "", Guid? ValueId = default(Guid?), String Info = default(String))
         {
             return new ValueEntity()
@@ -31,7 +30,6 @@ namespace Test.Tests
             };
         }
 
-
         public static Value CreateView(String seed = "", Guid? ValueId = default(Guid?))
         {
             return new Value()
@@ -40,12 +38,10 @@ namespace Test.Tests
             };
         }
 
-
         public static void AssertEqual(ValueInput expected, ValueEntity actual)
         {
            Assert.Equal(expected.Info, actual.Info);
         }
-
 
         public static void AssertEqual(ValueEntity expected, Value actual)
         {

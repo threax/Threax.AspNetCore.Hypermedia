@@ -21,7 +21,6 @@ namespace Test.Tests
             };
         }
 
-
         public static RightEntity CreateEntity(String seed = "", Guid? RightId = default(Guid?), String Info = default(String))
         {
             return new RightEntity()
@@ -30,7 +29,6 @@ namespace Test.Tests
                 Info = Info != null ? Info : $"Info {seed}",
             };
         }
-
 
         public static Right CreateView(String seed = "", Guid? RightId = default(Guid?), String Info = default(String))
         {
@@ -41,12 +39,10 @@ namespace Test.Tests
             };
         }
 
-
         public static void AssertEqual(RightInput expected, RightEntity actual)
         {
            Assert.Equal(expected.Info, actual.Info);
         }
-
 
         public static void AssertEqual(RightEntity expected, Right actual)
         {

@@ -19,38 +19,55 @@ namespace Threax.ModelGen.TestGenerators
             NameGenerator.CreatePascalAndCamel(schema.Title, out Model, out model);
             String Models, models;
             NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
+            string inputToEntityEqualAssertFunc, entityToViewEqualAssertFunc, createInputFunc, createEntityFunc, createViewFunc;
+            GetTestHelpers(schema, ns, out inputToEntityEqualAssertFunc, out entityToViewEqualAssertFunc, out createInputFunc, out createEntityFunc, out createViewFunc);
+
+            return Create(ns, Model, model, Models, models, inputToEntityEqualAssertFunc, entityToViewEqualAssertFunc, createInputFunc, createEntityFunc, createViewFunc, schema.GetExtraNamespaces(StrConstants.FileNewline));
+        }
+
+        public static string GetTestHelpers(JsonSchema4 schema, string ns, out string inputToEntityEqualAssertFunc, out string entityToViewEqualAssertFunc, out string createInputFunc, out string createEntityFunc, out string createViewFunc)
+        {
             String createArgs = "";
 
-            var inputToEntityEqualAssertFunc = schema.CreateInputModel() && schema.CreateEntity() ? ModelTypeGenerator.Create(schema, schema.GetPluralName(), new ModelEqualityAssert(i => i.OnInputModel && i.OnEntity, "Input", "Entity"), schema, ns, ns) : "";
-            var entityToViewEqualAssertFunc = schema.CreateEntity() && schema.CreateViewModel() ? ModelTypeGenerator.Create(schema, schema.GetPluralName(), new ModelEqualityAssert(i => i.OnEntity && i.OnViewModel, "Entity", ""), schema, ns, ns) : "";
+            inputToEntityEqualAssertFunc = "";
+            if (schema.CreateInputModel() && schema.CreateEntity())
+            {
+                inputToEntityEqualAssertFunc = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new ModelEqualityAssert(i => i.OnInputModel && i.OnEntity, "Input", "Entity"), schema, ns, ns);
+            }
 
-            var createInputFunc = "";
+            entityToViewEqualAssertFunc = "";
+            if (schema.CreateEntity() && schema.CreateViewModel())
+            {
+                entityToViewEqualAssertFunc = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new ModelEqualityAssert(i => i.OnEntity && i.OnViewModel, "Entity", ""), schema, ns, ns);
+            }
+
+            createInputFunc = "";
             if (schema.CreateInputModel())
             {
                 createArgs = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new ModelCreateArgs(), schema, ns, ns, p => p.CreateInputModel());
                 createInputFunc = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new CreateInputModel(createArgs), schema, ns, ns, p => p.CreateInputModel());
             }
 
-            var createEntityFunc = "";
+            createEntityFunc = "";
             if (schema.CreateEntity())
             {
                 createArgs = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new ModelCreateArgs(), schema, ns, ns, p => p.CreateEntity());
                 createEntityFunc = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new CreateEntity(schema, createArgs), schema, ns, ns, p => p.CreateEntity());
             }
 
-            var createViewFunc = "";
+            createViewFunc = "";
             if (schema.CreateViewModel())
             {
                 createArgs = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new ModelCreateArgs(), schema, ns, ns, p => p.CreateViewModel());
                 createViewFunc = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new CreateViewModel(schema, createArgs), schema, ns, ns, p => p.CreateViewModel());
             }
 
-            return Create(ns, Model, model, Models, models, inputToEntityEqualAssertFunc, entityToViewEqualAssertFunc, createInputFunc, createEntityFunc, createViewFunc, schema.GetExtraNamespaces(StrConstants.FileNewline));
+            return createArgs;
         }
 
         private static String Create(String ns, String Model, String model, String Models, String models, String inputToEntityEqualAssertFunc, String entityToViewEqualAssertFunc, String createInputFunc, String createEntityFunc, String createViewFunc, String additionalNs)
         {
-            return
+            var sb = new StringBuilder(
 $@"using AutoMapper;
 using {ns}.Database;
 using {ns}.InputModels;
@@ -65,18 +82,41 @@ using System.Collections.Generic;{additionalNs}
 namespace {ns}.Tests
 {{
     public static partial class {Model}Tests
-    {{
-{createInputFunc}
+    {{");
+            if (createInputFunc != "")
+            {
+                sb.AppendLine();
+                sb.Append(createInputFunc);
+            }
 
-{createEntityFunc}
+            if (createEntityFunc != "")
+            {
+                sb.AppendLine();
+                sb.Append(createEntityFunc);
+            }
 
-{createViewFunc}
+            if (createViewFunc != "")
+            {
+                sb.AppendLine();
+                sb.Append(createViewFunc);
+            }
 
-{inputToEntityEqualAssertFunc}
+            if (inputToEntityEqualAssertFunc != "")
+            {
+                sb.AppendLine();
+                sb.Append(inputToEntityEqualAssertFunc);
+            }
 
-{entityToViewEqualAssertFunc}
+            if (entityToViewEqualAssertFunc != "")
+            {
+                sb.AppendLine();
+                sb.Append(entityToViewEqualAssertFunc);
+            }
+            sb.Append(
+$@"
     }}
-}}";
+}}");
+            return sb.ToString();
         }
     }
 }

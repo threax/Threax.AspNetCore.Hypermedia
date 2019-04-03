@@ -256,8 +256,11 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
 
                 if (settings.WriteTests)
                 {
-                    WriteFile(settings.TestOutDir, ModelTestWrapper.GetFileName(settings.Schema), ModelTestWrapper.Get(settings.Schema, settings.AppNamespace), settings.ForceWriteTests);
-                    WriteFile(settings.TestOutDir, ModelTestWrapperGenerated.GetFileName(settings.Schema), ModelTestWrapperGenerated.Get(settings.Schema, settings.AppNamespace), true);
+                    WriteFile(settings.TestOutDir, ModelTestWrapper.GetFileName(settings.Schema), ModelTestWrapper.Get(settings.Schema, settings.AppNamespace, settings.CreateGeneratedFiles), settings.ForceWriteTests);
+                    if (settings.CreateGeneratedFiles)
+                    {
+                        WriteFile(settings.TestOutDir, ModelTestWrapperGenerated.GetFileName(settings.Schema), ModelTestWrapperGenerated.Get(settings.Schema, settings.AppNamespace), true);
+                    }
 
                     if (settings.Schema.CreateController())
                     {
