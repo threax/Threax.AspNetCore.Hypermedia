@@ -35,7 +35,6 @@ namespace Threax.ModelGen
                 a =>
                 {
                     var interfaces = new String[] { a.BaseClassName, }
-                        .Concat(IdInterfaceWriter.GetInterfaces(schema, true, p => !p.OnAllModelTypes() && p.CreateEntity()))
                         .Concat(a.Writer.GetAdditionalInterfaces());
 
                     a.Builder.AppendLine(

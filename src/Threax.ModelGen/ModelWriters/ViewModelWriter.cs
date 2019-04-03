@@ -36,7 +36,6 @@ namespace Threax.ModelGen
                 a =>
                 {
                     var interfaces = new String[] { a.BaseClassName, }
-                        .Concat(IdInterfaceWriter.GetInterfaces(schema, true, p => !p.OnAllModelTypes() && p.CreateViewModel()))
                         .Concat(a.Writer.GetAdditionalInterfaces());
 
                     if (!generated)

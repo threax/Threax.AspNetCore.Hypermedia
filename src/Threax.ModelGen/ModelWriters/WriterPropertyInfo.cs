@@ -24,7 +24,11 @@ namespace Threax.ModelGen
 
         int? Order { get; }
 
-        bool OnAllModelTypes { get; }
+        bool OnInputModel { get; }
+
+        bool OnEntity { get; }
+
+        bool OnViewModel { get; }
 
         String NullValueLabel { get; }
 
@@ -58,7 +62,11 @@ namespace Threax.ModelGen
 
         public int? Order { get; set; } = null;
 
-        public bool OnAllModelTypes => true;
+        public bool OnInputModel => true;
+
+        public bool OnEntity => true;
+
+        public bool OnViewModel => true;
 
         public String NullValueLabel => null;
 
@@ -99,7 +107,11 @@ namespace Threax.ModelGen
 
         public int? Order => prop.GetOrder();
 
-        public bool OnAllModelTypes => prop.OnAllModelTypes();
+        public bool OnInputModel => prop.CreateInputModel();
+
+        public bool OnEntity => prop.CreateEntity();
+
+        public bool OnViewModel => prop.CreateViewModel();
 
         public String NullValueLabel => prop.GetNullValueLabel();
 
@@ -131,7 +143,11 @@ namespace Threax.ModelGen
 
         public int? Order => null;
 
-        public bool OnAllModelTypes => true;
+        public bool OnInputModel => true;
+
+        public bool OnEntity => true;
+
+        public bool OnViewModel => true;
 
         public String NullValueLabel => null;
 

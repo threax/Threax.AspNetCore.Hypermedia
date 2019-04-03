@@ -11,7 +11,7 @@ using Test.Models;
 
 namespace Test.Database 
 {
-    public partial class ValueEntity : IValue, IValueId, IValue_Info, ICreatedModified
+    public partial class ValueEntity : ICreatedModified
     {
         [Key]
         public Guid ValueId { get; set; }

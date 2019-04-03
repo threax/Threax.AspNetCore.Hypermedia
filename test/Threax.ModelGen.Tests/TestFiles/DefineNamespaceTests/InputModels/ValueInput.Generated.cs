@@ -14,7 +14,7 @@ using Can.Be.Multiline;
 namespace Test.InputModels 
 {
     [HalModel]
-    public partial class ValueInput : IValue
+    public partial class ValueInput
     {
     }
 }

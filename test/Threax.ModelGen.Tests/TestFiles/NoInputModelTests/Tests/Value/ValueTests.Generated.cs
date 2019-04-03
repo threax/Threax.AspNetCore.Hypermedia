@@ -41,12 +41,14 @@ namespace Test.Tests
         }
 
 
-        public static void AssertEqual(IValue expected, IValue actual)
+        public static void AssertEqual(ValueInput expected, ValueEntity actual)
         {
-           if(expected is IValue_Info && actual is IValue_Info)
-           {
-               Assert.Equal((expected as IValue_Info).Info, (actual as IValue_Info).Info);
-           }
+        }
+
+
+        public static void AssertEqual(ValueEntity expected, Value actual)
+        {
+           Assert.Equal(expected.Info, actual.Info);
         }
 
     }

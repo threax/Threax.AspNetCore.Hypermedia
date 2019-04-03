@@ -42,7 +42,13 @@ namespace Test.Tests
         }
 
 
-        public static void AssertEqual(IValue expected, IValue actual)
+        public static void AssertEqual(ValueInput expected, ValueEntity actual)
+        {
+           Assert.Equal(expected.OptionalId, actual.OptionalId);
+        }
+
+
+        public static void AssertEqual(ValueEntity expected, Value actual)
         {
            Assert.Equal(expected.OptionalId, actual.OptionalId);
         }

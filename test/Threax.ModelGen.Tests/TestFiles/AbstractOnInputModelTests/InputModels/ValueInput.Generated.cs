@@ -18,7 +18,7 @@ namespace Test.InputModels
     }
 
     [HalModel]
-    public partial class ValueInput : ValueInputBase, IValue
+    public partial class ValueInput : ValueInputBase
     {
     }
 }

@@ -12,7 +12,7 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;
 namespace Test.InputModels 
 {
     [HalModel]
-    public partial class LeftInput : ILeft, ILeft_RightIds
+    public partial class LeftInput
     {
         public String Info { get; set; }
 

@@ -44,13 +44,15 @@ namespace Test.Tests
         }
 
 
-        public static void AssertEqual(ILeft expected, ILeft actual)
+        public static void AssertEqual(LeftInput expected, LeftEntity actual)
         {
            Assert.Equal(expected.Info, actual.Info);
-           if(expected is ILeft_RightIds && actual is ILeft_RightIds)
-           {
-               Assert.Equal((expected as ILeft_RightIds).RightIds, (actual as ILeft_RightIds).RightIds);
-           }
+        }
+
+
+        public static void AssertEqual(LeftEntity expected, Left actual)
+        {
+           Assert.Equal(expected.Info, actual.Info);
         }
 
     }

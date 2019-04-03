@@ -139,20 +139,17 @@ namespace {ns}.Mappers
             bool customEntityToView = false;
             foreach (var prop in props)
             {
-                if (!prop.OnAllModelTypes())
+                if (!prop.CreateInputModel() && prop.CreateEntity())
                 {
-                    if (!prop.CreateInputModel() && prop.CreateEntity())
-                    {
-                        inputToEntityMaps.AppendLine();
-                        inputToEntityMaps.Append($"                .ForMember(d => d.{NameGenerator.CreatePascal(prop.Name)}, opt => opt.Ignore())");
-                    }
+                    inputToEntityMaps.AppendLine();
+                    inputToEntityMaps.Append($"                .ForMember(d => d.{NameGenerator.CreatePascal(prop.Name)}, opt => opt.Ignore())");
+                }
 
-                    if (!prop.CreateEntity() && prop.CreateViewModel())
-                    {
-                        customEntityToView = true;
-                        entityToViewMaps.AppendLine();
-                        entityToViewMaps.Append($"                .ForMember(d => d.{NameGenerator.CreatePascal(prop.Name)}, opt => opt.Ignore())");
-                    }
+                if (!prop.CreateEntity() && prop.CreateViewModel())
+                {
+                    customEntityToView = true;
+                    entityToViewMaps.AppendLine();
+                    entityToViewMaps.Append($"                .ForMember(d => d.{NameGenerator.CreatePascal(prop.Name)}, opt => opt.Ignore())");
                 }
             }
 

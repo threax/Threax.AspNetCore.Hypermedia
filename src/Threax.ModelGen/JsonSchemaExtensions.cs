@@ -193,14 +193,5 @@ namespace Threax.ModelGen
                 schema.ExtensionData = new Dictionary<String, Object>();
             }
         }
-
-        /// <summary>
-        /// Determine if a particular schema or property is on all types of models or not.
-        /// </summary>
-        /// <param name="schema"></param>
-        public static bool OnAllModelTypes(this JsonSchema4 schema)
-        {
-            return schema.CreateEntity() && schema.CreateInputModel() && schema.CreateViewModel();
-        }
     }
 }

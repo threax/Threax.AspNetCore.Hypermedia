@@ -15,7 +15,7 @@ using Can.Be.Multiline;
 
 namespace Test.ViewModels 
 {
-    public partial class Value : IValue, IValueId, ICreatedModified
+    public partial class Value : ICreatedModified
     {
         public Guid ValueId { get; set; }
 

@@ -21,7 +21,8 @@ namespace Threax.ModelGen.TestGenerators
             NameGenerator.CreatePascalAndCamel(schema.GetPluralName(), out Models, out models);
             String createArgs = "";
 
-            var equalAssertFunc = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new ModelEqualityAssert(), schema, ns, ns);
+            var inputToEntityEqualAssertFunc = schema.CreateInputModel() && schema.CreateEntity() ? ModelTypeGenerator.Create(schema, schema.GetPluralName(), new ModelEqualityAssert(i => i.OnInputModel && i.OnEntity, "Input", "Entity"), schema, ns, ns) : "";
+            var entityToViewEqualAssertFunc = schema.CreateEntity() && schema.CreateViewModel() ? ModelTypeGenerator.Create(schema, schema.GetPluralName(), new ModelEqualityAssert(i => i.OnEntity && i.OnViewModel, "Entity", ""), schema, ns, ns) : "";
 
             var createInputFunc = "";
             if (schema.CreateInputModel())
@@ -44,10 +45,10 @@ namespace Threax.ModelGen.TestGenerators
                 createViewFunc = ModelTypeGenerator.Create(schema, schema.GetPluralName(), new CreateViewModel(schema, createArgs), schema, ns, ns, p => p.CreateViewModel());
             }
 
-            return Create(ns, Model, model, Models, models, equalAssertFunc, createInputFunc, createEntityFunc, createViewFunc, schema.GetExtraNamespaces(StrConstants.FileNewline));
+            return Create(ns, Model, model, Models, models, inputToEntityEqualAssertFunc, entityToViewEqualAssertFunc, createInputFunc, createEntityFunc, createViewFunc, schema.GetExtraNamespaces(StrConstants.FileNewline));
         }
 
-        private static String Create(String ns, String Model, String model, String Models, String models, String equalAssertFunc, String createInputFunc, String createEntityFunc, String createViewFunc, String additionalNs)
+        private static String Create(String ns, String Model, String model, String Models, String models, String inputToEntityEqualAssertFunc, String entityToViewEqualAssertFunc, String createInputFunc, String createEntityFunc, String createViewFunc, String additionalNs)
         {
             return
 $@"using AutoMapper;
@@ -71,7 +72,9 @@ namespace {ns}.Tests
 
 {createViewFunc}
 
-{equalAssertFunc}
+{inputToEntityEqualAssertFunc}
+
+{entityToViewEqualAssertFunc}
     }}
 }}";
         }

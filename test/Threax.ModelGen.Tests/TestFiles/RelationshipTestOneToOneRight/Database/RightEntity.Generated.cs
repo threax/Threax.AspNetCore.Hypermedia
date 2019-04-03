@@ -11,7 +11,7 @@ using Test.Models;
 
 namespace Test.Database 
 {
-    public partial class RightEntity : IRight, IRightId, ICreatedModified
+    public partial class RightEntity : ICreatedModified
     {
         [Key]
         public Guid RightId { get; set; }

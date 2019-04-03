@@ -13,7 +13,7 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;
 
 namespace Test.ViewModels 
 {
-    public partial class Right : IRight, IRightId, ICreatedModified
+    public partial class Right : ICreatedModified
     {
         public Guid RightId { get; set; }
 

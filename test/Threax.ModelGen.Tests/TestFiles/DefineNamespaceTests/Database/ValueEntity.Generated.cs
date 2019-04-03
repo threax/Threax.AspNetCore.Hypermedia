@@ -13,7 +13,7 @@ using Can.Be.Multiline;
 
 namespace Test.Database 
 {
-    public partial class ValueEntity : IValue, IValueId, ICreatedModified
+    public partial class ValueEntity : ICreatedModified
     {
         [Key]
         public Guid ValueId { get; set; }

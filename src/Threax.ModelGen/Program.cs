@@ -125,20 +125,6 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
             {
                 if (settings.WriteApp)
                 {
-                    //Interface
-                    if (settings.Schema.CreateModelInterface())
-                    {
-                        if (settings.CreateGeneratedFiles)
-                        {
-                            WriteFile(settings.AppOutDir, IdInterfaceWriter.GetFileName(settings.Schema, false), PartialModelInterfaceGenerator.GetUserPartial(settings.Schema, settings.AppNamespace + ".Models"), false);
-                        }
-                        else
-                        {
-                            DeleteFile(settings.AppOutDir, IdInterfaceWriter.GetFileName(settings.Schema, true));
-                        }
-                        WriteFile(settings.AppOutDir, IdInterfaceWriter.GetFileName(settings.Schema, settings.CreateGeneratedFiles), IdInterfaceWriter.Create(settings.Schema, settings.AppNamespace), true);
-                    }
-
                     //Entity
                     if (settings.Schema.CreateEntity())
                     {
@@ -304,8 +290,6 @@ remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDir
         {
             if (settings.WriteApp)
             {
-                DeleteFile(settings.AppOutDir, IdInterfaceWriter.GetFileName(settings.Schema, false));
-                DeleteFile(settings.AppOutDir, IdInterfaceWriter.GetFileName(settings.Schema, true));
                 DeleteFile(settings.AppOutDir, EntityWriter.GetFileName(settings.Schema, false));
                 DeleteFile(settings.AppOutDir, EntityWriter.GetFileName(settings.Schema, true));
                 foreach (var relationship in settings.Schema.GetRelationshipSettings())

@@ -17,7 +17,7 @@ namespace Test.Database
 
     }
 
-    public partial class ValueEntity : ValueEntityBase, IValue, IValueId, ICreatedModified
+    public partial class ValueEntity : ValueEntityBase, ICreatedModified
     {
         [Key]
         public Guid ValueId { get; set; }

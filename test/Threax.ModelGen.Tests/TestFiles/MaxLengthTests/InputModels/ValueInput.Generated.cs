@@ -12,7 +12,7 @@ using Threax.AspNetCore.Halcyon.Ext.ValueProviders;
 namespace Test.InputModels 
 {
     [HalModel]
-    public partial class ValueInput : IValue
+    public partial class ValueInput
     {
         [MaxLength(350, ErrorMessage = "Info must be less than 350 characters.")]
         public String Info { get; set; }

@@ -67,7 +67,12 @@ namespace Test.Tests
         }
 
 
-        public static void AssertEqual(IValue expected, IValue actual)
+        public static void AssertEqual(ValueInput expected, ValueEntity actual)
+        {
+        }
+
+
+        public static void AssertEqual(ValueEntity expected, Value actual)
         {
         }
 

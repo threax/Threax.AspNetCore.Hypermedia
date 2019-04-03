@@ -42,7 +42,13 @@ namespace Test.Tests
         }
 
 
-        public static void AssertEqual(IRight expected, IRight actual)
+        public static void AssertEqual(RightInput expected, RightEntity actual)
+        {
+           Assert.Equal(expected.Info, actual.Info);
+        }
+
+
+        public static void AssertEqual(RightEntity expected, Right actual)
         {
            Assert.Equal(expected.Info, actual.Info);
         }

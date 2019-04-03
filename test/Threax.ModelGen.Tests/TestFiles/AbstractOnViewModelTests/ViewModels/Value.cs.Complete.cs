@@ -23,7 +23,7 @@ namespace Test.ViewModels
     [HalSelfActionLink(typeof(ValuesController), nameof(ValuesController.Get))]
     [HalActionLink(typeof(ValuesController), nameof(ValuesController.Update))]
     [HalActionLink(typeof(ValuesController), nameof(ValuesController.Delete))]
-    public partial class Value : ValueBase, IValue, IValueId, ICreatedModified
+    public partial class Value : ValueBase, ICreatedModified
     {
         public Guid ValueId { get; set; }
 

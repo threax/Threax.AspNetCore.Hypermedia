@@ -48,7 +48,15 @@ namespace Test.Tests
         }
 
 
-        public static void AssertEqual(IValue expected, IValue actual)
+        public static void AssertEqual(ValueInput expected, ValueEntity actual)
+        {
+           Assert.Equal(expected.NormalName, actual.NormalName);
+           Assert.Equal(expected.CAPSName, actual.CAPSName);
+           Assert.Equal(expected.ALLCAPS, actual.ALLCAPS);
+        }
+
+
+        public static void AssertEqual(ValueEntity expected, Value actual)
         {
            Assert.Equal(expected.NormalName, actual.NormalName);
            Assert.Equal(expected.CAPSName, actual.CAPSName);

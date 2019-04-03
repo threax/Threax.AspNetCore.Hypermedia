@@ -108,7 +108,35 @@ namespace Test.Tests
         }
 
 
-        public static void AssertEqual(IValue expected, IValue actual)
+        public static void AssertEqual(ValueInput expected, ValueEntity actual)
+        {
+           Assert.Equal(expected.Checkbox, actual.Checkbox);
+           Assert.Equal(expected.CheckboxSelectAll, actual.CheckboxSelectAll);
+           Assert.Equal(expected.DateOnly, actual.DateOnly);
+           Assert.Equal(expected.Hidden, actual.Hidden);
+           Assert.Equal(expected.Password, actual.Password);
+           Assert.Equal(expected.Select, actual.Select);
+           Assert.Equal(expected.TextArea, actual.TextArea);
+           Assert.Equal(expected.Text, actual.Text);
+           Assert.Equal(expected.TextAutocomplete, actual.TextAutocomplete);
+           Assert.Equal(expected.DateTimeWithTimezones, actual.DateTimeWithTimezones);
+           Assert.Equal(expected.DateTimeWithDataTimezone, actual.DateTimeWithDataTimezone);
+           Assert.Equal(expected.DateTimeWithNoTimezone, actual.DateTimeWithNoTimezone);
+           Assert.Equal(expected.CustomType, actual.CustomType);
+           Assert.Equal(expected.CheckboxOverride, actual.CheckboxOverride);
+           Assert.Equal(expected.DateOnlyOverride, actual.DateOnlyOverride);
+           Assert.Equal(expected.HiddenOverride, actual.HiddenOverride);
+           Assert.Equal(expected.PasswordOverride, actual.PasswordOverride);
+           Assert.Equal(expected.SelectOverride, actual.SelectOverride);
+           Assert.Equal(expected.TextAreaOverride, actual.TextAreaOverride);
+           Assert.Equal(expected.TextOverride, actual.TextOverride);
+           Assert.Equal(expected.CustomTypeOverride, actual.CustomTypeOverride);
+           Assert.Equal(expected.CheckboxOverrideSelectAll, actual.CheckboxOverrideSelectAll);
+           Assert.Equal(expected.TextOverrideAutocomplete, actual.TextOverrideAutocomplete);
+        }
+
+
+        public static void AssertEqual(ValueEntity expected, Value actual)
         {
            Assert.Equal(expected.Checkbox, actual.Checkbox);
            Assert.Equal(expected.CheckboxSelectAll, actual.CheckboxSelectAll);

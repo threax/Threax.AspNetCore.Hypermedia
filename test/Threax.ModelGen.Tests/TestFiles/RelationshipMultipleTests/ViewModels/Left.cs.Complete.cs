@@ -17,7 +17,7 @@ namespace Test.ViewModels
     [HalSelfActionLink(typeof(LeftsController), nameof(LeftsController.Get))]
     [HalActionLink(typeof(LeftsController), nameof(LeftsController.Update))]
     [HalActionLink(typeof(LeftsController), nameof(LeftsController.Delete))]
-    public partial class Left : ILeft, ILeftId, ICreatedModified
+    public partial class Left : ICreatedModified
     {
         public Guid LeftId { get; set; }
 

@@ -68,26 +68,6 @@ namespace Threax.ModelGen.Tests
         }
 
         [Fact]
-        public async Task Interface()
-        {
-            TestCode
-            (
-                IdInterfaceWriter.GetFileName(await GetSchema(), false),
-                PartialModelInterfaceGenerator.GetUserPartial(await GetSchema(), AppNamespace + ".Models")
-            );
-        }
-
-        [Fact]
-        public async Task InterfaceGenerated()
-        {
-            TestCode
-            (
-                IdInterfaceWriter.GetFileName(await GetSchema(), true),
-                IdInterfaceWriter.Create(await GetSchema(), AppNamespace)
-            );
-        }
-
-        [Fact]
         public async Task Entity()
         {
             TestCode
