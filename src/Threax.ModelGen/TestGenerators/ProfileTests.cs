@@ -29,7 +29,6 @@ $@"using AutoMapper;
 using {ns}.Database;
 using {ns}.ViewModels;
 using {ns}.Mappers;
-using {ns}.Models;
 using System;
 using Threax.AspNetCore.Tests;
 using Xunit;{additionalNs}

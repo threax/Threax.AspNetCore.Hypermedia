@@ -52,8 +52,7 @@ $@"    public partial class {a.Name}{InterfaceListBuilder.Build(interfaces)}
                 )
             {
                 AdditionalUsings =
-$@"using {ns}.Models;
-using {ns}.Controllers.Api;
+$@"using {ns}.Controllers.Api;
 using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
 + schema.GetExtraNamespaces(StrConstants.FileNewline)
             };
@@ -183,7 +182,6 @@ using System.Threading.Tasks;
 using Halcyon.HAL.Attributes;
 using Threax.AspNetCore.Halcyon.Ext;
 using Threax.AspNetCore.Models;
-using {ns}.Models;
 using {ns}.Controllers.Api;{additionalNs}
 
 namespace {ns}.ViewModels

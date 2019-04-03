@@ -28,7 +28,6 @@ namespace Threax.ModelGen.TestGenerators
 $@"using {ns}.Database;
 using {ns}.InputModels;
 using {ns}.Repository;
-using {ns}.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

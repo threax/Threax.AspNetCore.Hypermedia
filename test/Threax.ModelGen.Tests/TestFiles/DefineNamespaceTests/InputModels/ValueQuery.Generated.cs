@@ -1,6 +1,5 @@
 using Halcyon.HAL.Attributes;
 using Test.Controllers;
-using Test.Models;
 using Test.Database;
 using System;
 using System.Collections.Generic;
@@ -16,7 +15,7 @@ using Can.Be.Multiline;
 namespace Test.InputModels
 {
     [HalModel]
-    public partial class ValueQuery : PagedCollectionQuery, IValueQuery
+    public partial class ValueQuery : PagedCollectionQuery
     {
         /// <summary>
         /// Lookup a value by id.

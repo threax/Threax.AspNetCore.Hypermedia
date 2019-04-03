@@ -2,7 +2,6 @@ using AutoMapper;
 using Test.Database;
 using Test.InputModels;
 using Test.Repository;
-using Test.Models;
 using Test.ViewModels;
 using Test.Mappers;
 using System;

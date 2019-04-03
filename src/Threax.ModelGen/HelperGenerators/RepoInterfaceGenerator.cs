@@ -29,7 +29,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using {ns}.InputModels;
 using {ns}.ViewModels;
-using {ns}.Models;
 using Threax.AspNetCore.Halcyon.Ext;
 
 namespace {ns}.Repository

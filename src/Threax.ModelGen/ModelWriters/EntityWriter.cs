@@ -47,9 +47,7 @@ $@"    public partial class {a.Name}Entity{InterfaceListBuilder.Build(interfaces
                 }
                 )
             {
-                AdditionalUsings =
-$@"using {ns}.Models;"
-+ schema.GetExtraNamespaces(StrConstants.FileNewline)
+                AdditionalUsings = schema.GetExtraNamespaces(StrConstants.FileNewline)
             };
             return ModelTypeGenerator.Create(schema, schema.GetPluralName(), mainWriter, ns, ns + ".Database",
                 allowPropertyCallback: AllowProperty,

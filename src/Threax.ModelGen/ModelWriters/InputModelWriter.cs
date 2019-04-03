@@ -44,8 +44,7 @@ namespace Threax.ModelGen
                     );
                 })
             {
-                AdditionalUsings = $@"using {ns}.Models;
-using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
+                AdditionalUsings = $@"using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
 + schema.GetExtraNamespaces(StrConstants.FileNewline)
             };
 

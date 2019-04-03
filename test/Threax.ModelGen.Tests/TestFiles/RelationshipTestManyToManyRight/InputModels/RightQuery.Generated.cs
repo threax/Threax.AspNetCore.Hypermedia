@@ -1,6 +1,5 @@
 using Halcyon.HAL.Attributes;
 using Test.Controllers;
-using Test.Models;
 using Test.Database;
 using System;
 using System.Collections.Generic;
@@ -14,7 +13,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Test.InputModels
 {
     [HalModel]
-    public partial class RightQuery : PagedCollectionQuery, IRightQuery
+    public partial class RightQuery : PagedCollectionQuery
     {
         /// <summary>
         /// Lookup a right by id.

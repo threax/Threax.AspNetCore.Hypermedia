@@ -28,7 +28,6 @@ namespace Threax.ModelGen.TestGenerators
 $@"using {ns}.Controllers.Api;
 using {ns}.InputModels;
 using {ns}.Repository;
-using {ns}.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;

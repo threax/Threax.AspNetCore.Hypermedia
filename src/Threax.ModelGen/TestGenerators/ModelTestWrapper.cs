@@ -48,7 +48,6 @@ $@"using AutoMapper;
 using {ns}.Database;
 using {ns}.InputModels;
 using {ns}.Repository;
-using {ns}.Models;
 using {ns}.ViewModels;
 using {ns}.Mappers;
 using System;

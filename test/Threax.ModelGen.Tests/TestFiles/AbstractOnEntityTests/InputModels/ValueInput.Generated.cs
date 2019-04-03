@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Halcyon.HAL.Attributes;
 using Threax.AspNetCore.Halcyon.Ext;
 using Threax.AspNetCore.Models;
-using Test.Models;
 using Threax.AspNetCore.Halcyon.Ext.ValueProviders;
 
 namespace Test.InputModels 

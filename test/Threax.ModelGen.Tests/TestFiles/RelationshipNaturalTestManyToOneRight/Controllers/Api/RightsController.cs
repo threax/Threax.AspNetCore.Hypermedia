@@ -7,7 +7,6 @@ using Test.Repository;
 using Threax.AspNetCore.Halcyon.Ext;
 using Test.ViewModels;
 using Test.InputModels;
-using Test.Models;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Test.Controllers.Api

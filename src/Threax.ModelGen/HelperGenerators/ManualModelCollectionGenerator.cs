@@ -70,7 +70,6 @@ $@"        public {info.ClrType}{QueryPropertiesWriter.CreateQueryNullable(info)
             return
 $@"using Halcyon.HAL.Attributes;
 using {ns}.Controllers.Api;
-using {ns}.Models;
 using {ns}.InputModels;
 using System;
 using System.Collections.Generic;
@@ -122,7 +121,6 @@ namespace {ns}.ViewModels
             return
 $@"using Halcyon.HAL.Attributes;
 using {ns}.Controllers.Api;
-using {ns}.Models;
 using {ns}.InputModels;
 using System;
 using System.Collections.Generic;

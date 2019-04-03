@@ -31,7 +31,6 @@ using Microsoft.EntityFrameworkCore;
 using {ns}.Database;
 using {ns}.InputModels;
 using {ns}.ViewModels;
-using {ns}.Models;
 using {ns}.Mappers;
 using System;
 using System.Collections.Concurrent;

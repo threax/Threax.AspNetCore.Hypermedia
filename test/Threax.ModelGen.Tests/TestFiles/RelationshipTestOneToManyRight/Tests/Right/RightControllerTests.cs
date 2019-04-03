@@ -1,7 +1,6 @@
 using Test.Controllers.Api;
 using Test.InputModels;
 using Test.Repository;
-using Test.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
