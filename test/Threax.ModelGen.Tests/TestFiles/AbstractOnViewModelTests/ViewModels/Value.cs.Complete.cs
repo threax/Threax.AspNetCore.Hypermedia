@@ -7,7 +7,6 @@ using Halcyon.HAL.Attributes;
 using Threax.AspNetCore.Halcyon.Ext;
 using Threax.AspNetCore.Models;
 using Threax.AspNetCore.Tracking;
-using Test.Models;
 using Test.Controllers.Api;
 using Threax.AspNetCore.Halcyon.Ext.ValueProviders;
 
@@ -23,7 +22,7 @@ namespace Test.ViewModels
     [HalSelfActionLink(typeof(ValuesController), nameof(ValuesController.Get))]
     [HalActionLink(typeof(ValuesController), nameof(ValuesController.Update))]
     [HalActionLink(typeof(ValuesController), nameof(ValuesController.Delete))]
-    public partial class Value : ValueBase, IValue, IValueId, ICreatedModified
+    public partial class Value : ValueBase, ICreatedModified
     {
         public Guid ValueId { get; set; }
 

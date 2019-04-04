@@ -7,11 +7,10 @@ using Halcyon.HAL.Attributes;
 using Threax.AspNetCore.Halcyon.Ext;
 using Threax.AspNetCore.Models;
 using Threax.AspNetCore.Tracking;
-using Test.Models;
 
 namespace Test.Database 
 {
-    public partial class LeftEntity : ILeft, ILeftId, ICreatedModified
+    public partial class LeftEntity : ICreatedModified
     {
         [Key]
         public Guid LeftId { get; set; }

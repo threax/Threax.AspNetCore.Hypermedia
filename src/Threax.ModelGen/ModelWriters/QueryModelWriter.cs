@@ -66,7 +66,6 @@ namespace Threax.ModelGen
             var result = 
 $@"using Halcyon.HAL.Attributes;
 using {ns}.Controllers;
-using {ns}.Models;
 using {ns}.Database;
 using System;
 using System.Collections.Generic;
@@ -80,7 +79,7 @@ using System.ComponentModel.DataAnnotations;{additionalNs}
 namespace {ns}.InputModels
 {{{baseClass}
     [HalModel]
-    public partial class {Model}Query : {baseClassName}, I{Model}Query
+    public partial class {Model}Query : {baseClassName}
     {{
         /// <summary>
         /// Lookup a {model} by id.

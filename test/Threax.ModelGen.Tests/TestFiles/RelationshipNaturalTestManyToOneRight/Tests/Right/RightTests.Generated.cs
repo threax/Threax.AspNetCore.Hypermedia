@@ -2,7 +2,6 @@ using AutoMapper;
 using Test.Database;
 using Test.InputModels;
 using Test.Repository;
-using Test.Models;
 using Test.ViewModels;
 using System;
 using Threax.AspNetCore.Tests;
@@ -21,7 +20,6 @@ namespace Test.Tests
             };
         }
 
-
         public static RightEntity CreateEntity(String seed = "", Guid? RightId = default(Guid?), String Info = default(String))
         {
             return new RightEntity()
@@ -30,7 +28,6 @@ namespace Test.Tests
                 Info = Info != null ? Info : $"Info {seed}",
             };
         }
-
 
         public static Right CreateView(String seed = "", Guid? RightId = default(Guid?), String Info = default(String))
         {
@@ -41,8 +38,12 @@ namespace Test.Tests
             };
         }
 
+        public static void AssertEqual(RightInput expected, RightEntity actual)
+        {
+           Assert.Equal(expected.Info, actual.Info);
+        }
 
-        public static void AssertEqual(IRight expected, IRight actual)
+        public static void AssertEqual(RightEntity expected, Right actual)
         {
            Assert.Equal(expected.Info, actual.Info);
         }

@@ -6,13 +6,23 @@ namespace Threax.ModelGen.TestGenerators
 {
     class ModelEqualityAssert : ITypeWriter
     {
+        private Func<IWriterPropertyInfo, bool> compareProperties;
+        private String expectedSuffix;
+        private String actualSuffix;
         private String className;
+
+        public ModelEqualityAssert(Func<IWriterPropertyInfo, bool> compareProperties, String expectedSuffix, String actualSuffix)
+        {
+            this.compareProperties = compareProperties;
+            this.expectedSuffix = expectedSuffix;
+            this.actualSuffix = actualSuffix;
+        }
 
         public void StartType(StringBuilder sb, string name, string pluralName)
         {
             this.className = name;
             sb.AppendLine( 
-$@"        public static void AssertEqual(I{name} expected, I{name} actual)
+$@"        public static void AssertEqual({name}{expectedSuffix} expected, {name}{actualSuffix} actual)
         {{"
             );
         }
@@ -24,17 +34,9 @@ $@"        public static void AssertEqual(I{name} expected, I{name} actual)
 
         public void CreateProperty(StringBuilder sb, string name, IWriterPropertyInfo info)
         {
-            if (info.OnAllModelTypes)
+            if (this.compareProperties(info))
             {
                 sb.AppendLine($"           Assert.Equal(expected.{name}, actual.{name});");
-            }
-            else
-            {
-                var propInterface = IdInterfaceWriter.GetPropertyInterfaceName(className, name);
-                sb.AppendLine($"           if(expected is {propInterface} && actual is {propInterface})");
-                sb.AppendLine($"           {{");
-                sb.AppendLine($"               Assert.Equal((expected as {propInterface}).{name}, (actual as {propInterface}).{name});");
-                sb.AppendLine($"           }}");
             }
         }
 

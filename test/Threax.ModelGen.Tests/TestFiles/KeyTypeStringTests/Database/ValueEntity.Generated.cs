@@ -7,11 +7,10 @@ using Halcyon.HAL.Attributes;
 using Threax.AspNetCore.Halcyon.Ext;
 using Threax.AspNetCore.Models;
 using Threax.AspNetCore.Tracking;
-using Test.Models;
 
 namespace Test.Database 
 {
-    public partial class ValueEntity : IValue, IValueId, ICreatedModified
+    public partial class ValueEntity : ICreatedModified
     {
         [Key]
         public String ValueId { get; set; }

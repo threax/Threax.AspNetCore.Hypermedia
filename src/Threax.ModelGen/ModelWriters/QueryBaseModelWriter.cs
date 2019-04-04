@@ -51,7 +51,11 @@ namespace Threax.ModelGen.ModelWriters
 
             public int? Order => wrapped.Order;
 
-            public bool OnAllModelTypes => wrapped.OnAllModelTypes;
+            public bool OnInputModel => wrapped.OnInputModel;
+
+            public bool OnEntity => wrapped.OnEntity;
+
+            public bool OnViewModel => wrapped.OnViewModel;
 
             public string NullValueLabel => wrapped.NullValueLabel;
 

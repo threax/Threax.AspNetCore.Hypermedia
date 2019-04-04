@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Test.InputModels;
 using Test.ViewModels;
-using Test.Models;
 using Threax.AspNetCore.Halcyon.Ext;
 
 namespace Test.Repository

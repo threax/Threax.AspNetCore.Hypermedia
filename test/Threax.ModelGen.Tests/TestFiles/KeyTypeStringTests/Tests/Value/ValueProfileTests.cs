@@ -2,7 +2,6 @@ using AutoMapper;
 using Test.Database;
 using Test.ViewModels;
 using Test.Mappers;
-using Test.Models;
 using System;
 using Threax.AspNetCore.Tests;
 using Xunit;

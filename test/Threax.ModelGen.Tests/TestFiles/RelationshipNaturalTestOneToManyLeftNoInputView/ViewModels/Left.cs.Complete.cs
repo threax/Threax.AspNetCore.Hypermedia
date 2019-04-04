@@ -7,7 +7,6 @@ using Halcyon.HAL.Attributes;
 using Threax.AspNetCore.Halcyon.Ext;
 using Threax.AspNetCore.Models;
 using Threax.AspNetCore.Tracking;
-using Test.Models;
 using Test.Controllers.Api;
 using Threax.AspNetCore.Halcyon.Ext.ValueProviders;
 
@@ -17,7 +16,7 @@ namespace Test.ViewModels
     [HalSelfActionLink(typeof(LeftsController), nameof(LeftsController.Get))]
     [HalActionLink(typeof(LeftsController), nameof(LeftsController.Update))]
     [HalActionLink(typeof(LeftsController), nameof(LeftsController.Delete))]
-    public partial class Left : ILeft, ILeftId, ICreatedModified
+    public partial class Left : ICreatedModified
     {
         public Guid LeftId { get; set; }
 

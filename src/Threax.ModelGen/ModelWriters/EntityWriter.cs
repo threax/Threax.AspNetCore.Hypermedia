@@ -35,7 +35,6 @@ namespace Threax.ModelGen
                 a =>
                 {
                     var interfaces = new String[] { a.BaseClassName, }
-                        .Concat(IdInterfaceWriter.GetInterfaces(schema, true, p => !p.OnAllModelTypes() && p.CreateEntity()))
                         .Concat(a.Writer.GetAdditionalInterfaces());
 
                     a.Builder.AppendLine(
@@ -48,9 +47,7 @@ $@"    public partial class {a.Name}Entity{InterfaceListBuilder.Build(interfaces
                 }
                 )
             {
-                AdditionalUsings =
-$@"using {ns}.Models;"
-+ schema.GetExtraNamespaces(StrConstants.FileNewline)
+                AdditionalUsings = schema.GetExtraNamespaces(StrConstants.FileNewline)
             };
             return ModelTypeGenerator.Create(schema, schema.GetPluralName(), mainWriter, ns, ns + ".Database",
                 allowPropertyCallback: AllowProperty,

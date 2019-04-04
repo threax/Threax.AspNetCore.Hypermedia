@@ -7,13 +7,12 @@ using Halcyon.HAL.Attributes;
 using Threax.AspNetCore.Halcyon.Ext;
 using Threax.AspNetCore.Models;
 using Threax.AspNetCore.Tracking;
-using Test.Models;
 using Test.Controllers.Api;
 using Threax.AspNetCore.Halcyon.Ext.ValueProviders;
 
 namespace Test.ViewModels 
 {
-    public partial class Value : IValue, IValueId, ICreatedModified
+    public partial class Value : ICreatedModified
     {
         public Guid CrazyKey { get; set; }
 

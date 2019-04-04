@@ -2,7 +2,6 @@ using AutoMapper;
 using Test.Database;
 using Test.InputModels;
 using Test.Repository;
-using Test.Models;
 using Test.ViewModels;
 using System;
 using Threax.AspNetCore.Tests;
@@ -23,7 +22,6 @@ namespace Test.Tests
             };
         }
 
-
         public static ValueEntity CreateEntity(String seed = "", Guid? ValueId = default(Guid?), int NormalName = default(int), int CAPSName = default(int), int ALLCAPS = default(int))
         {
             return new ValueEntity()
@@ -34,7 +32,6 @@ namespace Test.Tests
                 ALLCAPS = ALLCAPS,
             };
         }
-
 
         public static Value CreateView(String seed = "", Guid? ValueId = default(Guid?), int NormalName = default(int), int CAPSName = default(int), int ALLCAPS = default(int))
         {
@@ -47,8 +44,14 @@ namespace Test.Tests
             };
         }
 
+        public static void AssertEqual(ValueInput expected, ValueEntity actual)
+        {
+           Assert.Equal(expected.NormalName, actual.NormalName);
+           Assert.Equal(expected.CAPSName, actual.CAPSName);
+           Assert.Equal(expected.ALLCAPS, actual.ALLCAPS);
+        }
 
-        public static void AssertEqual(IValue expected, IValue actual)
+        public static void AssertEqual(ValueEntity expected, Value actual)
         {
            Assert.Equal(expected.NormalName, actual.NormalName);
            Assert.Equal(expected.CAPSName, actual.CAPSName);

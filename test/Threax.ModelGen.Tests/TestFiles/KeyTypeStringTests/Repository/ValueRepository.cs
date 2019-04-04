@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Test.Database;
 using Test.InputModels;
 using Test.ViewModels;
-using Test.Models;
 using Test.Mappers;
 using System;
 using System.Collections.Concurrent;
@@ -31,9 +30,9 @@ namespace Test.Repository
 
             var total = await dbQuery.CountAsync();
             dbQuery = dbQuery.Skip(query.SkipTo(total)).Take(query.Limit);
-            var results = await dbQuery.ToListAsync();
+            var results = await mapper.ProjectValue(dbQuery).ToListAsync();
 
-            return new ValueCollection(query, total, results.Select(i => mapper.MapValue(i, new Value())));
+            return new ValueCollection(query, total, results);
         }
 
         public async Task<Value> Get(String valueId)

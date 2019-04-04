@@ -43,7 +43,6 @@ namespace Threax.ModelGen
             var result =
 $@"using Halcyon.HAL.Attributes;
 using {ns}.Controllers.Api;
-using {ns}.Models;
 using {ns}.InputModels;
 using System;
 using System.Collections.Generic;

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Halcyon.HAL.Attributes;
 using Threax.AspNetCore.Halcyon.Ext;
 using Threax.AspNetCore.Models;
-using Test.Models;
 using Threax.AspNetCore.Halcyon.Ext.ValueProviders;
 using An.Extra.Namespace;
 using Can.Be.Multiline;
@@ -14,7 +13,7 @@ using Can.Be.Multiline;
 namespace Test.InputModels 
 {
     [HalModel]
-    public partial class ValueInput : IValue
+    public partial class ValueInput
     {
     }
 }

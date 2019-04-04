@@ -36,7 +36,6 @@ namespace Threax.ModelGen
                 a =>
                 {
                     var interfaces = new String[] { a.BaseClassName, }
-                        .Concat(IdInterfaceWriter.GetInterfaces(schema, false, p => !p.OnAllModelTypes() && p.CreateInputModel()))
                         .Concat(a.Writer.GetAdditionalInterfaces());
 
                     a.Builder.AppendLine(
@@ -45,8 +44,7 @@ namespace Threax.ModelGen
                     );
                 })
             {
-                AdditionalUsings = $@"using {ns}.Models;
-using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
+                AdditionalUsings = $@"using Threax.AspNetCore.Halcyon.Ext.ValueProviders;"
 + schema.GetExtraNamespaces(StrConstants.FileNewline)
             };
 

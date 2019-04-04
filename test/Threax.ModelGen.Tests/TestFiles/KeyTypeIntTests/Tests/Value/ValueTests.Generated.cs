@@ -2,7 +2,6 @@ using AutoMapper;
 using Test.Database;
 using Test.InputModels;
 using Test.Repository;
-using Test.Models;
 using Test.ViewModels;
 using System;
 using Threax.AspNetCore.Tests;
@@ -19,7 +18,6 @@ namespace Test.Tests
             {
             };
         }
-
 
         private static Int32 currentEntityId = 0;
         private static Object entityIdLock = new Object();
@@ -43,7 +41,6 @@ namespace Test.Tests
             };
         }
 
-
         private static Int32 currentViewModelId = 0;
         private static Object viewModelIdLock = new Object();
         private static Int32 GetNextId()
@@ -66,8 +63,11 @@ namespace Test.Tests
             };
         }
 
+        public static void AssertEqual(ValueInput expected, ValueEntity actual)
+        {
+        }
 
-        public static void AssertEqual(IValue expected, IValue actual)
+        public static void AssertEqual(ValueEntity expected, Value actual)
         {
         }
 

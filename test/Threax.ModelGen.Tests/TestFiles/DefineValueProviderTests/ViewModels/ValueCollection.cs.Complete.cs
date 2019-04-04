@@ -1,6 +1,5 @@
 using Halcyon.HAL.Attributes;
 using Test.Controllers.Api;
-using Test.Models;
 using Test.InputModels;
 using System;
 using System.Collections.Generic;

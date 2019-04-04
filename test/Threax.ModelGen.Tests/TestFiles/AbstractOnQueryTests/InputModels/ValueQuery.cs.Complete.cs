@@ -1,6 +1,5 @@
 using Halcyon.HAL.Attributes;
 using Test.Controllers;
-using Test.Models;
 using Test.Database;
 using System;
 using System.Collections.Generic;
@@ -23,7 +22,7 @@ namespace Test.InputModels
 
 
     [HalModel]
-    public partial class ValueQuery : ValueQueryBase, IValueQuery
+    public partial class ValueQuery : ValueQueryBase
     {
         /// <summary>
         /// Lookup a value by id.
