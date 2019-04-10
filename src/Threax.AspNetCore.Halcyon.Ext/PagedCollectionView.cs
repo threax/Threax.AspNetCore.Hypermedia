@@ -124,7 +124,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
         /// <summary>
         /// This function can be overwritten to add any additional custom query strings needed
-        /// to the query url. The base class version just returns url, so there is no need to 
+        /// to the query url. The base class version does nothing, so there is no need to 
         /// call it from your subclass.
         /// </summary>
         /// <param name="rel">The input rel.</param>

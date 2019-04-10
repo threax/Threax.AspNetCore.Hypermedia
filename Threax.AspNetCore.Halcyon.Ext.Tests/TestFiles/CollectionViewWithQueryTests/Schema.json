@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "TestCollection",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "optionalGuid": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "format": "guid"
+    },
+    "anInt": {
+      "type": "integer",
+      "format": "int32"
+    },
+    "fancyString": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "preTest": {
+      "type": [
+        "null",
+        "string"
+      ]
+    }
+  }
+}

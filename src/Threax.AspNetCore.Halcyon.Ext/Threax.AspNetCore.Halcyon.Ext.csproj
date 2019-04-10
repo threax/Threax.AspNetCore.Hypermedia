@@ -6,7 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Threax.AspNetCore.Halcyon.Ext</AssemblyName>
     <PackageId>Threax.AspNetCore.Halcyon.Ext</PackageId>
-    <Version>12.6.3</Version>
+    <Version>12.7.0-pre01</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
@@ -14,12 +14,7 @@
     <PackageLicenseUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</PackageProjectUrl>
     <RepositoryUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</RepositoryUrl>
-    <PackageReleaseNotes>
-      Proper support for HalEmbedded attribute.
-      12.6.1 - Rebuild package.
-      12.6.2 - Url encode variables written to links.
-      12.6.3 - Don't url encode, caused double encoding errors.
-    </PackageReleaseNotes>
+    <PackageReleaseNotes>Added a CollectionViewWithQuery class that works like the paged version, but doesn't have page numbers.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
