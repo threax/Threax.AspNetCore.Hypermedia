@@ -30,15 +30,15 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
         public override void OnResultExecuting(ResultExecutingContext context)
         {
-            //Controller must extend ControllerBase
-            if (!(context.Controller is ControllerBase))
-            {
-                throw new InvalidOperationException($"Controller {context.Controller.GetType().FullName} does not extend ControllerBase or Controller. It must do this to work with hal.");
-            }
-
             var objResult = context.Result as ObjectResult;
             if (objResult != null)
             {
+                //Controller must extend ControllerBase
+                if (!(context.Controller is ControllerBase))
+                {
+                    throw new InvalidOperationException($"Controller {context.Controller.GetType().FullName} does not extend ControllerBase or Controller. It must do this to work with hal.");
+                }
+
                 HALResponse halResponse = objResult.Value as HALResponse;
                 if(halResponse == null && !(objResult.Value is String))
                 {
