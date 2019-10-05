@@ -13,6 +13,9 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using NJsonSchema.Generation;
 using NJsonSchema;
 using Threax.AspNetCore.Halcyon.Ext.ValueProviders;
+#if NETCOREAPP3_0
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
+#endif
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -100,7 +103,11 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             mvcOptions.RespectBrowserAcceptHeader = true;
             var mediaTypes = new string[] { ProducesHalAttribute.MediaType };
-            var outputFormatter = new JsonHalOutputFormatter(options.JsonSerializerSettings, mediaTypes);
+            var outputFormatter = new JsonHalOutputFormatter(options.JsonSerializerSettings
+#if NETCOREAPP3_0
+            , mvcOptions
+#endif
+            , mediaTypes);
             mvcOptions.OutputFormatters.Add(outputFormatter);
             if (options.MakeAllControllersHalcyon)
             {
