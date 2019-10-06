@@ -6,15 +6,15 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Threax.AspNetCore.Halcyon.Client</AssemblyName>
     <PackageId>Threax.AspNetCore.Halcyon.Client</PackageId>
-    <Version>7.1.0</Version>
+    <Version>7.1.1-pre01</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
     <Authors>Andrew Piper</Authors>
     <PackageProjectUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</PackageProjectUrl>
     <RepositoryUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</RepositoryUrl>
-    <PackageLicenseUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageReleaseNotes>7.1.0 - Updated to no longer use deprecated functions. Improved error messages when logging in to client credentials.</PackageReleaseNotes>
+    <PackageReleaseNotes>7.1.1 - Send application/json+halcyon as accept type. Fixes issues with .net core 3.0.</PackageReleaseNotes>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>

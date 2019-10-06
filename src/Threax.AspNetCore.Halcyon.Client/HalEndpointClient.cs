@@ -315,17 +315,7 @@ namespace Threax.AspNetCore.Halcyon.Client
 
             try
             {
-                var httpClient = clientFactory.GetClient();
-                endpointResult.Request = await clientFactory.GetRequestMessage();
-                endpointResult.Request.Method = new HttpMethod(link.Method);
-                var uriBuilder = new UriBuilder(link.Href);
-
-                if (query != null)
-                {
-                    uriBuilder.Query = QueryBuilder.BuildQueryString(query);
-                }
-
-                endpointResult.Request.RequestUri = uriBuilder.Uri;
+                HttpClient httpClient = await SetupRequest(query, endpointResult);
 
                 if (data != null)
                 {
@@ -346,22 +336,11 @@ namespace Threax.AspNetCore.Halcyon.Client
         private async Task<RawEndpointResult> LoadWithFormRaw(Object data, Object query)
         {
             var endpointResult = new RawEndpointResult();
+            endpointResult.FormData = new MultipartFormDataContent();
 
             try
             {
-                var httpClient = clientFactory.GetClient();
-                endpointResult.Request = await clientFactory.GetRequestMessage();
-                endpointResult.FormData = new MultipartFormDataContent();
-
-                endpointResult.Request.Method = new HttpMethod(link.Method);
-                var uriBuilder = new UriBuilder(link.Href);
-
-                if (query != null)
-                {
-                    uriBuilder.Query = QueryBuilder.BuildQueryString(query);
-                }
-
-                endpointResult.Request.RequestUri = uriBuilder.Uri;
+                HttpClient httpClient = await SetupRequest(query, endpointResult);
 
                 if (data != null)
                 {
@@ -377,6 +356,23 @@ namespace Threax.AspNetCore.Halcyon.Client
                 endpointResult.Dispose(); //If there are any errors, dispose the result and rethrow
                 throw;
             }
+        }
+
+        private async Task<HttpClient> SetupRequest(object query, RawEndpointResult endpointResult)
+        {
+            var httpClient = clientFactory.GetClient();
+            endpointResult.Request = await clientFactory.GetRequestMessage();
+            endpointResult.Request.Method = new HttpMethod(link.Method);
+            var uriBuilder = new UriBuilder(link.Href);
+
+            if (query != null)
+            {
+                uriBuilder.Query = QueryBuilder.BuildQueryString(query);
+            }
+
+            endpointResult.Request.RequestUri = uriBuilder.Uri;
+            endpointResult.Request.Headers.Add("Accept", "application/json+halcyon");
+            return httpClient;
         }
 
         private async Task HandleResponse(HttpResponseMessage response)
