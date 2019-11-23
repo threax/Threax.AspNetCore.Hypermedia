@@ -2,16 +2,17 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp2.1;net471</TargetFrameworks>
-    <PackageType>DotNetCliTool</PackageType>
+    <TargetFrameworks>netcoreapp3.0</TargetFrameworks>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>threax-modelgen</ToolCommandName>
     <AssemblyName>dotnet-threax-modelgen</AssemblyName>
     <PackageId>Threax.ModelGen</PackageId>
-    <Version>11.1.0</Version>
+    <Version>12.0.0-pre01</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Andrew Piper</Authors>
     <PackageProjectUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</PackageProjectUrl>
     <RepositoryUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</RepositoryUrl>
-    <PackageReleaseNotes>Use the automapper project method when listing.</PackageReleaseNotes>
+    <PackageReleaseNotes>Updated to .net core 3.0.</PackageReleaseNotes>
   </PropertyGroup>
   
   <ItemGroup>
@@ -21,27 +22,7 @@
     <PackageReference Include="NJsonSchema" Version="9.10.10" />
     <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
     <PackageReference Include="System.Text.Encoding.Extensions" Version="4.3.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">
     <ProjectReference Include="..\Threax.AspNetCore.Models\Threax.AspNetCore.Models.csproj" />
   </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net471' ">
-    <ProjectReference Include="..\Threax.AspNetCore.Models\Threax.AspNetCore.Models.csproj">
-      <IncludeAssets>All</IncludeAssets>
-    </ProjectReference>
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net471' ">
-    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeFullFrameworkDependencies</TargetsForTfmSpecificBuildOutput>
-  </PropertyGroup>
-
-  <Target Name="IncludeFullFrameworkDependencies">
-    <ItemGroup>
-      <BuildOutputInPackage Include="$(OutputPath)*.dll" />
-    </ItemGroup>
-  </Target>
   
 </Project>
