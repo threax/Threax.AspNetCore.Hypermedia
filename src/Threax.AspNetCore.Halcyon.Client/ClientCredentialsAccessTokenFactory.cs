@@ -24,7 +24,7 @@ namespace Threax.AspNetCore.Halcyon.Client
     {
         private BearerHttpClientFactory<TRef> next;
         private DateTime jwtExpiration;
-        private DiscoveryResponse discoveryClient;
+        private DiscoveryDocumentResponse discoveryClient;
         private ClientCredentailsAccessTokenFactoryOptions options;
         private SemaphoreSlim refreshLocker = new SemaphoreSlim(1, 1);
 
