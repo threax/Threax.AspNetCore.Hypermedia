@@ -2,7 +2,7 @@
 
 namespace Threax.AspNetCore.Halcyon.Client
 {
-    public interface IHalcyonClientSetup
+    public interface IHalcyonClientSetup<T>
     {
         IServiceCollection Services { get; }
     }

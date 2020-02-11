@@ -14,7 +14,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">The service collection.</param>
         /// <param name="configure">The configure callback.</param>
         /// <returns></returns>
-        public static IHalcyonClientSetup SetupHttpClientFactoryWithClientCredentials<T>(this IHalcyonClientSetup halClientSetup, Action<OpenIdConnectClientCredentialsClientOptions> configure)
+        public static IHalcyonClientSetup<T> SetupHttpClientFactoryWithClientCredentials<T>(this IHalcyonClientSetup<T> halClientSetup, Action<OpenIdConnectClientCredentialsClientOptions> configure)
         {
             var options = new OpenIdConnectClientCredentialsClientOptions();
             configure?.Invoke(options);
@@ -37,7 +37,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">The service collection.</param>
         /// <param name="configure">The configure callback.</param>
         /// <returns></returns>
-        public static IHalcyonClientSetup SetupHttpClientFactoryWithUserAccessToken<T>(this IHalcyonClientSetup halClientSetup, Action<OpenIdConnectBearerClientOptions> configure)
+        public static IHalcyonClientSetup<T> SetupHttpClientFactoryWithUserAccessToken<T>(this IHalcyonClientSetup<T> halClientSetup, Action<OpenIdConnectBearerClientOptions> configure)
         {
             var options = new OpenIdConnectBearerClientOptions();
             configure?.Invoke(options);

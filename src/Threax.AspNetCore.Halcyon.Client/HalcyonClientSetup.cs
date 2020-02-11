@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Threax.AspNetCore.Halcyon.Client
 {
-    public class HalcyonClientSetup : IHalcyonClientSetup
+    public class HalcyonClientSetup<T> : IHalcyonClientSetup<T>
     {
         public HalcyonClientSetup(IServiceCollection services)
         {
