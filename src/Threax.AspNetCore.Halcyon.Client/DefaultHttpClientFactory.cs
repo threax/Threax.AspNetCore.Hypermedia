@@ -25,4 +25,9 @@ namespace Threax.AspNetCore.Halcyon.Client
             return Task.FromResult(new HttpRequestMessage());
         }
     }
+
+    public class DefaultHttpClientFactory<T> : DefaultHttpClientFactory, IHttpClientFactory<T>
+    {
+
+    }
 }

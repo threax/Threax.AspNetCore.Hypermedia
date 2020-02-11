@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Threax.AspNetCore.Halcyon.Client
+namespace Threax.AspNetCore.Halcyon.Client.OpenIdConnect
 {
     /// <summary>
     /// Options for the ClientCredentialsAccessTokenFactory

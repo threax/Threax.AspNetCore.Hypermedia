@@ -6,7 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Threax.AspNetCore.Halcyon.Client
+namespace Threax.AspNetCore.Halcyon.Client.OpenIdConnect
 {
     /// <summary>
     /// This http client factory will take an access token from the ClaimsPrincipal. This class will only resolve

@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Threax.AspNetCore.Halcyon.Client
+namespace Threax.AspNetCore.Halcyon.Client.OpenIdConnect
 {
     /// <summary>
     /// This class can be injected with an object to make sure the version set up for
-    /// client credentials is always returned.
+    /// bearer tokens is always returned.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class ClientCredentials<T> : IDisposable
+    public class BearerToken<T> : IDisposable
     {
-        public ClientCredentials(T wrapped)
+        public BearerToken(T wrapped)
         {
             this.Wrapped = wrapped;
         }

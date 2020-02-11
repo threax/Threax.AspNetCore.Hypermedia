@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Threax.AspNetCore.Halcyon.Client
+namespace Threax.AspNetCore.Halcyon.Client.OpenIdConnect
 {
     /// <summary>
     /// Send an access token under a "bearer" (default) or other header. Be careful to only make

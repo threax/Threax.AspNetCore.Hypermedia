@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Threax.AspNetCore.Halcyon.Client;
 
-namespace Threax.AspNetCore.Halcyon.Client
+namespace Threax.AspNetCore.Halcyon.Client.OpenIdConnect
 {
     /// <summary>
     /// This class will forward a header from the incoming request to the HttpRequestMessages it creates.

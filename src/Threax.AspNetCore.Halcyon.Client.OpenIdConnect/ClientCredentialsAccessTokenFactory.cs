@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Threax.SharedHttpClient;
 
-namespace Threax.AspNetCore.Halcyon.Client
+namespace Threax.AspNetCore.Halcyon.Client.OpenIdConnect
 {
     /// <summary>
     /// This factory will lookup client credentials from the id server and use that as the access token

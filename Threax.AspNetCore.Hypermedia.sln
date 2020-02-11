@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EBBC3E56-D59A-447E-8021-DA2D17B6AD50}"
 EndProject
@@ -32,6 +32,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.AspNetCore.Halcyon.Ext.Tests", "Threax.AspNetCore.Halcyon.Ext.Tests\Threax.AspNetCore.Halcyon.Ext.Tests.csproj", "{860881EE-12E3-4F48-B5CA-CC48E5B48336}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Threax.SharedHttpClient", "src\Threax.SharedHttpClient\Threax.SharedHttpClient.csproj", "{49E373A7-6374-4D20-AB1E-1C1F1DF3AFA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Threax.AspNetCore.Halcyon.Client.OpenIdConnect", "src\Threax.AspNetCore.Halcyon.Client.OpenIdConnect\Threax.AspNetCore.Halcyon.Client.OpenIdConnect.csproj", "{1B634F52-70A6-431F-8181-8459818A2B80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +89,10 @@ Global
 		{49E373A7-6374-4D20-AB1E-1C1F1DF3AFA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49E373A7-6374-4D20-AB1E-1C1F1DF3AFA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49E373A7-6374-4D20-AB1E-1C1F1DF3AFA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B634F52-70A6-431F-8181-8459818A2B80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B634F52-70A6-431F-8181-8459818A2B80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B634F52-70A6-431F-8181-8459818A2B80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B634F52-70A6-431F-8181-8459818A2B80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,6 +110,7 @@ Global
 		{129159EF-D56E-487D-88B0-3BA6561D5FA3} = {7F53A428-36B0-4592-B3F6-7B63CCC40986}
 		{860881EE-12E3-4F48-B5CA-CC48E5B48336} = {7F53A428-36B0-4592-B3F6-7B63CCC40986}
 		{49E373A7-6374-4D20-AB1E-1C1F1DF3AFA0} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
+		{1B634F52-70A6-431F-8181-8459818A2B80} = {EBBC3E56-D59A-447E-8021-DA2D17B6AD50}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {432C63C5-4BBE-4AE4-8963-48D7FCCBA395}
