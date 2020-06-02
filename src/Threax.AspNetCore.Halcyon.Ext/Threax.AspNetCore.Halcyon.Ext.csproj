@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NJsonSchema" Version="9.10.49" />
+    <ProjectReference Include="..\Threax.NJsonSchema\Threax.NJsonSchema.csproj" />
   </ItemGroup>
 
 </Project>

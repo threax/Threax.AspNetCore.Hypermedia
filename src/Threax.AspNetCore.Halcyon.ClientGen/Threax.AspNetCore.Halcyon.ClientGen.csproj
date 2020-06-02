@@ -22,12 +22,71 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Threax.AspNetCore.Halcyon.Ext\Threax.AspNetCore.Halcyon.Ext.csproj" />
+    <EmbeddedResource Include="NJsonSchemaCodeGenerationCSharp\Templates\Class.Annotations.liquid">
+      <CustomToolNamespace>
+      </CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NJsonSchemaCodeGenerationCSharp\Templates\Class.Body.liquid" />
+    <EmbeddedResource Include="NJsonSchemaCodeGenerationCSharp\Templates\Class.Constructor.liquid" />
+    <EmbeddedResource Include="NJsonSchemaCodeGenerationCSharp\Templates\Class.Constructor.Record.liquid" />
+    <EmbeddedResource Include="NJsonSchemaCodeGenerationCSharp\Templates\Class.FromJson.liquid">
+      <CustomToolNamespace>
+      </CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NJsonSchemaCodeGenerationCSharp\Templates\Class.Inheritance.liquid" />
+    <EmbeddedResource Include="NJsonSchemaCodeGenerationCSharp\Templates\Class.Inpc.liquid">
+      <CustomToolNamespace>
+      </CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NJsonSchemaCodeGenerationCSharp\Templates\Class.liquid">
+      <CustomToolNamespace>
+      </CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NJsonSchemaCodeGenerationCSharp\Templates\Class.Property.Annotations.liquid">
+      <CustomToolNamespace>
+      </CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NJsonSchemaCodeGenerationCSharp\Templates\Class.ToJson.liquid">
+      <CustomToolNamespace>
+      </CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NJsonSchemaCodeGenerationCSharp\Templates\DateFormatConverter.liquid">
+      <CustomToolNamespace>
+      </CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NJsonSchemaCodeGenerationCSharp\Templates\Enum.liquid">
+      <CustomToolNamespace>
+      </CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NJsonSchemaCodeGenerationCSharp\Templates\File.liquid">
+      <CustomToolNamespace>
+      </CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NJsonSchemaCodeGenerationCSharp\Templates\JsonInheritanceAttribute.liquid">
+      <CustomToolNamespace>
+      </CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NJsonSchemaCodeGenerationCSharp\Templates\JsonInheritanceConverter.liquid">
+      <CustomToolNamespace>
+      </CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NJsonSchemaCodeGenerationTypeScript\Templates\Class.liquid" />
+    <EmbeddedResource Include="NJsonSchemaCodeGenerationTypeScript\Templates\ConvertToClass.liquid" />
+    <EmbeddedResource Include="NJsonSchemaCodeGenerationTypeScript\Templates\ConvertToJavaScript.liquid" />
+    <EmbeddedResource Include="NJsonSchemaCodeGenerationTypeScript\Templates\Enum.liquid" />
+    <EmbeddedResource Include="NJsonSchemaCodeGenerationTypeScript\Templates\File.FormatDate.liquid" />
+    <EmbeddedResource Include="NJsonSchemaCodeGenerationTypeScript\Templates\File.liquid" />
+    <EmbeddedResource Include="NJsonSchemaCodeGenerationTypeScript\Templates\File.ReferenceHandling.liquid" />
+    <EmbeddedResource Include="NJsonSchemaCodeGenerationTypeScript\Templates\Interface.liquid" />
+    <EmbeddedResource Include="NJsonSchemaCodeGenerationTypeScript\Templates\KnockoutClass.liquid" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="9.10.49" />
-    <PackageReference Include="NJsonSchema.CodeGeneration.TypeScript" Version="9.10.49" />
+    <PackageReference Include="DotLiquid" Version="2.0.254" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Threax.AspNetCore.Halcyon.Ext\Threax.AspNetCore.Halcyon.Ext.csproj" />
   </ItemGroup>
 
 </Project>
