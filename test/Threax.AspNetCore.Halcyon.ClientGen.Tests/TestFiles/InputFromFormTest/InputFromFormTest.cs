@@ -73,6 +73,10 @@ namespace Test
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "1.0.0.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class Output 
     {
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
         
         public static Output FromJson(string data)
         {
