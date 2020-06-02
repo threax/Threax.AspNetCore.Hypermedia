@@ -6,7 +6,7 @@
 // <author>Rico Suter, mail@rsuter.com</author>
 //-----------------------------------------------------------------------
 
-namespace NJsonSchema.CodeGeneration.TypeScript
+namespace Threax.NJsonSchema.CodeGeneration.TypeScript
 {
     /// <summary>Converts the default value to a TypeScript identifier.</summary>
     public class TypeScriptValueGenerator : ValueGeneratorBase

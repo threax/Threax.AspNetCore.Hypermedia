@@ -8,9 +8,9 @@
 
 using System;
 using System.Collections.Generic;
-using NJsonSchema.Generation;
+using Threax.NJsonSchema.Generation;
 
-namespace NJsonSchema
+namespace Threax.NJsonSchema
 {
     /// <summary>Manager which resolves types to schemas and appends missing schemas to the root object.</summary>
     public class JsonSchemaResolver

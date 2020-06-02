@@ -10,9 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
-using NJsonSchema.References;
+using Threax.NJsonSchema.References;
 
-namespace NJsonSchema
+namespace Threax.NJsonSchema
 {
     public partial class JsonSchema4 : JsonReferenceBase<JsonSchema4>, IJsonReference
     {

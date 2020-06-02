@@ -8,7 +8,7 @@
 
 using Newtonsoft.Json;
 
-namespace NJsonSchema
+namespace Threax.NJsonSchema
 {
     /// <summary>A description of a JSON property of a JSON object (used in Swagger specifications). </summary>
     public class JsonXmlObject

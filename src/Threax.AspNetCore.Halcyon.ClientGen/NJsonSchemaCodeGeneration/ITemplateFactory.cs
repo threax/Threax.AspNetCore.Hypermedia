@@ -6,7 +6,7 @@
 // <author>Rico Suter, mail@rsuter.com</author>
 //-----------------------------------------------------------------------
 
-namespace NJsonSchema.CodeGeneration
+namespace Threax.NJsonSchema.CodeGeneration
 {
     /// <summary>The interface of a code generator template factory.</summary>
     public interface ITemplateFactory

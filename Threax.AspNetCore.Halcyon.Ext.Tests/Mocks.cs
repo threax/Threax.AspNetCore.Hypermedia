@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using Threax.AspNetCore.Tests;
-using NJsonSchema.Generation;
-using NJsonSchema;
+using Threax.NJsonSchema.Generation;
+using Threax.NJsonSchema;
 using Newtonsoft.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;

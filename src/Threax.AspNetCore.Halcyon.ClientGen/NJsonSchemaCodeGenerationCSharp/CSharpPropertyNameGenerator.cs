@@ -6,7 +6,7 @@
 // <author>Rico Suter, mail@rsuter.com</author>
 //-----------------------------------------------------------------------
 
-namespace NJsonSchema.CodeGeneration.CSharp
+namespace Threax.NJsonSchema.CodeGeneration.CSharp
 {
     /// <summary>Generates the property name for a given CSharp <see cref="JsonProperty"/>.</summary>
     public class CSharpPropertyNameGenerator : IPropertyNameGenerator

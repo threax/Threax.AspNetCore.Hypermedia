@@ -7,9 +7,9 @@
 //-----------------------------------------------------------------------
 
 using System.Text.RegularExpressions;
-using NJsonSchema.CodeGeneration.Models;
+using Threax.NJsonSchema.CodeGeneration.Models;
 
-namespace NJsonSchema.CodeGeneration.TypeScript.Models
+namespace Threax.NJsonSchema.CodeGeneration.TypeScript.Models
 {
     /// <summary>The TypeScript property template model.</summary>
     /// <seealso cref="PropertyModelBase" />

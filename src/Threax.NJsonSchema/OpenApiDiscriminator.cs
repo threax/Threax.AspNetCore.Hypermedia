@@ -10,9 +10,9 @@ using System;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Reflection;
-using NJsonSchema.Infrastructure;
+using Threax.NJsonSchema.Infrastructure;
 
-namespace NJsonSchema
+namespace Threax.NJsonSchema
 {
     /// <summary>Describes a schema discriminator.</summary>
     public class OpenApiDiscriminator

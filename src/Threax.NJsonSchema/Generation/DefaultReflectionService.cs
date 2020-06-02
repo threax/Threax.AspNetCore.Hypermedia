@@ -13,11 +13,11 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
-using NJsonSchema.Annotations;
-using NJsonSchema.Infrastructure;
+using Threax.NJsonSchema.Annotations;
+using Threax.NJsonSchema.Infrastructure;
 using System.Reflection;
 
-namespace NJsonSchema.Generation
+namespace Threax.NJsonSchema.Generation
 {
     /// <summary>The default reflection service implementation.</summary>
     public class DefaultReflectionService : IReflectionService

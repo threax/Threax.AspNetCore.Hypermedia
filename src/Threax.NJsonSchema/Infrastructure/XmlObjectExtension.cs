@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace NJsonSchema.Infrastructure
+namespace Threax.NJsonSchema.Infrastructure
 {
     /// <summary>Extension methods to help out generating XMLObject structure to schema.</summary>
     public static class XmlObjectExtension

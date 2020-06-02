@@ -8,9 +8,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using NJsonSchema.CodeGeneration.Models;
+using Threax.NJsonSchema.CodeGeneration.Models;
 
-namespace NJsonSchema.CodeGeneration.CSharp.Models
+namespace Threax.NJsonSchema.CodeGeneration.CSharp.Models
 {
     /// <summary>The CSharp class template model.</summary>
     public class ClassTemplateModel : ClassTemplateModelBase

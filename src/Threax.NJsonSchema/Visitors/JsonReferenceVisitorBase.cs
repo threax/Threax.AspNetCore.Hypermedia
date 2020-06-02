@@ -15,10 +15,10 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
-using NJsonSchema.Infrastructure;
-using NJsonSchema.References;
+using Threax.NJsonSchema.Infrastructure;
+using Threax.NJsonSchema.References;
 
-namespace NJsonSchema.Visitors
+namespace Threax.NJsonSchema.Visitors
 {
     /// <summary>Visitor to transform an object with <see cref="JsonSchema4"/> objects.</summary>
     public abstract class JsonReferenceVisitorBase

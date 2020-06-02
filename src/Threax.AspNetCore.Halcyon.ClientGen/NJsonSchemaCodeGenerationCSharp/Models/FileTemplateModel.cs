@@ -6,7 +6,7 @@
 // <author>Rico Suter, mail@rsuter.com</author>
 //-----------------------------------------------------------------------
 
-namespace NJsonSchema.CodeGeneration.CSharp.Models
+namespace Threax.NJsonSchema.CodeGeneration.CSharp.Models
 {
     /// <summary>The CSharp file template model.</summary>
     public class FileTemplateModel

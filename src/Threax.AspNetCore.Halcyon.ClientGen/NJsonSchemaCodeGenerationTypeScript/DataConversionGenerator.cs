@@ -6,7 +6,7 @@
 // <author>Rico Suter, mail@rsuter.com</author>
 //-----------------------------------------------------------------------
 
-namespace NJsonSchema.CodeGeneration.TypeScript
+namespace Threax.NJsonSchema.CodeGeneration.TypeScript
 {
     /// <summary>Generates data conversion code.</summary>
     public class DataConversionGenerator

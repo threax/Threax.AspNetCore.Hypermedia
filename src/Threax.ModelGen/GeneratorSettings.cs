@@ -1,5 +1,5 @@
-﻿using NJsonSchema;
-using NJsonSchema.Annotations;
+﻿using Threax.NJsonSchema;
+using Threax.NJsonSchema.Annotations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

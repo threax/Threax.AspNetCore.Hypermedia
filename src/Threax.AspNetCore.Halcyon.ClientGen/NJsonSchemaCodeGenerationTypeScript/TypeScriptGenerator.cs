@@ -7,10 +7,10 @@
 //-----------------------------------------------------------------------
 
 using System;
-using NJsonSchema.CodeGeneration.TypeScript.Models;
+using Threax.NJsonSchema.CodeGeneration.TypeScript.Models;
 using System.Linq;
 
-namespace NJsonSchema.CodeGeneration.TypeScript
+namespace Threax.NJsonSchema.CodeGeneration.TypeScript
 {
     /// <summary>The TypeScript interface and enum code generator. </summary>
     public class TypeScriptGenerator : GeneratorBase

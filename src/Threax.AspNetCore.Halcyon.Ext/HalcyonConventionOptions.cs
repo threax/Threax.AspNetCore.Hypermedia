@@ -1,7 +1,7 @@
 ﻿using Halcyon.HAL;
 using Newtonsoft.Json;
-using NJsonSchema.Generation;
-using NJsonSchema.Generation.TypeMappers;
+using Threax.NJsonSchema.Generation;
+using Threax.NJsonSchema.Generation.TypeMappers;
 using System;
 using System.Collections.Generic;
 using Threax.AspNetCore.Halcyon.Ext;

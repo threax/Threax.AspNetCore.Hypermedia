@@ -8,7 +8,7 @@
 
 using Newtonsoft.Json;
 
-namespace NJsonSchema.References
+namespace Threax.NJsonSchema.References
 {
     /// <summary>A JSON object which may reference other objects with $ref.</summary>
     /// <remarks>The methods should be implemented explicitly to hide them from the API.</remarks>

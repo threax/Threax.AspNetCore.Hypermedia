@@ -8,7 +8,7 @@
 
 using Newtonsoft.Json;
 
-namespace NJsonSchema
+namespace Threax.NJsonSchema
 {
     /// <summary>Provides a property to get a documents path or base URI.</summary>
     public interface IDocumentPathProvider

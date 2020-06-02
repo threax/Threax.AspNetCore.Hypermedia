@@ -8,11 +8,11 @@
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-using NJsonSchema.Converters;
+using Threax.NJsonSchema.Converters;
 using System;
 using System.Threading.Tasks;
 
-namespace NJsonSchema.Generation.SchemaProcessors
+namespace Threax.NJsonSchema.Generation.SchemaProcessors
 {
     public class DiscriminatorSchemaProcessor : ISchemaProcessor
     {

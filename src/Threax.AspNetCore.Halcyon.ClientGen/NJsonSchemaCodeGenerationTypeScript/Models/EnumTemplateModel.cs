@@ -8,9 +8,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using NJsonSchema.CodeGeneration.Models;
+using Threax.NJsonSchema.CodeGeneration.Models;
 
-namespace NJsonSchema.CodeGeneration.TypeScript.Models
+namespace Threax.NJsonSchema.CodeGeneration.TypeScript.Models
 {
     /// <summary>The TypeScript enum template model.</summary>
     public class EnumTemplateModel

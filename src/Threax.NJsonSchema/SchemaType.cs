@@ -6,7 +6,7 @@
 // <author>Rico Suter, mail@rsuter.com</author>
 //-----------------------------------------------------------------------
 
-namespace NJsonSchema
+namespace Threax.NJsonSchema
 {
     /// <summary>Defines how to express the nullability of a property.</summary>
     public enum SchemaType

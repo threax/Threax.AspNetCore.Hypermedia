@@ -6,7 +6,7 @@
 // <author>Rico Suter, mail@rsuter.com</author>
 //-----------------------------------------------------------------------
 
-namespace NJsonSchema.References
+namespace Threax.NJsonSchema.References
 {
     /// <summary>Extensions to work with <see cref="IJsonReference"/>.</summary>
     public static class JsonReferenceExtensions

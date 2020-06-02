@@ -8,9 +8,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using NJsonSchema.CodeGeneration.CSharp.Models;
+using Threax.NJsonSchema.CodeGeneration.CSharp.Models;
 
-namespace NJsonSchema.CodeGeneration.CSharp
+namespace Threax.NJsonSchema.CodeGeneration.CSharp
 {
     /// <summary>The CSharp code generator.</summary>
     public class CSharpGenerator : GeneratorBase

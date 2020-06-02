@@ -8,7 +8,7 @@
 
 using System.Collections.Generic;
 
-namespace NJsonSchema
+namespace Threax.NJsonSchema
 {
     /// <summary>The base JSON interface with extension data.</summary>
     public interface IJsonExtensionObject

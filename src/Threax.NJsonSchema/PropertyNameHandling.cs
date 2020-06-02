@@ -10,7 +10,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace NJsonSchema
+namespace Threax.NJsonSchema
 {
     /// <summary>Defines the property name handling.</summary>
     public enum PropertyNameHandling

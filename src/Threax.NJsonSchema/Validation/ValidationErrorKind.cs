@@ -6,7 +6,7 @@
 // <author>Rico Suter, mail@rsuter.com</author>
 //-----------------------------------------------------------------------
 
-namespace NJsonSchema.Validation
+namespace Threax.NJsonSchema.Validation
 {
     /// <summary>Enumeration of the possible error kinds. </summary>
     public enum ValidationErrorKind

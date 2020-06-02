@@ -1,6 +1,6 @@
-﻿using NJsonSchema;
-using NJsonSchema.Annotations;
-using NJsonSchema.Generation;
+﻿using Threax.NJsonSchema;
+using Threax.NJsonSchema.Annotations;
+using Threax.NJsonSchema.Generation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

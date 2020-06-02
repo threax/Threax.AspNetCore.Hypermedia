@@ -12,7 +12,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace NJsonSchema
+namespace Threax.NJsonSchema
 {
     /// <summary>The base JSON class with extension data.</summary>
     [JsonConverter(typeof(ExtensionDataDeserializationConverter))]

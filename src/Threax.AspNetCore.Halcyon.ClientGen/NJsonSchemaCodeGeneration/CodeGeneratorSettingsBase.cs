@@ -8,7 +8,7 @@
 
 using Newtonsoft.Json;
 
-namespace NJsonSchema.CodeGeneration
+namespace Threax.NJsonSchema.CodeGeneration
 {
     /// <summary>The code generator settings base.</summary>
     public class CodeGeneratorSettingsBase

@@ -1,4 +1,4 @@
-﻿using NJsonSchema.Annotations;
+﻿using Threax.NJsonSchema.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;

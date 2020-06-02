@@ -12,7 +12,7 @@ using System.Linq;
 using System.Reflection;
 using DotLiquid;
 
-namespace NJsonSchema.CodeGeneration
+namespace Threax.NJsonSchema.CodeGeneration
 {
     internal class LiquidProxyHash : Hash
     {

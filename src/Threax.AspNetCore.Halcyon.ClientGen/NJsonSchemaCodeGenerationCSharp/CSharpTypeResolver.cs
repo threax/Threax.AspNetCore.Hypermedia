@@ -8,7 +8,7 @@
 
 using System.Linq;
 
-namespace NJsonSchema.CodeGeneration.CSharp
+namespace Threax.NJsonSchema.CodeGeneration.CSharp
 {
     /// <summary>Manages the generated types and converts JSON types to CSharp types. </summary>
     public class CSharpTypeResolver : TypeResolverBase

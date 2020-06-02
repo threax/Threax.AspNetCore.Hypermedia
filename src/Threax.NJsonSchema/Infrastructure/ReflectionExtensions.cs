@@ -10,9 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using NJsonSchema.Annotations;
+using Threax.NJsonSchema.Annotations;
 
-namespace NJsonSchema.Infrastructure
+namespace Threax.NJsonSchema.Infrastructure
 {
     /// <summary>Provides extension methods for reflection.</summary>
     public static class ReflectionExtensions

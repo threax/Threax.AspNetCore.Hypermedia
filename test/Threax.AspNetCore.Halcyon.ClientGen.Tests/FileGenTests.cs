@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using NJsonSchema.Generation;
+using Threax.NJsonSchema.Generation;
 using System;
 using System.Collections.Generic;
 using System.IO;

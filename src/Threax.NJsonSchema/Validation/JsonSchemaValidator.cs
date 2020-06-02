@@ -13,7 +13,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
 
-namespace NJsonSchema.Validation
+namespace Threax.NJsonSchema.Validation
 {
     /// <summary>Class to validate a JSON schema against a given <see cref="JToken"/>. </summary>
     public class JsonSchemaValidator

@@ -10,9 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using NJsonSchema.Generation.TypeMappers;
+using Threax.NJsonSchema.Generation.TypeMappers;
 
-namespace NJsonSchema.Generation
+namespace Threax.NJsonSchema.Generation
 {
     /// <summary>Gets JSON information about a .NET type. </summary>
     public class JsonTypeDescription

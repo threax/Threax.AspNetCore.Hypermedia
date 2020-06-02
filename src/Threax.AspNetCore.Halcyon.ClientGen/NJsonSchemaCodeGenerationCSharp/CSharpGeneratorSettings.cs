@@ -8,7 +8,7 @@
 
 using System.Reflection;
 
-namespace NJsonSchema.CodeGeneration.CSharp
+namespace Threax.NJsonSchema.CodeGeneration.CSharp
 {
     /// <summary>The generator settings.</summary>
     public class CSharpGeneratorSettings : CodeGeneratorSettingsBase

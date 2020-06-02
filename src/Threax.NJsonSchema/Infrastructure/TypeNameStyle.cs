@@ -6,7 +6,7 @@
 // <author>Rico Suter, mail@rsuter.com</author>
 //-----------------------------------------------------------------------
 
-namespace NJsonSchema.Infrastructure
+namespace Threax.NJsonSchema.Infrastructure
 {
     /// <summary>The type name style.</summary>
     public enum TypeNameStyle

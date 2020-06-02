@@ -8,7 +8,7 @@
 
 using System;
 
-namespace NJsonSchema.Annotations
+namespace Threax.NJsonSchema.Annotations
 {
     /// <summary>Annotation to specify the JSON Schema type for the given class.</summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Struct)]

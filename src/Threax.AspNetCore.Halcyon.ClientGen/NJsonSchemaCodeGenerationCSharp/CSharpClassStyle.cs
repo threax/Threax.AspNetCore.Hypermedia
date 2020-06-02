@@ -8,7 +8,7 @@
 
 using System.ComponentModel;
 
-namespace NJsonSchema.CodeGeneration.CSharp
+namespace Threax.NJsonSchema.CodeGeneration.CSharp
 {
     /// <summary>The CSharp styles.</summary>
     public enum CSharpClassStyle

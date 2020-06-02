@@ -9,7 +9,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NJsonSchema.Generation.TypeMappers
+namespace Threax.NJsonSchema.Generation.TypeMappers
 {
     /// <summary>The context object for the <see cref="ITypeMapper"/> interface.</summary>
     public class TypeMapperContext

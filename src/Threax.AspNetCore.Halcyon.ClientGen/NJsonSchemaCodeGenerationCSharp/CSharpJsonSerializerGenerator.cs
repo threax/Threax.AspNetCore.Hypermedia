@@ -9,7 +9,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NJsonSchema.CodeGeneration.CSharp
+namespace Threax.NJsonSchema.CodeGeneration.CSharp
 {
     /// <summary>Generates JSON converter code.</summary>
     public static class CSharpJsonSerializerGenerator

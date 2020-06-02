@@ -12,7 +12,7 @@ using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
 
-namespace NJsonSchema.Infrastructure
+namespace Threax.NJsonSchema.Infrastructure
 {
     /// <summary>Provides cached reflection APIs for better performance.</summary>
     public static class ReflectionCache

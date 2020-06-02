@@ -8,7 +8,7 @@
 
 using System.Collections.Generic;
 
-namespace NJsonSchema
+namespace Threax.NJsonSchema
 {
     /// <summary>Generates the type name for a given <see cref="JsonSchema4"/>.</summary>
     public interface ITypeNameGenerator

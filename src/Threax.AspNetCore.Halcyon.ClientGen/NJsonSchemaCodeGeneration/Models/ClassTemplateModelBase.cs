@@ -9,7 +9,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NJsonSchema.CodeGeneration.Models
+namespace Threax.NJsonSchema.CodeGeneration.Models
 {
     /// <summary>The class template base class.</summary>
     public abstract class ClassTemplateModelBase : TemplateModelBase

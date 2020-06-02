@@ -8,7 +8,7 @@
 
 using System;
 
-namespace NJsonSchema.Annotations
+namespace Threax.NJsonSchema.Annotations
 {
     /// <summary>Indicates that the marked class is ignored during the JSON Schema generation.</summary>
     [AttributeUsage(AttributeTargets.Class)]

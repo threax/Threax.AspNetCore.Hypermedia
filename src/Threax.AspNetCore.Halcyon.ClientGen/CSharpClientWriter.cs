@@ -1,8 +1,8 @@
 ﻿using Halcyon.HAL.Attributes;
-using NJsonSchema;
-using NJsonSchema.CodeGeneration;
-using NJsonSchema.CodeGeneration.CSharp;
-using NJsonSchema.CodeGeneration.CSharp.Models;
+using Threax.NJsonSchema;
+using Threax.NJsonSchema.CodeGeneration;
+using Threax.NJsonSchema.CodeGeneration.CSharp;
+using Threax.NJsonSchema.CodeGeneration.CSharp.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;

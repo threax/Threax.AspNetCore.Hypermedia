@@ -1,8 +1,8 @@
 ﻿using Halcyon.HAL.Attributes;
-using NJsonSchema;
-using NJsonSchema.CodeGeneration;
-using NJsonSchema.CodeGeneration.TypeScript;
-using NJsonSchema.CodeGeneration.TypeScript.Models;
+using Threax.NJsonSchema;
+using Threax.NJsonSchema.CodeGeneration;
+using Threax.NJsonSchema.CodeGeneration.TypeScript;
+using Threax.NJsonSchema.CodeGeneration.TypeScript.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;

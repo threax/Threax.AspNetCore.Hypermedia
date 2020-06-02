@@ -11,9 +11,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Serialization;
-using NJsonSchema.Infrastructure;
+using Threax.NJsonSchema.Infrastructure;
 
-namespace NJsonSchema
+namespace Threax.NJsonSchema
 {
     /// <summary>Utilities to work with JSON paths.</summary>
     public static class JsonPathUtilities

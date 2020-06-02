@@ -16,7 +16,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace NJsonSchema.CodeGeneration
+namespace Threax.NJsonSchema.CodeGeneration
 {
     /// <summary>The default template factory which loads templates from embedded resources.</summary>
     public class DefaultTemplateFactory : ITemplateFactory

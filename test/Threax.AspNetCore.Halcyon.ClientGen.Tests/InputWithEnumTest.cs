@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using NJsonSchema.Generation;
+using Threax.NJsonSchema.Generation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

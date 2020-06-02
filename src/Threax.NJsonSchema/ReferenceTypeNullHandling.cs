@@ -6,7 +6,7 @@
 // <author>Rico Suter, mail@rsuter.com</author>
 //-----------------------------------------------------------------------
 
-namespace NJsonSchema
+namespace Threax.NJsonSchema
 {
     /// <summary>Specifies the default null handling for reference types.</summary>
     public enum ReferenceTypeNullHandling

@@ -12,10 +12,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using NJsonSchema.Infrastructure;
-using NJsonSchema.References;
+using Threax.NJsonSchema.Infrastructure;
+using Threax.NJsonSchema.References;
 
-namespace NJsonSchema
+namespace Threax.NJsonSchema
 {
     /// <summary>Resolves JSON Pointer references.</summary>
     public class JsonReferenceResolver

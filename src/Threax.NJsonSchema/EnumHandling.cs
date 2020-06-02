@@ -6,7 +6,7 @@
 // <author>Rico Suter, mail@rsuter.com</author>
 //-----------------------------------------------------------------------
 
-namespace NJsonSchema
+namespace Threax.NJsonSchema
 {
     /// <summary>Defines the enum handling.</summary>
     public enum EnumHandling

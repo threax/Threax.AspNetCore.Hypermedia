@@ -8,10 +8,10 @@
 
 using System;
 using System.Reflection;
-using NJsonSchema.Annotations;
-using NJsonSchema.Infrastructure;
+using Threax.NJsonSchema.Annotations;
+using Threax.NJsonSchema.Infrastructure;
 
-namespace NJsonSchema
+namespace Threax.NJsonSchema
 {
     /// <summary>The default schema name generator implementation.</summary>
     public class DefaultSchemaNameGenerator : ISchemaNameGenerator

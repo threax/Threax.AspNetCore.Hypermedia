@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace NJsonSchema
+namespace Threax.NJsonSchema
 {
     /// <summary>Converts the last part of the full type name to upper case.</summary>
     public class DefaultTypeNameGenerator : ITypeNameGenerator

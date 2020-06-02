@@ -6,7 +6,7 @@
 // <author>Rico Suter, mail@rsuter.com</author>
 //-----------------------------------------------------------------------
 
-namespace NJsonSchema.CodeGeneration.Models
+namespace Threax.NJsonSchema.CodeGeneration.Models
 {
     /// <summary>Describes an enumeration entry.</summary>
     public class EnumerationItemModel

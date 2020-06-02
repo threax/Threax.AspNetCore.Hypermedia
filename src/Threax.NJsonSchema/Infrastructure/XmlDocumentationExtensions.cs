@@ -17,7 +17,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace NJsonSchema.Infrastructure
+namespace Threax.NJsonSchema.Infrastructure
 {
     /// <summary>Provides extension methods for reading XML comments from reflected members.</summary>
     /// <remarks>This class currently works only on the desktop .NET framework.</remarks>

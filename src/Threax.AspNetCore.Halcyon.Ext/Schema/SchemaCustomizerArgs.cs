@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
-using NJsonSchema;
-using NJsonSchema.Annotations;
-using NJsonSchema.Generation;
+using Threax.NJsonSchema;
+using Threax.NJsonSchema.Annotations;
+using Threax.NJsonSchema.Generation;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {

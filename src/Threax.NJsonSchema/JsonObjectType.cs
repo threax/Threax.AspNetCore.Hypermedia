@@ -9,7 +9,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace NJsonSchema
+namespace Threax.NJsonSchema
 {
     /// <summary>Enumeration of the possible object types. </summary>
     [Flags]

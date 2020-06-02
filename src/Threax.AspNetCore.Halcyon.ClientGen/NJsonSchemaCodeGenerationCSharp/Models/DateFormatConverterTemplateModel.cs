@@ -8,7 +8,7 @@
 
 using System.Linq;
 
-namespace NJsonSchema.CodeGeneration.CSharp.Models
+namespace Threax.NJsonSchema.CodeGeneration.CSharp.Models
 {
     /// <summary>The DateFormatConverterTemplateModel.</summary>
     public class DateFormatConverterTemplateModel

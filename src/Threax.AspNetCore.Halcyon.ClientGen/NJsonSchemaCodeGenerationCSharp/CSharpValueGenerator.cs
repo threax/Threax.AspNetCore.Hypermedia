@@ -9,7 +9,7 @@
 using System;
 using System.Globalization;
 
-namespace NJsonSchema.CodeGeneration.CSharp
+namespace Threax.NJsonSchema.CodeGeneration.CSharp
 {
     /// <summary>Converts the default value to a TypeScript identifier.</summary>
     public class CSharpValueGenerator : ValueGeneratorBase

@@ -8,7 +8,7 @@
 
 using System.Threading.Tasks;
 
-namespace NJsonSchema.Generation
+namespace Threax.NJsonSchema.Generation
 {
     /// <summary>The schema processor interface.</summary>
     public interface ISchemaProcessor

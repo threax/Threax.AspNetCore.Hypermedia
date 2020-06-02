@@ -13,11 +13,11 @@ using System.Runtime.Serialization;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using NJsonSchema.Annotations;
-using NJsonSchema.Generation.TypeMappers;
-using NJsonSchema.Infrastructure;
+using Threax.NJsonSchema.Annotations;
+using Threax.NJsonSchema.Generation.TypeMappers;
+using Threax.NJsonSchema.Infrastructure;
 
-namespace NJsonSchema.Generation
+namespace Threax.NJsonSchema.Generation
 {
     /// <summary>The JSON Schema generator settings.</summary>
     public class JsonSchemaGeneratorSettings

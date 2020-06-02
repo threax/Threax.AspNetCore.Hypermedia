@@ -9,7 +9,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace NJsonSchema.Generation.TypeMappers
+namespace Threax.NJsonSchema.Generation.TypeMappers
 {
     /// <summary>Maps .NET type to a generated JSON Schema.</summary>
     public interface ITypeMapper

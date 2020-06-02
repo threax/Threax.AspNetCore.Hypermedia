@@ -10,7 +10,7 @@ using System.Collections;
 using System.Reflection;
 using Newtonsoft.Json;
 
-namespace NJsonSchema.Infrastructure
+namespace Threax.NJsonSchema.Infrastructure
 {
     internal class IgnoreEmptyCollectionsContractResolver : PropertyRenameAndIgnoreSerializerContractResolver
     {

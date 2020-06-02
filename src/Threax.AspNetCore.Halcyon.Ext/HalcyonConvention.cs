@@ -10,8 +10,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json.Converters;
 using Microsoft.AspNetCore.Mvc.Formatters;
-using NJsonSchema.Generation;
-using NJsonSchema;
+using Threax.NJsonSchema.Generation;
+using Threax.NJsonSchema;
 using Threax.AspNetCore.Halcyon.Ext.ValueProviders;
 #if NETCOREAPP3_0
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;

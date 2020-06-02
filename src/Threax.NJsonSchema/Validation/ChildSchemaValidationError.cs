@@ -9,7 +9,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 
-namespace NJsonSchema.Validation
+namespace Threax.NJsonSchema.Validation
 {
     /// <summary>A subschema validation error. </summary>
     public class ChildSchemaValidationError : ValidationError

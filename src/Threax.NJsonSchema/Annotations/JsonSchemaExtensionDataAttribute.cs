@@ -8,7 +8,7 @@
 
 using System;
 
-namespace NJsonSchema.Annotations
+namespace Threax.NJsonSchema.Annotations
 {
     /// <summary>Adds an extension data property to a class or property.</summary>
     /// <seealso cref="System.Attribute" />

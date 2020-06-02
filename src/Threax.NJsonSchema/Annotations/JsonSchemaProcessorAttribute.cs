@@ -7,9 +7,9 @@
 //-----------------------------------------------------------------------
 
 using System;
-using NJsonSchema.Generation;
+using Threax.NJsonSchema.Generation;
 
-namespace NJsonSchema.Annotations
+namespace Threax.NJsonSchema.Annotations
 {
     /// <summary>Registers an schema processor for the given class.</summary>
     /// <seealso cref="System.Attribute" />

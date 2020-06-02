@@ -8,7 +8,7 @@
 
 using System;
 
-namespace NJsonSchema.Annotations
+namespace Threax.NJsonSchema.Annotations
 {
     /// <summary>Indicates that the value of the marked element is nullable.</summary>
     [AttributeUsage(

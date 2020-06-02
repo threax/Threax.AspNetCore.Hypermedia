@@ -7,9 +7,9 @@
 //-----------------------------------------------------------------------
 
 using System.Globalization;
-using NJsonSchema.CodeGeneration.Models;
+using Threax.NJsonSchema.CodeGeneration.Models;
 
-namespace NJsonSchema.CodeGeneration.CSharp.Models
+namespace Threax.NJsonSchema.CodeGeneration.CSharp.Models
 {
     /// <summary>The CSharp property template model.</summary>
     public class PropertyModel : PropertyModelBase

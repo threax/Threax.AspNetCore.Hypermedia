@@ -9,7 +9,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NJsonSchema.CodeGeneration
+namespace Threax.NJsonSchema.CodeGeneration
 {
     /// <summary>The type resolver base.</summary>
     public abstract class TypeResolverBase

@@ -10,10 +10,10 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
-using NJsonSchema.Annotations;
-using NJsonSchema.Converters;
-using NJsonSchema.Generation.TypeMappers;
-using NJsonSchema.Infrastructure;
+using Threax.NJsonSchema.Annotations;
+using Threax.NJsonSchema.Converters;
+using Threax.NJsonSchema.Generation.TypeMappers;
+using Threax.NJsonSchema.Infrastructure;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,7 +21,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace NJsonSchema.Generation
+namespace Threax.NJsonSchema.Generation
 {
     /// <summary>Generates a <see cref="JsonSchema4"/> object for a given type. </summary>
     public class JsonSchemaGenerator

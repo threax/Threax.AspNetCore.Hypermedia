@@ -8,9 +8,9 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NJsonSchema.Visitors;
+using Threax.NJsonSchema.Visitors;
 
-namespace NJsonSchema.CodeGeneration
+namespace Threax.NJsonSchema.CodeGeneration
 {
     /// <summary>JSON Schema graph utilities.</summary>
     public static class JsonSchemaGraphUtilities

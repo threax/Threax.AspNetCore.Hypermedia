@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NJsonSchema.Infrastructure
+namespace Threax.NJsonSchema.Infrastructure
 {
     public class CollectionProxy<TInterface, TImplementation> : ICollection<TInterface>
         where TImplementation : TInterface

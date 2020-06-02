@@ -8,7 +8,7 @@
 
 using Newtonsoft.Json;
 
-namespace NJsonSchema.References
+namespace Threax.NJsonSchema.References
 {
     /// <summary>A JSON object which may reference other objects with $ref.</summary>
     public interface IJsonReferenceBase : IDocumentPathProvider

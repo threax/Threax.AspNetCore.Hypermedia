@@ -14,12 +14,12 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using NJsonSchema.Collections;
-using NJsonSchema.Generation;
-using NJsonSchema.Infrastructure;
-using NJsonSchema.Validation;
+using Threax.NJsonSchema.Collections;
+using Threax.NJsonSchema.Generation;
+using Threax.NJsonSchema.Infrastructure;
+using Threax.NJsonSchema.Validation;
 
-namespace NJsonSchema
+namespace Threax.NJsonSchema
 {
     /// <summary>A base class for describing a JSON schema. </summary>
     public partial class JsonSchema4 : IDocumentPathProvider

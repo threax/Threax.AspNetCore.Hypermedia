@@ -12,7 +12,7 @@ using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace NJsonSchema.Infrastructure
+namespace Threax.NJsonSchema.Infrastructure
 {
     /// <summary>JsonConvert resolver that allows to ignore and rename properties for given types.</summary>
     public class PropertyRenameAndIgnoreSerializerContractResolver : DefaultContractResolver

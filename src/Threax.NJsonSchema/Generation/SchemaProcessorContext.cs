@@ -8,7 +8,7 @@
 
 using System;
 
-namespace NJsonSchema.Generation
+namespace Threax.NJsonSchema.Generation
 {
     /// <summary>The schema processor context.</summary>
     public class SchemaProcessorContext

@@ -7,9 +7,9 @@
 //-----------------------------------------------------------------------
 
 using System.Threading.Tasks;
-using NJsonSchema.References;
+using Threax.NJsonSchema.References;
 
-namespace NJsonSchema.Visitors
+namespace Threax.NJsonSchema.Visitors
 {
     /// <summary>Visitor to transform an object with <see cref="JsonSchema4"/> objects.</summary>
     public abstract class JsonSchemaVisitorBase : JsonReferenceVisitorBase

@@ -9,7 +9,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 
-namespace NJsonSchema.Validation
+namespace Threax.NJsonSchema.Validation
 {
     /// <summary>A multi type validation error.</summary>
     public class MultiTypeValidationError : ValidationError

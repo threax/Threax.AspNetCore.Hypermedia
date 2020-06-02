@@ -1,5 +1,5 @@
 ﻿using Halcyon.HAL.Attributes;
-using NJsonSchema;
+using Threax.NJsonSchema;
 using System;
 using System.Collections.Generic;
 using System.Linq;

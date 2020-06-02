@@ -8,7 +8,7 @@
 
 using System;
 
-namespace NJsonSchema
+namespace Threax.NJsonSchema
 {
     /// <summary>The schema name generator.</summary>
     public interface ISchemaNameGenerator

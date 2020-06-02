@@ -9,7 +9,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace NJsonSchema.CodeGeneration.TypeScript
+namespace Threax.NJsonSchema.CodeGeneration.TypeScript
 {
     /// <summary>The generator settings.</summary>
     public class TypeScriptGeneratorSettings : CodeGeneratorSettingsBase

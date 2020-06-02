@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace NJsonSchema.Infrastructure
+namespace Threax.NJsonSchema.Infrastructure
 {
     /// <summary>Provides dynamic access to framework APIs.</summary>
     public static class DynamicApis

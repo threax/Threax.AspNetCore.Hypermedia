@@ -11,9 +11,9 @@ using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using NJsonSchema.Infrastructure;
+using Threax.NJsonSchema.Infrastructure;
 
-namespace NJsonSchema.Converters
+namespace Threax.NJsonSchema.Converters
 {
     // TODO: Add caching
 

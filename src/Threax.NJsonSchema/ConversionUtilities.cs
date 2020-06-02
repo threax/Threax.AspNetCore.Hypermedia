@@ -9,7 +9,7 @@
 using System.Linq;
 using System.Text;
 
-namespace NJsonSchema
+namespace Threax.NJsonSchema
 {
     /// <summary>Provides name conversion utility methods.</summary>
     public class ConversionUtilities

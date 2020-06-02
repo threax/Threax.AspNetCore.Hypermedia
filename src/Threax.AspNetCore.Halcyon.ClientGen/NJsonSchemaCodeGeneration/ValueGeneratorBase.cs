@@ -9,7 +9,7 @@
 using System.Globalization;
 using System.Linq;
 
-namespace NJsonSchema.CodeGeneration
+namespace Threax.NJsonSchema.CodeGeneration
 {
     /// <summary>Converts the default value to a language specific identifier.</summary>
     public abstract class ValueGeneratorBase

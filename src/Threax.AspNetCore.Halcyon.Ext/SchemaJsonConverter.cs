@@ -2,8 +2,8 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
-using NJsonSchema;
-using NJsonSchema.Generation;
+using Threax.NJsonSchema;
+using Threax.NJsonSchema.Generation;
 using System;
 using System.Collections;
 using System.Collections.Generic;

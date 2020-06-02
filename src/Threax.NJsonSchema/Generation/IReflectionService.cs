@@ -9,7 +9,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NJsonSchema.Generation
+namespace Threax.NJsonSchema.Generation
 {
     /// <summary>Provides methods to reflect on types.</summary>
     public interface IReflectionService

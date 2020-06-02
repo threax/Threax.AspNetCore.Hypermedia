@@ -6,7 +6,7 @@
 // <author>Rico Suter, mail@rsuter.com</author>
 //-----------------------------------------------------------------------
 
-namespace NJsonSchema.Annotations
+namespace Threax.NJsonSchema.Annotations
 {
     /// <summary>Annotation to mark a property or class as string type with format 'date'.</summary>
     public class JsonSchemaDateAttribute : JsonSchemaAttribute

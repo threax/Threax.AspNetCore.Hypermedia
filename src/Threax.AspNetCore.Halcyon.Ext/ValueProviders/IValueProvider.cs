@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using NJsonSchema;
-using NJsonSchema.Generation;
+using Threax.NJsonSchema;
+using Threax.NJsonSchema.Generation;
 using System.Reflection;
 
 namespace Threax.AspNetCore.Halcyon.Ext.ValueProviders

@@ -11,9 +11,9 @@ using System;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using NJsonSchema.References;
+using Threax.NJsonSchema.References;
 
-namespace NJsonSchema.Infrastructure
+namespace Threax.NJsonSchema.Infrastructure
 {
     /// <summary>The JSON Schema serialization context holding information about the current serialization.</summary>
     public class JsonSchemaSerialization

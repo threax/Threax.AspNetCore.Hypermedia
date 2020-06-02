@@ -8,7 +8,7 @@
 
 using Newtonsoft.Json;
 
-namespace NJsonSchema.References
+namespace Threax.NJsonSchema.References
 {
     /// <summary>A base class which may reference another object.</summary>
     /// <typeparam name="T">The referenced object type.</typeparam>

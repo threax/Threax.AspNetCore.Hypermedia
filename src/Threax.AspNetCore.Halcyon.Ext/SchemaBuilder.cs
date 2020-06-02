@@ -1,9 +1,9 @@
 ﻿using Halcyon.HAL.Attributes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NJsonSchema;
-using NJsonSchema.Generation;
-using NJsonSchema.Generation.TypeMappers;
+using Threax.NJsonSchema;
+using Threax.NJsonSchema.Generation;
+using Threax.NJsonSchema.Generation.TypeMappers;
 using System;
 using System.Collections;
 using System.Collections.Generic;

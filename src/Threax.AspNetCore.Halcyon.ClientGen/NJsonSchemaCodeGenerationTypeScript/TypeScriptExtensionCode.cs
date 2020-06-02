@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace NJsonSchema.CodeGeneration.TypeScript
+namespace Threax.NJsonSchema.CodeGeneration.TypeScript
 {
     /// <summary>Provides access to the extension code (used in TypeScript).</summary>
     public class TypeScriptExtensionCode : ExtensionCode

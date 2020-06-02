@@ -1,5 +1,5 @@
-﻿using NJsonSchema;
-using NJsonSchema.CodeGeneration;
+﻿using Threax.NJsonSchema;
+using Threax.NJsonSchema.CodeGeneration;
 using System;
 using System.Collections.Generic;
 using System.Text;

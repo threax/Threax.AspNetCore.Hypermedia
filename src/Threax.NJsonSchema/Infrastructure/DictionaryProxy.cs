@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NJsonSchema.Infrastructure
+namespace Threax.NJsonSchema.Infrastructure
 {
     internal class DictionaryProxy<TKey, TInterface, TImplementation> : IDictionary<TKey, TInterface>
         where TImplementation : TInterface

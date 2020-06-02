@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Serialization;
-using NJsonSchema;
-using NJsonSchema.Annotations;
-using NJsonSchema.Generation;
+using Threax.NJsonSchema;
+using Threax.NJsonSchema.Annotations;
+using Threax.NJsonSchema.Generation;
 using System;
 using System.Collections;
 using System.Collections.Generic;

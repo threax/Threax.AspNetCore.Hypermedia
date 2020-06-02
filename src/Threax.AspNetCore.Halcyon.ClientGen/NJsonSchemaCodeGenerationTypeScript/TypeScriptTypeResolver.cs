@@ -9,7 +9,7 @@
 using System;
 using System.Linq;
 
-namespace NJsonSchema.CodeGeneration.TypeScript
+namespace Threax.NJsonSchema.CodeGeneration.TypeScript
 {
     /// <summary>Manages the generated types and converts JSON types to TypeScript types. </summary>
     public class TypeScriptTypeResolver : TypeResolverBase

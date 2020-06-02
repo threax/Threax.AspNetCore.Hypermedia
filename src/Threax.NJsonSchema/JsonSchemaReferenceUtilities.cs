@@ -11,10 +11,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Serialization;
-using NJsonSchema.References;
-using NJsonSchema.Visitors;
+using Threax.NJsonSchema.References;
+using Threax.NJsonSchema.Visitors;
 
-namespace NJsonSchema
+namespace Threax.NJsonSchema
 {
     /// <summary>Provides utilities to resolve and set JSON schema references.</summary>
     public static class JsonSchemaReferenceUtilities

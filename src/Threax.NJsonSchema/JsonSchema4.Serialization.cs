@@ -14,10 +14,10 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using NJsonSchema.Collections;
-using NJsonSchema.Infrastructure;
+using Threax.NJsonSchema.Collections;
+using Threax.NJsonSchema.Infrastructure;
 
-namespace NJsonSchema
+namespace Threax.NJsonSchema
 {
     [JsonConverter(typeof(ExtensionDataDeserializationConverter))]
     public partial class JsonSchema4 : IJsonExtensionObject

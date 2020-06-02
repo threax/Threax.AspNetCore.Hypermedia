@@ -9,7 +9,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace NJsonSchema.Validation
+namespace Threax.NJsonSchema.Validation
 {
     /// <summary>A validation error. </summary>
     public class ValidationError

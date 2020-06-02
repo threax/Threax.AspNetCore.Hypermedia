@@ -8,7 +8,7 @@
 
 using System;
 
-namespace NJsonSchema.Annotations
+namespace Threax.NJsonSchema.Annotations
 {
     /// <summary>Attribute to set the multipleOf parameter of a JSON Schema.</summary>
     [AttributeUsage(AttributeTargets.Property)]

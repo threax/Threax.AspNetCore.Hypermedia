@@ -6,7 +6,7 @@
 // <author>Rico Suter, mail@rsuter.com</author>
 //-----------------------------------------------------------------------
 
-namespace NJsonSchema.CodeGeneration.TypeScript.Models
+namespace Threax.NJsonSchema.CodeGeneration.TypeScript.Models
 {
     /// <summary>The TypeScript file template model.</summary>
     public class FileTemplateModel

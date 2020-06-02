@@ -8,7 +8,7 @@
 
 using System;
 
-namespace NJsonSchema.CodeGeneration.Models
+namespace Threax.NJsonSchema.CodeGeneration.Models
 {
     /// <summary>The property template model base class.</summary>
     public abstract class PropertyModelBase

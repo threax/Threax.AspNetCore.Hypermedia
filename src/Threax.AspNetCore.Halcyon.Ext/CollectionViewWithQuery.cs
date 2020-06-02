@@ -2,7 +2,7 @@
 using Halcyon.HAL.Attributes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using NJsonSchema;
+using Threax.NJsonSchema;
 using System;
 using System.Collections.Generic;
 using System.Linq;

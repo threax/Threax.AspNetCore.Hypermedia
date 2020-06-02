@@ -9,7 +9,7 @@
 using System.ComponentModel;
 using Newtonsoft.Json;
 
-namespace NJsonSchema
+namespace Threax.NJsonSchema
 {
     /// <summary>A description of a JSON property of a JSON object. </summary>
     public class JsonProperty : JsonSchema4
