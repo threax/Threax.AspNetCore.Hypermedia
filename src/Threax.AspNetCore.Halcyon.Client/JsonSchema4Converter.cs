@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using NJsonSchema;
+using Threax.NJsonSchema;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
