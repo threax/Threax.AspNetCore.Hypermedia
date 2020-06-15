@@ -48,6 +48,7 @@ namespace Threax.ModelGen
                 {
                     finalObjectProp.Type = JsonObjectType.Object;
                     finalObjectProp.Format = finalType.GetSchemaFormat();
+                    finalObjectProp.EnsureExtensions();
 
                     //For some reason enums do not get the custom attributes, so do it here
                     var enumTestType = finalType;
