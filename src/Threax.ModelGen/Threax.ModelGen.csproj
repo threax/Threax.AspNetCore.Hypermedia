@@ -1,18 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp3.0</TargetFrameworks>
-    <PackAsTool>true</PackAsTool>
-    <ToolCommandName>threax-modelgen</ToolCommandName>
-    <AssemblyName>dotnet-threax-modelgen</AssemblyName>
-    <PackageId>Threax.ModelGen</PackageId>
-    <Version>14.0.0</Version>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <Version>15.0.0-pre01</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Authors>Andrew Piper</Authors>
     <PackageProjectUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</PackageProjectUrl>
     <RepositoryUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</RepositoryUrl>
-    <PackageReleaseNotes>Embed and isolate NJsonSchema. This allows it to be used externally while still retaining needed customizations.</PackageReleaseNotes>
+    <PackageReleaseNotes>Changed to embed and run as a tool in a project. Makes finding loaded types less error prone.</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
   

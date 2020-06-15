@@ -12,111 +12,45 @@ using Threax.ModelGen.TestGenerators;
 
 namespace Threax.ModelGen
 {
-    class Program
+    public class ModelGenerator
     {
-        static void Main(string[] args)
+        private static GeneratorSettings CreateSettings()
         {
-            Task.Run(async () => await AsyncMain(args)).GetAwaiter().GetResult();
+            var appDir = Directory.GetCurrentDirectory();
+            var directoryName = Path.GetFileName(appDir);
+            var testDir = Path.GetFullPath(Path.Combine(appDir, $"../{directoryName}.Tests"));
+
+            return new Threax.ModelGen.GeneratorSettings()
+            {
+                AppOutDir = appDir,
+                TestOutDir = testDir
+            };
         }
 
-        static async Task AsyncMain(string[] args)
+        public static Task RunGenerate(String typeName)
         {
-            try
-            {
-                if (args.Length < 1)
-                {
-                    throw new MessageException($@"threax-modelgen version: {typeof(Program).Assembly.GetName().Version.ToString()}
-You must provide the following arguments [] is required {{}} is optional. 
-To create a model pass:
-[Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDirectory}} {{--AppNamespace Your.Namespace}}.
-To remove a model pass:
-remove [Schema File Path] {{--AppOutDir OutputDirectory}} {{--TestOutDir TestDirectory}}");
-                }
-
-                var appDir = Directory.GetCurrentDirectory();
-                var directoryName = Path.GetFileName(appDir);
-                var testDir = Path.GetFullPath(Path.Combine(appDir, $"../{directoryName}.Tests"));
-
-                try
-                {
-                    if (args[0] == "remove")
-                    {
-                        if (args.Length < 2)
-                        {
-                            throw new MessageException("You must provide the model schema after the remove argument to remove a model");
-                        }
-
-                        var settings = new GeneratorSettings()
-                        {
-                            Source = args[1],
-                            AppOutDir = appDir,
-                            TestOutDir = testDir
-                        };
-                        var config = new ConfigurationBuilder().AddCommandLine(args.Skip(2).ToArray()).Build();
-                        config.Bind(settings);
-                        await settings.Configure();
-                        DeleteClasses(settings);
-                    }
-                    else
-                    {
-                        var settings = new GeneratorSettings()
-                        {
-                            Source = args[0],
-                            AppOutDir = appDir,
-                            TestOutDir = testDir
-                        };
-                        var config = new ConfigurationBuilder().AddCommandLine(args.Skip(1).ToArray()).Build();
-                        config.Bind(settings);
-                        await settings.Configure();
-                        await GenerateClasses(settings);
-                    }
-                }
-                catch (RunOnFullFrameworkException ex)
-                {
-#if NETCOREAPP2_0
-                    RunFullFramework(args, ex);
-#else
-                    throw;
-#endif
-                }
-            }
-            catch (MessageException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"A {ex.GetType().Name} occured. Message: {ex.Message}");
-            }
+            var settings = CreateSettings();
+            settings.Source = typeName;
+            return RunGenerate(settings);
         }
 
-        private static void RunFullFramework(string[] args, RunOnFullFrameworkException ex)
+        public static async Task RunGenerate(GeneratorSettings settings)
         {
-            var fullExePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(typeof(Program).Assembly.Location), "../net471/dotnet-threax-modelgen.exe"));
-            if (!File.Exists(fullExePath))
-            {
-                throw new InvalidOperationException($"Cannot find full .net framework executable at {fullExePath}", ex);
-            }
-            Console.WriteLine($"Running full .net framework version from {fullExePath}");
-            var argsBuilder = new StringBuilder();
-            foreach (var arg in args)
-            {
-                argsBuilder.Append(arg);
-                argsBuilder.Append(" ");
-            }
-            var process = new Process();
-            process.StartInfo.Arguments = argsBuilder.ToString();
-            process.StartInfo.FileName = fullExePath;
-            process.StartInfo.WorkingDirectory = Directory.GetCurrentDirectory();
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.RedirectStandardError = true;
-            process.StartInfo.RedirectStandardOutput = true;
-            process.OutputDataReceived += (s, o) => Console.WriteLine(o.Data);
-            process.ErrorDataReceived += (s, o) => Console.WriteLine(o.Data);
-            process.Start();
-            process.BeginOutputReadLine();
-            process.BeginErrorReadLine();
-            process.WaitForExit();
+            await settings.Configure();
+            await GenerateClasses(settings);
+        }
+
+        public static Task RunDelete(String typeName)
+        {
+            var settings = CreateSettings();
+            settings.Source = typeName;
+            return RunDelete(settings);
+        }
+
+        public static async Task RunDelete(GeneratorSettings settings)
+        {
+            await settings.Configure();
+            DeleteClasses(settings);
         }
 
         private static async Task GenerateClasses(GeneratorSettings settings)
