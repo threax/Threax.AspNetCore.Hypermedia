@@ -50,24 +50,23 @@ namespace Threax.ModelGen
                     finalObjectProp.Format = finalType.GetSchemaFormat();
                     finalObjectProp.EnsureExtensions();
 
-                    //For some reason enums do not get the custom attributes, so do it here
+                    //For some reason objects do not get the custom attributes, so do it here
+                    //This will include enum types
+                    foreach (var attr in prop.GetCustomAttributes().Select(i => i as JsonSchemaExtensionDataAttribute).Where(i => i != null))
+                    {
+                        if (!finalObjectProp.ExtensionData.ContainsKey(attr.Property))
+                        {
+                            finalObjectProp.ExtensionData.Add(attr.Property, attr.Value);
+                        }
+                    }
+
+                    //Check for relationship, but only if not an enum
                     var enumTestType = finalType;
                     if (enumTestType.IsGenericType && enumTestType.GetGenericTypeDefinition() == typeof(Nullable<>))
                     {
                         enumTestType = enumTestType.GetGenericArguments()[0];
                     }
-                    if (enumTestType.IsEnum)
-                    {
-                        foreach (var attr in prop.GetCustomAttributes().Select(i => i as JsonSchemaExtensionDataAttribute).Where(i => i != null))
-                        {
-                            if (!finalObjectProp.ExtensionData.ContainsKey(attr.Property))
-                            {
-                                finalObjectProp.ExtensionData.Add(attr.Property, attr.Value);
-                            }
-                        }
-                    }
-                    //Check for relationship
-                    else if (finalType.Namespace == type.Namespace) //If in the model schema namespace
+                    if (!enumTestType.IsEnum && finalType.Namespace == type.Namespace) //If in the model schema namespace
                     {
                         //Remove this property and use it as a defintion.
                         propertiesToRemove.Add(schemaProp);
@@ -85,7 +84,7 @@ namespace Threax.ModelGen
                             i.PropertyType == right ||
                             (i.PropertyType.IsGenericType && i.PropertyType.GenericTypeArguments[0] == right)).FirstOrDefault();
 
-                        if(leftSideProp == null)
+                        if (leftSideProp == null)
                         {
                             throw new InvalidOperationException($"Cannot find a member with type {right.Name} on {left.Name}.");
                         }
@@ -97,7 +96,7 @@ namespace Threax.ModelGen
                             i.PropertyType == left ||
                             (i.PropertyType.IsGenericType && i.PropertyType.GenericTypeArguments[0] == left)).FirstOrDefault();
 
-                        if(rightSideProp == null)
+                        if (rightSideProp == null)
                         {
                             throw new InvalidOperationException($"Cannot find a member with type {left.Name} on {right.Name}.");
                         }

@@ -1,0 +1,29 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using AutoMapper;
+using Threax.AspNetCore.Models;
+using Threax.AspNetCore.Tracking;
+using Test.InputModels;
+using Test.Database;
+using Test.ViewModels;
+using Threax.ModelGen.Tests.Models.OtherNamespace;
+
+namespace Test.Mappers
+{
+    public partial class ValueProfile : Profile
+    {
+        partial void MapInputToEntity(IMappingExpression<ValueInput, ValueEntity> mapExpr)
+        {
+            mapExpr.ForMember(d => d.ValueId, opt => opt.Ignore())
+                .ForMember(d => d.Created, opt => opt.MapFrom<ICreatedResolver>())
+                .ForMember(d => d.Modified, opt => opt.MapFrom<IModifiedResolver>());
+        }
+
+        partial void MapEntityToView(IMappingExpression<ValueEntity, Value> mapExpr)
+        {
+            mapExpr
+                .ForMember(d => d.Info, opt => opt.Ignore());
+        }
+    }
+}
