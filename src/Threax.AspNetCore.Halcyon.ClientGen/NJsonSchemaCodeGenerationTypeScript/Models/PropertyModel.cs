@@ -111,7 +111,7 @@ namespace Threax.NJsonSchema.CodeGeneration.TypeScript.Models
         public bool IsReadOnly => _property.IsReadOnly && _settings.TypeScriptVersion >= 2.0m;
 
         /// <summary>Gets a value indicating whether the property is optional.</summary>
-        public bool IsOptional => !_property.IsRequired && _settings.MarkOptionalProperties;
+        public bool IsOptional => _settings.ForceAllPropertiesOptional || !_property.IsRequired && _settings.MarkOptionalProperties;
 
         /// <summary>Gets a value indicating whether the property is nullable.</summary>
         public bool IsNullable => _property.IsNullable(_settings.SchemaType);

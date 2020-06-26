@@ -37,7 +37,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
             var settings = new TypeScriptGeneratorSettings()
             {
                 TypeStyle = TypeScriptTypeStyle.Interface,
-                MarkOptionalProperties = true,
+                ForceAllPropertiesOptional = true,
                 DateTimeType = TypeScriptDateTimeType.String,
                 EnumNameGenerator = new EnumValueEnumNameGenerator(),
             };

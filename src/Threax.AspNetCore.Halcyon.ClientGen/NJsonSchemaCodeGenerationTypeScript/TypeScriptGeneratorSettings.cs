@@ -45,6 +45,11 @@ namespace Threax.NJsonSchema.CodeGeneration.TypeScript
         /// <summary>Gets or sets a value indicating whether to mark optional properties with ? (default: false).</summary>
         public bool MarkOptionalProperties { get; set; }
 
+        /// <summary>
+        /// Makes all properties optional, which makes them write with a ?. This overrides all other property optional settings. (default: false).
+        /// </summary>
+        public bool ForceAllPropertiesOptional { get; set; }
+
         /// <summary>Gets or sets the type style (default: Class).</summary>
         public TypeScriptTypeStyle TypeStyle { get; set; }
 
