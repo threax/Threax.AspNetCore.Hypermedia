@@ -83,15 +83,17 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
     public class EndpointDocBuilder : IEndpointDocBuilder
     {
-        private IApiDescriptionGroupCollectionProvider descriptionProvider;
-        private ISchemaBuilder schemaBuilder;
-        private IValidSchemaTypeManager validSchemaManager;
+        private readonly IApiDescriptionGroupCollectionProvider descriptionProvider;
+        private readonly ISchemaBuilder schemaBuilder;
+        private readonly IValidSchemaTypeManager validSchemaManager;
+        private readonly IEndpointDocCache endpointDocCache;
 
-        public EndpointDocBuilder(IApiDescriptionGroupCollectionProvider descriptionProvider, ISchemaBuilder schemaBuilder, IValidSchemaTypeManager validSchemaManager)
+        public EndpointDocBuilder(IApiDescriptionGroupCollectionProvider descriptionProvider, ISchemaBuilder schemaBuilder, IValidSchemaTypeManager validSchemaManager, IEndpointDocCache endpointDocCache)
         {
             this.descriptionProvider = descriptionProvider;
             this.schemaBuilder = schemaBuilder;
             this.validSchemaManager = validSchemaManager;
+            this.endpointDocCache = endpointDocCache;
         }
 
         public Task<EndpointDoc> GetDoc(String groupName, String method, String relativePath, ClaimsPrincipal user = null)
@@ -149,7 +151,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                     var returnType = methodInfo.ReturnType;
                     if (returnType != typeof(void))
                     {
-                        description.ResponseSchema = await schemaBuilder.GetSchema(returnType);
+                        description.ResponseSchema = await endpointDocCache.GetCachedSchema(returnType, schemaBuilder.GetSchema);
                     }
                 }
             }
@@ -162,11 +164,11 @@ namespace Threax.AspNetCore.Halcyon.Ext
                     {
                         if (param.Source.CanAcceptDataFrom(BindingSource.Body))
                         {
-                            description.RequestSchema = await schemaBuilder.GetSchema(param.Type);
+                            description.RequestSchema = await endpointDocCache.GetCachedSchema(param.Type, schemaBuilder.GetSchema);
                         }
                         else if (param.Source.CanAcceptDataFrom(BindingSource.Query))
                         {
-                            description.RequestSchema = await schemaBuilder.GetSchema(param.ModelMetadata.ContainerType);
+                            description.RequestSchema = await endpointDocCache.GetCachedSchema(param.ModelMetadata.ContainerType, schemaBuilder.GetSchema);
                         }
                         else if (handleFormData && param.Source.CanAcceptDataFrom(BindingSource.Form))
                         {
@@ -189,7 +191,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
                             if (type != null && validSchemaManager.IsValid(type))
                             {
-                                description.RequestSchema = await schemaBuilder.GetSchema(type);
+                                description.RequestSchema = await endpointDocCache.GetCachedSchema(type, schemaBuilder.GetSchema);
                                 description.RequestSchema.SetDataIsForm(true);
                             }
                         }

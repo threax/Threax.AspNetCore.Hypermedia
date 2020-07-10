@@ -42,6 +42,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddScoped<HalModelResultFilterAttribute, HalModelResultFilterAttribute>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.TryAddScoped<IEndpointDocBuilder, EndpointDocBuilder>();
+            services.TryAddSingleton<IEndpointDocCache, EndpointDocCache>();
             services.TryAddScoped<IValidSchemaTypeManager, ValidSchemaTypeManager>();
             services.TryAddScoped(typeof(PropertyNameValueProvider<>));
             services.TryAddScoped<IValueProviderResolver>(s =>
