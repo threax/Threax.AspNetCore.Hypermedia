@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Threax.AspNetCore.Halcyon.Ext
@@ -12,13 +13,30 @@ namespace Threax.AspNetCore.Halcyon.Ext
             public const String Get = "get";
         }
 
-        public HalDocEndpointInfo(Type controllerType, String version = null)
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="controllerType">The type of the controller that creates endpoint docs.</param>
+        public HalDocEndpointInfo(Type controllerType)
+            :this(controllerType, null)
         {
-            this.ControllerType = controllerType;
-            this.Version = version;
+
         }
 
-        public Type ControllerType { get; set; }
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="controllerType">The type of the controller that creates endpoint docs.</param>
+        /// <param name="version">A version to use for the version route arg of the endpoint doc controller. This can be passed as a plain string it will be url encoded by this constructor. If this is null no version will be supplied to the EndpointDocController.</param>
+        public HalDocEndpointInfo(Type controllerType, String version)
+        {
+            this.ControllerType = controllerType;
+            this.Version = version != null ? WebUtility.UrlEncode(version) : null;
+        }
+
+        public Type ControllerType { get; private set; }
+
+        public String Version { get; private set; }
 
         public String Rel { get; set; } = DefaultRels.Get;
 
@@ -28,8 +46,6 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
         public String RelativePathArg { get; set; } = "relativePath";
 
-        public String HttpMethod { get; set; }
-
-        public String Version { get; set; }
+        public string VersionArg { get; set; } = "version";
     }
 }

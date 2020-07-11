@@ -103,21 +103,29 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
         public HalLinkAttribute GetDocLink(IHalDocEndpointInfo docEndpointInfo)
         {
-            //Create a link to the endpoint info for this controller and action method.
-            var docHalRefInfo = new HalRelInfo(docEndpointInfo.Rel, docEndpointInfo.ControllerType,
-                new String[] {
+            String[] routeArgs;
+            if(docEndpointInfo.Version == null)
+            {
+                routeArgs = new String[] {
                     $"{docEndpointInfo.GroupArg}={GroupName}",
                     $"{docEndpointInfo.MethodArg}={Method}",
                     $"{docEndpointInfo.RelativePathArg}={UriTemplate.TrimStart('\\', '/')}"
-                });
-
-            String urlTemplate = docHalRefInfo.UrlTemplate;
-            if (docEndpointInfo.Version != null)
+                };
+            }
+            else
             {
-                urlTemplate = $"{urlTemplate}?v={docEndpointInfo.Version}";
+                routeArgs = new String[] {
+                    $"{docEndpointInfo.GroupArg}={GroupName}",
+                    $"{docEndpointInfo.MethodArg}={Method}",
+                    $"{docEndpointInfo.RelativePathArg}={UriTemplate.TrimStart('\\', '/')}",
+                    $"{docEndpointInfo.VersionArg}={docEndpointInfo.Version}",
+                };
             }
 
-            return new HalLinkAttribute($"{this.Rel}.Docs", urlTemplate, null, docHalRefInfo.HttpMethod, dataMode: DataModes.Query);
+            //Create a link to the endpoint info for this controller and action method.
+            var docHalRefInfo = new HalRelInfo(docEndpointInfo.Rel, docEndpointInfo.ControllerType, routeArgs);
+
+            return new HalLinkAttribute($"{this.Rel}.Docs", docHalRefInfo.UrlTemplate, null, docHalRefInfo.HttpMethod, dataMode: DataModes.Query);
         }
 
         /// <summary>
