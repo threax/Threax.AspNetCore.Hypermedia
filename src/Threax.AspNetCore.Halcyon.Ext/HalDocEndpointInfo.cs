@@ -12,9 +12,10 @@ namespace Threax.AspNetCore.Halcyon.Ext
             public const String Get = "get";
         }
 
-        public HalDocEndpointInfo(Type controllerType)
+        public HalDocEndpointInfo(Type controllerType, String version = null)
         {
             this.ControllerType = controllerType;
+            this.Version = version;
         }
 
         public Type ControllerType { get; set; }
@@ -28,5 +29,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         public String RelativePathArg { get; set; } = "relativePath";
 
         public String HttpMethod { get; set; }
+
+        public String Version { get; set; }
     }
 }

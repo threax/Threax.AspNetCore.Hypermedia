@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Builder;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using Threax.NJsonSchema;
@@ -10,31 +12,45 @@ namespace Threax.AspNetCore.Halcyon.Ext
 {
     public class EndpointDocCache : IEndpointDocCache
     {
-        private ConcurrentDictionary<Type, JsonSchema4> cache = new ConcurrentDictionary<Type, JsonSchema4>();
+        private ConcurrentDictionary<String, JsonSchema4> requestCache = new ConcurrentDictionary<String, JsonSchema4>();
+        private ConcurrentDictionary<String, JsonSchema4> responseCache = new ConcurrentDictionary<String, JsonSchema4>();
 
-        public async Task<JsonSchema4> GetCachedSchema(Type type, Func<Type, Task<JsonSchema4>> missCallback)
+        public Task<EndpointDocCacheResult> GetCachedRequest(string groupName, string method, string relativePath, Type type, Func<Type, Task<JsonSchema4>> missCallback)
         {
-            //Not cacheable, just return the result of the miss callback.
-            if (type.GetCustomAttribute<CacheEndpointDocAttribute>() == null)
-            {
-                return await missCallback(type);
-            }
+            return GetCached(requestCache, groupName, method, relativePath, type, missCallback);
+        }
 
-            JsonSchema4 schema;
-            if (!cache.ContainsKey(type))
+        public Task<EndpointDocCacheResult> GetCachedResponse(string groupName, string method, string relativePath, Type type, Func<Type, Task<JsonSchema4>> missCallback)
+        {
+            return GetCached(responseCache, groupName, method, relativePath, type, missCallback);
+        }
+
+        private static async Task<EndpointDocCacheResult> GetCached(ConcurrentDictionary<string, JsonSchema4> cache, string groupName, string method, string relativePath, Type type, Func<Type, Task<JsonSchema4>> missCallback)
+        {
+            var key = $"{groupName}|{method}|{relativePath}";
+            var result = new EndpointDocCacheResult();
+            result.FromCache = cache.TryGetValue(key, out var schema);
+            if (!result.FromCache)
             {
                 //This can potentially race if not defined.
                 //However, there is no real downside to that, this is still nice and thread safe.
                 schema = await missCallback.Invoke(type);
-                schema = cache.GetOrAdd(type, schema);
-
+                if (schema == null || schema.IsCacheableDoc())
+                {
+                    //If the schema is null or cacheable, add it to the cache
+                    schema = cache.GetOrAdd(key, schema);
+                }
             }
-            else
-            {
-                cache.TryGetValue(type, out schema);
-            }
+            result.Schema = schema;
 
-            return schema;
+            return result;
         }
+    }
+
+    public class EndpointDocCacheResult
+    {
+        public JsonSchema4 Schema { get; set; }
+
+        public bool FromCache { get; set; }
     }
 }

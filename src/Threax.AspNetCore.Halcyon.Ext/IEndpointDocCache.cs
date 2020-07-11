@@ -6,6 +6,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
 {
     public interface IEndpointDocCache
     {
-        Task<JsonSchema4> GetCachedSchema(Type type, Func<Type, Task<JsonSchema4>> missCallback);
+        Task<EndpointDocCacheResult> GetCachedRequest(string groupName, string method, string relativePath, Type type, Func<Type, Task<JsonSchema4>> missCallback);
+        Task<EndpointDocCacheResult> GetCachedResponse(string groupName, string method, string relativePath, Type type, Func<Type, Task<JsonSchema4>> missCallback);
     }
 }

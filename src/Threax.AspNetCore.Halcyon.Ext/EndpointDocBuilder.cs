@@ -151,7 +151,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
                     var returnType = methodInfo.ReturnType;
                     if (returnType != typeof(void))
                     {
-                        description.ResponseSchema = await endpointDocCache.GetCachedSchema(returnType, schemaBuilder.GetSchema);
+                        description.SetResponseSchema(await endpointDocCache.GetCachedResponse(groupName, method, relativePath, returnType, schemaBuilder.GetSchema));
                     }
                 }
             }
@@ -164,11 +164,11 @@ namespace Threax.AspNetCore.Halcyon.Ext
                     {
                         if (param.Source.CanAcceptDataFrom(BindingSource.Body))
                         {
-                            description.RequestSchema = await endpointDocCache.GetCachedSchema(param.Type, schemaBuilder.GetSchema);
+                            description.SetRequestSchema(await endpointDocCache.GetCachedRequest(groupName, method, relativePath, param.Type, schemaBuilder.GetSchema));
                         }
                         else if (param.Source.CanAcceptDataFrom(BindingSource.Query))
                         {
-                            description.RequestSchema = await endpointDocCache.GetCachedSchema(param.ModelMetadata.ContainerType, schemaBuilder.GetSchema);
+                            description.SetRequestSchema(await endpointDocCache.GetCachedRequest(groupName, method, relativePath, param.ModelMetadata.ContainerType, schemaBuilder.GetSchema));
                         }
                         else if (handleFormData && param.Source.CanAcceptDataFrom(BindingSource.Form))
                         {
@@ -191,8 +191,12 @@ namespace Threax.AspNetCore.Halcyon.Ext
 
                             if (type != null && validSchemaManager.IsValid(type))
                             {
-                                description.RequestSchema = await endpointDocCache.GetCachedSchema(type, schemaBuilder.GetSchema);
-                                description.RequestSchema.SetDataIsForm(true);
+                                description.SetRequestSchema(await endpointDocCache.GetCachedRequest(groupName, method, relativePath, type, async t =>
+                                {
+                                    var schema = await schemaBuilder.GetSchema(t);
+                                    schema.SetDataIsForm(true);
+                                    return schema;
+                                }));
                             }
                         }
                     }
