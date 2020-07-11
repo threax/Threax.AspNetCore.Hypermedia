@@ -37,8 +37,9 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 schema = await missCallback.Invoke(type);
                 if (schema == null || schema.IsCacheableDoc())
                 {
-                    //If the schema is null or cacheable, add it to the cache
+                    //If the schema is null or cacheable, add it to the cache, null values will count as coming from the cache
                     schema = cache.GetOrAdd(key, schema);
+                    result.FromCache = true; //This is now technically from the cache too
                 }
             }
             result.Schema = schema;

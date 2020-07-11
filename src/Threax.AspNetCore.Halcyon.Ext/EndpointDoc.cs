@@ -23,6 +23,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// <summary>
         /// This will be true if the request schema came from the cache.
         /// </summary>
+        [JsonIgnore]
         public bool RequestSchemaFromCache { get; set; }
 
         public void SetRequestSchema(EndpointDocCacheResult cacheResult)
@@ -40,6 +41,7 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// <summary>
         /// This will be true if the response schema came from the cache.
         /// </summary>
+        [JsonIgnore]
         public bool ResponseSchemaFromCache { get; set; }
 
         public void SetResponseSchema(EndpointDocCacheResult cacheResult)
@@ -64,6 +66,14 @@ namespace Threax.AspNetCore.Halcyon.Ext
         /// This will be true if this doc can be cached. This means its docs came from the cache.
         /// </summary>
         [JsonIgnore]
-        public bool Cacheable { get; set; }
+        public bool Cacheable
+        {
+            get
+            {
+                return 
+                    (RequestSchema == null || RequestSchemaFromCache) 
+                    && (ResponseSchema == null || ResponseSchemaFromCache);
+            }
+        }
     }
 }
