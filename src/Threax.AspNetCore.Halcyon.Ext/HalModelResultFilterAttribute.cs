@@ -1,21 +1,8 @@
 ﻿using Halcyon.HAL;
-using Halcyon.HAL.Attributes;
-using Halcyon.Web.HAL;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.AspNetCore.Routing.Template;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+using System.Net;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
@@ -33,12 +20,6 @@ namespace Threax.AspNetCore.Halcyon.Ext
             var objResult = context.Result as ObjectResult;
             if (objResult != null)
             {
-                //Controller must extend ControllerBase
-                if (!(context.Controller is ControllerBase))
-                {
-                    throw new InvalidOperationException($"Controller {context.Controller.GetType().FullName} does not extend ControllerBase or Controller. It must do this to work with hal.");
-                }
-
                 HALResponse halResponse = objResult.Value as HALResponse;
                 if(halResponse == null && !(objResult.Value is String))
                 {
@@ -46,7 +27,10 @@ namespace Threax.AspNetCore.Halcyon.Ext
                 }
                 if (halResponse != null)
                 {
-                    context.Result = halResponse.ToActionResult(context.Controller as ControllerBase);
+                    context.Result = new ObjectResult(halResponse)
+                    {
+                        StatusCode = (int)HttpStatusCode.OK
+                    };
                 }
             }
         }
