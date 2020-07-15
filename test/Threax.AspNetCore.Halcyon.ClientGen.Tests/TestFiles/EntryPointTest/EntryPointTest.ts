@@ -1,20 +1,19 @@
 import * as hal from 'hr.halcyon.EndpointClient';
 
 export class EntryPointInjector {
-    private url: string;
-    private fetcher: hal.Fetcher;
     private instancePromise: Promise<EntryPointResult>;
 
-    constructor(url: string, fetcher: hal.Fetcher) {
-        this.url = url;
-        this.fetcher = fetcher;
-    }
+    constructor(private url: string, private fetcher: hal.Fetcher, private data?: any) {}
 
     public load(): Promise<EntryPointResult> {
         if (!this.instancePromise) {
-            this.instancePromise = EntryPointResult.Load(this.url, this.fetcher);
+            if (this.data) {
+                this.instancePromise = Promise.resolve(new EntryPointResult(new hal.HalEndpointClient(this.data, this.fetcher)));
+            }
+            else {
+                this.instancePromise = EntryPointResult.Load(this.url, this.fetcher);
+            }
         }
-
         return this.instancePromise;
     }
 }

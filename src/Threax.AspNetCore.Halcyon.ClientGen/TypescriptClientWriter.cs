@@ -100,20 +100,19 @@ export interface HalEndpointDocQuery {
                 {
                     writer.WriteLine($@"
 export class {client.Name}Injector {{
-    private url: string;
-    private fetcher: hal.Fetcher;
     private instancePromise: Promise<{client.Name}{ResultClassSuffix}>;
 
-    constructor(url: string, fetcher: hal.Fetcher) {{
-        this.url = url;
-        this.fetcher = fetcher;
-    }}
+    constructor(private url: string, private fetcher: hal.Fetcher, private data?: any) {{}}
 
     public load(): Promise<{client.Name}{ResultClassSuffix}> {{
         if (!this.instancePromise) {{
-            this.instancePromise = {client.Name}{ResultClassSuffix}.Load(this.url, this.fetcher);
+            if (this.data) {{
+                this.instancePromise = Promise.resolve(new {client.Name}{ResultClassSuffix}(new hal.HalEndpointClient(this.data, this.fetcher)));
+            }}
+            else {{
+                this.instancePromise = {client.Name}{ResultClassSuffix}.Load(this.url, this.fetcher);
+            }}
         }}
-
         return this.instancePromise;
     }}
 }}");
