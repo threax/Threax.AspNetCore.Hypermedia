@@ -6,7 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Threax.AspNetCore.Halcyon.ClientGen</AssemblyName>
     <PackageId>Threax.AspNetCore.Halcyon.ClientGen</PackageId>
-    <Version>12.2.0-pre01</Version>
+    <Version>12.2.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
@@ -14,7 +14,7 @@
     <PackageProjectUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</PackageProjectUrl>
     <RepositoryUrl>https://github.com/threax/Threax.AspNetCore.Hypermedia</RepositoryUrl>
     <Description>Client generator for halcyon apis.</Description>
-    <PackageReleaseNotes>Change typescript to always generate all properties optional.</PackageReleaseNotes>
+    <PackageReleaseNotes>Add a way to restore an entry point from data in typescript.</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
