@@ -28,7 +28,8 @@ namespace Threax.AspNetCore.Halcyon.ClientGen
             var interfacesToWrite = new InterfaceManager();
 
             writer.WriteLine(
-            @"import * as hal from 'hr.halcyon.EndpointClient';"
+            @"import * as hal from 'hr.halcyon.EndpointClient';
+import { Fetcher } from 'hr.fetcher';"
             );
 
             await WriteClient(interfacesToWrite, writer);
@@ -102,7 +103,7 @@ export interface HalEndpointDocQuery {
 export class {client.Name}Injector {{
     private instancePromise: Promise<{client.Name}{ResultClassSuffix}>;
 
-    constructor(private url: string, private fetcher: hal.Fetcher, private data?: any) {{}}
+    constructor(private url: string, private fetcher: Fetcher, private data?: any) {{}}
 
     public load(): Promise<{client.Name}{ResultClassSuffix}> {{
         if (!this.instancePromise) {{
@@ -125,7 +126,7 @@ export class {client.Name}{ResultClassSuffix} {{
                 if (client.IsEntryPoint)
                 {
                     writer.WriteLine($@"
-    public static Load(url: string, fetcher: hal.Fetcher): Promise<{client.Name}{ResultClassSuffix}> {{
+    public static Load(url: string, fetcher: Fetcher): Promise<{client.Name}{ResultClassSuffix}> {{
         return hal.HalEndpointClient.Load({{
             href: url,
             method: ""GET""

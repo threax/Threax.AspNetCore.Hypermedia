@@ -1,4 +1,5 @@
 import * as hal from 'hr.halcyon.EndpointClient';
+import { Fetcher } from 'hr.fetcher';
 
 export class OutputCollectionResult {
     private client: hal.HalEndpointClient;
