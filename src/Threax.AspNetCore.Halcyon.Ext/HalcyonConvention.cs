@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Threax.NJsonSchema.Generation;
 using Threax.NJsonSchema;
 using Threax.AspNetCore.Halcyon.Ext.ValueProviders;
+using System;
 #if NETCOREAPP3_0
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 #endif
@@ -61,6 +62,44 @@ namespace Microsoft.Extensions.DependencyInjection
             });
             services.TryAddSingleton<IAutoTitleGenerator, AutoTitleGenerator>();
 
+            return services;
+        }
+
+        /// <summary>
+        /// Add an entry point renderer as an IEntryPointRenderer.
+        /// </summary>
+        /// <typeparam name="T">The type of the entry point controller. Must extend controller.</typeparam>
+        /// <param name="services">The service collection to add the results to.</param>
+        /// <param name="getResult">A callback to get the result from a controller instance.</param>
+        /// <param name="registerControllerInServices">Set this to true to also register the controller as a transient service in services. Default: true</param>
+        /// <returns></returns>
+        public static IServiceCollection AddEntryPointRenderer<T>(this IServiceCollection services, Func<T, Object> getResult, bool registerControllerInServices = true)
+            where T : Controller
+        {
+            if (registerControllerInServices)
+            {
+                services.TryAddTransient<T, T>();
+            }
+            services.TryAddScoped<IEntryPointRenderer>(s => new EntryPointRenderer<T>(s.GetRequiredService<IHALConverter>(), s.GetRequiredService<T>(), getResult));
+            return services;
+        }
+
+        /// <summary>
+        /// Add an EntryPointRenderer registered as an IEntryPointRenderer&lt;T&gt;. This would allow multiple entry point renderers to be registered if needed.
+        /// </summary>
+        /// <typeparam name="T">The type of the entry point controller. Must extend controller.</typeparam>
+        /// <param name="services">The service collection to add the results to.</param>
+        /// <param name="getResult">A callback to get the result from a controller instance.</param>
+        /// <param name="registerControllerInServices">Set this to true to also register the controller as a transient service in services. Default: true</param>
+        /// <returns></returns>
+        public static IServiceCollection AddTypedEntryPointRenderer<T>(this IServiceCollection services, Func<T, Object> getResult, bool registerControllerInServices = true)
+            where T : Controller
+        {
+            if (registerControllerInServices)
+            {
+                services.TryAddTransient<T, T>();
+            }
+            services.TryAddScoped<IEntryPointRenderer<T>>(s => new EntryPointRenderer<T>(s.GetRequiredService<IHALConverter>(), s.GetRequiredService<T>(), getResult));
             return services;
         }
 
