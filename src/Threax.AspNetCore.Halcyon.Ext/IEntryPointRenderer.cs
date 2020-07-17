@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Newtonsoft.Json.Linq;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
     public interface IEntryPointRenderer
     {
-        void AddEntryPoint(Controller controller);
+        JObject Render();
     }
 
     public interface IEntryPointRenderer<T> : IEntryPointRenderer
-         where T : Controller
     {
+
     }
 }

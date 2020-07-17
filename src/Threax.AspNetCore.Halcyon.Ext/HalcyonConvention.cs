@@ -74,7 +74,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="registerControllerInServices">Set this to true to also register the controller as a transient service in services. Default: true</param>
         /// <returns></returns>
         public static IServiceCollection AddEntryPointRenderer<T>(this IServiceCollection services, Func<T, Object> getResult, bool registerControllerInServices = true)
-            where T : Controller
+            where T : class
         {
             if (registerControllerInServices)
             {
@@ -93,7 +93,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="registerControllerInServices">Set this to true to also register the controller as a transient service in services. Default: true</param>
         /// <returns></returns>
         public static IServiceCollection AddTypedEntryPointRenderer<T>(this IServiceCollection services, Func<T, Object> getResult, bool registerControllerInServices = true)
-            where T : Controller
+            where T : class
         {
             if (registerControllerInServices)
             {

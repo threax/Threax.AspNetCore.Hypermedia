@@ -10,8 +10,7 @@ using System.Threading;
 
 namespace Threax.AspNetCore.Halcyon.Ext
 {
-    public class EntryPointRenderer<T> : IEntryPointRenderer<T> 
-        where T : Controller
+    public class EntryPointRenderer<T> : IEntryPointRenderer<T>
     {
         private static Lazy<JsonSerializer> serializer;
 
@@ -31,18 +30,15 @@ namespace Threax.AspNetCore.Halcyon.Ext
             this.getResult = getResult;
         }
 
-        public void AddEntryPoint(Controller controller)
+        public JObject Render()
         {
-            this.entryPointController.Url = controller.Url;
-            this.entryPointController.ControllerContext = controller.ControllerContext;
-
             var entryPoint = getResult(entryPointController);
             if (!halConverter.CanConvert(entryPoint.GetType()))
             {
                 throw new InvalidOperationException($"Cannot convert entry point class '{entryPoint.GetType().FullName}' to a hal result.");
             }
             var halEntryPoint = halConverter.Convert(entryPoint);
-            controller.ViewData["EntryJson"] = JObject.FromObject(halEntryPoint, serializer.Value);
+            return JObject.FromObject(halEntryPoint, serializer.Value);
         }
     }
 }
