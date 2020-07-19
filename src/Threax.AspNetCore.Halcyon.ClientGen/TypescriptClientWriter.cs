@@ -194,7 +194,7 @@ export class {client.Name}{ResultClassSuffix} {{
                     {
                         if (link.EndpointDoc.ResponseSchema.IsRawResponse())
                         {
-                            linkReturnType = $": Promise<hal.Response>";
+                            linkReturnType = $": Promise<Response>";
                             loadFuncType = "LoadRaw";
                         }
                         else
