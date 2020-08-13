@@ -18,8 +18,8 @@ namespace Threax.ModelGen
         /// Create a cshtml view. OutDir must match the folder where the view will be located, use / between folders.
         /// This is important because it will be set as the runner and must match the typescript file.
         /// </summary>
-        /// <param name="modelName">The name of the model.</param>
-        /// <param name="outDir">The directory the view will be placed in.</param>
+        /// <param name="schema">The schema.</param>
+        /// <param name="propertyNames">The property names.</param>
         /// <returns></returns>
         public static String Get(JsonSchema4 schema, IEnumerable<String> propertyNames = null)
         {
