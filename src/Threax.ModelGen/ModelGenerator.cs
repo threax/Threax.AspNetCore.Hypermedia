@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Threax.NJsonSchema;
+﻿using Threax.NJsonSchema;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
