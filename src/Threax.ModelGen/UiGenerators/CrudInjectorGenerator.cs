@@ -24,9 +24,9 @@ namespace Threax.ModelGen
 
         private static String Create(String Model, String model, String Models, String models, String modelId) {
             return
-$@"import * as client from 'clientlibs.ServiceClient';
-import * as hyperCrud from 'hr.widgets.HypermediaCrudService';
-import * as di from 'hr.di';
+$@"import * as client from 'Client/Libs/ServiceClient';
+import * as hyperCrud from 'htmlrapier.widgets/src/HypermediaCrudService';
+import * as di from 'htmlrapier/src/di';
 
 //export class {Model}CrudInjector extends hyperCrud.AbstractHypermediaPageInjector {{
 //    public static get InjectorArgs(): di.DiFunction<any>[] {{

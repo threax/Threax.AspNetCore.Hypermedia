@@ -20,10 +20,10 @@ namespace Threax.ModelGen
 
         private static String Create(String Model) {
             return
-$@"import * as standardCrudPage from 'hr.widgets.StandardCrudPage';
-import * as startup from 'clientlibs.startup';
-import * as deepLink from 'hr.deeplink';
-//import {{ {Model}CrudInjector }} from 'clientlibs.{Model}CrudInjector';
+$@"import * as standardCrudPage from 'htmlrapier.widgets/src/StandardCrudPage';
+import * as startup from 'Client/Libs/startup';
+import * as deepLink from 'htmlrapier/src/deeplink';
+//import {{ {Model}CrudInjector }} from 'Client/Libs/{Model}CrudInjector';
 
 //var injector = {Model}CrudInjector;
 
