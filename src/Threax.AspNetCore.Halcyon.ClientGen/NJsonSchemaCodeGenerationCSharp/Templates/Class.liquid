@@ -7,7 +7,6 @@
 [JsonInheritanceAttribute("{{ derivedClass.Discriminator }}", typeof({{ derivedClass.ClassName }}))]
 {% endfor -%}
 {% endif -%}
-[System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "{{ ToolchainVersion }}")]
 {% if InheritsExceptionSchema -%}
 [Newtonsoft.Json.JsonObjectAttribute]
 {% endif -%}
