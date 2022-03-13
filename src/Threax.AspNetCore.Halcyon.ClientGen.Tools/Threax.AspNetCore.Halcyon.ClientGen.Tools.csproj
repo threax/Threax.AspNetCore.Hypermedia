@@ -6,7 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Threax.AspNetCore.Halcyon.ClientGen.Tools</AssemblyName>
     <PackageId>Threax.AspNetCore.Halcyon.ClientGen.Tools</PackageId>
-    <Version>8.0.0-pre01</Version>
+    <Version>8.0.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Threax.AspNetCore.BuiltInTools" Version="5.3.1" />
+    <PackageReference Include="Threax.AspNetCore.BuiltInTools" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
