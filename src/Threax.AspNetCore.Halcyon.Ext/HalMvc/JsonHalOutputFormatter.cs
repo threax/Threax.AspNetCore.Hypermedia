@@ -35,7 +35,7 @@ namespace Halcyon.Web.HAL.Json
 
             this.jsonFormatter = new JsonOutputFormatter(serializerSettings, ArrayPool<Char>.Create()
 #if NET6_0
-            , mvcOpt
+            , mvcOpt, null
 #endif
             );
 
@@ -52,7 +52,7 @@ namespace Halcyon.Web.HAL.Json
             this.serializerSettings = serializerSettings;
             this.jsonFormatter = new JsonOutputFormatter(serializerSettings, ArrayPool<Char>.Create()
 #if NET6_0
-            , mvcOpt
+            , mvcOpt, null
 #endif
             );
 
