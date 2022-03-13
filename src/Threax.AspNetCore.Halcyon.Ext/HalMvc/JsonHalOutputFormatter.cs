@@ -7,7 +7,7 @@ using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-#if NETCOREAPP3_1
+#if NET6_0
 using JsonOutputFormatter = Microsoft.AspNetCore.Mvc.Formatters.NewtonsoftJsonOutputFormatter;
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +24,7 @@ namespace Halcyon.Web.HAL.Json
         private readonly JsonSerializerSettings serializerSettings;
 
         public JsonHalOutputFormatter(
-#if NETCOREAPP3_1
+#if NET6_0
         MvcOptions mvcOpt,
 #endif
         IEnumerable<string> halJsonMediaTypes = null)
@@ -34,7 +34,7 @@ namespace Halcyon.Web.HAL.Json
             serializerSettings = JsonSerializerSettingsProvider.CreateSerializerSettings();
 
             this.jsonFormatter = new JsonOutputFormatter(serializerSettings, ArrayPool<Char>.Create()
-#if NETCOREAPP3_1
+#if NET6_0
             , mvcOpt
 #endif
             );
@@ -42,7 +42,7 @@ namespace Halcyon.Web.HAL.Json
             this.halJsonMediaTypes = halJsonMediaTypes;
         }
         public JsonHalOutputFormatter(JsonSerializerSettings serializerSettings
-#if NETCOREAPP3_1
+#if NET6_0
         , MvcOptions mvcOpt
 #endif
             , IEnumerable<string> halJsonMediaTypes = null)
@@ -51,7 +51,7 @@ namespace Halcyon.Web.HAL.Json
 
             this.serializerSettings = serializerSettings;
             this.jsonFormatter = new JsonOutputFormatter(serializerSettings, ArrayPool<Char>.Create()
-#if NETCOREAPP3_1
+#if NET6_0
             , mvcOpt
 #endif
             );
