@@ -37,16 +37,24 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
             mockup.Add<ISchemaBuilder>(s => new SchemaBuilder(s.Get<JsonSchemaGenerator>(), s.Get<IValidSchemaTypeManager>()));
 
             //This is setup outside the mock callbacks, so we can do async properly
-            var schemaBuilder = mockup.Get<ISchemaBuilder>();
-            EndpointClientDefinition endpoint = await CreateEndpointDefinition(schemaBuilder);
+            //The get must be after the registrations
+            EndpointClientDefinition endpoint = null;
 
             mockup.Add<IClientGenerator>(s =>
             {
+                if(endpoint == null)
+                {
+                    throw new InvalidOperationException("This should not happen. EndpointClientDefinition not yet resolved and is null.");
+                }
+
                 var mock = new Mock<IClientGenerator>();
                 IEnumerable<EndpointClientDefinition> mockEndpoints = new List<EndpointClientDefinition>() { endpoint };
                 mock.Setup(i => i.GetEndpointDefinitions()).Returns(Task.FromResult(mockEndpoints));
                 return mock.Object;
             });
+
+            var schemaBuilder = mockup.Get<ISchemaBuilder>();
+            endpoint = await CreateEndpointDefinition(schemaBuilder);
         }
 
         /// <summary>

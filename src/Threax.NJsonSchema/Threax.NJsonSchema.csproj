@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>net6.0</TargetFrameworks>
     <Version>2.0.0-pre01</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -9,7 +9,7 @@
     <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
 </Project>

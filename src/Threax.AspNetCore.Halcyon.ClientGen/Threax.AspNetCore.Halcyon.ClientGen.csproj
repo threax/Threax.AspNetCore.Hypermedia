@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>net6.0</TargetFrameworks>
     <NoWarn>$(NoWarn);1591</NoWarn>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Threax.AspNetCore.Halcyon.ClientGen</AssemblyName>
@@ -79,7 +79,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotLiquid" Version="2.0.254" />
+    <PackageReference Include="DotLiquid" Version="2.2.595" />
   </ItemGroup>
 
   <ItemGroup>

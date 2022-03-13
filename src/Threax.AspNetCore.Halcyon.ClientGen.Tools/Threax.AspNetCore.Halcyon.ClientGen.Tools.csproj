@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>net6.0</TargetFrameworks>
     <NoWarn>$(NoWarn);1591</NoWarn>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Threax.AspNetCore.Halcyon.ClientGen.Tools</AssemblyName>
@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Threax.AspNetCore.BuiltInTools" Version="5.0.2" />
+    <PackageReference Include="Threax.AspNetCore.BuiltInTools" Version="5.3.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>net6.0</TargetFrameworks>
     <NoWarn>$(NoWarn);1591</NoWarn>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Threax.AspNetCore.Halcyon.Client</AssemblyName>
@@ -18,18 +18,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
     <ProjectReference Include="..\Threax.NJsonSchema\Threax.NJsonSchema.csproj" />
     <ProjectReference Include="..\Threax.SharedHttpClient\Threax.SharedHttpClient.csproj" />
   </ItemGroup>
