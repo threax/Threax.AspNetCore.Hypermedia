@@ -40,7 +40,7 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
             //The get must be after the registrations
             EndpointClientDefinition endpoint = null;
 
-            mockup.Add<IClientGenerator>(s =>
+            mockup.TryAdd<IClientGenerator>(s =>
             {
                 if(endpoint == null)
                 {
