@@ -27,22 +27,29 @@ namespace Threax.AspNetCore.Halcyon.ClientGen.Tests
     {
         protected override async Task CreateAsyncMocks()
         {
-            await base.CreateAsyncMocks();
-
-            var schemaBuilder = mockup.Get<ISchemaBuilder>();
-
-            IEnumerable<EndpointClientDefinition> mockEndpoints = new List<EndpointClientDefinition>()
-            {
-                await CreateEndpoint<InputWithEnumTest.Input, InputWithEnumTest.Output>(schemaBuilder),
-                await CreateEndpoint<InputWithEnumTest.AnotherInput, InputWithEnumTest.Output>(schemaBuilder)
-            };
+            IEnumerable<EndpointClientDefinition> mockEndpoints = null;
 
             mockup.Add<IClientGenerator>(s =>
             {
+                if (mockEndpoints == null)
+                {
+                    throw new InvalidOperationException("mockEndpoints is null and should not be.");
+                }
+
                 var mock = new Mock<IClientGenerator>();
                 mock.Setup(i => i.GetEndpointDefinitions()).Returns(Task.FromResult(mockEndpoints));
                 return mock.Object;
             });
+
+            await base.CreateAsyncMocks();
+
+            var schemaBuilder = mockup.Get<ISchemaBuilder>();
+
+            mockEndpoints = new List<EndpointClientDefinition>()
+            {
+                await CreateEndpoint<InputWithEnumTest.Input, InputWithEnumTest.Output>(schemaBuilder),
+                await CreateEndpoint<InputWithEnumTest.AnotherInput, InputWithEnumTest.Output>(schemaBuilder)
+            };
         }
 
         private static async Task<EndpointClientDefinition> CreateEndpoint<TInput, TResult>(ISchemaBuilder schemaBuilder)
