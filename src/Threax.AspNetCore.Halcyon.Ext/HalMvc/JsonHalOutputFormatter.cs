@@ -7,11 +7,9 @@ using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-#if NET6_0
 using JsonOutputFormatter = Microsoft.AspNetCore.Mvc.Formatters.NewtonsoftJsonOutputFormatter;
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Microsoft.AspNetCore.Mvc;
-#endif
 
 namespace Halcyon.Web.HAL.Json
 {
@@ -23,38 +21,22 @@ namespace Halcyon.Web.HAL.Json
         private readonly JsonOutputFormatter jsonFormatter;
         private readonly JsonSerializerSettings serializerSettings;
 
-        public JsonHalOutputFormatter(
-#if NET6_0
-        MvcOptions mvcOpt,
-#endif
-        IEnumerable<string> halJsonMediaTypes = null)
+        public JsonHalOutputFormatter(MvcOptions mvcOpt, IEnumerable<string> halJsonMediaTypes = null)
         {
             if (halJsonMediaTypes == null) halJsonMediaTypes = new string[] { HalJsonType };
 
             serializerSettings = JsonSerializerSettingsProvider.CreateSerializerSettings();
 
-            this.jsonFormatter = new JsonOutputFormatter(serializerSettings, ArrayPool<Char>.Create()
-#if NET6_0
-            , mvcOpt, null
-#endif
-            );
+            this.jsonFormatter = new JsonOutputFormatter(serializerSettings, ArrayPool<Char>.Create(), mvcOpt, null);
 
             this.halJsonMediaTypes = halJsonMediaTypes;
         }
-        public JsonHalOutputFormatter(JsonSerializerSettings serializerSettings
-#if NET6_0
-        , MvcOptions mvcOpt
-#endif
-            , IEnumerable<string> halJsonMediaTypes = null)
+        public JsonHalOutputFormatter(JsonSerializerSettings serializerSettings, MvcOptions mvcOpt, IEnumerable<string> halJsonMediaTypes = null)
         {
             if (halJsonMediaTypes == null) halJsonMediaTypes = new string[] { HalJsonType };
 
             this.serializerSettings = serializerSettings;
-            this.jsonFormatter = new JsonOutputFormatter(serializerSettings, ArrayPool<Char>.Create()
-#if NET6_0
-            , mvcOpt, null
-#endif
-            );
+            this.jsonFormatter = new JsonOutputFormatter(serializerSettings, ArrayPool<Char>.Create(), mvcOpt, null);
 
             this.halJsonMediaTypes = halJsonMediaTypes;
         }
