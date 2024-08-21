@@ -15,9 +15,6 @@ using Threax.NJsonSchema;
 using Threax.AspNetCore.Halcyon.Ext.ValueProviders;
 using System;
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
-#if NET6_0
-using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
-#endif
 
 namespace Microsoft.Extensions.DependencyInjection
 {
