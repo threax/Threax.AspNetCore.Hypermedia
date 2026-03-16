@@ -28,39 +28,39 @@ $@"import * as client from 'Client/Libs/ServiceClient';
 import * as hyperCrud from 'htmlrapier.widgets/src/HypermediaCrudService';
 import * as di from 'htmlrapier/src/di';
 
-//export class {Model}CrudInjector extends hyperCrud.AbstractHypermediaPageInjector {{
-//    public static get InjectorArgs(): di.DiFunction<any>[] {{
-//        return [client.EntryPointInjector];
-//    }}
-//
-//    constructor(private injector: client.EntryPointInjector) {{
-//        super();
-//    }}
-//
-//    async list(query: any): Promise<hyperCrud.HypermediaCrudCollection> {{
-//        var entry = await this.injector.load();
-//        return entry.list{Models}(query);
-//    }}
-//
-//    async canList(): Promise<boolean> {{
-//        var entry = await this.injector.load();
-//        return entry.canList{Models}();
-//    }}
-//
-//    public getDeletePrompt(item: client.{Model}Result): string {{
-//        return ""Are you sure you want to delete the {model}?"";
-//    }}
-//
-//    public getItemId(item: client.{Model}Result): string | null {{
-//        return String(item.data.{modelId});
-//    }}
-//
-//    public createIdQuery(id: string): client.{Model}Query | null {{
-//        return {{
-//            {modelId}: id
-//        }};
-//    }}
-//}}";
+export class {Model}CrudInjector extends hyperCrud.AbstractHypermediaPageInjector {{
+    public static get InjectorArgs(): di.DiFunction<any>[] {{
+        return [client.EntryPointInjector];
+    }}
+
+    constructor(private injector: client.EntryPointInjector) {{
+        super();
+    }}
+
+    async list(query: any): Promise<hyperCrud.HypermediaCrudCollection> {{
+        var entry = await this.injector.load();
+        return entry.list{Models}(query);
+    }}
+
+    async canList(): Promise<boolean> {{
+        var entry = await this.injector.load();
+        return entry.canList{Models}();
+    }}
+
+    public getDeletePrompt(item: client.{Model}Result): string {{
+        return ""Are you sure you want to delete the {model}?"";
+    }}
+
+    public getItemId(item: client.{Model}Result): string | null {{
+        return String(item.data.{modelId});
+    }}
+
+    public createIdQuery(id: string): client.{Model}Query | null {{
+        return {{
+            {modelId}: id
+        }};
+    }}
+}}";
         }
     }
 }

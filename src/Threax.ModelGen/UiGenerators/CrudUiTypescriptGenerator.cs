@@ -23,14 +23,14 @@ namespace Threax.ModelGen
 $@"import * as standardCrudPage from 'htmlrapier.widgets/src/StandardCrudPage';
 import * as startup from 'Client/Libs/startup';
 import * as deepLink from 'htmlrapier/src/deeplink';
-//import {{ {Model}CrudInjector }} from 'Client/Libs/{Model}CrudInjector';
+import {{ {Model}CrudInjector }} from 'Client/Libs/{Model}CrudInjector';
 
-//var injector = {Model}CrudInjector;
+var injector = {Model}CrudInjector;
 
-//var builder = startup.createBuilder();
-//deepLink.addServices(builder.Services);
-//standardCrudPage.addServices(builder, injector);
-//standardCrudPage.createControllers(builder, new standardCrudPage.Settings());";
+var builder = startup.createBuilder();
+deepLink.addServices(builder.Services);
+standardCrudPage.addServices(builder, injector);
+standardCrudPage.createControllers(builder, new standardCrudPage.Settings());";
         }
     }
 }
