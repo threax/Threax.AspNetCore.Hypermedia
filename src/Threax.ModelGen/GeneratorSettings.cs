@@ -27,6 +27,7 @@ namespace Threax.ModelGen
                     var assembly = ProjectAssemblyLoader.LoadProjectAssembly(AppOutDir, out ns);
                     AppNamespace = ns;
                     var type = assembly.GetType(Source);
+                    DotnetType = type;
 
                     if (type == null)
                     {
@@ -106,6 +107,8 @@ namespace Threax.ModelGen
         public String PluralModelName { get; set; }
 
         public JsonSchema4 Schema { get; set; }
+
+        public Type DotnetType { get; set; }
 
         public Dictionary<String, JsonSchema4> OtherSchemas { get; private set; } = new Dictionary<string, JsonSchema4>();
 

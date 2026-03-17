@@ -1,12 +1,10 @@
-﻿using Threax.NJsonSchema;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System;
 using System.IO;
 using System.Linq;
-using System.Text;
+using System.Reflection;
 using System.Threading.Tasks;
 using Threax.AspNetCore.Models;
+using Threax.ModelGen.ModelWriters;
 using Threax.ModelGen.TestGenerators;
 
 namespace Threax.ModelGen
@@ -315,6 +313,20 @@ namespace Threax.ModelGen
             {
                 File.Delete(fullPath);
             }
+        }
+
+        public static Task CreateRoles(String typeName)
+        {
+            var generatorSettings = CreateSettings();
+            generatorSettings.Source = typeName;
+            return CreateRoles(typeName, generatorSettings);
+        }
+
+        public static async Task CreateRoles(String typeName, GeneratorSettings generatorSettings)
+        {
+            await generatorSettings.Configure();
+            var fields = generatorSettings.DotnetType.GetFields(BindingFlags.Static | BindingFlags.Public).Select(i => i.Name);
+            RoleWriter.CreateRoles(fields, generatorSettings);
         }
     }
 }
